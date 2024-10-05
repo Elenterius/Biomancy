@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.inventory.itemhandler;
+package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.GiftSacItem;
@@ -11,7 +11,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FixedSizeItemStackHandler extends ItemStackHandler {
+public class FixedSizeItemStackHandler extends ItemStackHandler implements SerializableItemHandler {
 
 	public FixedSizeItemStackHandler(int size) {
 		super(size);

@@ -8,77 +8,56 @@ import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.menu.slot.FuelSlot;
-import com.github.elenterius.biomancy.menu.slot.ISlotZone;
-import com.github.elenterius.biomancy.menu.slot.OutputSlot;
 import com.github.elenterius.biomancy.util.ItemStackCounter;
 import com.github.elenterius.biomancy.util.SoundUtil;
-import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.items.SlotItemHandler;
 import org.apache.logging.log4j.MarkerManager;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class BioForgeMenu extends PlayerContainerMenu {
 
 	final ResultContainer resultContainer = new ResultContainer();
-	final int resultSlotIndex;
-	private final BehavioralInventory<?> fuelInventory;
-	private final BioForgeStateData stateData;
+	private final BioForgeBlockEntity bioforge;
 	private int playerInvChanges;
 	private final ItemStackCounter itemCounter = new ItemStackCounter();
 	@Nullable
 	private BioForgeRecipe selectedRecipe;
 
-	protected BioForgeMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BioForgeStateData stateData) {
+	protected BioForgeMenu(int id, Inventory playerInventory, @Nullable BioForgeBlockEntity bioforge) {
 		super(ModMenuTypes.BIO_FORGE.get(), id, playerInventory, 124, 137, 195);
 
-		this.fuelInventory = fuelInventory;
-		this.fuelInventory.startOpen(playerInventory.player);
-		this.stateData = stateData;
+		this.bioforge = bioforge;
 
-		addSlot(new FuelSlot(fuelInventory, 0, 139, 53));
-		resultSlotIndex = addSlot(new CustomResultSlot(playerInventory.player, resultContainer, 0, 194 + 2, 33 + 2)).index;
+		if (bioforge != null) {
+			bioforge.startOpen(playerInventory.player);
 
-		addDataSlots(stateData);
+			addSlot(new SlotItemHandler(bioforge.getFuelInventory(), 0, 139, 53));
+			addSlot(new CustomResultSlot(playerInventory.player, resultContainer, 0, 194 + 2, 33 + 2));
+
+			addDataSlots(bioforge.getStateData());
+		}
 	}
 
-	private ContainerLevelAccess containerLevelAccess = ContainerLevelAccess.NULL; //only exists on the logical server side
 	private long prevSoundTime;
 
 	public BioForgeStateData getStateData() {
-		return stateData;
+		return bioforge.getStateData();
 	}
 
-	public BioForgeMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BioForgeStateData stateData, ContainerLevelAccess containerLevelAccess) {
-		this(id, playerInventory, fuelInventory, stateData);
-		this.containerLevelAccess = containerLevelAccess;
-	}
-
-	public static BioForgeMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf buffer) {
-		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(BioForgeBlockEntity.FUEL_SLOTS);
-
-		BioForgeStateData stateData;
-		if (playerInventory.player.level().getBlockEntity(buffer.readBlockPos()) instanceof BioForgeBlockEntity bioForge) {
-			stateData = bioForge.getStateData();
-		}
-		else {
-			FuelHandler fuelHandler = FuelHandler.createNutrientFuelHandler(BioForgeBlockEntity.MAX_FUEL, () -> {});
-			stateData = new BioForgeStateData(fuelHandler);
-		}
-
-		return new BioForgeMenu(screenId, playerInventory, fuelInventory, stateData);
+	public static BioForgeMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
+		BioForgeBlockEntity bioforge = playerInventory.player.level().getBlockEntity(extraData.readBlockPos()) instanceof BioForgeBlockEntity be ? be : null;
+		return new BioForgeMenu(screenId, playerInventory, bioforge);
 	}
 
 	@Override
@@ -129,7 +108,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 	public void removed(Player player) {
 		super.removed(player);
 		resultContainer.clearContent();
-		fuelInventory.stopOpen(player);
+		if (bioforge != null) bioforge.stopOpen(player);
 	}
 
 	@Override
@@ -139,14 +118,15 @@ public class BioForgeMenu extends PlayerContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return fuelInventory.stillValid(player);
+		return bioforge != null && bioforge.canPlayerInteract(player);
 	}
+
 	public float getFuelAmountNormalized() {
 		return Mth.clamp((float) getFuelAmount() / BioForgeBlockEntity.MAX_FUEL, 0f, 1f);
 	}
 
 	public int getFuelAmount() {
-		return stateData.fuelHandler.getFuelAmount();
+		return bioforge.getStateData().fuelHandler.getFuelAmount();
 	}
 
 	public int getMaxFuelAmount() {
@@ -247,11 +227,11 @@ public class BioForgeMenu extends PlayerContainerMenu {
 
 	}
 
-	public static BioForgeMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BioForgeStateData stateData, ContainerLevelAccess containerLevelAccess) {
-		return new BioForgeMenu(screenId, playerInventory, fuelInventory, stateData, containerLevelAccess);
+	public static BioForgeMenu createServerMenu(int screenId, Inventory playerInventory, BioForgeBlockEntity bioforge) {
+		return new BioForgeMenu(screenId, playerInventory, bioforge);
 	}
 
-	private class CustomResultSlot extends OutputSlot {
+	private class CustomResultSlot extends Slot {
 
 		private final Player player;
 		private int removeCount;
@@ -259,6 +239,11 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		public CustomResultSlot(Player player, ResultContainer container, int index, int x, int y) {
 			super(container, index, x, y);
 			this.player = player;
+		}
+
+		@Override
+		public boolean mayPlace(ItemStack stack) {
+			return false;
 		}
 
 		@Override
@@ -299,13 +284,13 @@ public class BioForgeMenu extends PlayerContainerMenu {
 			checkTakeAchievements(stack);
 			onPlayerMainInventoryChanged(player.getInventory()); //ensures the recipe output slot is filled again if possible, integral for quick crafting to work
 
-			containerLevelAccess.execute((level, pos) -> {
-				long time = level.getGameTime();
+			if (bioforge != null && bioforge.getLevel() instanceof ServerLevel serverLevel) {
+				long time = serverLevel.getGameTime();
 				if (prevSoundTime != time) {
-					SoundUtil.broadcastBlockSound((ServerLevel) level, pos, ModSoundEvents.UI_BIO_FORGE_TAKE_RESULT);
+					SoundUtil.broadcastBlockSound(serverLevel, bioforge.getBlockPos(), ModSoundEvents.UI_BIO_FORGE_TAKE_RESULT);
 					prevSoundTime = time;
 				}
-			});
+			}
 
 			setChanged();
 		}
@@ -345,7 +330,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		inventory.setChanged();
 
 		//consume nutrients
-		stateData.fuelHandler.addFuelAmount(-recipe.getCraftingCostNutrients());
+		bioforge.getStateData().fuelHandler.addFuelAmount(-recipe.getCraftingCostNutrients());
 	}
 
 }

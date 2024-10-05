@@ -8,10 +8,13 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class ItemStackInventory extends BaseInventory<ItemStackHandler> {
+public class ItemStackInventory {
 
 	private final ItemStack cachedInventoryHost;
 	private final InventorySerializer serializer;
+
+	private final ItemStackHandler itemHandler;
+	private final LazyOptional<IItemHandler> optionalItemHandler;
 
 	ItemStackInventory(int slots, int maxSlotSize, ItemStack inventoryHost, InventorySerializer serializer) {
 		this.serializer = serializer;
@@ -23,66 +26,53 @@ public class ItemStackInventory extends BaseInventory<ItemStackHandler> {
 
 			@Override
 			protected void onContentsChanged(int slot) {
-				super.onContentsChanged(slot);
-				setChanged();
+				serializeToHost();
 			}
 		};
 		optionalItemHandler = LazyOptional.of(() -> itemHandler);
 		cachedInventoryHost = inventoryHost;
 	}
 
-	public static ItemStackInventory createServerContents(int slots, int maxSlotSize, ItemStack inventoryHost, InventorySerializer inventorySerializer) {
+	public static ItemStackInventory create(int slots, int maxSlotSize, ItemStack inventoryHost, InventorySerializer inventorySerializer) {
 		ItemStackInventory inventory = new ItemStackInventory(slots, maxSlotSize, inventoryHost, inventorySerializer);
 		inventory.deserializeFromHost();
 		return inventory;
 	}
 
-	public static ItemStackInventory createServerContents(int slots, int maxSlotSize, ItemStack inventoryHost) {
+	public static ItemStackInventory create(int slots, int maxSlotSize, ItemStack inventoryHost) {
 		ItemStackInventory inventory = new ItemStackInventory(slots, maxSlotSize, inventoryHost, InventorySerializer.DEFAULT);
 		inventory.deserializeFromHost();
 		return inventory;
 	}
 
-	public static ItemStackInventory createClientContents(int slots, int maxSlotSize, ItemStack inventoryHost) {
-		return new ItemStackInventory(slots, maxSlotSize, inventoryHost, InventorySerializer.DEFAULT);
-	}
-
 	private void serializeToHost() {
-		serializer.serialize(cachedInventoryHost.getOrCreateTag(), this);
+		serializer.serialize(cachedInventoryHost.getOrCreateTag(), itemHandler);
 	}
 
 	private void deserializeFromHost() {
-		serializer.deserialize(cachedInventoryHost.getOrCreateTag(), this);
+		serializer.deserialize(cachedInventoryHost.getOrCreateTag(), itemHandler);
 	}
 
-	@Override
-	public void setChanged() {
-		serializeToHost();
-		super.setChanged();
-	}
-
-	@Override
 	public boolean stillValid(Player player) {
-		if (cachedInventoryHost.isEmpty()) return false;
-		return super.stillValid(player);
+		return !cachedInventoryHost.isEmpty();
 	}
 
-	@Override
-	public ItemStackHandler getItemHandler() {
+	public IItemHandler getItemHandler() {
 		deserializeFromHost(); //prime cheese
-		return super.getItemHandler();
+		return itemHandler;
 	}
 
-	@Override
-	public LazyOptional<IItemHandler> getOptionalItemHandler() {
+	public LazyOptional<IItemHandler> getLazyOptional() {
 		deserializeFromHost(); //prime cheese
 		//we now get the inventory from the ItemStack NBT, this makes it available on the client as well if someone gets the cap
-		return super.getOptionalItemHandler();
+		return optionalItemHandler;
 	}
 
 	public interface InventorySerializer {
 		String NBT_KEY = "Inventory";
+
 		InventorySerializer DEFAULT = new InventorySerializer() {};
+
 		InventorySerializer BLOCK_ENTITY_TAG = new InventorySerializer() {
 			public static final String BLOCK_ENTITY_KEY = "BlockEntityTag";
 

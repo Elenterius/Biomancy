@@ -72,7 +72,7 @@ public class DigesterBlock extends HorizontalFacingMachineBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (level.getBlockEntity(pos) instanceof DigesterBlockEntity digester && digester.canPlayerOpenInv(player)) {
+		if (level.getBlockEntity(pos) instanceof DigesterBlockEntity digester && digester.canPlayerInteract(player)) {
 			if (!level.isClientSide) {
 				NetworkHooks.openScreen((ServerPlayer) player, digester, buffer -> buffer.writeBlockPos(pos));
 				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, ModSoundEvents.UI_DIGESTER_OPEN);

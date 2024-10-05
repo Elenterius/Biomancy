@@ -10,8 +10,9 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
+import com.github.elenterius.biomancy.inventory.InventoryHandler;
+import com.github.elenterius.biomancy.inventory.InventoryHandlers;
+import com.github.elenterius.biomancy.inventory.ItemHandlerUtil;
 import com.github.elenterius.biomancy.menu.DecomposerMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ILoopingSoundHelper;
@@ -27,7 +28,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +37,6 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -57,7 +56,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, Container, DecomposerStateData> implements MenuProvider, GeoBlockEntity {
+public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, DecomposerStateData> implements MenuProvider, GeoBlockEntity {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int INPUT_SLOTS = DecomposerRecipe.MAX_INGREDIENTS;
@@ -72,9 +71,9 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 
 	private final DecomposerStateData stateData;
 	private final FuelHandler fuelHandler;
-	private final BehavioralInventory<?> fuelInventory;
-	private final BehavioralInventory<?> inputInventory;
-	private final BehavioralInventory<?> outputInventory;
+	private final InventoryHandler fuelInventory;
+	private final InventoryHandler inputInventory;
+	private final InventoryHandler outputInventory;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
@@ -85,11 +84,11 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	public DecomposerBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.DECOMPOSER.get(), pos, state);
 
-		inputInventory = BehavioralInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
-		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+		inputInventory = InventoryHandlers.standard(INPUT_SLOTS, this::onInventoryChanged);
+		outputInventory = InventoryHandlers.denyInput(OUTPUT_SLOTS, this::onInventoryChanged);
 
-		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
-		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
+		fuelInventory = InventoryHandlers.filterFuel(FUEL_SLOTS, this::onInventoryChanged);
+		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::onInventoryChanged);
 
 		stateData = new DecomposerStateData(fuelHandler);
 		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
@@ -115,23 +114,25 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	@Nullable
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-		return DecomposerMenu.createServerMenu(containerId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
+		return DecomposerMenu.createServerMenu(containerId, playerInventory, this);
 	}
 
 	@Override
-	public boolean canPlayerOpenInv(Player player) {
-		if (level == null || level.getBlockEntity(worldPosition) != this) return false;
-		return player.distanceToSqr(Vec3.atCenterOf(worldPosition)) < 8d * 8d;
-	}
-
-	@Override
-	protected DecomposerStateData getStateData() {
+	public DecomposerStateData getStateData() {
 		return stateData;
 	}
 
 	@Override
-	protected Container getInputInventory() {
+	public InventoryHandler getInputInventory() {
 		return inputInventory;
+	}
+
+	public InventoryHandler getFuelInventory() {
+		return fuelInventory;
+	}
+
+	public InventoryHandler getOutputInventory() {
+		return outputInventory;
 	}
 
 	@Override
@@ -141,18 +142,18 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 
 	@Override
 	public ItemStack getStackInFuelSlot() {
-		return fuelInventory.getItem(0);
+		return fuelInventory.getStackInSlot(0);
 	}
 
 	@Override
 	public void setStackInFuelSlot(ItemStack stack) {
-		fuelInventory.setItem(0, stack);
+		fuelInventory.setStackInSlot(0, stack);
 	}
 
 	@Override
 	protected boolean doesRecipeResultFitIntoOutputInv(DecomposerRecipe craftingGoal, ItemStack ignored) {
 		DecomposerRecipeResult precomputedResult = getComputedRecipeResult(craftingGoal);
-		return outputInventory.doAllItemsFit(precomputedResult.items);
+		return ItemHandlerUtil.doAllItemsFit(outputInventory.getRaw(), precomputedResult.items);
 	}
 
 	DecomposerRecipeResult getComputedRecipeResult(DecomposerRecipe craftingGoal) {
@@ -165,12 +166,12 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 
 	@Override
 	protected @Nullable DecomposerRecipe resolveRecipeFromInput(Level level) {
-		return RECIPE_TYPE.get().getRecipeFromContainer(level, inputInventory).orElse(null);
+		return RECIPE_TYPE.get().getRecipeFromContainer(level, inputInventory.getRecipeWrapper()).orElse(null);
 	}
 
 	@Override
 	protected boolean doesRecipeMatchInput(DecomposerRecipe recipeToTest, Level level) {
-		return recipeToTest.matches(inputInventory, level);
+		return recipeToTest.matches(inputInventory.getRecipeWrapper(), level);
 	}
 
 	@Override
@@ -201,9 +202,9 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 
 	@Override
 	public void dropAllInvContents(Level level, BlockPos pos) {
-		Containers.dropContents(level, pos, fuelInventory);
-		Containers.dropContents(level, pos, inputInventory);
-		Containers.dropContents(level, pos, outputInventory);
+		ItemHandlerUtil.dropContents(level, pos, fuelInventory);
+		ItemHandlerUtil.dropContents(level, pos, inputInventory);
+		ItemHandlerUtil.dropContents(level, pos, outputInventory);
 	}
 
 	@Override
@@ -211,9 +212,9 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		if (remove) return super.getCapability(cap, side);
 
 		if (cap == ModCapabilities.ITEM_HANDLER) {
-			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemHandler().cast();
-			if (side == Direction.UP) return inputInventory.getOptionalItemHandler().cast();
-			return fuelInventory.getOptionalItemHandler().cast();
+			if (side == null || side == Direction.DOWN) return outputInventory.getLazyOptional().cast();
+			if (side == Direction.UP) return inputInventory.getLazyOptional().cast();
+			return fuelInventory.getLazyOptional().cast();
 		}
 
 		if (cap == ModCapabilities.FLUID_HANDLER) {
@@ -245,12 +246,12 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	protected boolean craftRecipe(DecomposerRecipe recipeToCraft, Level level) {
 		DecomposerRecipeResult precomputedResult = getComputedRecipeResult(recipeToCraft);
 
-		if (!outputInventory.doAllItemsFit(precomputedResult.items)) return false;
+		if (!ItemHandlerUtil.doAllItemsFit(outputInventory.getRaw(), precomputedResult.items)) return false;
 
-		inputInventory.removeItem(0, recipeToCraft.getIngredientQuantity().count()); //consume input
+		inputInventory.extractItem(0, recipeToCraft.getIngredientQuantity().count(), false); //consume input
 
 		for (ItemStack stack : precomputedResult.items) {  //output result
-			outputInventory.insertItemStack(stack);
+			ItemHandlerUtil.insertItem(outputInventory.getRaw(), stack);
 		}
 
 		SoundUtil.broadcastBlockSound((ServerLevel) level, getBlockPos(), ModSoundEvents.DECOMPOSER_CRAFTING_COMPLETED);
@@ -292,7 +293,6 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		return cache;
 	}
 
-
 	@Override
 	public void setRemoved() {
 		if (level != null && level.isClientSide) {
@@ -302,6 +302,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	}
 
 	record DecomposerRecipeResult(ResourceLocation recipeId, int seed, List<ItemStack> items) {
+
 		@Nullable
 		public static DecomposerRecipeResult deserialize(CompoundTag tag, RecipeManager recipeManager) {
 			String id = tag.getString("recipeId");

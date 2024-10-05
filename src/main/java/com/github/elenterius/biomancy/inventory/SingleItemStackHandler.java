@@ -1,15 +1,14 @@
-package com.github.elenterius.biomancy.inventory.itemhandler;
+package com.github.elenterius.biomancy.inventory;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifiable, INBTSerializable<CompoundTag> {
+public class SingleItemStackHandler implements SerializableItemHandler, IItemHandlerModifiable, INBTSerializable<CompoundTag> {
 
 	public static final String ITEM_TAG = "Item";
 

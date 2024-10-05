@@ -11,7 +11,7 @@ import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.menu.BioLabMenu;
 import com.github.elenterius.biomancy.menu.DecomposerMenu;
 import com.github.elenterius.biomancy.menu.DigesterMenu;
-import com.github.elenterius.biomancy.menu.slot.ISlotZone;
+import com.github.elenterius.biomancy.menu.ISlotZone;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;

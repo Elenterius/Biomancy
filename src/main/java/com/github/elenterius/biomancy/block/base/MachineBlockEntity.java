@@ -5,10 +5,11 @@ import com.github.elenterius.biomancy.crafting.recipe.ProcessingRecipe;
 import com.github.elenterius.biomancy.crafting.state.CraftingState;
 import com.github.elenterius.biomancy.crafting.state.RecipeCraftingStateData;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
+import com.github.elenterius.biomancy.inventory.InventoryHandler;
+import com.github.elenterius.biomancy.util.PlayerInteractionPredicate;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Container;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class MachineBlockEntity<R extends ProcessingRecipe<C>, C extends Container, S extends RecipeCraftingStateData<R, C>> extends BlockEntity implements Nameable {
+public abstract class MachineBlockEntity<R extends ProcessingRecipe, S extends RecipeCraftingStateData<R>> extends BlockEntity implements Nameable, PlayerInteractionPredicate {
 
 	protected final int tickOffset = BiomancyMod.GLOBAL_RANDOM.nextInt(20);
 	protected int ticks = tickOffset;
@@ -30,13 +31,19 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe<C>, C extend
 		super(type, pos, state);
 	}
 
-	public static <R extends ProcessingRecipe<C>, C extends Container, S extends RecipeCraftingStateData<R, C>> void serverTick(Level level, BlockPos pos, BlockState state, MachineBlockEntity<R, C, S> entity) {
+	public static <R extends ProcessingRecipe, S extends RecipeCraftingStateData<R>> void serverTick(Level level, BlockPos pos, BlockState state, MachineBlockEntity<R, S> entity) {
 		entity.serverTick((ServerLevel) level);
 	}
 
-	public boolean canPlayerOpenInv(Player player) {
+	@Override
+	public boolean canPlayerInteract(Player player) {
+		if (isRemoved()) return false;
 		if (level == null || level.getBlockEntity(worldPosition) != this) return false;
 		return player.distanceToSqr(Vec3.atCenterOf(worldPosition)) < 8d * 8d;
+	}
+
+	protected void onInventoryChanged() {
+		if (level != null && !level.isClientSide) setChanged();
 	}
 
 	public int getTicks() {
@@ -45,12 +52,12 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe<C>, C extend
 
 	protected abstract S getStateData();
 
-	protected abstract C getInputInventory();
+	protected abstract InventoryHandler getInputInventory();
 
 	protected abstract IFuelHandler getFuelHandler();
 
 	public int getFuelCost(R recipeToCraft) {
-		return getFuelHandler().getFuelCost(recipeToCraft.getCraftingCostNutrients(getInputInventory()));
+		return getFuelHandler().getFuelCost(recipeToCraft.getCraftingCostNutrients(getInputInventory().getRecipeWrapper()));
 	}
 
 	public abstract ItemStack getStackInFuelSlot();
@@ -111,7 +118,7 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe<C>, C extend
 						if (hasEnoughFuel(craftingGoal)) { //make sure there is enough fuel to craft the recipe
 							state.setCraftingState(CraftingState.IN_PROGRESS);
 							state.clear(); //safeguard, shouldn't be needed
-							state.setCraftingGoalRecipe(craftingGoal, getInputInventory()); // this also sets the time required for crafting
+							state.setCraftingGoalRecipe(craftingGoal, getInputInventory().getRecipeWrapper()); // this also sets the time required for crafting
 						}
 					} else if (!state.isCraftingCanceled()) { // something is being crafted, check that the crafting goals match
 						R prevCraftingGoal = state.getCraftingGoalRecipe(level).orElse(null);
@@ -163,7 +170,7 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe<C>, C extend
 
 	private ItemStack getItemToCraft(ServerLevel level, R craftingGoal) {
 		if (craftingGoal.isSpecial()) {
-			return craftingGoal.assemble(getInputInventory(), level.registryAccess());
+			return craftingGoal.assemble(getInputInventory().getRecipeWrapper(), level.registryAccess());
 		}
 		return craftingGoal.getResultItem(level.registryAccess());
 	}

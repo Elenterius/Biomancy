@@ -10,12 +10,14 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.inventory.SimpleInventory;
-import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
+import com.github.elenterius.biomancy.inventory.InventoryHandler;
+import com.github.elenterius.biomancy.inventory.InventoryHandlers;
+import com.github.elenterius.biomancy.inventory.ItemHandlerUtil;
 import com.github.elenterius.biomancy.menu.BioLabMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ILoopingSoundHelper;
+import com.github.elenterius.biomancy.util.ItemStackFilter;
+import com.github.elenterius.biomancy.util.ItemStackFilterList;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.util.fuel.FluidFuelConsumerHandler;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
@@ -25,8 +27,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -54,7 +54,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, Container, BioLabStateData> implements MenuProvider, GeoBlockEntity {
+public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabStateData> implements MenuProvider, GeoBlockEntity {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int INPUT_SLOTS = BioLabRecipe.MAX_INGREDIENTS + BioLabRecipe.MAX_REACTANT;
@@ -69,9 +69,12 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, Containe
 
 	private final BioLabStateData stateData;
 	private final FuelHandler fuelHandler;
-	private final BehavioralInventory<?> fuelInventory;
-	private final SimpleInventory inputInventory;
-	private final BehavioralInventory<?> outputInventory;
+	private final InventoryHandler fuelInventory;
+
+	private final InventoryHandler inputInventory;
+	private final ItemStackFilterList inputSlotsFilter;
+
+	private final InventoryHandler outputInventory;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
@@ -82,9 +85,12 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, Containe
 	public BioLabBlockEntity(BlockPos worldPosition, BlockState blockState) {
 		super(ModBlockEntities.BIO_LAB.get(), worldPosition, blockState);
 
-		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
-		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
-		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
+		inputSlotsFilter = ItemStackFilterList.of(ItemStackFilter.ALLOW_ALL, INPUT_SLOTS);
+		inputInventory = InventoryHandlers.filterInput(INPUT_SLOTS, inputSlotsFilter, this::onInventoryChanged);
+
+		outputInventory = InventoryHandlers.denyInput(OUTPUT_SLOTS, this::onInventoryChanged);
+
+		fuelInventory = InventoryHandlers.filterFuel(FUEL_SLOTS, this::onInventoryChanged);
 
 		optionalCombinedInventory = createCombinedInventory();
 
@@ -95,8 +101,8 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, Containe
 
 	private LazyOptional<IItemHandler> createCombinedInventory() {
 		return LazyOptional.of(() -> new CombinedInvWrapper(
-				fuelInventory.getItemHandlerWithBehavior(),
-				new RangedWrapper(inputInventory.getItemHandler(), inputInventory.getContainerSize() - 1, inputInventory.getContainerSize())
+				fuelInventory,
+				new RangedWrapper(inputInventory, inputInventory.getSlots() - 1, inputInventory.getSlots())
 		));
 	}
 
@@ -120,17 +126,25 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, Containe
 	@Nullable
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-		return BioLabMenu.createServerMenu(containerId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
+		return BioLabMenu.createServerMenu(containerId, playerInventory, this);
 	}
 
 	@Override
-	protected BioLabStateData getStateData() {
+	public BioLabStateData getStateData() {
 		return stateData;
 	}
 
 	@Override
-	protected Container getInputInventory() {
+	public InventoryHandler getInputInventory() {
 		return inputInventory;
+	}
+
+	public InventoryHandler getFuelInventory() {
+		return fuelInventory;
+	}
+
+	public InventoryHandler getOutputInventory() {
+		return outputInventory;
 	}
 
 	@Override
@@ -140,28 +154,28 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, Containe
 
 	@Override
 	public ItemStack getStackInFuelSlot() {
-		return fuelInventory.getItem(0);
+		return fuelInventory.getStackInSlot(0);
 	}
 
 	@Override
 	public void setStackInFuelSlot(ItemStack stack) {
-		fuelInventory.setItem(0, stack);
+		fuelInventory.setStackInSlot(0, stack);
 	}
 
 	@Override
 	protected boolean doesRecipeResultFitIntoOutputInv(BioLabRecipe craftingGoal, ItemStack stackToCraft) {
-		return outputInventory.getItem(0).isEmpty() || outputInventory.doesItemStackFit(0, stackToCraft);
+		return ItemHandlerUtil.doesItemFit(outputInventory.getRaw(), 0, stackToCraft);
 	}
 
 	@Nullable
 	@Override
 	protected BioLabRecipe resolveRecipeFromInput(Level level) {
-		return RECIPE_TYPE.get().getRecipeFromContainer(level, inputInventory).orElse(null);
+		return RECIPE_TYPE.get().getRecipeFromContainer(level, inputInventory.getRecipeWrapper()).orElse(null);
 	}
 
 	@Override
 	protected boolean doesRecipeMatchInput(BioLabRecipe recipeToTest, Level level) {
-		return recipeToTest.matches(inputInventory, level);
+		return recipeToTest.matches(inputInventory.getRecipeWrapper(), level);
 	}
 
 	@Override
@@ -171,6 +185,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, Containe
 		tag.put("Fuel", fuelHandler.serializeNBT());
 		tag.put("FuelSlots", fuelInventory.serializeNBT());
 		tag.put("InputSlots", inputInventory.serializeNBT());
+		tag.put("InputSlotsFilter", inputSlotsFilter.serializeNBT());
 		tag.put("OutputSlots", outputInventory.serializeNBT());
 	}
 
@@ -181,14 +196,15 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, Containe
 		fuelHandler.deserializeNBT(tag.getCompound("Fuel"));
 		fuelInventory.deserializeNBT(tag.getCompound("FuelSlots"));
 		inputInventory.deserializeNBT(tag.getCompound("InputSlots"));
+		inputSlotsFilter.deserializeNBT(tag.getCompound("InputSlotsFilter"));
 		outputInventory.deserializeNBT(tag.getCompound("OutputSlots"));
 	}
 
 	@Override
 	public void dropAllInvContents(Level level, BlockPos pos) {
-		Containers.dropContents(level, pos, fuelInventory);
-		Containers.dropContents(level, pos, inputInventory);
-		Containers.dropContents(level, pos, outputInventory);
+		ItemHandlerUtil.dropContents(level, pos, fuelInventory);
+		ItemHandlerUtil.dropContents(level, pos, inputInventory);
+		ItemHandlerUtil.dropContents(level, pos, outputInventory);
 	}
 
 	@Override
@@ -196,8 +212,8 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, Containe
 		if (remove) return super.getCapability(cap, side);
 
 		if (cap == ModCapabilities.ITEM_HANDLER) {
-			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemHandler().cast();
-			if (side == Direction.UP) return inputInventory.getOptionalItemHandler().cast();
+			if (side == null || side == Direction.DOWN) return outputInventory.getLazyOptional().cast();
+			if (side == Direction.UP) return inputInventory.getLazyOptional().cast();
 			return optionalCombinedInventory.cast();
 		}
 
@@ -243,18 +259,18 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, Containe
 		}
 
 		//consume reactant
-		final int lastIndex = inputInventory.getContainerSize() - 1;
-		inputInventory.removeItem(lastIndex, 1);
+		final int lastIndex = inputInventory.getSlots() - 1;
+		inputInventory.extractItem(lastIndex, 1, false);
 
 		//consume ingredients
 		for (int idx = 0; idx < lastIndex; idx++) {
-			final ItemStack foundStack = inputInventory.getItem(idx); //do not modify this stack
+			final ItemStack foundStack = inputInventory.getStackInSlot(idx); //do not modify this stack
 			if (!foundStack.isEmpty()) {
 				for (int i = 0; i < ingredients.size(); i++) {
 					int remainingCost = ingredientCost[i];
 					if (remainingCost > 0 && ingredients.get(i).testItem(foundStack)) {
 						int amount = Math.min(remainingCost, foundStack.getCount());
-						inputInventory.removeItem(idx, amount);
+						inputInventory.extractItem(idx, amount, false);
 						ingredientCost[i] -= amount;
 						break;
 					}
@@ -263,7 +279,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, Containe
 		}
 
 		//output result
-		outputInventory.insertItemStack(0, result);
+		outputInventory.getRaw().insertItem(0, result, false);
 
 		SoundUtil.broadcastBlockSound((ServerLevel) level, getBlockPos(), ModSoundEvents.BIO_LAB_CRAFTING_COMPLETED);
 

@@ -9,8 +9,9 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
+import com.github.elenterius.biomancy.inventory.InventoryHandler;
+import com.github.elenterius.biomancy.inventory.InventoryHandlers;
+import com.github.elenterius.biomancy.inventory.ItemHandlerUtil;
 import com.github.elenterius.biomancy.menu.DigesterMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ILoopingSoundHelper;
@@ -22,12 +23,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -36,9 +32,7 @@ import net.minecraft.world.item.BowlFoodItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -57,7 +51,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Objects;
 
-public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Container, DigesterStateData> implements MenuProvider, GeoBlockEntity {
+public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, DigesterStateData> implements MenuProvider, GeoBlockEntity {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int INPUT_SLOTS = 1;
@@ -71,9 +65,9 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Con
 
 	private final DigesterStateData stateData;
 	private final FuelHandler fuelHandler;
-	private final BehavioralInventory<?> fuelInventory;
-	private final BehavioralInventory<?> inputInventory;
-	private final BehavioralInventory<?> outputInventory;
+	private final InventoryHandler fuelInventory;
+	private final InventoryHandler inputInventory;
+	private final InventoryHandler outputInventory;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
@@ -82,11 +76,12 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Con
 
 	public DigesterBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.DIGESTER.get(), pos, state);
-		inputInventory = BehavioralInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
-		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
 
-		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
-		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
+		inputInventory = InventoryHandlers.standard(INPUT_SLOTS, this::onInventoryChanged);
+		outputInventory = InventoryHandlers.denyInput(OUTPUT_SLOTS, this::onInventoryChanged);
+
+		fuelInventory = InventoryHandlers.filterFuel(FUEL_SLOTS, this::onInventoryChanged);
+		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::onInventoryChanged);
 
 		stateData = new DigesterStateData(fuelHandler);
 		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
@@ -112,22 +107,25 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Con
 	@Nullable
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-		return DigesterMenu.createServerMenu(containerId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
-	}
-
-	public boolean canPlayerOpenInv(Player player) {
-		if (level == null || level.getBlockEntity(worldPosition) != this) return false;
-		return player.distanceToSqr(Vec3.atCenterOf(worldPosition)) < 8d * 8d;
+		return DigesterMenu.createServerMenu(containerId, playerInventory, this);
 	}
 
 	@Override
-	protected DigesterStateData getStateData() {
+	public DigesterStateData getStateData() {
 		return stateData;
 	}
 
 	@Override
-	protected Container getInputInventory() {
+	public InventoryHandler getInputInventory() {
 		return inputInventory;
+	}
+
+	public InventoryHandler getFuelInventory() {
+		return fuelInventory;
+	}
+
+	public InventoryHandler getOutputInventory() {
+		return outputInventory;
 	}
 
 	@Override
@@ -137,41 +135,41 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Con
 
 	@Override
 	public ItemStack getStackInFuelSlot() {
-		return fuelInventory.getItem(0);
+		return fuelInventory.getStackInSlot(0);
 	}
 
 	@Override
 	public void setStackInFuelSlot(ItemStack stack) {
-		fuelInventory.setItem(0, stack);
+		fuelInventory.setStackInSlot(0, stack);
 	}
 
 	@Override
 	protected boolean doesRecipeResultFitIntoOutputInv(DigestingRecipe craftingGoal, ItemStack stackToCraft) {
-		return outputInventory.doesItemStackFit(stackToCraft);
+		return ItemHandlerUtil.doesItemFit(outputInventory.getRaw(), stackToCraft);
 	}
 
 	@Override
 	protected @Nullable DigestingRecipe resolveRecipeFromInput(Level level) {
-		return RECIPE_TYPE.get().getRecipeFromContainer(level, inputInventory).orElse(null);
+		return RECIPE_TYPE.get().getRecipeFromContainer(level, inputInventory.getRecipeWrapper()).orElse(null);
 	}
 
 	@Override
 	protected boolean doesRecipeMatchInput(DigestingRecipe recipeToTest, Level level) {
-		return recipeToTest.matches(inputInventory, level);
+		return recipeToTest.matches(inputInventory.getRecipeWrapper(), level);
 	}
 
 	@Override
 	protected boolean craftRecipe(DigestingRecipe recipeToCraft, Level level) {
-		ItemStack result = recipeToCraft.assemble(inputInventory, level.registryAccess());
+		ItemStack result = recipeToCraft.assemble(inputInventory.getRecipeWrapper(), level.registryAccess());
 
 		if (!result.isEmpty() && doesRecipeResultFitIntoOutputInv(recipeToCraft, result)) {
 			ItemStack craftingRemainder = getCraftingRemainder();
 
-			inputInventory.removeItem(0, 1); //consume input
-			outputInventory.insertItemStack(result); //output result
+			inputInventory.extractItem(0, 1, false); //consume input
+			ItemHandlerUtil.insertItem(outputInventory.getRaw(), result); //output result
 
 			if (!craftingRemainder.isEmpty()) {
-				outputInventory.insertItemStack(craftingRemainder);
+				ItemHandlerUtil.insertItem(outputInventory.getRaw(), craftingRemainder);
 			}
 
 			SoundUtil.broadcastBlockSound((ServerLevel) level, getBlockPos(), ModSoundEvents.DIGESTER_CRAFTING_COMPLETED);
@@ -184,7 +182,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Con
 	}
 
 	private ItemStack getCraftingRemainder() {
-		ItemStack stack = inputInventory.getItem(0);
+		ItemStack stack = inputInventory.getStackInSlot(0);
 
 		if (stack.hasCraftingRemainingItem()) {
 			return stack.getCraftingRemainingItem();
@@ -198,7 +196,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Con
 	}
 
 	public ItemStack getInputSlotStack() {
-		return inputInventory.getItem(0);
+		return inputInventory.getStackInSlot(0);
 	}
 
 	@Override
@@ -223,9 +221,9 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Con
 
 	@Override
 	public void dropAllInvContents(Level level, BlockPos pos) {
-		Containers.dropContents(level, pos, fuelInventory);
-		Containers.dropContents(level, pos, inputInventory);
-		Containers.dropContents(level, pos, outputInventory);
+		ItemHandlerUtil.dropContents(level, pos, fuelInventory);
+		ItemHandlerUtil.dropContents(level, pos, inputInventory);
+		ItemHandlerUtil.dropContents(level, pos, outputInventory);
 	}
 
 	@Override
@@ -233,9 +231,9 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Con
 		if (remove) return super.getCapability(cap, side);
 
 		if (cap == ModCapabilities.ITEM_HANDLER) {
-			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemHandler().cast();
-			if (side == Direction.UP) return inputInventory.getOptionalItemHandler().cast();
-			return fuelInventory.getOptionalItemHandler().cast();
+			if (side == null || side == Direction.DOWN) return outputInventory.getLazyOptional().cast();
+			if (side == Direction.UP) return inputInventory.getLazyOptional().cast();
+			return fuelInventory.getLazyOptional().cast();
 		}
 
 		if (cap == ModCapabilities.FLUID_HANDLER) {
@@ -263,13 +261,6 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Con
 		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
 	}
 
-	@Override
-	public void setChanged() {
-		syncToClient();
-		super.setChanged();
-	}
-
-	//client side only
 	private <E extends DigesterBlockEntity> PlayState handleAnimationState(AnimationState<E> event) {
 		Boolean isCrafting = getBlockState().getValue(MachineBlock.CRAFTING);
 
@@ -301,26 +292,6 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Con
 			loopingSoundHelper.clear();
 		}
 		super.setRemoved();
-	}
-
-	@Override
-	public CompoundTag getUpdateTag() {
-		CompoundTag tag = new CompoundTag();
-		tag.put("InputSlots", inputInventory.serializeNBT());
-		return tag;
-	}
-
-	@Nullable
-	@Override
-	public Packet<ClientGamePacketListener> getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this);
-	}
-
-	protected void syncToClient() {
-		if (level != null && !level.isClientSide) {
-			BlockState state = getBlockState();
-			level.sendBlockUpdated(getBlockPos(), state, state, Block.UPDATE_CLIENTS);
-		}
 	}
 
 }

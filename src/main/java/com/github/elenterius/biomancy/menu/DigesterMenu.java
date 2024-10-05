@@ -3,13 +3,7 @@ package com.github.elenterius.biomancy.menu;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.nutrients.Nutrients;
 import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
-import com.github.elenterius.biomancy.block.digester.DigesterStateData;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
-import com.github.elenterius.biomancy.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.menu.slot.FuelSlot;
-import com.github.elenterius.biomancy.menu.slot.ISlotZone;
-import com.github.elenterius.biomancy.menu.slot.OutputSlot;
-import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,69 +11,68 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 import org.apache.logging.log4j.MarkerManager;
-
-import java.util.function.Predicate;
+import org.jetbrains.annotations.Nullable;
 
 public class DigesterMenu extends PlayerContainerMenu {
 
 	protected final Level level;
-	private final Predicate<Player> isMenuValidPredicate;
-	private final DigesterStateData stateData;
+	private final DigesterBlockEntity digester;
 
-	protected DigesterMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BehavioralInventory<?> inputInventory, BehavioralInventory<?> outputInventory, DigesterStateData stateData) {
+	protected DigesterMenu(int id, Inventory playerInventory, @Nullable DigesterBlockEntity digester) {
 		super(ModMenuTypes.DIGESTER.get(), id, playerInventory, 111, 169);
 		level = playerInventory.player.level();
-		isMenuValidPredicate = inputInventory::stillValid;
-		this.stateData = stateData;
 
-		addSlot(new FuelSlot(fuelInventory, 0, 39, 68));
+		this.digester = digester;
 
-		addSlot(new Slot(inputInventory, 0, 80, 24));
+		if (digester != null) {
+			addSlot(new SlotItemHandler(digester.getFuelInventory(), 0, 39, 68));
 
-		addSlot(new OutputSlot(outputInventory, 0, 69, 68));
-		addSlot(new OutputSlot(outputInventory, 1, 91, 68));
+			addSlot(new SlotItemHandler(digester.getInputInventory(), 0, 80, 24));
 
-		addDataSlots(stateData);
+			IItemHandler itemHandler = digester.getOutputInventory();
+			addSlot(new SlotItemHandler(itemHandler, 0, 69, 68));
+			addSlot(new SlotItemHandler(itemHandler, 1, 91, 68));
+
+			addDataSlots(digester.getStateData());
+		}
 	}
 
-	public static DigesterMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BehavioralInventory<?> inputInventory, BehavioralInventory<?> outputInventory, DigesterStateData stateData) {
-		return new DigesterMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
+	public static DigesterMenu createServerMenu(int screenId, Inventory playerInventory, DigesterBlockEntity digester) {
+		return new DigesterMenu(screenId, playerInventory, digester);
 	}
 
 	public static DigesterMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
-		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(DigesterBlockEntity.FUEL_SLOTS);
-		BehavioralInventory<?> inputInventory = BehavioralInventory.createClientContents(DigesterBlockEntity.INPUT_SLOTS);
-		BehavioralInventory<?> outputInventory = BehavioralInventory.createClientContents(DigesterBlockEntity.OUTPUT_SLOTS);
-		FuelHandler fuelHandler = FuelHandler.createNutrientFuelHandler(DigesterBlockEntity.MAX_FUEL, () -> {});
-		DigesterStateData state = new DigesterStateData(fuelHandler);
-		return new DigesterMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, state);
+		DigesterBlockEntity digester = playerInventory.player.level().getBlockEntity(extraData.readBlockPos()) instanceof DigesterBlockEntity be ? be : null;
+		return new DigesterMenu(screenId, playerInventory, digester);
 	}
 
 	@Override
 	public boolean stillValid(Player player) {
-		return isMenuValidPredicate.test(player);
+		return digester != null && digester.canPlayerInteract(player);
 	}
 
 	public float getCraftingProgressNormalized() {
-		if (stateData.timeForCompletion == 0) return 0f;
-		return Mth.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
+		if (digester.getStateData().timeForCompletion == 0) return 0f;
+		return Mth.clamp(digester.getStateData().timeElapsed / (float) digester.getStateData().timeForCompletion, 0f, 1f);
 	}
 
 	public float getFuelAmountNormalized() {
-		return Mth.clamp((float) stateData.fuelHandler.getFuelAmount() / stateData.fuelHandler.getMaxFuelAmount(), 0f, 1f);
+		return Mth.clamp((float) digester.getStateData().fuelHandler.getFuelAmount() / digester.getStateData().fuelHandler.getMaxFuelAmount(), 0f, 1f);
 	}
 
 	public int getFuelAmount() {
-		return stateData.fuelHandler.getFuelAmount();
+		return digester.getStateData().fuelHandler.getFuelAmount();
 	}
 
 	public int getMaxFuelAmount() {
-		return stateData.fuelHandler.getMaxFuelAmount();
+		return digester.getStateData().fuelHandler.getMaxFuelAmount();
 	}
 
 	public int getFuelCost() {
-		return stateData.getFuelCost();
+		return digester.getStateData().getFuelCost();
 	}
 
 	@Override

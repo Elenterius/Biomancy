@@ -3,11 +3,13 @@ package com.github.elenterius.biomancy.block.storagesac;
 import com.github.elenterius.biomancy.block.base.SimpleContainerBlockEntity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
-import com.github.elenterius.biomancy.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
+import com.github.elenterius.biomancy.inventory.InventoryHandler;
+import com.github.elenterius.biomancy.inventory.InventoryHandlers;
+import com.github.elenterius.biomancy.inventory.ItemHandlerUtil;
 import com.github.elenterius.biomancy.menu.StorageSacMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ItemStackCounter;
+import com.github.elenterius.biomancy.util.PlayerInteractionPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -16,7 +18,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -24,7 +25,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -33,30 +33,29 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StorageSacBlockEntity extends SimpleContainerBlockEntity {
+public class StorageSacBlockEntity extends SimpleContainerBlockEntity implements PlayerInteractionPredicate {
 
 	public static final int SLOTS = 3 * 5;
 	public static final String TOP5_BY_COUNT_KEY = "Top5ByCount";
 	public static final String INVENTORY_KEY = "Inventory";
-	private final BehavioralInventory<?> inventory;
+	private final InventoryHandler inventory;
 	protected final ItemStackCounter itemCounter = new ItemStackCounter();
 
 	private List<ItemStackCounter.CountedItem> top5ItemsByCount = List.of();
 
 	public StorageSacBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.STORAGE_SAC.get(), pos, state);
-		inventory = BehavioralInventory.createServerContents(SLOTS, HandlerBehaviors::denyItemWithFilledInventory, this::canPlayerOpenContainer, this::onContentsChanged);
+		inventory = InventoryHandlers.denyItemWithFilledInventory(SLOTS, this::onInventoryChanged);
 	}
 
 	@Nullable
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-		return StorageSacMenu.createServerMenu(containerId, playerInventory, inventory);
+		return StorageSacMenu.createServerMenu(containerId, playerInventory, this);
 	}
 
-	public boolean canPlayerOpenInv(Player player) {
-		if (level == null || level.getBlockEntity(worldPosition) != this) return false;
-		return player.distanceToSqr(Vec3.atCenterOf(worldPosition)) < 8d * 8d;
+	public InventoryHandler getInventory() {
+		return inventory;
 	}
 
 	@Override
@@ -78,15 +77,17 @@ public class StorageSacBlockEntity extends SimpleContainerBlockEntity {
 		return inventory.isEmpty();
 	}
 
-	protected void onContentsChanged() {
+	protected void onInventoryChanged() {
+		if (level == null || level.isClientSide) return;
+
 		countAllItems();
 		setChanged();
 		syncToClient();
 	}
 
 	protected void syncToClient() {
-		if (level == null) return;
-		if (level.isClientSide) return;
+		if (level == null || level.isClientSide) return;
+
 		BlockState state = getBlockState();
 		level.sendBlockUpdated(getBlockPos(), state, state, Block.UPDATE_CLIENTS); //trigger sync to client using the data from getUpdateTag()
 	}
@@ -165,14 +166,14 @@ public class StorageSacBlockEntity extends SimpleContainerBlockEntity {
 
 	@Override
 	public void dropContainerContents(Level level, BlockPos pos) {
-		Containers.dropContents(level, pos, inventory);
+		ItemHandlerUtil.dropContents(level, pos, inventory);
 	}
 
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!remove && cap == ModCapabilities.ITEM_HANDLER) {
-			return inventory.getOptionalItemHandler().cast();
+			return inventory.getLazyOptional().cast();
 		}
 		return super.getCapability(cap, side);
 	}

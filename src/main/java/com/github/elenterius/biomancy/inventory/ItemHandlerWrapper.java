@@ -1,13 +1,14 @@
-package com.github.elenterius.biomancy.inventory.itemhandler;
+package com.github.elenterius.biomancy.inventory;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.function.Predicate;
+
+public record ItemHandlerWrapper(IItemHandler inner) implements DefaultOperations, QueryOperations, TransferOperations {}
 
 interface Forwarding<T> {
 	T inner();
@@ -53,15 +54,15 @@ interface QueryOperations extends Forwarding<IItemHandler> {
 		return false;
 	}
 
-	default boolean doesItemStackFit(int index, ItemStack stack) {
+	default boolean doesItemFit(int index, ItemStack stack) {
 		if (!inner().isItemValid(index, stack)) return false;
 		ItemStack remainder = inner().insertItem(index, stack, true);
 		return remainder.isEmpty();
 	}
 
-	default boolean doesItemStackFit(ItemStack stack) {
+	default boolean doesItemFit(ItemStack stack) {
 		for (int i = 0; i < inner().getSlots(); i++) {
-			if (!inner().isItemValid(i, stack)) return false;
+			if (!inner().isItemValid(i, stack)) continue;
 			stack = inner().insertItem(i, stack, true);
 			if (stack.isEmpty()) return true;
 		}
@@ -70,7 +71,12 @@ interface QueryOperations extends Forwarding<IItemHandler> {
 
 }
 
-interface TransferOperations extends Forwarding<IItemHandler> {
+interface TransferOperations extends IItemHandler, Forwarding<IItemHandler> {
+
+	default ItemStack insertItem(int slot, ItemStack stack) {
+		return inner().insertItem(slot, stack, false);
+	}
+
 	default ItemStack insertItem(ItemStack stack) {
 		return insertItem(stack, false);
 	}
@@ -100,6 +106,10 @@ interface TransferOperations extends Forwarding<IItemHandler> {
 		}
 
 		return insertItem(stack, simulate);
+	}
+
+	default ItemStack extractItem(int slot, int amount) {
+		return inner().extractItem(slot, amount, false);
 	}
 
 	default ItemStack extractItemFirstFound() {
@@ -173,25 +183,22 @@ interface TransferOperations extends Forwarding<IItemHandler> {
 	}
 }
 
-interface ForwardingItemHandler extends IItemHandler, Forwarding<IItemHandler> {
+interface DefaultOperations extends IItemHandler, Forwarding<IItemHandler> {
 	@Override
 	default int getSlots() {
 		return inner().getSlots();
 	}
 
-	@Nonnull
 	@Override
 	default ItemStack getStackInSlot(int slot) {
 		return inner().getStackInSlot(slot);
 	}
 
-	@Nonnull
 	@Override
 	default ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 		return inner().insertItem(slot, stack, simulate);
 	}
 
-	@Nonnull
 	@Override
 	default ItemStack extractItem(int slot, int amount, boolean simulate) {
 		return inner().extractItem(slot, amount, simulate);
@@ -207,5 +214,3 @@ interface ForwardingItemHandler extends IItemHandler, Forwarding<IItemHandler> {
 		return inner().isItemValid(slot, stack);
 	}
 }
-
-public record EnhancedItemHandler(IItemHandler inner) implements ForwardingItemHandler, TransferOperations, QueryOperations {}

@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.inventory.itemhandler;
+package com.github.elenterius.biomancy.inventory;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;

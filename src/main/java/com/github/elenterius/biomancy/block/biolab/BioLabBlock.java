@@ -78,7 +78,7 @@ public class BioLabBlock extends HorizontalFacingMachineBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (level.getBlockEntity(pos) instanceof BioLabBlockEntity bioLab && bioLab.canPlayerOpenInv(player)) {
+		if (level.getBlockEntity(pos) instanceof BioLabBlockEntity bioLab && bioLab.canPlayerInteract(player)) {
 			if (!level.isClientSide) {
 				NetworkHooks.openScreen((ServerPlayer) player, bioLab, buffer -> buffer.writeBlockPos(pos));
 				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, ModSoundEvents.UI_BIO_LAB_OPEN);

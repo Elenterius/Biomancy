@@ -1,15 +1,15 @@
 package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.api.serum.SerumContainer;
-import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 
-public class InjectorItemInventory extends BaseInventory<LargeSingleItemStackHandler> {
+public class InjectorItemInventory {
 
 	private final ItemStack cachedInventoryHost;
+	private final LargeSingleItemStackHandler itemHandler;
+	private final LazyOptional<IItemHandler> optionalItemHandler;
 
 	private InjectorItemInventory(short maxSlotSize, ItemStack inventoryHost) {
 		itemHandler = new LargeSingleItemStackHandler(maxSlotSize) {
@@ -21,11 +21,17 @@ public class InjectorItemInventory extends BaseInventory<LargeSingleItemStackHan
 
 			@Override
 			protected void onContentsChanged() {
-				setChanged();
+				serializeToHost();
 			}
 		};
 		optionalItemHandler = LazyOptional.of(() -> itemHandler);
 		cachedInventoryHost = inventoryHost;
+	}
+
+	public static InjectorItemInventory create(short maxSlotSize, ItemStack inventoryHost) {
+		InjectorItemInventory inventory = new InjectorItemInventory(maxSlotSize, inventoryHost);
+		inventory.deserializeFromHost();
+		return inventory;
 	}
 
 	private void serializeToHost() {
@@ -33,79 +39,22 @@ public class InjectorItemInventory extends BaseInventory<LargeSingleItemStackHan
 	}
 
 	private void deserializeFromHost() {
-		deserializeNBT(cachedInventoryHost.getOrCreateTag().getCompound("inventory"));
+		itemHandler.deserializeNBT(cachedInventoryHost.getOrCreateTag().getCompound("inventory"));
 	}
 
-	@Override
-	public void setChanged() {
-		serializeToHost();
-		super.setChanged();
+	public boolean stillValid() {
+		return !cachedInventoryHost.isEmpty();
 	}
 
-	@Override
-	public boolean stillValid(Player player) {
-		if (cachedInventoryHost.isEmpty()) return false;
-		return super.stillValid(player);
-	}
-
-	@Override
-	public int getMaxStackSize() {
-		return itemHandler.getMaxAmount();
-	}
-
-	@Override
-	public boolean isEmpty() {
-		return itemHandler.isEmpty();
-	}
-
-	@Override
-	public boolean isFull() {
-		return itemHandler.isFull();
-	}
-
-	@Override
-	public boolean doesItemStackFit(ItemStack stack) {
-		ItemStack remainder = itemHandler.insertItem(0, stack, true);
-		return remainder.isEmpty();
-	}
-
-	@Override
-	public ItemStack insertItemStack(ItemStack stack) {
-		return itemHandler.insertItem(0, stack, false);
-	}
-
-
-	@Override
-	public ItemStack removeItemNoUpdate(int index) {
-		return itemHandler.extractItem(index, itemHandler.getMaxAmount(), false);
-	}
-
-	@Override
-	public void clearContent() {
-		itemHandler.setStackInSlot(0, ItemStack.EMPTY);
-	}
-
-	@Override
 	public LargeSingleItemStackHandler getItemHandler() {
 		deserializeFromHost(); //prime cheese
-		return super.getItemHandler();
+		return itemHandler;
 	}
 
-	@Override
-	public LazyOptional<IItemHandler> getOptionalItemHandler() {
+	public LazyOptional<IItemHandler> getLazyOptional() {
 		deserializeFromHost(); //prime cheese
 		//we now get the inventory from the ItemStack NBT, this makes it available on the client as well if someone gets the cap
-		return super.getOptionalItemHandler();
-	}
-
-	public static InjectorItemInventory createServerContents(short maxSlotSize, ItemStack inventoryHost) {
-		InjectorItemInventory inventory = new InjectorItemInventory(maxSlotSize, inventoryHost);
-		inventory.deserializeFromHost();
-		return inventory;
-	}
-
-	public static InjectorItemInventory createClientContents(short maxSlotSize, ItemStack inventoryHost) {
-		return new InjectorItemInventory(maxSlotSize, inventoryHost);
+		return optionalItemHandler;
 	}
 
 }

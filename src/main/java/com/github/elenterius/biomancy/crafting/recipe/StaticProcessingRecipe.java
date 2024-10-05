@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.crafting.recipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 
-public abstract non-sealed class StaticProcessingRecipe implements ProcessingRecipe<Container> {
+public abstract non-sealed class StaticProcessingRecipe implements ProcessingRecipe {
 
 	private final ResourceLocation id;
 

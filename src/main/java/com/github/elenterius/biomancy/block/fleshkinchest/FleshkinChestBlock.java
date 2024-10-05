@@ -31,7 +31,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -56,6 +55,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -135,7 +135,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 		if (player instanceof ServerPlayer serverPlayer && !ChestBlock.isChestBlockedAt(level, pos)) {
 			BlockEntity blockEntity = level.getBlockEntity(pos);
 			if (blockEntity instanceof FleshkinChestBlockEntity chest) {
-				if (chest.canPlayerOpenContainer(player)) {
+				if (chest.canPlayerInteract(player)) {
 
 					ItemStack stack = player.getItemInHand(hand);
 					if (stack.getItem() instanceof EssenceItem essenceItem) {
@@ -154,7 +154,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 
 					MenuProvider menuProvider = getMenuProvider(state, level, pos);
 					if (menuProvider != null) {
-						NetworkHooks.openScreen(serverPlayer, menuProvider, byteBuffer -> {});
+						NetworkHooks.openScreen(serverPlayer, menuProvider, buffer -> buffer.writeBlockPos(pos));
 						return InteractionResult.SUCCESS;
 					}
 				}
@@ -219,7 +219,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 	@Override
 	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof FleshkinChestBlockEntity chest) {
-			return AbstractContainerMenu.getRedstoneSignalFromContainer(chest.getInventory());
+			return ItemHandlerHelper.calcRedstoneFromInventory(chest.getInventory());
 		}
 		return 0;
 	}

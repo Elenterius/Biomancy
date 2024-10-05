@@ -68,7 +68,7 @@ public class DecomposerScreen extends AbstractContainerScreen<DecomposerMenu> im
 	}
 
 	private void drawFuelTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-		int maxFuel = menu.getMAxFuelAmount();
+		int maxFuel = menu.getMaxFuelAmount();
 		int fuelAmount = menu.getFuelAmount();
 		int totalFuelCost = menu.getFuelCost();
 		GuiRenderUtil.drawFuelTooltip(font, guiGraphics, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);

@@ -5,8 +5,8 @@ import com.github.elenterius.biomancy.block.property.DirectedConnection;
 import com.github.elenterius.biomancy.block.property.VertexType;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
-import com.github.elenterius.biomancy.inventory.itemhandler.EnhancedItemHandler;
-import com.github.elenterius.biomancy.inventory.itemhandler.SingleItemStackHandler;
+import com.github.elenterius.biomancy.inventory.ItemHandlerWrapper;
+import com.github.elenterius.biomancy.inventory.SingleItemStackHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -174,7 +174,7 @@ public class MawHopperBlockEntity extends BlockEntity implements GeoBlockEntity 
 		if (stack.isEmpty()) return false;
 		int oldCount = stack.getCount();
 
-		EnhancedItemHandler handler = new EnhancedItemHandler(itemHandler);
+		ItemHandlerWrapper handler = new ItemHandlerWrapper(itemHandler);
 		ItemStack remainder = handler.insertItem(stack, false);
 
 		boolean success = remainder.getCount() != oldCount;
@@ -189,7 +189,7 @@ public class MawHopperBlockEntity extends BlockEntity implements GeoBlockEntity 
 	private boolean tryToExtractItems(IItemHandler itemHandler) {
 		if (inventory.isFull()) return false;
 
-		EnhancedItemHandler handler = new EnhancedItemHandler(itemHandler);
+		ItemHandlerWrapper handler = new ItemHandlerWrapper(itemHandler);
 
 		int amount = Math.min(ITEM_TRANSFER_AMOUNT, inventory.getMaxAmount() - inventory.getAmount());
 		Predicate<ItemStack> canAcceptItem = stack -> inventory.insertItem(stack, true).isEmpty();

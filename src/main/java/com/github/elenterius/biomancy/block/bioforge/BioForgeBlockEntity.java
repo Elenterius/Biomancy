@@ -3,10 +3,12 @@ package com.github.elenterius.biomancy.block.bioforge;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
-import com.github.elenterius.biomancy.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
+import com.github.elenterius.biomancy.inventory.InventoryHandler;
+import com.github.elenterius.biomancy.inventory.InventoryHandlers;
+import com.github.elenterius.biomancy.inventory.ItemHandlerUtil;
 import com.github.elenterius.biomancy.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.util.PlayerInteractionPredicate;
 import com.github.elenterius.biomancy.util.fuel.FluidFuelConsumerHandler;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
@@ -16,13 +18,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -45,15 +45,17 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
-public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Nameable, GeoBlockEntity {
+public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, PlayerInteractionPredicate, Nameable, GeoBlockEntity {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int MAX_FUEL = 1_000;
 	static final int OPENERS_CHANGE_EVENT = 1;
+
 	protected final int tickOffset = BiomancyMod.GLOBAL_RANDOM.nextInt(20);
+
 	private final BioForgeStateData stateData;
 	private final FuelHandler fuelHandler;
-	private final BehavioralInventory<?> fuelInventory;
+	private final InventoryHandler fuelInventory;
 
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 
@@ -82,7 +84,9 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 			return false;
 		}
 	};
+
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
 	protected int ticks = tickOffset;
 	private boolean playWorkingAnimation = false;
 	private int nearbyTimer = -10;
@@ -91,9 +95,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 
 	public BioForgeBlockEntity(BlockPos worldPosition, BlockState blockState) {
 		super(ModBlockEntities.BIO_FORGE.get(), worldPosition, blockState);
-		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
-		fuelInventory.setOpenInventoryConsumer(this::startOpen);
-		fuelInventory.setCloseInventoryConsumer(this::stopOpen);
+		fuelInventory = InventoryHandlers.filterFuel(FUEL_SLOTS, this::onInventoryChanged);
 
 		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
 		stateData = new BioForgeStateData(fuelHandler);
@@ -117,17 +119,22 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 		return super.triggerEvent(id, type);
 	}
 
-	public boolean canPlayerOpenInv(Player player) {
+	@Override
+	public boolean canPlayerInteract(Player player) {
 		if (level == null || level.getBlockEntity(worldPosition) != this) return false;
 		return player.distanceToSqr(Vec3.atCenterOf(worldPosition)) < 8d * 8d;
 	}
 
-	private void startOpen(Player player) {
+	protected void onInventoryChanged() {
+		if (level != null && !level.isClientSide) setChanged();
+	}
+
+	public void startOpen(Player player) {
 		if (remove || player.isSpectator()) return;
 		openersCounter.incrementOpeners(player, Objects.requireNonNull(getLevel()), getBlockPos(), getBlockState());
 	}
 
-	private void stopOpen(Player player) {
+	public void stopOpen(Player player) {
 		if (remove || player.isSpectator()) return;
 		openersCounter.decrementOpeners(player, Objects.requireNonNull(getLevel()), getBlockPos(), getBlockState());
 	}
@@ -140,7 +147,11 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	@Nullable
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-		return BioForgeMenu.createServerMenu(containerId, playerInventory, fuelInventory, stateData, ContainerLevelAccess.create(level, getBlockPos()));
+		return BioForgeMenu.createServerMenu(containerId, playerInventory, this);
+	}
+
+	public InventoryHandler getFuelInventory() {
+		return fuelInventory;
 	}
 
 	public BioForgeStateData getStateData() {
@@ -176,11 +187,11 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	}
 
 	public ItemStack getStackInFuelSlot() {
-		return fuelInventory.getItem(0);
+		return fuelInventory.getStackInSlot(0);
 	}
 
 	public void setStackInFuelSlot(ItemStack stack) {
-		fuelInventory.setItem(0, stack);
+		fuelInventory.setStackInSlot(0, stack);
 	}
 
 	@Override
@@ -198,7 +209,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	}
 
 	public void dropAllInvContents(Level level, BlockPos pos) {
-		Containers.dropContents(level, pos, fuelInventory);
+		ItemHandlerUtil.dropContents(level, pos, fuelInventory);
 	}
 
 	@Nonnull
@@ -207,7 +218,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 		if (remove) return super.getCapability(cap, side);
 
 		if (cap == ModCapabilities.ITEM_HANDLER && side != null && side.getAxis().isHorizontal()) {
-			return fuelInventory.getOptionalItemHandler().cast();
+			return fuelInventory.getLazyOptional().cast();
 		}
 
 		if (cap == ModCapabilities.FLUID_HANDLER) {
