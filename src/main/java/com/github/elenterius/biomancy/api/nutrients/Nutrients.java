@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.IntUnaryOperator;
+import java.util.function.Predicate;
 
 @ApiStatus.Experimental
 public final class Nutrients {
@@ -19,6 +20,7 @@ public final class Nutrients {
 	private static final Object2IntMap<Item> REPAIR_VALUES = new Object2IntArrayMap<>();
 
 	public static final IntUnaryOperator RAW_MEAT_NUTRITION_MODIFIER = nutrition -> nutrition > 0 ? Mth.ceil(3.75d * Math.exp(0.215d * nutrition)) : 0;
+	public static final Predicate<ItemStack> FUEL_PREDICATE = Nutrients::isValidFuel;
 
 	static {
 		registerFuel(ModItems.NUTRIENT_PASTE.get(), 3);

@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.block.modularlarynx;
 import com.github.elenterius.biomancy.block.property.MobSoundType;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
-import com.github.elenterius.biomancy.inventory.itemhandler.SingleItemStackHandler;
+import com.github.elenterius.biomancy.inventory.SingleItemStackHandler;
 import com.github.elenterius.biomancy.item.EssenceItem;
 import com.github.elenterius.biomancy.util.MobSoundUtil;
 import net.minecraft.core.BlockPos;

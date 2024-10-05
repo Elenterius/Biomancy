@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
-public abstract class RecipeCraftingStateData<T extends ProcessingRecipe<C>, C extends Container> implements ContainerData {
+public abstract class RecipeCraftingStateData<T extends ProcessingRecipe> implements ContainerData {
 
 	public static final String RECIPE_ID_KEY = "RecipeId";
 	public static final String TIME_ELAPSED_KEY = "TimeElapsed";
@@ -64,7 +64,7 @@ public abstract class RecipeCraftingStateData<T extends ProcessingRecipe<C>, C e
 		return Optional.empty();
 	}
 
-	public void setCraftingGoalRecipe(T recipe, C inputInventory) {
+	public void setCraftingGoalRecipe(T recipe, Container inputInventory) {
 		recipeId = recipe.getId();
 		timeForCompletion = recipe.getCraftingTimeTicks(inputInventory);
 		nutrientsCost = recipe.getCraftingCostNutrients(inputInventory);

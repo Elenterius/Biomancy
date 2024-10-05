@@ -64,7 +64,7 @@ public class DecomposerBlock extends HorizontalFacingMachineBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (level.getBlockEntity(pos) instanceof DecomposerBlockEntity decomposer && decomposer.canPlayerOpenInv(player)) {
+		if (level.getBlockEntity(pos) instanceof DecomposerBlockEntity decomposer && decomposer.canPlayerInteract(player)) {
 			if (!level.isClientSide) {
 				NetworkHooks.openScreen((ServerPlayer) player, decomposer, buffer -> buffer.writeBlockPos(pos));
 				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, ModSoundEvents.UI_DECOMPOSER_OPEN);

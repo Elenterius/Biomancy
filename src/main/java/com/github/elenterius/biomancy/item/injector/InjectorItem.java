@@ -10,7 +10,7 @@ import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.inventory.InjectorItemInventory;
-import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
+import com.github.elenterius.biomancy.inventory.LargeSingleItemStackHandler;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.item.armor.AcolyteArmorItem;
@@ -139,7 +139,7 @@ public class InjectorItem extends Item implements SerumInjector, ItemTooltipStyl
 	}
 
 	public static Optional<LargeSingleItemStackHandler> getItemHandler(ItemStack stack) {
-		return stack.getCapability(ModCapabilities.ITEM_HANDLER).filter(LargeSingleItemStackHandler.class::isInstance).map(LargeSingleItemStackHandler.class::cast);
+		return stack.getCapability(ModCapabilities.ITEM_HANDLER).map(LargeSingleItemStackHandler.class::cast);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -503,13 +503,13 @@ public class InjectorItem extends Item implements SerumInjector, ItemTooltipStyl
 		private final InjectorItemInventory itemHandler;
 
 		public InventoryCapability(ItemStack stack) {
-			itemHandler = InjectorItemInventory.createServerContents(MAX_SLOT_SIZE, stack);
+			itemHandler = InjectorItemInventory.create(MAX_SLOT_SIZE, stack);
 		}
 
 		@NotNull
 		@Override
 		public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction facing) {
-			return ModCapabilities.ITEM_HANDLER.orEmpty(capability, itemHandler.getOptionalItemHandler());
+			return ModCapabilities.ITEM_HANDLER.orEmpty(capability, itemHandler.getLazyOptional());
 		}
 
 	}

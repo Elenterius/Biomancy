@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.block.base;
 
+import com.github.elenterius.biomancy.util.PlayerInteractionPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -14,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class SimpleContainerBlockEntity extends BlockEntity implements MenuProvider, Nameable {
+public abstract class SimpleContainerBlockEntity extends BlockEntity implements MenuProvider, PlayerInteractionPredicate, Nameable {
 
 	protected Component name;
 
@@ -22,7 +23,9 @@ public abstract class SimpleContainerBlockEntity extends BlockEntity implements 
 		super(type, pos, state);
 	}
 
-	public boolean canPlayerOpenContainer(Player player) {
+	@Override
+	public boolean canPlayerInteract(Player player) {
+		if (isRemoved()) return false;
 		if (level == null || level.getBlockEntity(worldPosition) != this) return false;
 		return player.distanceToSqr(Vec3.atCenterOf(worldPosition)) < 8d * 8d;
 	}

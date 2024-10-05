@@ -3,46 +3,50 @@ package com.github.elenterius.biomancy.menu;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
-import com.github.elenterius.biomancy.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.menu.slot.ISlotZone;
-import com.github.elenterius.biomancy.menu.slot.NonNestingSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.SlotItemHandler;
 import org.apache.logging.log4j.MarkerManager;
+import org.jetbrains.annotations.Nullable;
 
 public class StorageSacMenu extends PlayerContainerMenu {
 
-	private final BehavioralInventory<?> inventory;
+	private final StorageSacBlockEntity storageSac;
 
-	protected StorageSacMenu(int id, Inventory playerInventory, BehavioralInventory<?> inventory) {
+	protected StorageSacMenu(int id, Inventory playerInventory, @Nullable StorageSacBlockEntity storageSac) {
 		super(ModMenuTypes.STORAGE_SAC.get(), id, playerInventory, 88, 146);
 
-		this.inventory = inventory;
+		this.storageSac = storageSac;
 
-		int posX = 44;
-		int posY = 17;
-		for (int y = 0; y < 3; y++) {
-			for (int x = 0; x < 5; x++) {
-				addSlot(new NonNestingSlot(this.inventory, x + 5 * y, posX + x * 18, posY + y * 18));
+		if (storageSac != null) {
+			IItemHandlerModifiable itemHandler = storageSac.getInventory();
+
+			int posX = 44;
+			int posY = 17;
+			for (int y = 0; y < 3; y++) {
+				for (int x = 0; x < 5; x++) {
+					addSlot(new SlotItemHandler(itemHandler, x + 5 * y, posX + x * 18, posY + y * 18));
+				}
 			}
 		}
 	}
 
-	public static StorageSacMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> inventory) {
-		return new StorageSacMenu(screenId, playerInventory, inventory);
+	public static StorageSacMenu createServerMenu(int screenId, Inventory playerInventory, StorageSacBlockEntity storageSac) {
+		return new StorageSacMenu(screenId, playerInventory, storageSac);
 	}
 
 	public static StorageSacMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
-		BehavioralInventory<?> inventory = BehavioralInventory.createClientContents(StorageSacBlockEntity.SLOTS);
-		return new StorageSacMenu(screenId, playerInventory, inventory);
+		StorageSacBlockEntity storageSac = playerInventory.player.level().getBlockEntity(extraData.readBlockPos()) instanceof StorageSacBlockEntity be ? be : null;
+		return new StorageSacMenu(screenId, playerInventory, storageSac);
 	}
 
 	@Override
 	public boolean stillValid(Player player) {
-		return inventory.stillValid(player);
+		return storageSac != null && storageSac.canPlayerInteract(player);
 	}
 
 	@Override

@@ -33,8 +33,8 @@ public abstract class OwnableContainerBlockEntity extends SimpleContainerBlockEn
 	}
 
 	@Override
-	public boolean canPlayerOpenContainer(Player player) {
-		return super.canPlayerOpenContainer(player) && isActionAllowed(player, Actions.USE_BLOCK);
+	public boolean canPlayerInteract(Player player) {
+		return super.canPlayerInteract(player) && isActionAllowed(player, Actions.USE_BLOCK);
 	}
 
 	@Override

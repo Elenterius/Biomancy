@@ -3,8 +3,8 @@ package com.github.elenterius.biomancy.item;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModCapabilities;
+import com.github.elenterius.biomancy.inventory.ItemHandlerWrapper;
 import com.github.elenterius.biomancy.inventory.ItemStackInventory;
-import com.github.elenterius.biomancy.inventory.itemhandler.EnhancedItemHandler;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.core.Direction;
@@ -38,8 +38,8 @@ public class StorageSacBlockItem extends BlockItem implements ItemTooltipStylePr
 		super(block, properties);
 	}
 
-	public static Optional<EnhancedItemHandler> getItemHandler(ItemStack stack) {
-		return stack.getCapability(ModCapabilities.ITEM_HANDLER).map(EnhancedItemHandler::new);
+	public static Optional<ItemHandlerWrapper> getItemHandler(ItemStack stack) {
+		return stack.getCapability(ModCapabilities.ITEM_HANDLER).map(ItemHandlerWrapper::new);
 	}
 
 	@Nullable
@@ -60,7 +60,7 @@ public class StorageSacBlockItem extends BlockItem implements ItemTooltipStylePr
 
 		final ItemStack otherStack = slot.getItem();
 		if (otherStack.isEmpty()) {
-			Optional<EnhancedItemHandler> itemHandler = getItemHandler(stack);
+			Optional<ItemHandlerWrapper> itemHandler = getItemHandler(stack);
 			ItemStack stackFromInv = itemHandler.map(h -> h.extractItemFirstFound(slot.getMaxStackSize(), false)).orElse(ItemStack.EMPTY);
 			int insertAmount = stackFromInv.getCount();
 			ItemStack remainder = slot.safeInsert(stackFromInv);
@@ -85,7 +85,7 @@ public class StorageSacBlockItem extends BlockItem implements ItemTooltipStylePr
 		if (action != ClickAction.SECONDARY || !slot.allowModification(player)) return false;
 
 		if (otherStack.isEmpty()) {
-			ItemStack stackFromInv = getItemHandler(stack).map(EnhancedItemHandler::extractItemFirstFound).orElse(ItemStack.EMPTY);
+			ItemStack stackFromInv = getItemHandler(stack).map(ItemHandlerWrapper::extractItemFirstFound).orElse(ItemStack.EMPTY);
 			if (!stackFromInv.isEmpty()) {
 				playRemoveFromSacSound(player);
 				access.set(stackFromInv);
@@ -129,16 +129,16 @@ public class StorageSacBlockItem extends BlockItem implements ItemTooltipStylePr
 
 	private static class InventoryCapability implements ICapabilityProvider {
 		public static final ItemStackInventory.InventorySerializer SERIALIZER = ItemStackInventory.InventorySerializer.BLOCK_ENTITY_TAG;
-		private final ItemStackInventory itemHandler;
+		private final ItemStackInventory inventory;
 
 		public InventoryCapability(ItemStack stack) {
-			itemHandler = ItemStackInventory.createServerContents(StorageSacBlockEntity.SLOTS, 64, stack, SERIALIZER);
+			inventory = ItemStackInventory.create(StorageSacBlockEntity.SLOTS, 64, stack, SERIALIZER);
 		}
 
 		@Nonnull
 		@Override
 		public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-			return ModCapabilities.ITEM_HANDLER.orEmpty(capability, itemHandler.getOptionalItemHandler());
+			return ModCapabilities.ITEM_HANDLER.orEmpty(capability, inventory.getLazyOptional());
 		}
 
 	}

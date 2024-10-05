@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.gui.tooltip;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.inventory.itemhandler.EnhancedItemHandler;
+import com.github.elenterius.biomancy.inventory.ItemHandlerWrapper;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,7 +15,7 @@ public class StorageSacTooltipClientComponent implements ClientTooltipComponent 
 
 	public static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/gui/tooltip_storage_sac.png");
 	private static final int OFFSET = 2;
-	private final @Nullable EnhancedItemHandler itemHandler;
+	private final @Nullable ItemHandlerWrapper itemHandler;
 	private final boolean isStorageSacEmpty;
 
 	public StorageSacTooltipClientComponent(StorageSacTooltipComponent tooltip) {

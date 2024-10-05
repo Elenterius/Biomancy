@@ -2,8 +2,8 @@ package com.github.elenterius.biomancy.block.tongue;
 
 import com.github.elenterius.biomancy.block.base.SimpleSyncedBlockEntity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.inventory.itemhandler.EnhancedItemHandler;
-import com.github.elenterius.biomancy.inventory.itemhandler.SingleItemStackHandler;
+import com.github.elenterius.biomancy.inventory.ItemHandlerWrapper;
+import com.github.elenterius.biomancy.inventory.SingleItemStackHandler;
 import com.github.elenterius.biomancy.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -81,7 +81,7 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements GeoBlo
 	private void tryToExtractItems(IItemHandler itemHandler) {
 		if (!inventory.isEmpty()) return;
 
-		EnhancedItemHandler handler = new EnhancedItemHandler(itemHandler);
+		ItemHandlerWrapper handler = new ItemHandlerWrapper(itemHandler);
 		ItemStack extractedStack = handler.extractItemAny(ITEM_TRANSFER_AMOUNT, false);
 		if (!extractedStack.isEmpty()) {
 			inventory.insertItem(0, extractedStack, false);

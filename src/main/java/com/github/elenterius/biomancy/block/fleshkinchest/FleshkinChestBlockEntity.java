@@ -4,7 +4,9 @@ import com.github.elenterius.biomancy.block.ownable.OwnableContainerBlockEntity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.inventory.SimpleInventory;
+import com.github.elenterius.biomancy.inventory.InventoryHandler;
+import com.github.elenterius.biomancy.inventory.InventoryHandlers;
+import com.github.elenterius.biomancy.inventory.ItemHandlerUtil;
 import com.github.elenterius.biomancy.menu.FleshkinChestMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.animation.TriggerableAnimation;
@@ -15,8 +17,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -47,7 +47,8 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 
 	public static final int SLOTS = 6 * 7;
 
-	private final SimpleInventory inventory;
+	private final InventoryHandler inventory;
+
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
@@ -71,34 +72,37 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 		@Override
 		protected boolean isOwnContainer(Player player) {
 			if (player.containerMenu instanceof FleshkinChestMenu menu) {
-				Container container = menu.getContainer();
-				return container == FleshkinChestBlockEntity.this.inventory;
+				return menu.getInventory() == FleshkinChestBlockEntity.this.inventory;
 			}
 			return false;
 		}
 	};
+
 	private boolean lidShouldBeOpen = false;
 	private boolean lidIsOpen = false;
 
 	public FleshkinChestBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.FLESHKIN_CHEST.get(), pos, state);
-		inventory = SimpleInventory.createServerContents(SLOTS, this::canPlayerOpenContainer, this::setChanged);
-		inventory.setOpenInventoryConsumer(this::startOpen);
-		inventory.setCloseInventoryConsumer(this::stopOpen);
+
+		inventory = InventoryHandlers.standard(SLOTS, this::onInventoryChanged);
 	}
 
-	private void startOpen(Player player) {
-		if (remove || player.isSpectator()) return;
+	protected void onInventoryChanged() {
+		if (level != null && !level.isClientSide) setChanged();
+	}
+
+	public void startOpen(Player player) {
+		if (isRemoved() || player.isSpectator()) return;
 		openersCounter.incrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
 	}
 
-	private void stopOpen(Player player) {
-		if (remove || player.isSpectator()) return;
+	public void stopOpen(Player player) {
+		if (isRemoved() || player.isSpectator()) return;
 		openersCounter.decrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
 	}
 
 	public void recheckOpen() {
-		if (remove) return;
+		if (isRemoved()) return;
 		openersCounter.recheckOpeners(getLevel(), getBlockPos(), getBlockState());
 	}
 
@@ -142,10 +146,10 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 	@Nullable
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-		return FleshkinChestMenu.createServerMenu(containerId, playerInventory, inventory);
+		return FleshkinChestMenu.createServerMenu(containerId, playerInventory, this);
 	}
 
-	public Container getInventory() {
+	public InventoryHandler getInventory() {
 		return inventory;
 	}
 
@@ -163,11 +167,7 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 
 	@Override
 	public void dropContainerContents(Level level, BlockPos pos) {
-		if (!inventory.isEmpty()) Containers.dropContents(level, pos, inventory);
-	}
-
-	public boolean isEmpty() {
-		return inventory.isEmpty();
+		ItemHandlerUtil.dropContents(level, pos, inventory);
 	}
 
 	@NotNull

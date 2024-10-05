@@ -3,14 +3,8 @@ package com.github.elenterius.biomancy.menu;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.nutrients.Nutrients;
 import com.github.elenterius.biomancy.block.biolab.BioLabBlockEntity;
-import com.github.elenterius.biomancy.block.biolab.BioLabStateData;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
-import com.github.elenterius.biomancy.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.inventory.SimpleInventory;
-import com.github.elenterius.biomancy.menu.slot.FuelSlot;
-import com.github.elenterius.biomancy.menu.slot.ISlotZone;
-import com.github.elenterius.biomancy.menu.slot.OutputSlot;
-import com.github.elenterius.biomancy.util.fuel.FuelHandler;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,76 +12,75 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 import org.apache.logging.log4j.MarkerManager;
-
-import java.util.function.Predicate;
+import org.jetbrains.annotations.Nullable;
 
 public class BioLabMenu extends PlayerContainerMenu {
 
 	protected final Level level;
-	private final Predicate<Player> isMenuValidPredicate;
-	private final BioLabStateData stateData;
 
-	protected BioLabMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, SimpleInventory inputInventory, BehavioralInventory<?> outputInventory, BioLabStateData stateData) {
+	private final BioLabBlockEntity bioLab;
+
+	protected BioLabMenu(int id, Inventory playerInventory, @Nullable BioLabBlockEntity bioLab) {
 		super(ModMenuTypes.BIO_LAB.get(), id, playerInventory, 137, 195);
 		level = playerInventory.player.level();
 
-		//we don't check all three inventories because they all call the same method in the decomposer tile entity
-		isMenuValidPredicate = inputInventory::stillValid;
+		this.bioLab = bioLab;
 
-		this.stateData = stateData;
+		if (bioLab != null) {
+			addSlot(new SlotItemHandler(bioLab.getFuelInventory(), 0, 31, 88));
 
-		addSlot(new FuelSlot(fuelInventory, 0, 31, 88));
+			IItemHandler itemHandler = bioLab.getInputInventory();
+			addSlot(new SlotItemHandler(itemHandler, 0, 50, 28));
+			addSlot(new SlotItemHandler(itemHandler, 1, 70, 28));
+			addSlot(new SlotItemHandler(itemHandler, 2, 90, 28));
+			addSlot(new SlotItemHandler(itemHandler, 3, 110, 28));
 
-		addSlot(new Slot(inputInventory, 0, 50, 28));
-		addSlot(new Slot(inputInventory, 1, 70, 28));
-		addSlot(new Slot(inputInventory, 2, 90, 28));
-		addSlot(new Slot(inputInventory, 3, 110, 28));
+			addSlot(new SlotItemHandler(itemHandler, 4, 80, 62)); // reactant/vial slot
 
-		addSlot(new Slot(inputInventory, 4, 80, 62)); // reactant/vial slot
+			addSlot(new SlotItemHandler(bioLab.getOutputInventory(), 0, 80, 88));
 
-		addSlot(new OutputSlot(outputInventory, 0, 80, 88));
-
-		addDataSlots(stateData);
+			addDataSlots(bioLab.getStateData());
+		}
 	}
 
-	public static BioLabMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> fuelInventory, SimpleInventory inputInventory, BehavioralInventory<?> outputInventory, BioLabStateData stateData) {
-		return new BioLabMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
+	public static BioLabMenu createServerMenu(int containerId, Inventory playerInventory, BioLabBlockEntity biolab) {
+		return new BioLabMenu(containerId, playerInventory, biolab);
 	}
 
-	public static BioLabMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
-		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(BioLabBlockEntity.FUEL_SLOTS);
-		SimpleInventory inputInventory = SimpleInventory.createClientContents(BioLabBlockEntity.INPUT_SLOTS);
-		BehavioralInventory<?> outputInventory = BehavioralInventory.createClientContents(BioLabBlockEntity.OUTPUT_SLOTS);
-		FuelHandler fuelHandler = FuelHandler.createNutrientFuelHandler(BioLabBlockEntity.MAX_FUEL, () -> {});
-		BioLabStateData state = new BioLabStateData(fuelHandler);
-		return new BioLabMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, state);
+	public static BioLabMenu createClientMenu(int containerId, Inventory playerInventory, FriendlyByteBuf extraData) {
+		BlockPos blockPos = extraData.readBlockPos();
+		BlockEntity blockEntity = playerInventory.player.level().getBlockEntity(blockPos);
+		return new BioLabMenu(containerId, playerInventory, blockEntity instanceof BioLabBlockEntity bioLab ? bioLab : null);
 	}
 
 	@Override
 	public boolean stillValid(Player player) {
-		return isMenuValidPredicate.test(player);
+		return bioLab != null && bioLab.canPlayerInteract(player);
 	}
 
 	public float getCraftingProgressNormalized() {
-		if (stateData.timeForCompletion == 0) return 0f;
-		return Mth.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
+		if (bioLab.getStateData().timeForCompletion == 0) return 0f;
+		return Mth.clamp(bioLab.getStateData().timeElapsed / (float) bioLab.getStateData().timeForCompletion, 0f, 1f);
 	}
 
 	public int getFuelCost() {
-		return stateData.getFuelCost();
+		return bioLab.getStateData().getFuelCost();
 	}
 
 	public float getFuelAmountNormalized() {
-		return Mth.clamp((float) stateData.fuelHandler.getFuelAmount() / stateData.fuelHandler.getMaxFuelAmount(), 0f, 1f);
+		return Mth.clamp((float) bioLab.getStateData().fuelHandler.getFuelAmount() / bioLab.getStateData().fuelHandler.getMaxFuelAmount(), 0f, 1f);
 	}
 
 	public int getFuelAmount() {
-		return stateData.fuelHandler.getFuelAmount();
+		return bioLab.getStateData().fuelHandler.getFuelAmount();
 	}
 
 	public int getMaxFuelAmount() {
-		return stateData.fuelHandler.getMaxFuelAmount();
+		return bioLab.getStateData().fuelHandler.getMaxFuelAmount();
 	}
 
 	@Override
