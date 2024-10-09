@@ -9,11 +9,7 @@
           "functions": [
             {
               "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
+              "count": 2.0,
               "function": "minecraft:set_count"
             },
             {
@@ -26,7 +22,7 @@
             }
           ],
           "name": "biomancy:mob_fang",
-          "weight": 140
+          "weight": 144
         },
         {
           "type": "minecraft:item",
@@ -36,7 +32,7 @@
               "count": {
                 "type": "minecraft:uniform",
                 "max": 4.0,
-                "min": 1.0
+                "min": 2.0
               },
               "function": "minecraft:set_count"
             },

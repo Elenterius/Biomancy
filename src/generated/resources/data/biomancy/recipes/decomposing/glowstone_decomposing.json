@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "minecraft:glowstone"
   },
-  "nutrientsCost": 1,
-  "processingTime": 408,
+  "nutrientsCost": 2,
+  "processingTime": 508,
   "results": [
     {
       "countRange": {

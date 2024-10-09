@@ -79,11 +79,11 @@ public final class PillarPlantUtil {
 	public record PillarPlantHelper(Block block, int defaultHeight, IntegerProperty ageProperty, int maxAge, boolean callNeighborChanged) {
 
 		public PillarPlantHelper(Block block, int defaultHeight, IntegerProperty ageProperty) {
-			this(block, defaultHeight, ageProperty, BlockPropertyUtil.getMaxAge(ageProperty), false);
+			this(block, defaultHeight, ageProperty, BlockPropertyUtil.getMaxValue(ageProperty), false);
 		}
 
 		public PillarPlantHelper(Block block, int defaultHeight, IntegerProperty ageProperty, boolean callNeighborChanged) {
-			this(block, defaultHeight, ageProperty, BlockPropertyUtil.getMaxAge(ageProperty), callNeighborChanged);
+			this(block, defaultHeight, ageProperty, BlockPropertyUtil.getMaxValue(ageProperty), callNeighborChanged);
 		}
 
 		public boolean isNotFullyGrown(BlockState state) {

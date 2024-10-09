@@ -10,7 +10,7 @@
     "item": "alexsmobs:elastic_tendon"
   },
   "nutrientsCost": 1,
-  "processingTime": 540,
+  "processingTime": 480,
   "results": [
     {
       "countRange": {
@@ -19,14 +19,6 @@
         "min": 4
       },
       "item": "biomancy:elastic_fibers"
-    },
-    {
-      "countRange": {
-        "type": "uniform",
-        "max": 2,
-        "min": 1
-      },
-      "item": "biomancy:tough_fibers"
     },
     {
       "countRange": {

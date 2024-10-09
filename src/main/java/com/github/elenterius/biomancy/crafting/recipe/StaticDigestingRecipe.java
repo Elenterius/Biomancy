@@ -23,11 +23,13 @@ import javax.annotation.Nullable;
 public class StaticDigestingRecipe extends StaticProcessingRecipe implements DigestingRecipe {
 
 	private final Ingredient recipeIngredient;
+	private final NonNullList<Ingredient> recipeIngredients;
 	private final ItemStack recipeResult;
 
 	public StaticDigestingRecipe(ResourceLocation id, ItemStack result, int craftingTimeTicks, int craftingCostNutrients, Ingredient ingredient) {
 		super(id, craftingTimeTicks, craftingCostNutrients);
 		recipeIngredient = ingredient;
+		recipeIngredients = NonNullList.of(Ingredient.EMPTY, recipeIngredient);
 		recipeResult = result;
 	}
 
@@ -58,7 +60,7 @@ public class StaticDigestingRecipe extends StaticProcessingRecipe implements Dig
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
-		return NonNullList.of(Ingredient.EMPTY, recipeIngredient);
+		return recipeIngredients;
 	}
 
 	@Override

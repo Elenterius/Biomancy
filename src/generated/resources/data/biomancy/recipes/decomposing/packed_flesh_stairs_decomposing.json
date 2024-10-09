@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "biomancy:packed_flesh_stairs"
   },
-  "nutrientsCost": 1,
-  "processingTime": 150,
+  "nutrientsCost": 2,
+  "processingTime": 210,
   "results": [
     {
       "countRange": {

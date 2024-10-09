@@ -3,14 +3,14 @@
   "ingredient": {
     "item": "minecraft:slime_block"
   },
-  "nutrientsCost": 2,
-  "processingTime": 1935,
+  "nutrientsCost": 5,
+  "processingTime": 1305,
   "results": [
     {
       "countRange": {
         "type": "uniform",
-        "max": 45,
-        "min": 27
+        "max": 27,
+        "min": 18
       },
       "item": "biomancy:regenerative_fluid"
     },

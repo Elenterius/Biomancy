@@ -1,3 +1,54 @@
+## [8.15.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.14.0...1.20.1-v2.8.15.0) (2024-10-01)
+
+
+### Features
+
+* add player and mob head recipes to the bio-forge ([03f9910](https://github.com/Elenterius/Biomancy/commit/03f99108219d21cf766eb3e0dcb85c4f236f4fad))
+
+
+### Bug Fixes
+
+* fix bio-forge not counting ingredients with nbt data correctly ([333e8a3](https://github.com/Elenterius/Biomancy/commit/333e8a35ca7a1722b2bb0fe437c9d9fa67257410))
+
+## [8.14.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.13.1...1.20.1-v2.8.14.0) (2024-09-25)
+
+
+### Features
+
+* add decomposing recipe for the Oxeye Daisy flower ([c144c18](https://github.com/Elenterius/Biomancy/commit/c144c185e282f0fcb2d380be2524c75304135ae6))
+* add missing despoil loot tables for alex's caves mobs ([71cb4cd](https://github.com/Elenterius/Biomancy/commit/71cb4cd7de83bd73ccef42fe82d59e95e1b2fd2d))
+* **buff:** increase despoil drop chances for fangs and claws ([aa5c534](https://github.com/Elenterius/Biomancy/commit/aa5c5349aa7d180d5bf9778a313e8f12e10fdb61))
+* **buff:** make coral decomposing recipes produce regenerative fluid ([acedcc5](https://github.com/Elenterius/Biomancy/commit/acedcc5719baf83e2b104d648ea1c80592b60f82))
+* **buff:** make fertilizer turn areas of dirt into grass blocks ([da427bc](https://github.com/Elenterius/Biomancy/commit/da427bc6f9b03bb62588ca306dfbc25ef08e7d1e))
+* **buff:** make magma cream decomposing recipe give regenerative fluid ([f167095](https://github.com/Elenterius/Biomancy/commit/f1670952cb6a3d4045c403bf0a8d545439a54793))
+* give fertilizer the ability to grow waterplants as well ([d3bd61c](https://github.com/Elenterius/Biomancy/commit/d3bd61ced90e3a2e8fc46653bae4a55cb2af5b46))
+* give fertilizer the ability to spread mycelium to dirt and grass blocks ([6ea2aad](https://github.com/Elenterius/Biomancy/commit/6ea2aad23078118d7b44a032ec38806aaa414359))
+* improve fertilizer to immediately grow saplings into trees when possible ([39308bd](https://github.com/Elenterius/Biomancy/commit/39308bd460944bd623c6c11124800fb2e5a3c110))
+* make Bioluminescent Goo a sign applicator for glowing text ([f322b12](https://github.com/Elenterius/Biomancy/commit/f322b122358d1808f17789f763e019ede1a7ddc1))
+* make fertilizer less annoying to craft and tweak exotic flesh mix recipe ([809c98e](https://github.com/Elenterius/Biomancy/commit/809c98e3e83a81e4edcd2ce9842c4fd61547bb6c))
+* **nerf:** make various decomposing recipes more expensive ([bb1a8fe](https://github.com/Elenterius/Biomancy/commit/bb1a8fe1e532c777e289602772c676269543c0a8))
+* **nerf:** nerf feather decomposing recipe ([4a8ecc3](https://github.com/Elenterius/Biomancy/commit/4a8ecc39bbb54a4776d85fdc45b7f248e3d4ca06))
+* **nerf:** nerf slimeball decomposing recipe ([b39fe70](https://github.com/Elenterius/Biomancy/commit/b39fe70061f7c595665672f169f7b2667d5d5311))
+* tweak and add decomposer recipes for alex's mobs and caves items ([0dd2374](https://github.com/Elenterius/Biomancy/commit/0dd237474b06c3ac63642ab8eeeeb3bf2921b435))
+* tweak kelp decomposing recipe ([9aa12b4](https://github.com/Elenterius/Biomancy/commit/9aa12b4da5d346b78913219670ca1fcb69dad3d6))
+* tweak recipes for create and migrate them into the biomancy namespace ([9a8361d](https://github.com/Elenterius/Biomancy/commit/9a8361d73f73bcefad97f043f57b0a652839aed2))
+* update raw_meats item tag with missing items from alex's mobs and caves ([f5aca11](https://github.com/Elenterius/Biomancy/commit/f5aca11f226b29a21ac5bab78e38a63a2d712f52))
+* update Russian (ru_ru) translation by Quarkrus ([bf0338b](https://github.com/Elenterius/Biomancy/commit/bf0338b0a97ca89a4c84b5e891e54dbf8679b508))
+
+### [8.13.1](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.13.0...1.20.1-v2.8.13.1) (2024-09-15)
+
+
+### Bug Fixes
+
+* fix server crash related to the primordial infestation effect ([3dcdc0a](https://github.com/Elenterius/Biomancy/commit/3dcdc0a10d3e14712bf577dbf2c5a5c6c0cbd6e5))
+
+## [8.13.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.12.0...1.20.1-v2.8.13.0) (2024-09-13)
+
+
+### Features
+
+* add dispenser behavior for Gastric Acid Buckets ([8a29d19](https://github.com/Elenterius/Biomancy/commit/8a29d192d5bcdd8d68d48ebb3237205a3a0439c2)), closes [#147](https://github.com/Elenterius/Biomancy/issues/147)
+
 ## [8.12.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.11.0...1.20.1-v2.8.12.0) (2024-09-12)
 
 
@@ -6,103 +57,4 @@
 * buff drop chances for Bile Glands and buff drop amount of Fangs and Claws for mobs with high attack damage ([1a212e8](https://github.com/Elenterius/Biomancy/commit/1a212e87b9c0a3fb3c41df4145e71b20290bcb07))
 * display more distinct particles for tributes added to a Cradle ([d9a613f](https://github.com/Elenterius/Biomancy/commit/d9a613f4b5935d5a9e26ecdb54012d3ab95bdf3a))
 * make it possible to add new users to Fleshkin Chests and Pressure Sensors with Tier 3 Essence ([ce7907a](https://github.com/Elenterius/Biomancy/commit/ce7907aee596869d36df8e45f4d29a386a97bf83))
-
-## [8.11.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.10.0...1.20.1-v2.8.11.0) (2024-09-09)
-
-
-### Features
-
-* buff Flesh Plunderer to not receive extra damage when the target dies ([6249ae1](https://github.com/Elenterius/Biomancy/commit/6249ae186440acb332b1c4fbbea3e0783339392c))
-* make Primal Bloom and Orifice decomposable ([72ab9c9](https://github.com/Elenterius/Biomancy/commit/72ab9c95540fdd2578d340baae80896f1368200a))
-* make Primal Flesh Block craftable ([534c007](https://github.com/Elenterius/Biomancy/commit/534c007cd745c4179adf6ad0e3b666c1a202da26))
-* re-balance Flesh Plunderer, buff durability from 250 to 500 and nerf attack damage from 12 to 8 ([ce7d9b5](https://github.com/Elenterius/Biomancy/commit/ce7d9b549fa6b30a85fafd239107345301d1ec4d))
-* tweak Malignant Flesh decomposing recipes ([2f8b4d2](https://github.com/Elenterius/Biomancy/commit/2f8b4d2f4074f436ecdeff9f664d0f254bf59436))
-
-
-### Bug Fixes
-
-* fix JEI recipe display for food decomposer recipes not showing negative values ([624ac37](https://github.com/Elenterius/Biomancy/commit/624ac373d79fb10bfb5f217e50059196fc82e057))
-* fix JEI recipe display for food digesting recipes ([e60fd76](https://github.com/Elenterius/Biomancy/commit/e60fd76b4f5fa441f74b0299951f6de2b2507854))
-
-## [8.10.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.9.0...1.20.1-v2.8.10.0) (2024-09-07)
-
-
-### Features
-
-* add Chinese (zh_tw) translation by vomiter-scp-zh ([6397c56](https://github.com/Elenterius/Biomancy/commit/6397c56c43f770286006cd006021e7a70e42b562))
-* add non-latin character handling to the text to rune conversion of the Primordial Infestation effect ([50a9487](https://github.com/Elenterius/Biomancy/commit/50a948752dba38b4af322071c91054b8bc9f77ab))
-* add rare chance to get Primordial Infection when eating raw meat ([f9d612b](https://github.com/Elenterius/Biomancy/commit/f9d612bcdb523c35c82477556d867f65ff0944f6))
-* **alexs-caves:** make dinosaur chop a valid fuel and cradle tribute ([d248a7d](https://github.com/Elenterius/Biomancy/commit/d248a7d339ba87930ec97b3bc6b8ccc93c93c067))
-* change Primordial Infestation effect to not spread malignant flesh on when the victim is burning or freezing ([c5ad128](https://github.com/Elenterius/Biomancy/commit/c5ad12842871a502c064314bc5b1804f8c9c0aa4))
-* increase duration of Primordial Infestation effect when eating living flesh ([aff26e5](https://github.com/Elenterius/Biomancy/commit/aff26e581ee85a71c060f09ed4969fa96999fee3))
-* make Breeding Stimulant applicable to villagers ([47d3739](https://github.com/Elenterius/Biomancy/commit/47d373985e8edbce71c56b7e482820d85cf0d4a0))
-* make flesh blocks decomposable ([c25eae0](https://github.com/Elenterius/Biomancy/commit/c25eae0d0ed01faef3e9791e01bd2eeeabc1d8c3))
-* nerf Nutrient Bar saturation from 1.8 to 1.2 and buff Nutrient Paste saturation from 0.2 to 0.6 ([c82fb77](https://github.com/Elenterius/Biomancy/commit/c82fb7764a71a3bab5d40d72324675c18baa882a))
-* **nerf:** increase bio-forge crafting cost of flesh blocks ([5a4d0fc](https://github.com/Elenterius/Biomancy/commit/5a4d0fc30afb0503d8fd9def25cfc211314f385e))
-* **nerf:** increase crafting cost of digesting recipes for non-food items ([07e077b](https://github.com/Elenterius/Biomancy/commit/07e077bdd536530bbc722eb5dd5edd9ade300c1d))
-* update Caro Invitica font with additional glyphs ([8926687](https://github.com/Elenterius/Biomancy/commit/8926687c4035135e67891f2f4c7e5d060ceb1866))
-
-
-### Bug Fixes
-
-* fix Chrysalis item interaction with mobs from Alex's Mobs ([62b5d9c](https://github.com/Elenterius/Biomancy/commit/62b5d9cbfa959b0e695da375407fbd4485b11a04))
-* prevent Living Flesh from being eaten by flesh veins ([c7d95dc](https://github.com/Elenterius/Biomancy/commit/c7d95dc48dca72d9ec23541be1dd2ee570acbee8))
-
-## [8.9.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.8.0...1.20.1-v2.8.9.0) (2024-08-26)
-
-
-### Features
-
-* update Chinese (zh_cn) translation ([473ba44](https://github.com/Elenterius/Biomancy/commit/473ba44dde2acd8f57ecbe3ffc952d28ee5dd4f0))
-
-## [8.8.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.3.0...1.20.1-v2.8.8.0) (2024-08-25)
-
-
-### Features
-
-* add Acid Cauldron ([be19c12](https://github.com/Elenterius/Biomancy/commit/be19c1259610ec3ecfb9fce6551c974085f7a11f))
-* add advancements with hints on how to find primal orifices and update the blocks tooltip to mention where the block can be found ([a900080](https://github.com/Elenterius/Biomancy/commit/a9000804b27f2b8f6e641286d902695fae308fdb))
-* add breeding stimulant backfire for cows, sheep, pigs and chickens ([be5e013](https://github.com/Elenterius/Biomancy/commit/be5e013103fd20cfe23e8e2a8f1b6135eaa64cee))
-* add Chroma Sheep mob ([8f8e0f0](https://github.com/Elenterius/Biomancy/commit/8f8e0f0aace8f1c7bc7d5ebd65e2ebc301bdb2c2))
-* add Cobweb recipe to the Bio-Forge ([12a4447](https://github.com/Elenterius/Biomancy/commit/12a444764ac133278311df69138eeac9ceeb8719))
-* add Fibrous Flesh block set ([347c3eb](https://github.com/Elenterius/Biomancy/commit/347c3eba67902b21b365a1a5910a8933fa316242))
-* add Flesh Chicken mob ([4020179](https://github.com/Elenterius/Biomancy/commit/402017916e4ecafd3840c0ff467137ef16407a7b))
-* add Flesh Cow mob ([02a7d72](https://github.com/Elenterius/Biomancy/commit/02a7d724b6736f78d1f3bf81e3cfde36e742d95b))
-* add Flesh Pig mob ([0904934](https://github.com/Elenterius/Biomancy/commit/0904934f59ca0f4b2053543cfe59ecc84cb8b7ea))
-* add Flesh Sheep mob ([5ffbe31](https://github.com/Elenterius/Biomancy/commit/5ffbe31a573757617247c1ab8b0c533447b3a423))
-* add Frenzy Serum ([9f403a8](https://github.com/Elenterius/Biomancy/commit/9f403a8e2ad341b786b31a3590a86147d040407f))
-* add Primordial Knowledge enchantment for helmets ([a411242](https://github.com/Elenterius/Biomancy/commit/a41124288242ed1300e02865f70bf5ab63a31966))
-* add Thick Fur Sheep mob ([2839710](https://github.com/Elenterius/Biomancy/commit/28397105ed80b8efc35a708f069b2fe1950e6bdb))
-* change unstable compound explosion to be incendiary and capable of converting magma blocks to lava ([57abda9](https://github.com/Elenterius/Biomancy/commit/57abda9353279ec2bf6da7fa219d83420d6d1c04))
-* expose Biomancy specific RecipeBuilders for datagen ([87f0f88](https://github.com/Elenterius/Biomancy/commit/87f0f8800de0a74b53d45498f3f9e2d618073d41))
-* make all snow, weak ice and giant mushroom blocks replaceable by flesh ([83026be](https://github.com/Elenterius/Biomancy/commit/83026be70cbd3c00db8a7330d771f950147419cc))
-* make Flesh Sheep drop string as loot and update model to show strands of hair ([b5083ca](https://github.com/Elenterius/Biomancy/commit/b5083cae081537ac7e9a4b8061ca2343c9ef2150))
-* make flesh veins flammable ([4d8416d](https://github.com/Elenterius/Biomancy/commit/4d8416db0bc1e31d51a0c45f244a3f7c25bcf325))
-* make frenzy serum convert normal rabbits into killer rabbits ([077ff0c](https://github.com/Elenterius/Biomancy/commit/077ff0c4a6fe769839f5378d9e49db2dcfd26ea1))
-* make Healing Activator advancement also trigger for healing additive or regenerative fluid ([c849e51](https://github.com/Elenterius/Biomancy/commit/c849e5131549b15bf5ca61a8a572563058366805))
-* make lava fluid destroy certain malignant flesh blocks ([1b939be](https://github.com/Elenterius/Biomancy/commit/1b939be47f1853a351db179cbd1332d583e17c71))
-* make Living Flesh consumable ([1f8c758](https://github.com/Elenterius/Biomancy/commit/1f8c758c9207a248f1d87b0c7c07cd1971dc3a2d))
-* make most serums and compounds cradle tributes ([095e773](https://github.com/Elenterius/Biomancy/commit/095e7731091dbd474960ca4a4cb5f33af3f96fb1))
-* make Shrink and Enlargement Serums affect max health ([96aee28](https://github.com/Elenterius/Biomancy/commit/96aee289f86d3149e2e54fcff744139830cab653))
-* make using unstable compound on creepers or tnt cause an immediate explosion ([367d722](https://github.com/Elenterius/Biomancy/commit/367d7223b3c8e1339b852287f801ae10f1ed8d33))
-* remove leaping behavior from Flesh Pig ([3b8c4d0](https://github.com/Elenterius/Biomancy/commit/3b8c4d02ad45f6a7eb1b713884c42b92c553669f))
-* remove Primordial Knowledge enchantment and split its features into the Acolyte Armor helmet and Primdordial Infestation effect ([1fc7824](https://github.com/Elenterius/Biomancy/commit/1fc7824b8fe33935595dbf8e3a4da0302fbdd144))
-* tweak Frenzy Serum and Withdrawal Effect balance and make Withdrawal none removable. ([81f2dc0](https://github.com/Elenterius/Biomancy/commit/81f2dc058cf71f92465c6b333856242cb9caf2dd))
-* update Breeding Stimulant description to hint at how to get mutated/flesh animals ([fd2c90c](https://github.com/Elenterius/Biomancy/commit/fd2c90c9a92cfb6b8fc1320e02a552b526fa86a0))
-* update gunpowder recipe to require unstable compound ([44d3c54](https://github.com/Elenterius/Biomancy/commit/44d3c54a5a84c3180218a23e6260459a00ccc079))
-* update Russian translation by Quarkrus ([4f2f73f](https://github.com/Elenterius/Biomancy/commit/4f2f73ff95dcd2cf4d8f33cc022fbeabd70adf3b))
-* widen primordial infestation effect to renaming of items in anvils and writing on signs ([3e30fc9](https://github.com/Elenterius/Biomancy/commit/3e30fc901b583ad33348a38d89489058d136f95c))
-
-
-### Bug Fixes
-
-* fix Acolyte Armor z-fighting and render type ([d246f39](https://github.com/Elenterius/Biomancy/commit/d246f39da64cc46a5bd8743410609fe00071aa9f))
-* fix bounding box scaling issues with Flesh Blobs ([4932979](https://github.com/Elenterius/Biomancy/commit/4932979598e77f7aee1641318b23c25a98fc7028))
-* fix leg animation of flesh animals ([b997400](https://github.com/Elenterius/Biomancy/commit/b99740065a37fee5814d4bc99cd3ee4c58c87188))
-* fix membranes not blocking pathfinding. Thanks to cdbarrett ([37e2f03](https://github.com/Elenterius/Biomancy/commit/37e2f03ac6b339281fe95b5c8ee18f2b2fc69be3)), closes [#143](https://github.com/Elenterius/Biomancy/issues/143)
-* fix missing pixels on the Caustic Gunblade texture ([81b8778](https://github.com/Elenterius/Biomancy/commit/81b87789fc40dbf0c7620bb61370850c4abd7e6f))
-* fix Ravenous Claws normal attack bypassing armor, resistances and enchantments ([294fc5b](https://github.com/Elenterius/Biomancy/commit/294fc5bfda76e4b6ab5e84c234bb9efccea958a5))
-* fix untranslatable text in the Modular Larynx tooltip ([9046493](https://github.com/Elenterius/Biomancy/commit/904649364737b7f8e7dc358292c7d6b4b820fff6))
-* improve render scaling of Flesh Blob models ([e1f4d32](https://github.com/Elenterius/Biomancy/commit/e1f4d32307d0c246d5141262969e1876bbffd24f))
-* make Primordial Infestation not applicable to Primordial Flesh Blobs ([df88bcc](https://github.com/Elenterius/Biomancy/commit/df88bccc92caad88c7d8e1ee053bb2fba5e92f81))
 

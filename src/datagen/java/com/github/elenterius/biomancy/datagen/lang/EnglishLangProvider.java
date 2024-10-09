@@ -460,7 +460,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.ELASTIC_FIBERS, "Elastic Fibers", "Fibrous tissue that is sturdy, while still being flexible and stretchy. It appears to be a good material to imitate muscles.");
 		addItem(ModItems.MINERAL_FRAGMENT, "Mineral Fragment", "Component only obtained in Decomposer.\nUsed to toughen and harden fibers.");
 		addItem(ModItems.GEM_FRAGMENTS, "Gem Fragments", "Bedazzle your fleshy creations!\nUsed to enhance hardened fibers to their maximum resilience, but they're very expensive.");
-		addItem(ModItems.BIO_LUMENS, "Bioluminescent Goo", "A basic component only obtained via the Decomposer, usually alongside biotic matter.\n\nUsed as a cosmetic upgrade to make things glow.");
+		addItem(ModItems.BIO_LUMENS, "Bioluminescent Goo", "A basic component only obtained via the Decomposer, usually alongside biotic matter.\n\nUsed as a cosmetic upgrade to make things glow, like the text on signs.");
 		addItem(ModItems.ORGANIC_MATTER, "Biotic Matter", "Moist organic material, extracted from plants. With its dark and fibrous texture, it almost seems like humus.");
 		addItem(ModItems.EXOTIC_DUST, "Exotic Dust", "Exotic substance, perhaps the very essence of magic itself.\nAn uncommon byproduct obtained by decomposing magical things.");
 		addItem(ModItems.STONE_POWDER, "Lithic Powder", "A very basic crafting component, usually obtained as a byproduct from decomposing things.");
@@ -489,7 +489,15 @@ public class EnglishLangProvider extends AbstractLangProvider {
 				Can be enchanted with:
 				 - Piercing: Increases the chance to pierce through armor
 				 - Anesthetic Touch: Nullifies the damage from the needle""");
-		addItem(ModItems.FERTILIZER, "Bio-Alchemical Fertilizer", "Fertilizer that induces hyper-growth in plants, even for reeds, cactus, nether wart and chorus.");
+		addItem(ModItems.FERTILIZER, "Bio-Alchemical Fertilizer", """
+				The Fertilizer induces hyper-growth in plants maturing them fully. It even affects bone-meal resistant plants such as:
+				- sugarcane
+				- cactus
+				- nether wart
+				- chorus
+				
+				Furthermore it has the ability to convert patches of dirt into grass or force spread mycelium.
+				""");
 		addItem(ModItems.GIFT_SAC, "Gift Sac", """
 				Looks like some objects are wrapped in an organic layer of skin. Might be filled with items or toxin if your language is set to German.
 								

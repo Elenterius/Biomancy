@@ -15,11 +15,11 @@ public final class BlockPropertyUtil {
 
 	private BlockPropertyUtil() {}
 
-	public static int getMaxAge(IntegerProperty property) {
+	public static int getMaxValue(IntegerProperty property) {
 		return ((IntegerPropertyAccessor) property).biomancy$getMax();
 	}
 
-	public static int getMinAge(IntegerProperty property) {
+	public static int getMinValue(IntegerProperty property) {
 		return ((IntegerPropertyAccessor) property).biomancy$getMin();
 	}
 

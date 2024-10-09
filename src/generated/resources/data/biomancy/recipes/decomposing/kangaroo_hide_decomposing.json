@@ -10,13 +10,13 @@
     "item": "alexsmobs:kangaroo_hide"
   },
   "nutrientsCost": 1,
-  "processingTime": 60,
+  "processingTime": 120,
   "results": [
     {
       "countRange": {
         "type": "uniform",
-        "max": 2,
-        "min": 1
+        "max": 4,
+        "min": 2
       },
       "item": "biomancy:tough_fibers"
     }

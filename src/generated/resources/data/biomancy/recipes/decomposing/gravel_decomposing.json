@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "minecraft:gravel"
   },
-  "nutrientsCost": 1,
-  "processingTime": 180,
+  "nutrientsCost": 2,
+  "processingTime": 380,
   "results": [
     {
       "countRange": {

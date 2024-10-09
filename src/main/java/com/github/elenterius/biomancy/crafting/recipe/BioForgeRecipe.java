@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.menu.BioForgeTab;
+import com.github.elenterius.biomancy.util.ItemStackCounter;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
@@ -74,6 +75,36 @@ public class BioForgeRecipe implements Recipe<Container> {
 		}
 
 		return true;
+	}
+
+	public boolean isCraftable(ItemStackCounter itemCounter) {
+		int[] residuals = new int[ingredients.size()];
+		int totalResidual = 0;
+		for (int i = 0; i < ingredients.size(); i++) {
+			int count = ingredients.get(i).count();
+			residuals[i] = count;
+			totalResidual += count;
+		}
+
+		for (ItemStackCounter.CountedItem countedItem : itemCounter.getItemCounts()) {
+			if (totalResidual <= 0) return true;
+
+			int available = countedItem.amount();
+
+			for (int i = 0; i < ingredients.size(); i++) {
+				if (available <= 0) break;
+
+				final int residual = residuals[i];
+				if (residual > 0 && ingredients.get(i).testItem(countedItem.stack())) {
+					final int amount = Math.min(residual, available);
+					residuals[i] -= amount;
+					available -= amount;
+					totalResidual -= amount;
+				}
+			}
+		}
+
+		return totalResidual <= 0;
 	}
 
 	@Override

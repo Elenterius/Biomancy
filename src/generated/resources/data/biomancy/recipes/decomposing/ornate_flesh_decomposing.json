@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "biomancy:ornate_flesh"
   },
-  "nutrientsCost": 1,
-  "processingTime": 129,
+  "nutrientsCost": 2,
+  "processingTime": 189,
   "results": [
     {
       "countRange": {

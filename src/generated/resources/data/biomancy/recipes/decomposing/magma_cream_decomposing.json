@@ -4,8 +4,16 @@
     "item": "minecraft:magma_cream"
   },
   "nutrientsCost": 1,
-  "processingTime": 176,
+  "processingTime": 246,
   "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 1
+      },
+      "item": "biomancy:regenerative_fluid"
+    },
     {
       "countRange": {
         "type": "uniform",

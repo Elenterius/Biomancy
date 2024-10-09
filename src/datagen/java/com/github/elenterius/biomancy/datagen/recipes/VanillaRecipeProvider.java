@@ -305,6 +305,9 @@ public class VanillaRecipeProvider extends RecipeProvider {
 
 		SpecialRecipeBuilder.special(ModRecipes.CRADLE_CLEANSING_SERIALIZER.get())
 				.save(consumer, BiomancyMod.createRLString(ModItems.PRIMORDIAL_CRADLE.getId().toLanguageKey() + "_cleansing"));
+
+		SpecialRecipeBuilder.special(ModRecipes.PLAYER_HEAD_SERIALIZER.get())
+				.save(consumer, getSpecialCraftingRecipeId(Items.PLAYER_HEAD).toString());
 	}
 
 	private void membrane(Consumer<FinishedRecipe> consumer, SimpleBlockItem pane, SimpleBlockItem membrane) {
@@ -319,6 +322,14 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.pattern("P")
 				.unlockedBy(hasName(pane), has(pane))
 				.save(consumer, getConversionRecipeId(membrane, pane));
+	}
+
+	protected ResourceLocation getSpecialCraftingRecipeId(ItemLike itemLike) {
+		return BiomancyMod.createRL("special_crafting/" + getItemName(itemLike));
+	}
+
+	protected ResourceLocation getCraftingRecipeId(ItemLike itemLike) {
+		return BiomancyMod.createRL("crafting/" + getItemName(itemLike));
 	}
 
 	protected ResourceLocation getSimpleRecipeId(ItemLike itemLike) {

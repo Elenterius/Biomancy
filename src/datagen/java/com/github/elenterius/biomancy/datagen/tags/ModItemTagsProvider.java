@@ -33,12 +33,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		super(output, lookupProvider, blockTagLookupProvider, BiomancyMod.MOD_ID, existingFileHelper);
 	}
 
-	protected EnhancedTagAppender<Item> createTag(TagKey<Item> tag) {
-		return new EnhancedTagAppender<>(tag(tag), ForgeRegistries.ITEMS);
-	}
-
 	private static TagKey<Item> forgeTag(String path) {
 		return ItemTags.create(new ResourceLocation("forge", path));
+	}
+
+	protected EnhancedTagAppender<Item> createTag(TagKey<Item> tag) {
+		return new EnhancedTagAppender<>(tag(tag), ForgeRegistries.ITEMS);
 	}
 
 	@Override
@@ -56,9 +56,20 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.addOptional("createaddition:chocolate_cake");
 
 		createTag(ModItemTags.RAW_MEATS)
-				.add(BEEF, PORKCHOP, CHICKEN, RABBIT, MUTTON, COD, SALMON, TROPICAL_FISH, PUFFERFISH)
-				.add(AMItemRegistry.MOOSE_RIBS.get(), AMItemRegistry.KANGAROO_MEAT.get(), AMItemRegistry.RAW_CATFISH.get(), AMItemRegistry.BLOBFISH.get(), AMItemRegistry.MAGGOT.get())
-				.add(ACItemRegistry.TRILOCARIS_TAIL.get())
+				.add(
+						BEEF, PORKCHOP, CHICKEN, RABBIT, MUTTON,
+						COD, SALMON, TROPICAL_FISH, PUFFERFISH
+				)
+				.add(
+						AMItemRegistry.MOOSE_RIBS.get(), AMItemRegistry.KANGAROO_MEAT.get(),
+						AMItemRegistry.FLYING_FISH.get(), AMItemRegistry.RAW_CATFISH.get(), AMItemRegistry.BLOBFISH.get(),
+						AMItemRegistry.LOBSTER_TAIL.get(), AMItemRegistry.MAGGOT.get()
+				)
+				.add(
+						ACItemRegistry.TRILOCARIS_TAIL.get(), ACItemRegistry.LANTERNFISH.get(), ACItemRegistry.TRIPODFISH.get(), ACItemRegistry.RADGILL.get(),
+						ACItemRegistry.DEEP_SEA_SUSHI_ROLL.get(),
+						ACBlockRegistry.DINOSAUR_CHOP.get().asItem()
+				)
 				.addOptional("createfa:ground_chicken", "createfa:ground_beef")
 				.addOptional("rats:raw_rat")
 				.addOptional("circus:clown")
@@ -67,9 +78,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.addOptionalTag("forge:raw_bacon", "forge:raw_beef", "forge:raw_chicken", "forge:raw_pork", "forge:raw_mutton");
 
 		createTag(ModItemTags.COOKED_MEATS)
-				.add(COOKED_BEEF, COOKED_PORKCHOP, COOKED_CHICKEN, COOKED_SALMON, COOKED_MUTTON, COOKED_COD, COOKED_RABBIT)
-				.add(AMItemRegistry.COOKED_MOOSE_RIBS.get())
-				.add(ACItemRegistry.COOKED_TRILOCARIS_TAIL.get(), ACBlockRegistry.COOKED_DINOSAUR_CHOP.get().asItem())
+				.add(
+						COOKED_BEEF, COOKED_PORKCHOP, COOKED_CHICKEN, COOKED_RABBIT, COOKED_MUTTON,
+						COOKED_COD, COOKED_SALMON)
+				.add(
+						AMItemRegistry.COOKED_MOOSE_RIBS.get(), AMItemRegistry.COOKED_KANGAROO_MEAT.get(),
+						AMItemRegistry.COOKED_CATFISH.get(), AMItemRegistry.COOKED_LOBSTER_TAIL.get()
+				)
+				.add(
+						ACItemRegistry.COOKED_TRILOCARIS_TAIL.get(), ACItemRegistry.COOKED_LANTERNFISH.get(), ACItemRegistry.COOKED_TRIPODFISH.get(), ACItemRegistry.COOKED_RADGILL.get(),
+						ACBlockRegistry.COOKED_DINOSAUR_CHOP.get().asItem()
+				)
 				.addOptional("createfa:schnitzel", "createfa:meatballs", "createfa:chicken_nuggets")
 				.addOptional("rats:cooked_rat");
 

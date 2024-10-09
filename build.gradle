@@ -81,6 +81,8 @@ minecraft {
 			property 'mixin.env.remapRefMap', 'true'
 			property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
 
+			property 'geckolib.disable_examples', 'true'
+
 			// Hot-Swapping via JBR, includes schema changes
 			// https://forge.gemwire.uk/wiki/Hotswap#Applying_schema_changes
 			jvmArgs '-XX:+IgnoreUnrecognizedVMOptions', '-XX:+AllowEnhancedClassRedefinition'
@@ -93,6 +95,7 @@ minecraft {
 		}
 
 		client {
+			workingDirectory project.file('run/client')
 			// Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
 			property 'forge.enabledGameTestNamespaces', mod_id
 		}
@@ -103,7 +106,7 @@ minecraft {
 		}
 
 		server {
-			workingDirectory project.file('run-server')
+			workingDirectory project.file('run/server')
 
 			property 'forge.enabledGameTestNamespaces', mod_id
 			args '--nogui'
@@ -117,7 +120,7 @@ minecraft {
 		}
 
 		data {
-			workingDirectory project.file('run-data')
+			workingDirectory project.file('run/data')
 
 			// Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
 			args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
@@ -210,12 +213,12 @@ dependencies {
 	implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
 	implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
-	runtimeOnly fg.deobf("maven.modrinth:alexs-mobs:1.22.7")
-	runtimeOnly fg.deobf("maven.modrinth:alexs-caves:1.0.9")
-	runtimeOnly fg.deobf("maven.modrinth:citadel:2.4.9")
-	datagenImplementation fg.deobf("maven.modrinth:alexs-mobs:1.22.7")
-	datagenImplementation fg.deobf("maven.modrinth:alexs-caves:1.0.9")
-	datagenImplementation fg.deobf("maven.modrinth:citadel:2.4.9")
+	runtimeOnly fg.deobf("maven.modrinth:alexs-mobs:1.22.9")
+	runtimeOnly fg.deobf("maven.modrinth:alexs-caves:1.1.5")
+	runtimeOnly fg.deobf("maven.modrinth:citadel:2.6.0")
+	datagenImplementation fg.deobf("maven.modrinth:alexs-mobs:1.22.9")
+	datagenImplementation fg.deobf("maven.modrinth:alexs-caves:1.1.5")
+	datagenImplementation fg.deobf("maven.modrinth:citadel:2.6.0")
 
 	compileOnly fg.deobf("maven.modrinth:pehkui:3.7.12+1.20.1-forge")
 	//needs to be compileOnly for datagen to work -> temporarily change to implementation for gameplay testing

@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:quartz"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 180,
   "results": [
     {

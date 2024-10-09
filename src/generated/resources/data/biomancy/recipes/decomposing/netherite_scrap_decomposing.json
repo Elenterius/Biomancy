@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:netherite_scrap"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 360,
   "results": [
     {

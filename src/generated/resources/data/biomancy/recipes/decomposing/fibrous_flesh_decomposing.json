@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "biomancy:fibrous_flesh"
   },
-  "nutrientsCost": 1,
-  "processingTime": 48,
+  "nutrientsCost": 2,
+  "processingTime": 108,
   "results": [
     {
       "countRange": {

@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:totem_of_undying"
   },
-  "nutrientsCost": 3,
+  "nutrientsCost": 5,
   "processingTime": 2400,
   "results": [
     {

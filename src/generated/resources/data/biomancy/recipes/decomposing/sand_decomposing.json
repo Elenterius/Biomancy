@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "minecraft:sand"
   },
-  "nutrientsCost": 1,
-  "processingTime": 130,
+  "nutrientsCost": 2,
+  "processingTime": 190,
   "results": [
     {
       "countRange": {

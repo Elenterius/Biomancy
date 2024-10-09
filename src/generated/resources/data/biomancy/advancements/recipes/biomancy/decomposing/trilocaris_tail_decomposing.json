@@ -1,0 +1,47 @@
+{
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "biomancy:decomposing/trilocaris_tail_decomposing"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          },
+          "has_trilocaris_tail": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "alexscaves:trilocaris_tail"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          }
+        },
+        "requirements": [
+          [
+            "has_trilocaris_tail",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "biomancy:decomposing/trilocaris_tail_decomposing"
+          ]
+        },
+        "sends_telemetry_event": false
+      },
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ]
+    }
+  ]
+}

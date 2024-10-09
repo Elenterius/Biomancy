@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:emerald"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 450,
   "results": [
     {

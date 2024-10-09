@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "minecraft:coarse_dirt"
   },
-  "nutrientsCost": 1,
-  "processingTime": 50,
+  "nutrientsCost": 2,
+  "processingTime": 110,
   "results": [
     {
       "countRange": {

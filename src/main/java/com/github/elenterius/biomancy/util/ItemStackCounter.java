@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.ints.IntComparator;
 import it.unimi.dsi.fastutil.ints.IntComparators;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -59,17 +60,11 @@ public class ItemStackCounter {
 
 			public EntryKey(int hash, ItemStack stack) {
 				this.hash = hash;
-				this.stack = copyWithMinCount(stack);
+				this.stack = stack.copyWithCount(1);
 			}
 
 			EntryKey(ItemStack stack) {
 				this(Objects.hash(ForgeRegistries.ITEMS.getKey(stack.getItem()), stack.getTag()), stack);
-			}
-
-			private static ItemStack copyWithMinCount(ItemStack stack) {
-				ItemStack copy = stack.copy();
-				copy.setCount(1);
-				return copy;
 			}
 
 			@Override
@@ -87,8 +82,20 @@ public class ItemStackCounter {
 	}
 
 	private final Object2IntMap<HashKey> countedItemStacks = new Object2IntOpenHashMap<>();
+	private List<CountedItem> countedItems = null;
 
 	public record CountedItem(ItemStack stack, int amount) {}
+
+	public List<CountedItem> getItemCounts() {
+		if (countedItems != null) return countedItems;
+
+		countedItems = countedItemStacks.object2IntEntrySet().stream()
+				.sorted((a, b) -> IntComparators.OPPOSITE_COMPARATOR.compare(a.getIntValue(), b.getIntValue()))
+				.map(entry -> new CountedItem(entry.getKey().stack(), entry.getIntValue()))
+				.toList();
+
+		return countedItems;
+	}
 
 	public List<CountedItem> getItemCountSorted(int limit, boolean ascending) {
 		IntComparator comparator = ascending ? IntComparators.NATURAL_COMPARATOR : IntComparators.OPPOSITE_COMPARATOR;
@@ -105,6 +112,12 @@ public class ItemStackCounter {
 
 	public void accountStack(ItemStack stack) {
 		accountStack(stack, stack.getCount());
+	}
+
+	public void accountStacks(NonNullList<ItemStack> stacks) {
+		for (ItemStack stack : stacks) {
+			accountStack(stack);
+		}
 	}
 
 	public void accountStacks(Container container) {
@@ -132,6 +145,8 @@ public class ItemStackCounter {
 			EntryKey entryKey = new EntryKey(key.hash(), template);
 			countedItemStacks.put(entryKey, amount);
 		}
+
+		countedItems = null;
 	}
 
 	public boolean has(ItemStack template) {
@@ -144,6 +159,7 @@ public class ItemStackCounter {
 
 	public void clear() {
 		countedItemStacks.clear();
+		countedItems = null;
 	}
 
 }

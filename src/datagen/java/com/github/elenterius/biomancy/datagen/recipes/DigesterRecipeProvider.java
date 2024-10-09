@@ -168,5 +168,6 @@ public class DigesterRecipeProvider extends RecipeProvider {
 		createAlexsCavesRecipe(4, ACBlockRegistry.GROTTOCERATOPS_EGG.get()).setCraftingCost(3).save(consumer);
 		createAlexsCavesRecipe(4, ACBlockRegistry.TREMORSAURUS_EGG.get()).setCraftingCost(3).save(consumer);
 		createAlexsCavesRecipe(4, ACBlockRegistry.RELICHEIRUS_EGG.get()).setCraftingCost(3).save(consumer);
+		createAlexsCavesRecipe(4, ACBlockRegistry.ATLATITAN_EGG.get()).setCraftingCost(3).save(consumer);
 	}
 }

@@ -4,7 +4,7 @@
     "item": "minecraft:horn_coral_fan"
   },
   "nutrientsCost": 1,
-  "processingTime": 20,
+  "processingTime": 55,
   "results": [
     {
       "countRange": {
@@ -12,6 +12,14 @@
         "value": 1
       },
       "item": "biomancy:organic_matter"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 1,
+        "min": 0
+      },
+      "item": "biomancy:regenerative_fluid"
     }
   ]
 }

@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "biomancy:ornate_flesh_slab"
   },
-  "nutrientsCost": 1,
-  "processingTime": 43,
+  "nutrientsCost": 2,
+  "processingTime": 103,
   "results": [
     {
       "countRange": {

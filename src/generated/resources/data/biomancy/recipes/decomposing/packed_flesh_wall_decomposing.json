@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "biomancy:packed_flesh_wall"
   },
-  "nutrientsCost": 1,
-  "processingTime": 216,
+  "nutrientsCost": 2,
+  "processingTime": 276,
   "results": [
     {
       "countRange": {

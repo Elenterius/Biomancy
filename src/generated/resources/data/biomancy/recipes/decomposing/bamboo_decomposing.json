@@ -4,7 +4,7 @@
     "item": "minecraft:bamboo"
   },
   "nutrientsCost": 1,
-  "processingTime": 40,
+  "processingTime": 80,
   "results": [
     {
       "countRange": {

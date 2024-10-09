@@ -5,12 +5,17 @@ import com.github.elenterius.biomancy.datagen.recipes.builder.BioForgeRecipeBuil
 import com.github.elenterius.biomancy.datagen.recipes.builder.ItemData;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.item.EssenceItem;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.crafting.PartialNBTIngredient;
 
 import java.util.function.Consumer;
 
@@ -23,6 +28,22 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 
 	protected BioForgeRecipeProvider(PackOutput output) {
 		super(output);
+	}
+
+	private static <T extends Item & NutrientsContainerItem> ItemStack withMaxNutrients(T item) {
+		ItemStack itemStack = item.getDefaultInstance();
+		item.setNutrients(itemStack, Integer.MAX_VALUE);
+		return itemStack;
+	}
+
+	private static Ingredient createMobEssenceIngredient(EntityType<?> entityType) {
+		CompoundTag essenceTag = new CompoundTag();
+		essenceTag.putString(EssenceItem.ENTITY_TYPE_KEY, EntityType.getKey(entityType).toString());
+		essenceTag.putString(EssenceItem.ENTITY_NAME_KEY, entityType.getDescriptionId());
+		CompoundTag tag = new CompoundTag();
+		tag.put(EssenceItem.ESSENCE_DATA_KEY, essenceTag);
+		tag.putInt(EssenceItem.ESSENCE_TIER_KEY, 1);
+		return PartialNBTIngredient.of(ModItems.ESSENCE.get(), tag);
 	}
 
 	@Override
@@ -150,12 +171,6 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.BONE_FRAGMENTS.get()).save(consumer);
 	}
 
-	private <T extends Item & NutrientsContainerItem> ItemStack withMaxNutrients(T item) {
-		ItemStack itemStack = item.getDefaultInstance();
-		item.setNutrients(itemStack, Integer.MAX_VALUE);
-		return itemStack;
-	}
-
 	private void buildToolRecipes(Consumer<FinishedRecipe> consumer) {
 		BioForgeRecipeBuilder.create(withMaxNutrients(ModItems.RAVENOUS_CLAWS.get()))
 				.addIngredient(ModItems.LIVING_FLESH.get())
@@ -257,16 +272,18 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.FLESH_BITS.get(), 4)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 3)
 				.addIngredient(ModItems.EXOTIC_DUST.get(), 2)
-				.addIngredient(ModItems.NUTRIENT_PASTE.get(), 3)
+				.addIngredient(ModItems.NUTRIENTS.get(), 15)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(ModItems.EXOTIC_DUST.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(ModItems.FERTILIZER.get())
-				.addIngredient(ModItems.NUTRIENT_PASTE.get(), 4)
+				.addIngredient(ModItems.NUTRIENTS.get(), 30)
 				.addIngredient(ModItems.ORGANIC_MATTER.get(), 4)
-				.addIngredient(ModItems.AGEING_SERUM.get())
+				.addIngredient(ModItems.HORMONE_SECRETION.get(), 6)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 4)
+				.addIngredient(ModItems.REGENERATIVE_FLUID.get(), 4)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
-				.unlockedBy(ModItems.AGEING_SERUM.get()).save(consumer);
+				.unlockedBy(ModItems.HORMONE_SECRETION.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(ModItems.MOB_FANG.get())
 				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 6)
@@ -320,6 +337,44 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.STONE_POWDER.get(), 1)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(Items.NAUTILUS_SHELL).save(consumer);
+
+		BioForgeRecipeBuilder.create(Items.SKELETON_SKULL)
+				.setCraftingCost(4)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 48 + 2)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 7 + 2)
+				.setCategory(ModBioForgeTabs.COMPONENTS)
+				.unlockedBy(Items.SKELETON_SKULL).save(consumer);
+
+		BioForgeRecipeBuilder.create(Items.WITHER_SKELETON_SKULL)
+				.setCraftingCost(4)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 48 + 2)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 7 + 2)
+				.addIngredient(ModItems.WITHERING_OOZE.get(), 16 + 2)
+				.setCategory(ModBioForgeTabs.COMPONENTS)
+				.unlockedBy(Items.WITHER_SKELETON_SKULL).save(consumer);
+
+		BioForgeRecipeBuilder.create(Items.PLAYER_HEAD)
+				.setCraftingCost(4)
+				.addIngredient(Items.SKELETON_SKULL)
+				.addIngredient(createMobEssenceIngredient(EntityType.PLAYER))
+				.addIngredient(ModItems.FLESH_BITS.get(), 32 + 2)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 9 + 2)
+				.setCategory(ModBioForgeTabs.COMPONENTS)
+				.unlockedBy(Items.SKELETON_SKULL).save(consumer);
+
+		BioForgeRecipeBuilder.create(Items.PIGLIN_HEAD)
+				.setCraftingCost(4)
+				.addIngredient(Items.SKELETON_SKULL)
+				.addIngredient(createMobEssenceIngredient(EntityType.PIGLIN))
+				.addIngredient(ModItems.FLESH_BITS.get(), 36 + 2)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 12 + 2)
+				.setCategory(ModBioForgeTabs.COMPONENTS)
+				.unlockedBy(Items.SKELETON_SKULL).save(consumer);
+
+		//		DecomposerRecipeBuilder.create().setIngredient(Items.ZOMBIE_HEAD).addOutput(ModItems.FLESH_BITS.get(), 14, 24).addOutput(ModItems.ELASTIC_FIBERS.get(), 5, 9).addOutput(Items.SKELETON_SKULL, 1).unlockedBy(Items.ZOMBIE_HEAD).save(consumer);
+		//		DecomposerRecipeBuilder.create().setIngredient(Items.CREEPER_HEAD).addOutput(ModItems.FLESH_BITS.get(), 19, 32).addOutput(ModItems.ELASTIC_FIBERS.get(), 5, 9).addOutput(Items.SKELETON_SKULL, 1).unlockedBy(Items.CREEPER_HEAD).save(consumer);
+		//		DecomposerRecipeBuilder.create().setIngredient(Items.DRAGON_HEAD).addOutput(ModItems.FLESH_BITS.get(), 50).addOutput(ModItems.EXOTIC_DUST.get(), 50).addOutput(ModItems.TOUGH_FIBERS.get(), 25).addOutput(ModItems.MINERAL_FRAGMENT.get(), 20).addOutput(ModItems.BONE_FRAGMENTS.get(), 50).unlockedBy(Items.DRAGON_HEAD).save(consumer);
+
 	}
 
 	private void buildMiscRecipes(Consumer<FinishedRecipe> consumer) {

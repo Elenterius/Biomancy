@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:raw_gold"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 420,
   "results": [
     {

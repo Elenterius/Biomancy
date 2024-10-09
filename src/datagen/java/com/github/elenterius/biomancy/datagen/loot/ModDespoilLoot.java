@@ -153,40 +153,43 @@ public class ModDespoilLoot extends DespoilLootProvider {
 	protected LootTable.Builder createLootTable(EntityType<?> entityType) {
 		LootTable.Builder lootTable = LootTable.lootTable();
 
-		createCommonPool(entityType).ifPresent(lootTable::withPool);
-		createSpecialPool(entityType).ifPresent(lootTable::withPool);
+		//noinspection unchecked
+		EntityType<? extends LivingEntity> livingEntityType = (EntityType<? extends LivingEntity>) entityType;
+
+		createCommonPool(livingEntityType).ifPresent(lootTable::withPool);
+		createSpecialPool(livingEntityType).ifPresent(lootTable::withPool);
 
 		return lootTable;
 	}
 
-	protected Optional<LootPool.Builder> createCommonPool(EntityType<?> entityType) {
+	protected Optional<LootPool.Builder> createCommonPool(EntityType<? extends LivingEntity> entityType) {
 		LootPool.Builder builder = LootPool.lootPool().setRolls(ConstantValue.exactly(1));
 		boolean hasLoot = false;
 
-		EntityType<? extends LivingEntity> livingEntityType = (EntityType<? extends LivingEntity>) entityType;
-		AttributeSupplier baseAttributes = DefaultAttributes.getSupplier(livingEntityType);
+		AttributeSupplier baseAttributes = DefaultAttributes.getSupplier(entityType);
+		final double attackDamage = baseAttributes.hasAttribute(Attributes.ATTACK_DAMAGE) ? baseAttributes.getValue(Attributes.ATTACK_DAMAGE) : 0;
 
-		float volume = entityType.getWidth() * entityType.getHeight() * entityType.getWidth();
-		float fangMultiplier = 0.825f;
-		float clawMultiplier = 7f;
-		float marrowMultiplier = 2.9f;
-		float sinewMultiplier = 7f;
-		float bileGlandMultiplier = 0.5f;
+		final float volume = entityType.getWidth() * entityType.getHeight() * entityType.getWidth();
+		final float fangMultiplier = 0.825f;
+		final float clawMultiplier = 7f;
+		final float marrowMultiplier = 2.9f;
+		final float sinewMultiplier = 7f;
+		final float bileGlandMultiplier = 0.5f;
 
-		boolean hasToxinGland = TOXIC_MOBS.contains(entityType);
-		boolean hasVolatileGland = VOLATILE_MOBS.contains(entityType);
+		final boolean hasToxinGland = TOXIC_MOBS.contains(entityType);
+		final boolean hasVolatileGland = VOLATILE_MOBS.contains(entityType);
 
 		if (SHARP_FANG_MOBS.contains(entityType)) {
+			int minCount = 1;
 			int maxCount = Mth.ceil(Math.log(volume * fangMultiplier + 1));
 
-			if (baseAttributes.hasAttribute(Attributes.ATTACK_DAMAGE) && baseAttributes.getValue(Attributes.ATTACK_DAMAGE) >= 5d) {
-				maxCount += 1;
-			}
+			if (attackDamage >= 5d) minCount += 1;
+			if (attackDamage >= 3d) maxCount += 1;
 
-			NumberProvider countProvider = maxCount > 1 ? UniformGenerator.between(1, maxCount) : ConstantValue.exactly(1);
+			NumberProvider countProvider = maxCount > minCount ? UniformGenerator.between(minCount, maxCount) : ConstantValue.exactly(minCount);
 
 			builder.add(
-					LootItem.lootTableItem(ModItems.MOB_FANG.get()).setWeight(140)
+					LootItem.lootTableItem(ModItems.MOB_FANG.get()).setWeight(144)
 							.apply(SetItemCountFunction.setCount(countProvider))
 							.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))
 			);
@@ -195,13 +198,13 @@ public class ModDespoilLoot extends DespoilLootProvider {
 		}
 
 		if (SHARP_CLAW_MOBS.contains(entityType)) {
+			int minCount = 1;
 			int maxCount = Mth.ceil(Math.log(volume * clawMultiplier + 1));
 
-			if (baseAttributes.hasAttribute(Attributes.ATTACK_DAMAGE) && baseAttributes.getValue(Attributes.ATTACK_DAMAGE) >= 5d) {
-				maxCount += 1;
-			}
+			if (attackDamage >= 5d) minCount += 1;
+			if (attackDamage >= 3d) maxCount += 1;
 
-			NumberProvider countProvider = maxCount > 1 ? UniformGenerator.between(1, maxCount) : ConstantValue.exactly(1);
+			NumberProvider countProvider = maxCount > minCount ? UniformGenerator.between(minCount, maxCount) : ConstantValue.exactly(minCount);
 
 			builder.add(
 					LootItem.lootTableItem(ModItems.MOB_CLAW.get()).setWeight(150)
@@ -258,13 +261,13 @@ public class ModDespoilLoot extends DespoilLootProvider {
 		return Optional.of(builder);
 	}
 
-	protected Optional<LootPool.Builder> createSpecialPool(EntityType<?> entityType) {
+	protected Optional<LootPool.Builder> createSpecialPool(EntityType<? extends LivingEntity> entityType) {
 		LootPool.Builder builder = LootPool.lootPool().setRolls(ConstantValue.exactly(1));
 		boolean hasLoot = false;
 
-		float volume = entityType.getWidth() * entityType.getHeight() * entityType.getWidth();
-		float organMultiplier = 0.9f;
-		float witheredMarrowMultiplier = 3f;
+		final float volume = entityType.getWidth() * entityType.getHeight() * entityType.getWidth();
+		final float organMultiplier = 0.9f;
+		final float witheredMarrowMultiplier = 3f;
 
 		boolean hasToxinGland = TOXIC_MOBS.contains(entityType);
 		boolean hasVolatileGland = VOLATILE_MOBS.contains(entityType);

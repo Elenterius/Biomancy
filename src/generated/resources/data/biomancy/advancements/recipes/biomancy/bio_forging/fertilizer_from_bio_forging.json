@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_ageing_serum": {
+    "has_hormone_secretion": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:ageing_serum"
+              "biomancy:hormone_secretion"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_ageing_serum",
+      "has_hormone_secretion",
       "has_the_recipe"
     ]
   ],

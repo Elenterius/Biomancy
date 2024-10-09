@@ -18,6 +18,10 @@
       "required": false
     },
     {
+      "id": "alexsmobs:flying_fish",
+      "required": false
+    },
+    {
       "id": "alexsmobs:raw_catfish",
       "required": false
     },
@@ -26,11 +30,35 @@
       "required": false
     },
     {
+      "id": "alexsmobs:lobster_tail",
+      "required": false
+    },
+    {
       "id": "alexsmobs:maggot",
       "required": false
     },
     {
       "id": "alexscaves:trilocaris_tail",
+      "required": false
+    },
+    {
+      "id": "alexscaves:lanternfish",
+      "required": false
+    },
+    {
+      "id": "alexscaves:tripodfish",
+      "required": false
+    },
+    {
+      "id": "alexscaves:radgill",
+      "required": false
+    },
+    {
+      "id": "alexscaves:deep_sea_sushi_roll",
+      "required": false
+    },
+    {
+      "id": "alexscaves:dinosaur_chop",
       "required": false
     },
     {

@@ -37,6 +37,7 @@ import com.github.elenterius.biomancy.item.weapon.gun.GunbladeItem;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
+import com.github.elenterius.biomancy.util.TransliterationUtil;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.particle.AttackSweepParticle;
@@ -77,6 +78,8 @@ public final class ClientSetupHandler {
 		setBlockRenderLayers();
 
 		event.enqueueWork(ClientSetupHandler::onPostSetup);
+
+		TransliterationUtil.init();
 
 		ModsCompatHandler.onBiomancyClientSetup(event);
 	}
