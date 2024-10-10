@@ -64,4 +64,18 @@ public final class ParticleProviders {
 		}
 	}
 
+	@OnlyIn(Dist.CLIENT)
+	public static class AcidBubbleProvider implements ParticleProvider<SimpleParticleType> {
+		protected final SpriteSet sprite;
+
+		public AcidBubbleProvider(SpriteSet sprites) {
+			sprite = sprites;
+		}
+
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			VanillaDripParticle.AcidBubbleParticle particle = new VanillaDripParticle.AcidBubbleParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
+			particle.pickSprite(sprite);
+			return particle;
+		}
+	}
 }
