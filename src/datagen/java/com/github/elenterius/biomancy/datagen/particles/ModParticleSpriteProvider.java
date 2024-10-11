@@ -24,6 +24,7 @@ public class ModParticleSpriteProvider extends ParticleSpriteProvider {
 		addParticle(ModParticleTypes.LIGHT_GREEN_GLOW, "minecraft:glow");
 		addParticle(ModParticleTypes.HOSTILE, "biomancy:hostile");
 		addParticle(ModParticleTypes.BIOHAZARD, "biomancy:biohazard");
+		addParticle(ModParticleTypes.ACID_BUBBLE, "biomancy:acid_bubble");
 	}
 
 }
