@@ -51,11 +51,8 @@
     "accessor.ZombieVillagerMixinAccessor"
   ],
   "client": [
-    "accessor.RecipeCollectionAccessor",
-    "client.ClientPackListenerMixin",
-    "client.ClientRecipeBookMixin",
-    "client.GuiGraphicsMixin",
-    "client.PlayerRendererMixin"
+    "accessor.RecipeCollectionAccessor", "client.AbstractSignEditScreenMixin", "client.AnvilScreenMixin", "client.ClientPackListenerMixin",
+    "client.ClientRecipeBookMixin", "client.ForgeGuiMixin", "client.GuiGraphicsMixin", "client.HeartTypeMixin", "client.PlayerRendererMixin"
   ],
   "server": [ ]
 }

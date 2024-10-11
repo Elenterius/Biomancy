@@ -8,7 +8,7 @@
       "item": "biomancy:nutrient_paste"
     },
     {
-      "item": "biomancy:corrosive_additive"
+      "item": "biomancy:decaying_additive"
     }
   ],
   "nutrientsCost": 2,

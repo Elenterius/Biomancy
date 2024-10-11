@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/serum/corrosive_additive"
+    "layer0": "biomancy:item/serum/decaying_additive"
   }
 }

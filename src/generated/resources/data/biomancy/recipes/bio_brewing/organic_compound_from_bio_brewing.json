@@ -5,7 +5,13 @@
       "item": "biomancy:bile"
     },
     {
-      "item": "biomancy:nutrient_paste"
+      "item": "biomancy:bile"
+    },
+    {
+      "item": "biomancy:organic_matter"
+    },
+    {
+      "item": "biomancy:nutrients"
     }
   ],
   "nutrientsCost": 2,

@@ -80,7 +80,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		serumItem(ModItems.GENETIC_COMPOUND);
 		serumItem(ModItems.EXOTIC_COMPOUND);
 		serumItem(ModItems.HEALING_ADDITIVE);
-		serumItem(ModItems.CORROSIVE_ADDITIVE);
+		serumItem(ModItems.DECAYING_ADDITIVE);
 
 		emissiveItem(ModItems.PRIMORDIAL_CORE);
 		fleshPlunderer(ModItems.DESPOIL_SICKLE);

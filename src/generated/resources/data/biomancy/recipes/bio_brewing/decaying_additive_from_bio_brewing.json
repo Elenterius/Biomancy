@@ -5,7 +5,7 @@
       "item": "biomancy:withering_ooze"
     },
     {
-      "item": "biomancy:bile"
+      "item": "biomancy:withering_ooze"
     }
   ],
   "nutrientsCost": 2,
@@ -14,6 +14,6 @@
     "item": "biomancy:organic_compound"
   },
   "result": {
-    "item": "biomancy:corrosive_additive"
+    "item": "biomancy:decaying_additive"
   }
 }

@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.mixin;
 
 import com.github.elenterius.biomancy.init.ModDamageTypes;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.ItemAttackDamageSourceProvider;
 import com.github.elenterius.biomancy.item.SweepAttackListener;
 import com.github.elenterius.biomancy.item.shield.LivingShieldItem;
@@ -10,19 +11,26 @@ import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity {
+
+	@Shadow
+	public abstract ItemStack getItemBySlot(EquipmentSlot slot);
 
 	protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
 		super(entityType, level);
@@ -86,6 +94,23 @@ public abstract class PlayerMixin extends LivingEntity {
 		if (useItem.getItem() instanceof LivingShieldItem livingShield) {
 			livingShield.damageCurrentlyUsedLivingShield(useItem, damage, this);
 			ci.cancel();
+		}
+	}
+
+	@Inject(method = "isModelPartShown", at = @At("HEAD"), cancellable = true)
+	private void onIsModelPartShown(PlayerModelPart part, CallbackInfoReturnable<Boolean> cir) {
+		//don't render outer skin overlay when wearing the acolyte armor to prevent z-fighting, etc.
+		switch (part) {
+			case HAT -> {
+				if (getItemBySlot(EquipmentSlot.HEAD).is(ModItems.ACOLYTE_ARMOR_HELMET.get())) cir.setReturnValue(false);
+			}
+			case JACKET, LEFT_SLEEVE, RIGHT_SLEEVE -> {
+				if (getItemBySlot(EquipmentSlot.CHEST).is(ModItems.ACOLYTE_ARMOR_CHESTPLATE.get())) cir.setReturnValue(false);
+			}
+			case LEFT_PANTS_LEG, RIGHT_PANTS_LEG -> {
+				if (getItemBySlot(EquipmentSlot.LEGS).is(ModItems.ACOLYTE_ARMOR_LEGGINGS.get())) cir.setReturnValue(false);
+			}
+			case CAPE -> {}
 		}
 	}
 
