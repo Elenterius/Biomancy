@@ -4,8 +4,8 @@ import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
 import com.github.elenterius.biomancy.crafting.recipe.DigestingRecipe;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
-import com.github.elenterius.biomancy.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.util.CombatUtil;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,6 +35,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.SoundActions;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -172,80 +175,93 @@ public final class AcidInteractions {
 		public static final String BASE_DATA_KEY = "biomancy:acid_digestion";
 		public static final String TIMER_KEY = "timer";
 		public static final String RECIPE_KEY = "recipe";
-		//Balancing multiplier applied to the output of any found recipes.
+
+		/**
+		 * Balancing multiplier applied to the output of any found recipes.
+		 */
 		public static final double EFFICIENCY = 0.8;
-		//How many times tryDigestSubmergedItem should be called on a digestible item before it is processed.
-		//This is not directly ticks, as submerged items are only actually processed every 10 ticks.
+
+		/**
+		 * How many times {@link #tryDigestSubmergedItem} should be called on a digestible item before it is processed.<br>
+		 * This is not directly ticks, as submerged items are only actually processed every 10 ticks.
+		 */
 		public static final int DELAY = 10;
 
+		private InWorldItemDigesting() {}
+
 		public static void tryDigestSubmergedItem(ItemEntity itemEntity) {
-			if (!digestible(itemEntity)) return;
-			ItemStack stack = itemEntity.getItem();
+			if (!isDigestible(itemEntity)) return;
+
+			Level level = itemEntity.level();
+			ItemStack itemStack = itemEntity.getItem();
 			CompoundTag entityData = itemEntity.getPersistentData();
 			CompoundTag digestionData = getOrCreateDigestionData(entityData);
-			if (itemEntity.level().isClientSide && digestionData.getInt(TIMER_KEY) > 0) {
+
+			if (level.isClientSide && digestionData.getInt(TIMER_KEY) > 0) {
 				Vec3 pos = itemEntity.position();
-				RandomSource random = itemEntity.level().getRandom();
-				itemEntity.level().addParticle(ModParticleTypes.ACID_BUBBLE.get(),pos.x,pos.y,pos.z,random.nextGaussian()/100,Math.abs(random.nextGaussian()/50),random.nextGaussian()/100);
-				itemEntity.level().addParticle(ParticleTypes.SMOKE,pos.x,pos.y,pos.z,random.nextGaussian()/100,Math.abs(random.nextGaussian()/100),random.nextGaussian()/100);
+				RandomSource random = level.getRandom();
+				level.addParticle(ModParticleTypes.ACID_BUBBLE.get(), pos.x, pos.y, pos.z, random.nextGaussian() / 100, Math.abs(random.nextGaussian() / 50), random.nextGaussian() / 100);
+				level.addParticle(ParticleTypes.SMOKE, pos.x, pos.y, pos.z, random.nextGaussian() / 100, Math.abs(random.nextGaussian() / 100), random.nextGaussian() / 100);
 				return;
 			}
 
 			if (itemEntity.getAge() % 10 != 0) return; //Only tick digestion every 10 ticks.
-			Optional<DigestingRecipe> optionalRecipe = getDigestionRecipe(itemEntity, stack, digestionData);
+
+			@Nullable ResourceLocation lastRecipeId = ResourceLocation.tryParse(digestionData.getString(RECIPE_KEY));
+			Optional<Pair<ResourceLocation, DigestingRecipe>> optionalRecipe = DigesterBlockEntity.RECIPE_TYPE.get().getRecipeForIngredient(level, itemStack, lastRecipeId);
 
 			if (optionalRecipe.isEmpty()) return;
-			if (optionalRecipe.get().getId() != ResourceLocation.tryParse(digestionData.getString(RECIPE_KEY))) {
-				digestionData.putString(RECIPE_KEY, optionalRecipe.get().getId().toString());
+
+			ResourceLocation recipeId = optionalRecipe.get().getFirst();
+			DigestingRecipe recipe = optionalRecipe.get().getSecond();
+
+			if (!recipeId.equals(lastRecipeId)) {
+				digestionData.putString(RECIPE_KEY, recipeId.toString());
 			}
 
 			int currentDigestionTime = digestionData.getInt(TIMER_KEY);
 			if (currentDigestionTime < DELAY) {
 				digestionData.putInt(TIMER_KEY, currentDigestionTime + 1);
-				entityData.put(BASE_DATA_KEY,digestionData);
-			} else {
-				digestIntoNutrientPasteStacks(itemEntity, optionalRecipe.get());
-				itemEntity.getPersistentData().remove(BASE_DATA_KEY);
+				entityData.put(BASE_DATA_KEY, digestionData);
+			}
+			else if (!level.isClientSide) {
+				digestAtPos(itemEntity.level(), itemEntity.position(), itemStack, recipe);
+				itemEntity.discard();
 			}
 		}
 
 		public static CompoundTag getOrCreateDigestionData(CompoundTag entityData) {
-			if (entityData.contains(BASE_DATA_KEY)) return entityData.getCompound(BASE_DATA_KEY);
+			if (entityData.contains(BASE_DATA_KEY)) return entityData.getCompound(BASE_DATA_KEY); //avoids try catch
 			return new CompoundTag();
 		}
 
-		public static void digestIntoNutrientPasteStacks(ItemEntity itemEntity, DigestingRecipe recipe) {
-			BehavioralInventory<?> tempInventory = BehavioralInventory.createServerContents(1, player -> false, () -> {});
-			tempInventory.insertItemStack(itemEntity.getItem());
-			ItemStack resultStack = recipe.assemble(tempInventory, itemEntity.level().registryAccess());
-			int totalToOutput = (int) Math.floor(resultStack.getCount() * itemEntity.getItem().getCount() * EFFICIENCY);
-			if (totalToOutput > 64) totalToOutput = splitIntoStacks(itemEntity, totalToOutput);
-			itemEntity.setItem(new ItemStack(ModItems.NUTRIENT_PASTE.get(), totalToOutput));
-			itemEntity.playSound(SoundEvents.PLAYER_BURP);
+		public static void digestAtPos(Level level, Vec3 pos, ItemStack inputStack, DigestingRecipe recipe) {
+			RecipeWrapper inventory = new RecipeWrapper(new ItemStackHandler(1));
+			inventory.setItem(0, inputStack);
+
+			ItemStack resultStack = recipe.assemble(inventory, level.registryAccess());
+			int totalCount = Mth.floor(resultStack.getCount() * inputStack.getCount() * EFFICIENCY);
+
+			spawnItems(level, pos, resultStack, totalCount);
+
+			level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS, 1f, 1f);
 		}
 
-		public static int splitIntoStacks(ItemEntity itemEntity, int numToSplit) {
-			Level level = itemEntity.level();
-			while (numToSplit > 64) {
-				DefaultDispenseItemBehavior.spawnItem(level, new ItemStack(ModItems.NUTRIENT_PASTE.get(), 64), 1, Direction.UP, itemEntity.position());
-				numToSplit -= 64;
+		private static void spawnItems(Level level, Vec3 pos, ItemStack itemType, int totalCount) {
+			final int maxStackSize = itemType.getMaxStackSize();
+			while (totalCount > 0) {
+				int count = Math.min(totalCount, maxStackSize);
+				DefaultDispenseItemBehavior.spawnItem(level, itemType.copyWithCount(count), 1, Direction.UP, pos);
+				totalCount -= count;
 			}
-			return numToSplit;
 		}
 
 		@SuppressWarnings("RedundantIfStatement") //Let me write readable code please, thanks
-		public static boolean digestible(ItemEntity itemEntity) {
-			if (!itemEntity.isInFluidType(ModFluids.ACID_TYPE.get()) && !itemEntity.level().getBlockState(itemEntity.blockPosition()).is(ModBlocks.ACID_CAULDRON.get())) return false;
+		public static boolean isDigestible(ItemEntity itemEntity) {
 			if (itemEntity.getItem().is(ModItemTags.CANNOT_BE_DIGESTED_IN_ACID)) return false;
+			if (!itemEntity.isInFluidType(ModFluids.ACID_TYPE.get()) && !itemEntity.level().getBlockState(itemEntity.blockPosition()).is(ModBlocks.ACID_CAULDRON.get())) return false;
 			return true;
 		}
 
-		private static Optional<DigestingRecipe> getDigestionRecipe(ItemEntity itemEntity, ItemStack stack, CompoundTag digestionData) {
-			Optional<DigestingRecipe> recipe = Optional.empty();
-			ResourceLocation lastRecipeId = ResourceLocation.tryParse(digestionData.getString(RECIPE_KEY));
-			if (lastRecipeId != null) recipe = DigesterBlockEntity.RECIPE_TYPE.get().getRecipeById(itemEntity.level(), lastRecipeId);
-			if (recipe.isEmpty()) recipe = DigesterBlockEntity.RECIPE_TYPE.get().getRecipeForIngredient(itemEntity.level(), stack);
-			return recipe; //If it's still empty, there's no recipe that matches the item stack.
-		}
 	}
 }
