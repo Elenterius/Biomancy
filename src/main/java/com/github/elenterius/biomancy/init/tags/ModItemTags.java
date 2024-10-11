@@ -19,6 +19,8 @@ public final class ModItemTags {
 
 	public static final TagKey<Item> SUGARS = tag("sugars");
 
+	public static final TagKey<Item> CANNOT_BE_DIGESTED_IN_ACID = tag("cannot_be_digested_in_acid");
+
 	private ModItemTags() {}
 
 	private static TagKey<Item> tag(String name) {

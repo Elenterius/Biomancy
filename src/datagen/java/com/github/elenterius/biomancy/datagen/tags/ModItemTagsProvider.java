@@ -108,6 +108,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.addTag(Tags.Items.ARMORS, Tags.Items.TOOLS)
 				.addTag(Tags.Items.ORES_NETHERITE_SCRAP, Tags.Items.INGOTS_NETHERITE, Tags.Items.STORAGE_BLOCKS_NETHERITE)
 				.addTag(forgeTag("shulker_boxes"));
+
+		createTag(ModItemTags.CANNOT_BE_DIGESTED_IN_ACID)
+				.add(ModItems.NUTRIENT_PASTE.get())
+				.add(ModItems.NUTRIENT_BAR.get())
+				.add(ModItems.LIVING_FLESH.get());
 	}
 
 	private void addMinecraftTags() {

@@ -149,6 +149,7 @@ public final class ClientSetupHandler {
 		event.registerSpriteSet(ModParticleTypes.LIGHT_GREEN_GLOW.get(), sprites -> new CustomGlowParticle.TwoColorProvider(sprites, 0x53ff53, 0x64e986));
 		event.registerSpriteSet(ModParticleTypes.HOSTILE.get(), CustomGlowParticle.GenericProvider::new);
 		event.registerSpriteSet(ModParticleTypes.BIOHAZARD.get(), sprites -> new CustomGlowParticle.TwoColorProvider(sprites, 0xab274f, 0x7e2a43));
+		event.registerSpriteSet(ModParticleTypes.ACID_BUBBLE.get(), ParticleProviders.AcidBubbleProvider::new);
 	}
 
 	@SubscribeEvent

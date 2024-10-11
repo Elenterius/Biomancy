@@ -21,6 +21,7 @@ public final class ModParticleTypes {
 	public static final RegistryObject<SimpleParticleType> LIGHT_GREEN_GLOW = register("light_green_glow", false);
 	public static final RegistryObject<SimpleParticleType> HOSTILE = register("hostile", false);
 	public static final RegistryObject<SimpleParticleType> BIOHAZARD = register("biohazard", false);
+	public static final RegistryObject<SimpleParticleType> ACID_BUBBLE = register("acid_bubble", false);
 
 	private ModParticleTypes() {}
 
