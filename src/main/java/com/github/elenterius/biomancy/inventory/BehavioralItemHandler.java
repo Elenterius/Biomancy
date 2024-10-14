@@ -1,6 +1,9 @@
 package com.github.elenterius.biomancy.inventory;
 
+import com.github.elenterius.biomancy.util.ItemStackFilter;
+import com.github.elenterius.biomancy.util.ItemStackFilterList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
@@ -100,11 +103,11 @@ public interface BehavioralItemHandler extends IItemHandler {
 	/**
 	 * only allows item insertion of matching items
 	 */
-	class FilterInput<F extends Predicate<ItemStack>> extends Wrapper<SerializableItemHandler> implements SerializableItemHandler {
+	class PredicateFilterInput extends Wrapper<SerializableItemHandler> implements SerializableItemHandler {
 
-		private final List<F> filters;
+		protected final List<Predicate<ItemStack>> filters;
 
-		public FilterInput(SerializableItemHandler itemHandler, List<F> slotFilters) {
+		public PredicateFilterInput(SerializableItemHandler itemHandler, List<Predicate<ItemStack>> slotFilters) {
 			super(itemHandler);
 			assert slotFilters.size() == itemHandler.getSlots();
 			filters = slotFilters;
@@ -144,4 +147,94 @@ public interface BehavioralItemHandler extends IItemHandler {
 		}
 	}
 
+	class ItemStackFilterInput extends Wrapper<SerializableItemHandler> implements SerializableItemHandler {
+
+		protected final ItemStackFilterList filters;
+
+		public ItemStackFilterInput(SerializableItemHandler itemHandler) {
+			super(itemHandler);
+			filters = ItemStackFilterList.of(ItemStackFilter.ALLOW_ANY, itemHandler.getSlots());
+		}
+
+		private boolean isInvalidSlot(int slot) {
+			return slot < 0 || slot >= filters.size();
+		}
+
+		@Override
+		public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+			if (isInvalidSlot(slot)) return false;
+			return filters.get(slot).test(stack) && itemHandler.isItemValid(slot, stack);
+		}
+
+		@Override
+		@Nonnull
+		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+			if (isInvalidSlot(slot)) return stack;
+			if (!filters.get(slot).test(stack)) return stack;
+			return itemHandler.insertItem(slot, stack, simulate);
+		}
+
+		@Override
+		public CompoundTag serializeNBT() {
+			CompoundTag tag = new CompoundTag();
+			tag.put("Handler", itemHandler.serializeNBT());
+			tag.put("Filters", filters.serializeNBT());
+			return tag;
+		}
+
+		@Override
+		public void deserializeNBT(CompoundTag tag) {
+			itemHandler.deserializeNBT(tag.getCompound("Handler"));
+			filters.deserializeNBT(tag.getList("Filters", Tag.TAG_COMPOUND));
+		}
+
+		@Override
+		public void setStackInSlot(int slot, @NotNull ItemStack stack) {
+			itemHandler.setStackInSlot(slot, stack);
+		}
+	}
+
+	class LockableItemStackFilterInput extends ItemStackFilterInput {
+
+		private boolean locked = false;
+
+		public LockableItemStackFilterInput(SerializableItemHandler itemHandler) {
+			super(itemHandler);
+		}
+
+		public void toggleLock() {
+			setLocked(!locked);
+		}
+
+		public boolean isLocked() {
+			return locked;
+		}
+
+		public void setLocked(boolean locked) {
+			this.locked = locked;
+
+			if (locked) {
+				for (int i = 0; i < itemHandler.getSlots(); i++) {
+					ItemStack stack = itemHandler.getStackInSlot(i);
+					filters.set(i, ItemStackFilter.of(stack));
+				}
+			}
+			else {
+				filters.setAllFilters(ItemStackFilter.ALLOW_ANY);
+			}
+		}
+
+		@Override
+		public CompoundTag serializeNBT() {
+			CompoundTag tag = super.serializeNBT();
+			tag.putBoolean("Locked", locked);
+			return tag;
+		}
+
+		@Override
+		public void deserializeNBT(CompoundTag tag) {
+			super.deserializeNBT(tag);
+			locked = tag.getBoolean("Locked");
+		}
+	}
 }

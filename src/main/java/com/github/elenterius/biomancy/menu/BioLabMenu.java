@@ -58,6 +58,17 @@ public class BioLabMenu extends PlayerContainerMenu {
 	}
 
 	@Override
+	public boolean clickMenuButton(Player player, int id) {
+
+		if (id == 0 && !level.isClientSide) {
+			bioLab.getInputInventory().get().toggleLock();
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
 	public boolean stillValid(Player player) {
 		return bioLab != null && bioLab.canPlayerInteract(player);
 	}
@@ -81,6 +92,10 @@ public class BioLabMenu extends PlayerContainerMenu {
 
 	public int getMaxFuelAmount() {
 		return bioLab.getStateData().fuelHandler.getMaxFuelAmount();
+	}
+
+	public boolean isFilterLocked() {
+		return bioLab.getStateData().isFilterLocked();
 	}
 
 	@Override

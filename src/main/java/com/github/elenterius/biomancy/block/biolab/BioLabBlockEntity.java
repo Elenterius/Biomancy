@@ -10,14 +10,13 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.inventory.BehavioralItemHandler;
 import com.github.elenterius.biomancy.inventory.InventoryHandler;
 import com.github.elenterius.biomancy.inventory.InventoryHandlers;
 import com.github.elenterius.biomancy.inventory.ItemHandlerUtil;
 import com.github.elenterius.biomancy.menu.BioLabMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ILoopingSoundHelper;
-import com.github.elenterius.biomancy.util.ItemStackFilter;
-import com.github.elenterius.biomancy.util.ItemStackFilterList;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.util.fuel.FluidFuelConsumerHandler;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
@@ -69,12 +68,11 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 
 	private final BioLabStateData stateData;
 	private final FuelHandler fuelHandler;
-	private final InventoryHandler fuelInventory;
+	private final InventoryHandler<?> fuelInventory;
 
-	private final InventoryHandler inputInventory;
-	private final ItemStackFilterList inputSlotsFilter;
+	private final InventoryHandler<BehavioralItemHandler.LockableItemStackFilterInput> inputInventory;
 
-	private final InventoryHandler outputInventory;
+	private final InventoryHandler<?> outputInventory;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
@@ -85,8 +83,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	public BioLabBlockEntity(BlockPos worldPosition, BlockState blockState) {
 		super(ModBlockEntities.BIO_LAB.get(), worldPosition, blockState);
 
-		inputSlotsFilter = ItemStackFilterList.of(ItemStackFilter.ALLOW_ALL, INPUT_SLOTS);
-		inputInventory = InventoryHandlers.filterInput(INPUT_SLOTS, inputSlotsFilter, this::onInventoryChanged);
+		inputInventory = InventoryHandlers.lockableFilterInput(INPUT_SLOTS, this::onInventoryChanged);
 
 		outputInventory = InventoryHandlers.denyInput(OUTPUT_SLOTS, this::onInventoryChanged);
 
@@ -95,8 +92,9 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		optionalCombinedInventory = createCombinedInventory();
 
 		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
-		stateData = new BioLabStateData(fuelHandler);
 		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
+
+		stateData = new BioLabStateData(fuelHandler, inputInventory.get());
 	}
 
 	private LazyOptional<IItemHandler> createCombinedInventory() {
@@ -135,15 +133,15 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	}
 
 	@Override
-	public InventoryHandler getInputInventory() {
+	public InventoryHandler<BehavioralItemHandler.LockableItemStackFilterInput> getInputInventory() {
 		return inputInventory;
 	}
 
-	public InventoryHandler getFuelInventory() {
+	public InventoryHandler<?> getFuelInventory() {
 		return fuelInventory;
 	}
 
-	public InventoryHandler getOutputInventory() {
+	public InventoryHandler<?> getOutputInventory() {
 		return outputInventory;
 	}
 
@@ -185,7 +183,6 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		tag.put("Fuel", fuelHandler.serializeNBT());
 		tag.put("FuelSlots", fuelInventory.serializeNBT());
 		tag.put("InputSlots", inputInventory.serializeNBT());
-		tag.put("InputSlotsFilter", inputSlotsFilter.serializeNBT());
 		tag.put("OutputSlots", outputInventory.serializeNBT());
 	}
 
@@ -196,7 +193,6 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		fuelHandler.deserializeNBT(tag.getCompound("Fuel"));
 		fuelInventory.deserializeNBT(tag.getCompound("FuelSlots"));
 		inputInventory.deserializeNBT(tag.getCompound("InputSlots"));
-		inputSlotsFilter.deserializeNBT(tag.getCompound("InputSlotsFilter"));
 		outputInventory.deserializeNBT(tag.getCompound("OutputSlots"));
 	}
 

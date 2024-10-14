@@ -18,7 +18,9 @@ import javax.annotation.Nullable;
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModCapabilities {
 
+	@Deprecated
 	public static final Capability<FlagCapImpl> NO_KNOCKBACK_FLAG_CAP = CapabilityManager.get(new CapabilityToken<>() {});
+
 	public static final Capability<IItemHandler> ITEM_HANDLER = ForgeCapabilities.ITEM_HANDLER;
 	public static final Capability<IFluidHandler> FLUID_HANDLER = ForgeCapabilities.FLUID_HANDLER;
 

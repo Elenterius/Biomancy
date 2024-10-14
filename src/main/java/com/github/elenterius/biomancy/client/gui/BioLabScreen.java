@@ -27,6 +27,18 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> implements
 	}
 
 	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		int x = leftPos + 130;
+		int y = topPos + 34;
+		if (GuiUtil.isInRect(x, y, 8, 10, mouseX, mouseY)) {
+			minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 0);
+			return true;
+		}
+
+		return super.mouseClicked(mouseX, mouseY, button);
+	}
+
+	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		//don't draw any labels
 	}
@@ -43,6 +55,7 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> implements
 		guiGraphics.blit(BACKGROUND_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		drawProgressBar(guiGraphics, menu.getCraftingProgressNormalized());
 		drawFuelBar(guiGraphics, menu.getFuelAmountNormalized());
+		drawLock(guiGraphics, menu.isFilterLocked());
 	}
 
 	private void drawProgressBar(GuiGraphics guiGraphics, float craftingPct) {
@@ -53,6 +66,11 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> implements
 	private void drawFuelBar(GuiGraphics guiGraphics, float fuelPct) {
 		int vHeight = (int) (fuelPct * 36) + (fuelPct > 0 ? 1 : 0);
 		guiGraphics.blit(BACKGROUND_TEXTURE, leftPos + 36, topPos + 48 + 36 - vHeight, 178, 58 - vHeight, 5, vHeight);
+	}
+
+	private void drawLock(GuiGraphics guiGraphics, boolean isLocked) {
+		int offset = isLocked ? 0 : 8;
+		guiGraphics.blit(BACKGROUND_TEXTURE, leftPos + 130, topPos + 34, 178 + offset, 58 + 2, 8, 10);
 	}
 
 	@Override

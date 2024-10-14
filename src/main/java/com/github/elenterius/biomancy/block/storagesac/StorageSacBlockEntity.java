@@ -38,7 +38,7 @@ public class StorageSacBlockEntity extends SimpleContainerBlockEntity implements
 	public static final int SLOTS = 3 * 5;
 	public static final String TOP5_BY_COUNT_KEY = "Top5ByCount";
 	public static final String INVENTORY_KEY = "Inventory";
-	private final InventoryHandler inventory;
+	private final InventoryHandler<?> inventory;
 	protected final ItemStackCounter itemCounter = new ItemStackCounter();
 
 	private List<ItemStackCounter.CountedItem> top5ItemsByCount = List.of();
@@ -54,7 +54,7 @@ public class StorageSacBlockEntity extends SimpleContainerBlockEntity implements
 		return StorageSacMenu.createServerMenu(containerId, playerInventory, this);
 	}
 
-	public InventoryHandler getInventory() {
+	public InventoryHandler<?> getInventory() {
 		return inventory;
 	}
 

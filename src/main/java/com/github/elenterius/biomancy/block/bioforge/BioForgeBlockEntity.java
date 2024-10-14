@@ -55,7 +55,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Pl
 
 	private final BioForgeStateData stateData;
 	private final FuelHandler fuelHandler;
-	private final InventoryHandler fuelInventory;
+	private final InventoryHandler<?> fuelInventory;
 
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 
@@ -150,7 +150,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Pl
 		return BioForgeMenu.createServerMenu(containerId, playerInventory, this);
 	}
 
-	public InventoryHandler getFuelInventory() {
+	public InventoryHandler<?> getFuelInventory() {
 		return fuelInventory;
 	}
 

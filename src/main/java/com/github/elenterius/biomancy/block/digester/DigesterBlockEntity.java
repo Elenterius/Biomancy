@@ -65,9 +65,9 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Dig
 
 	private final DigesterStateData stateData;
 	private final FuelHandler fuelHandler;
-	private final InventoryHandler fuelInventory;
-	private final InventoryHandler inputInventory;
-	private final InventoryHandler outputInventory;
+	private final InventoryHandler<?> fuelInventory;
+	private final InventoryHandler<?> inputInventory;
+	private final InventoryHandler<?> outputInventory;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
@@ -116,15 +116,15 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Dig
 	}
 
 	@Override
-	public InventoryHandler getInputInventory() {
+	public InventoryHandler<?> getInputInventory() {
 		return inputInventory;
 	}
 
-	public InventoryHandler getFuelInventory() {
+	public InventoryHandler<?> getFuelInventory() {
 		return fuelInventory;
 	}
 
-	public InventoryHandler getOutputInventory() {
+	public InventoryHandler<?> getOutputInventory() {
 		return outputInventory;
 	}
 

@@ -5,20 +5,23 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
 public class ItemStackFilter implements Predicate<ItemStack>, INBTSerializable<CompoundTag> {
 
-	public static final String FILTER_KEY = "filter";
-	public static final String STRICT_KEY = "strict";
+	public static final String FILTER_KEY = "Filter";
+	public static final String STRICT_KEY = "Strict";
 
-	public static final ItemStackFilter ALLOW_ALL = of(ItemStack.EMPTY, false);
+	public static final ItemStackFilter ALLOW_ANY = new ItemStackFilter(null, false);
+	public static final ItemStackFilter ALLOW_NONE = new ItemStackFilter(ItemStack.EMPTY, false);
 
+	@Nullable
 	private ItemStack filter;
 	private boolean isStrict;
 
-	protected ItemStackFilter(ItemStack filter, boolean isStrict) {
+	protected ItemStackFilter(@Nullable ItemStack filter, boolean isStrict) {
 		this.filter = filter;
 		this.isStrict = isStrict;
 	}
@@ -40,6 +43,10 @@ public class ItemStackFilter implements Predicate<ItemStack>, INBTSerializable<C
 	}
 
 	public static ItemStackFilter of(ItemStack filter, boolean isStrict) {
+		if (filter.isEmpty()) return ALLOW_NONE;
+
+		filter = filter.copyWithCount(1);
+
 		if (filter.hasTag()) {
 			CompoundTag stackTag = filter.getTag();
 			assert stackTag != null;
@@ -52,7 +59,9 @@ public class ItemStackFilter implements Predicate<ItemStack>, INBTSerializable<C
 	@Override
 	public boolean test(ItemStack stack) {
 		if (stack.isEmpty()) return false;
-		if (filter.isEmpty()) return true;
+
+		if (filter == null) return true;
+		if (filter.isEmpty()) return false;
 
 		if (isStrict) {
 			return ItemHandlerHelper.canItemStacksStack(filter, stack);
@@ -65,15 +74,21 @@ public class ItemStackFilter implements Predicate<ItemStack>, INBTSerializable<C
 	@Override
 	public CompoundTag serializeNBT() {
 		CompoundTag tag = new CompoundTag();
-		tag.put(FILTER_KEY, filter.serializeNBT());
-		tag.putBoolean(STRICT_KEY, isStrict);
+		if (filter != null) {
+			tag.put(FILTER_KEY, filter.serializeNBT());
+			tag.putBoolean(STRICT_KEY, isStrict);
+		}
 		return tag;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundTag tag) {
-		filter = ItemStack.of(tag.getCompound(FILTER_KEY));
+		filter = tag.contains(FILTER_KEY) ? ItemStack.of(tag.getCompound(FILTER_KEY)) : null;
 		isStrict = tag.getBoolean(STRICT_KEY);
+	}
+
+	public boolean allowsAny() {
+		return filter == null;
 	}
 
 }
