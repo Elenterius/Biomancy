@@ -1,3 +1,23 @@
+## [8.16.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.15.0...1.20.1-v2.8.16.0) (2024-10-14)
+
+
+### Features
+
+* add bulk Digestion of items in Gastric Acid ([aba3a91](https://github.com/Elenterius/Biomancy/commit/aba3a91c87d4b550e15ad28661c59e7c5614d9ff))
+* **buff:** increase max stack size of serums from 8 to 16 ([97bbff2](https://github.com/Elenterius/Biomancy/commit/97bbff27a0183a29b6db1bfd35341362cfec86fb))
+* make all BoP flesh blocks decomposable ([4ec514f](https://github.com/Elenterius/Biomancy/commit/4ec514f2c573bc4647113d0dba837fc5635f6a09))
+* make input slots of Bio-Lab lockable ([80c6f5e](https://github.com/Elenterius/Biomancy/commit/80c6f5e01322427f8babbe645b3e144812b27288))
+* **nerf:** make frenzy effect consume food ([e6656c5](https://github.com/Elenterius/Biomancy/commit/e6656c5b0cbad19e5e0c977198058b60a61ef168))
+* rebrand Corrosive Additive to Decaying Additive ([2ae27b1](https://github.com/Elenterius/Biomancy/commit/2ae27b13505288f6051d4fa1d93d99defdd658b2))
+* tweak bio-lab recipes ([406a056](https://github.com/Elenterius/Biomancy/commit/406a056fe59037802943736c7e7a33edb52a743a))
+* tweak withdrawal effect side effects, add poison side effect and buff withdrawal duration reduction from eating sugary food ([79d565c](https://github.com/Elenterius/Biomancy/commit/79d565c9a1725b5ac1625a3af605781ffba2c44e))
+
+
+### Bug Fixes
+
+* don't render outer skin layer when wearing acolyte armor ([1d49205](https://github.com/Elenterius/Biomancy/commit/1d4920599e20cbf505f5d78eba4a2efa2efefd96))
+* fix crash when drinking milk under the frenzy effect ([06d6929](https://github.com/Elenterius/Biomancy/commit/06d69297fc4be64d8b24be28b38949378d112c65))
+
 ## [8.15.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.14.0...1.20.1-v2.8.15.0) (2024-10-01)
 
 
@@ -48,13 +68,4 @@
 ### Features
 
 * add dispenser behavior for Gastric Acid Buckets ([8a29d19](https://github.com/Elenterius/Biomancy/commit/8a29d192d5bcdd8d68d48ebb3237205a3a0439c2)), closes [#147](https://github.com/Elenterius/Biomancy/issues/147)
-
-## [8.12.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.11.0...1.20.1-v2.8.12.0) (2024-09-12)
-
-
-### Features
-
-* buff drop chances for Bile Glands and buff drop amount of Fangs and Claws for mobs with high attack damage ([1a212e8](https://github.com/Elenterius/Biomancy/commit/1a212e87b9c0a3fb3c41df4145e71b20290bcb07))
-* display more distinct particles for tributes added to a Cradle ([d9a613f](https://github.com/Elenterius/Biomancy/commit/d9a613f4b5935d5a9e26ecdb54012d3ab95bdf3a))
-* make it possible to add new users to Fleshkin Chests and Pressure Sensors with Tier 3 Essence ([ce7907a](https://github.com/Elenterius/Biomancy/commit/ce7907aee596869d36df8e45f4d29a386a97bf83))
 
