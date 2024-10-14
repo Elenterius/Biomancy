@@ -7,26 +7,18 @@
     }
   ],
   "ingredient": {
-    "item": "biomesoplenty:flesh_tendons"
+    "item": "biomesoplenty:pus_bubble"
   },
   "nutrientsCost": 1,
-  "processingTime": 98,
+  "processingTime": 120,
   "results": [
     {
       "countRange": {
         "type": "uniform",
-        "max": 8,
+        "max": 6,
         "min": 4
       },
-      "item": "biomancy:elastic_fibers"
-    },
-    {
-      "countRange": {
-        "type": "uniform",
-        "max": 1,
-        "min": 0
-      },
-      "item": "biomancy:flesh_bits"
+      "item": "biomancy:bile"
     }
   ]
 }

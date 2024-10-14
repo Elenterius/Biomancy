@@ -7,26 +7,26 @@
     }
   ],
   "ingredient": {
-    "item": "biomesoplenty:flesh_tendons"
+    "item": "biomesoplenty:eyebulb"
   },
   "nutrientsCost": 1,
-  "processingTime": 98,
+  "processingTime": 60,
   "results": [
     {
       "countRange": {
         "type": "uniform",
-        "max": 8,
-        "min": 4
+        "max": 2,
+        "min": 1
       },
-      "item": "biomancy:elastic_fibers"
+      "item": "biomancy:bile"
     },
     {
       "countRange": {
         "type": "uniform",
-        "max": 1,
-        "min": 0
+        "max": 2,
+        "min": 1
       },
-      "item": "biomancy:flesh_bits"
+      "item": "biomancy:elastic_fibers"
     }
   ]
 }

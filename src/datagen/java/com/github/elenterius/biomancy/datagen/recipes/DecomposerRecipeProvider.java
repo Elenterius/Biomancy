@@ -373,12 +373,48 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 				.unlockedBy(Items.SHROOMLIGHT).save(consumer);
 	}
 
+	private DecomposerRecipeBuilder createBiomesOPlentyRecipe() {
+		return DecomposerRecipeBuilder.create().ifModLoaded("biomesoplenty");
+	}
+
 	private void buildBiomesOPlentyRecipes(Consumer<FinishedRecipe> consumer) {
-		DecomposerRecipeBuilder.create().ifModLoaded("biomesoplenty")
+		createBiomesOPlentyRecipe()
 				.setIngredient(new DatagenIngredient("biomesoplenty:flesh_tendons"))
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8)
+				.addOutput(ModItems.FLESH_BITS.get(), 0, 1)
+				.unlockedBy(ModItems.ELASTIC_FIBERS).save(consumer);
+
+		createBiomesOPlentyRecipe()
+				.setIngredient(new DatagenIngredient("biomesoplenty:flesh_tendons_strand"))
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 2, 4)
+				.addOutput(ModItems.FLESH_BITS.get(), 0, 1)
+				.unlockedBy(ModItems.ELASTIC_FIBERS).save(consumer);
+
+		createBiomesOPlentyRecipe()
+				.setIngredient(new DatagenIngredient("biomesoplenty:flesh"))
 				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
-				.unlockedBy(ModItems.MOB_SINEW).save(consumer);
+				.unlockedBy(ModItems.FLESH_BITS).save(consumer);
+
+		createBiomesOPlentyRecipe()
+				.setIngredient(new DatagenIngredient("biomesoplenty:porous_flesh"))
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.unlockedBy(ModItems.FLESH_BITS).save(consumer);
+
+		createBiomesOPlentyRecipe()
+				.setIngredient(new DatagenIngredient("biomesoplenty:hair"))
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), -1, 1)
+				.unlockedBy(ModItems.MINERAL_FRAGMENT).save(consumer);
+
+		createBiomesOPlentyRecipe()
+				.setIngredient(new DatagenIngredient("biomesoplenty:eyebulb"))
+				.addOutput(ModItems.BILE.get(), 1, 2)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.unlockedBy(ModItems.BILE).save(consumer);
+
+		createBiomesOPlentyRecipe()
+				.setIngredient(new DatagenIngredient("biomesoplenty:pus_bubble"))
+				.addOutput(ModItems.BILE.get(), 4, 6)
+				.unlockedBy(ModItems.BILE).save(consumer);
 	}
 
 	private void buildTetraRecipes(Consumer<FinishedRecipe> consumer) {

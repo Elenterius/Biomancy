@@ -4,12 +4,12 @@
       "advancement": {
         "parent": "minecraft:recipes/root",
         "criteria": {
-          "has_elastic_fibers": {
+          "has_mineral_fragment": {
             "conditions": {
               "items": [
                 {
                   "items": [
-                    "biomancy:elastic_fibers"
+                    "biomancy:mineral_fragment"
                   ]
                 }
               ]
@@ -18,20 +18,20 @@
           },
           "has_the_recipe": {
             "conditions": {
-              "recipe": "biomancy:decomposing/biomesoplenty_flesh_tendons_decomposing"
+              "recipe": "biomancy:decomposing/biomesoplenty_hair_decomposing"
             },
             "trigger": "minecraft:recipe_unlocked"
           }
         },
         "requirements": [
           [
-            "has_elastic_fibers",
+            "has_mineral_fragment",
             "has_the_recipe"
           ]
         ],
         "rewards": {
           "recipes": [
-            "biomancy:decomposing/biomesoplenty_flesh_tendons_decomposing"
+            "biomancy:decomposing/biomesoplenty_hair_decomposing"
           ]
         },
         "sends_telemetry_event": false
