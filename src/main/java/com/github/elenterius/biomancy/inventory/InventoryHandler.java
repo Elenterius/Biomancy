@@ -7,14 +7,14 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import org.jetbrains.annotations.NotNull;
 
-public final class InventoryHandler implements SerializableItemHandler {
+public final class InventoryHandler<T extends SerializableItemHandler> implements SerializableItemHandler {
 
-	private final SerializableItemHandler itemHandler;
+	private final T itemHandler;
 	private LazyOptional<IItemHandler> optionalItemHandler;
 
 	private final RecipeWrapper recipeWrapper;
 
-	public InventoryHandler(SerializableItemHandler itemHandler) {
+	public InventoryHandler(T itemHandler) {
 		this.itemHandler = itemHandler;
 		recipeWrapper = new RecipeWrapper(itemHandler);
 		optionalItemHandler = LazyOptional.of(() -> itemHandler);
@@ -37,7 +37,7 @@ public final class InventoryHandler implements SerializableItemHandler {
 		itemHandler.deserializeNBT(nbt);
 	}
 
-	public SerializableItemHandler get() {
+	public T get() {
 		return itemHandler;
 	}
 

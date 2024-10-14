@@ -47,7 +47,7 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 
 	public static final int SLOTS = 6 * 7;
 
-	private final InventoryHandler inventory;
+	private final InventoryHandler<?> inventory;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -149,7 +149,7 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 		return FleshkinChestMenu.createServerMenu(containerId, playerInventory, this);
 	}
 
-	public InventoryHandler getInventory() {
+	public InventoryHandler<?> getInventory() {
 		return inventory;
 	}
 

@@ -280,7 +280,12 @@ public class BioForgeMenu extends PlayerContainerMenu {
 			}
 
 			BioForgeRecipe recipe = getSelectedRecipe();
-			if (recipe != null) consumeCraftingIngredients(player, recipe);
+			if (recipe != null) {
+				consumeCraftingIngredients(player.getInventory(), recipe);
+				broadcastChanges();
+			}
+
+			setChanged();
 			checkTakeAchievements(stack);
 			onPlayerMainInventoryChanged(player.getInventory()); //ensures the recipe output slot is filled again if possible, integral for quick crafting to work
 
@@ -291,8 +296,6 @@ public class BioForgeMenu extends PlayerContainerMenu {
 					prevSoundTime = time;
 				}
 			}
-
-			setChanged();
 		}
 
 	}
@@ -301,15 +304,13 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		return recipe != null && getFuelAmount() >= recipe.getCraftingCostNutrients() && recipe.isCraftable(itemCounter);
 	}
 
-	private void consumeCraftingIngredients(Player player, BioForgeRecipe recipe) {
+	private void consumeCraftingIngredients(Inventory inventory, BioForgeRecipe recipe) {
 
 		List<IngredientStack> ingredients = recipe.getIngredientQuantities();
 		int[] ingredientCost = new int[ingredients.size()];
 		for (int i = 0; i < ingredients.size(); i++) {
 			ingredientCost[i] = ingredients.get(i).count();
 		}
-
-		Inventory inventory = player.getInventory();
 
 		//consume ingredients
 		for (int idx = 0; idx < inventory.items.size(); idx++) {

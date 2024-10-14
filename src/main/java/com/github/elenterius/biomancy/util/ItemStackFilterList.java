@@ -1,8 +1,6 @@
 package com.github.elenterius.biomancy.util;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -11,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class ItemStackFilterList extends AbstractList<ItemStackFilter> implements INBTSerializable<CompoundTag> {
+public class ItemStackFilterList extends AbstractList<ItemStackFilter> implements INBTSerializable<ListTag> {
 
-	private List<ItemStackFilter> filters;
+	private final List<ItemStackFilter> filters;
 
 	protected ItemStackFilterList(List<ItemStackFilter> filters) {
 		this.filters = new ArrayList<>(filters);
@@ -31,12 +29,8 @@ public class ItemStackFilterList extends AbstractList<ItemStackFilter> implement
 		return new ItemStackFilterList(filters);
 	}
 
-	public void setAllFilters(List<ItemStackFilter> filters) {
-		this.filters = filters;
-	}
-
 	public void setAllFilters(ItemStackFilter filter) {
-		filters = IntStream.range(0, filters.size()).mapToObj(x -> filter).toList();
+		filters.replaceAll(ignored -> filter);
 	}
 
 	public void setFilter(int index, ItemStackFilter filter) {
@@ -64,29 +58,21 @@ public class ItemStackFilterList extends AbstractList<ItemStackFilter> implement
 	}
 
 	@Override
-	public void deserializeNBT(CompoundTag tag) {
-		ListTag listTag = tag.getList("filters", Tag.TAG_COMPOUND);
-
-		List<ItemStackFilter> newFilters = new ArrayList<>();
+	public void deserializeNBT(ListTag listTag) {
+		filters.clear();
 		for (int i = 0; i < listTag.size(); i++) {
-			newFilters.add(ItemStackFilter.of(listTag.getCompound(i)));
+			filters.add(ItemStackFilter.of(listTag.getCompound(i)));
 		}
-
-		filters = List.copyOf(newFilters);
 	}
 
 	@Override
-	public CompoundTag serializeNBT() {
-
+	public ListTag serializeNBT() {
 		ListTag listTag = new ListTag();
 		for (ItemStackFilter filter : filters) {
 			listTag.add(filter.serializeNBT());
 		}
 
-		CompoundTag tag = new CompoundTag();
-		tag.put("filters", listTag);
-
-		return tag;
+		return listTag;
 	}
 
 }
