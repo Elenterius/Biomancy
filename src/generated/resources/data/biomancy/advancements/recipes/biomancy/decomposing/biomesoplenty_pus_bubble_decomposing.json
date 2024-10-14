@@ -4,12 +4,12 @@
       "advancement": {
         "parent": "minecraft:recipes/root",
         "criteria": {
-          "has_elastic_fibers": {
+          "has_bile": {
             "conditions": {
               "items": [
                 {
                   "items": [
-                    "biomancy:elastic_fibers"
+                    "biomancy:bile"
                   ]
                 }
               ]
@@ -18,20 +18,20 @@
           },
           "has_the_recipe": {
             "conditions": {
-              "recipe": "biomancy:decomposing/biomesoplenty_flesh_tendons_decomposing"
+              "recipe": "biomancy:decomposing/biomesoplenty_pus_bubble_decomposing"
             },
             "trigger": "minecraft:recipe_unlocked"
           }
         },
         "requirements": [
           [
-            "has_elastic_fibers",
+            "has_bile",
             "has_the_recipe"
           ]
         ],
         "rewards": {
           "recipes": [
-            "biomancy:decomposing/biomesoplenty_flesh_tendons_decomposing"
+            "biomancy:decomposing/biomesoplenty_pus_bubble_decomposing"
           ]
         },
         "sends_telemetry_event": false

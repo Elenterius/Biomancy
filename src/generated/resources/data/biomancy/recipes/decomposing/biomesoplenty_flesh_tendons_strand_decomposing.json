@@ -7,16 +7,16 @@
     }
   ],
   "ingredient": {
-    "item": "biomesoplenty:flesh_tendons"
+    "item": "biomesoplenty:flesh_tendons_strand"
   },
   "nutrientsCost": 1,
-  "processingTime": 98,
+  "processingTime": 58,
   "results": [
     {
       "countRange": {
         "type": "uniform",
-        "max": 8,
-        "min": 4
+        "max": 4,
+        "min": 2
       },
       "item": "biomancy:elastic_fibers"
     },
