@@ -1,15 +1,15 @@
 package com.github.elenterius.biomancy.crafting.state;
 
+import com.github.elenterius.biomancy.api.nutrients.FuelHandler;
 import com.github.elenterius.biomancy.crafting.recipe.ProcessingRecipe;
-import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 
 public abstract class FuelConsumingRecipeCraftingStateData<T extends ProcessingRecipe> extends RecipeCraftingStateData<T> {
 
 	public static final int FUEL_INDEX = 3;
 
-	public final IFuelHandler fuelHandler;
+	public final FuelHandler fuelHandler;
 
-	protected FuelConsumingRecipeCraftingStateData(IFuelHandler fuelHandler) {
+	protected FuelConsumingRecipeCraftingStateData(FuelHandler fuelHandler) {
 		this.fuelHandler = fuelHandler;
 	}
 

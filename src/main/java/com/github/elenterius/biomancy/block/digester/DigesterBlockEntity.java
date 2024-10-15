@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.block.digester;
 
+import com.github.elenterius.biomancy.api.nutrients.FuelHandler;
+import com.github.elenterius.biomancy.api.nutrients.FuelHandlerImpl;
 import com.github.elenterius.biomancy.block.base.MachineBlock;
 import com.github.elenterius.biomancy.block.base.MachineBlockEntity;
 import com.github.elenterius.biomancy.client.util.ClientLoopingSoundHelper;
@@ -16,9 +18,6 @@ import com.github.elenterius.biomancy.menu.DigesterMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ILoopingSoundHelper;
 import com.github.elenterius.biomancy.util.SoundUtil;
-import com.github.elenterius.biomancy.util.fuel.FluidFuelConsumerHandler;
-import com.github.elenterius.biomancy.util.fuel.FuelHandler;
-import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -64,7 +63,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Dig
 	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("digester.idle");
 
 	private final DigesterStateData stateData;
-	private final FuelHandler fuelHandler;
+	private final FuelHandlerImpl fuelHandler;
 	private final InventoryHandler<?> fuelInventory;
 	private final InventoryHandler<?> inputInventory;
 	private final InventoryHandler<?> outputInventory;
@@ -81,10 +80,10 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Dig
 		outputInventory = InventoryHandlers.denyInput(OUTPUT_SLOTS, this::onInventoryChanged);
 
 		fuelInventory = InventoryHandlers.filterFuel(FUEL_SLOTS, this::onInventoryChanged);
-		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::onInventoryChanged);
+		fuelHandler = FuelHandlerImpl.createNutrientFuelHandler(MAX_FUEL, this::onInventoryChanged);
 
 		stateData = new DigesterStateData(fuelHandler);
-		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
+		optionalFluidConsumer = LazyOptional.of(fuelHandler::getFluidConsumer);
 	}
 
 	@Override
@@ -129,7 +128,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Dig
 	}
 
 	@Override
-	protected IFuelHandler getFuelHandler() {
+	protected FuelHandler getFuelHandler() {
 		return fuelHandler;
 	}
 
@@ -258,7 +257,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Dig
 		fuelInventory.revive();
 		inputInventory.revive();
 		outputInventory.revive();
-		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
+		optionalFluidConsumer = LazyOptional.of(fuelHandler::getFluidConsumer);
 	}
 
 	private <E extends DigesterBlockEntity> PlayState handleAnimationState(AnimationState<E> event) {

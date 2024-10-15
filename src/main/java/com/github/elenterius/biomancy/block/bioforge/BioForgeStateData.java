@@ -1,14 +1,14 @@
 package com.github.elenterius.biomancy.block.bioforge;
 
-import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
+import com.github.elenterius.biomancy.api.nutrients.FuelHandler;
 import net.minecraft.world.inventory.ContainerData;
 
 public class BioForgeStateData implements ContainerData {
 
 	public static final int FUEL_INDEX = 0;
-	public final IFuelHandler fuelHandler;
+	public final FuelHandler fuelHandler;
 
-	public BioForgeStateData(IFuelHandler fuelHandler) {
+	public BioForgeStateData(FuelHandler fuelHandler) {
 		this.fuelHandler = fuelHandler;
 	}
 

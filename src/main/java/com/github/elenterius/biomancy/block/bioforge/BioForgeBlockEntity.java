@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.block.bioforge;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.api.nutrients.FuelHandler;
+import com.github.elenterius.biomancy.api.nutrients.FuelHandlerImpl;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.inventory.InventoryHandler;
@@ -9,9 +11,6 @@ import com.github.elenterius.biomancy.inventory.ItemHandlerUtil;
 import com.github.elenterius.biomancy.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.PlayerInteractionPredicate;
-import com.github.elenterius.biomancy.util.fuel.FluidFuelConsumerHandler;
-import com.github.elenterius.biomancy.util.fuel.FuelHandler;
-import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -54,7 +53,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Pl
 	protected final int tickOffset = BiomancyMod.GLOBAL_RANDOM.nextInt(20);
 
 	private final BioForgeStateData stateData;
-	private final FuelHandler fuelHandler;
+	private final FuelHandlerImpl fuelHandler;
 	private final InventoryHandler<?> fuelInventory;
 
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
@@ -97,9 +96,9 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Pl
 		super(ModBlockEntities.BIO_FORGE.get(), worldPosition, blockState);
 		fuelInventory = InventoryHandlers.filterFuel(FUEL_SLOTS, this::onInventoryChanged);
 
-		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
+		fuelHandler = FuelHandlerImpl.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
 		stateData = new BioForgeStateData(fuelHandler);
-		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
+		optionalFluidConsumer = LazyOptional.of(fuelHandler::getFluidConsumer);
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, BioForgeBlockEntity entity) {
@@ -165,7 +164,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Pl
 		}
 	}
 
-	protected IFuelHandler getFuelHandler() {
+	protected FuelHandler getFuelHandler() {
 		return fuelHandler;
 	}
 
@@ -239,7 +238,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Pl
 	public void reviveCaps() {
 		super.reviveCaps();
 		fuelInventory.revive();
-		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
+		optionalFluidConsumer = LazyOptional.of(fuelHandler::getFluidConsumer);
 	}
 
 	@Override

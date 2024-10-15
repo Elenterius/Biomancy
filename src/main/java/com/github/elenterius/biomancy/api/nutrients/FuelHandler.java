@@ -1,10 +1,12 @@
-package com.github.elenterius.biomancy.util.fuel;
+package com.github.elenterius.biomancy.api.nutrients;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.ApiStatus;
 
-public interface IFuelHandler {
+@ApiStatus.Experimental
+public interface FuelHandler {
 
 	int getFuelAmount();
 

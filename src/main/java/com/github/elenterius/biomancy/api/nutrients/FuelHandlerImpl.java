@@ -1,34 +1,38 @@
-package com.github.elenterius.biomancy.util.fuel;
+package com.github.elenterius.biomancy.api.nutrients;
 
-import com.github.elenterius.biomancy.api.nutrients.Nutrients;
+import com.github.elenterius.biomancy.api.nutrients.fluid.FluidFuelConsumerHandler;
 import com.github.elenterius.biomancy.inventory.Notify;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.ApiStatus;
 
-import java.util.function.IntUnaryOperator;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
-public class FuelHandler implements IFuelHandler, INBTSerializable<CompoundTag> {
+@ApiStatus.Experimental
+public class FuelHandlerImpl implements FuelHandler, INBTSerializable<CompoundTag> {
 	private final int maxFuel;
-	private final IntUnaryOperator fuelCostModifierFunc;
 	private final Predicate<ItemStack> fuelPredicate;
 	private final ToIntFunction<ItemStack> fuelValueFunc;
 	private final Notify changeNotifier;
 	private int fuel;
 
-	public FuelHandler(int maxFuel, IntUnaryOperator fuelCostModifierFunc, Predicate<ItemStack> fuelPredicate, ToIntFunction<ItemStack> fuelValueFunc, Notify changeNotifier) {
+	FluidFuelConsumerHandler fluidConsumer;
+
+	public FuelHandlerImpl(int maxFuel, Predicate<ItemStack> fuelPredicate, ToIntFunction<ItemStack> fuelValueFunc, Notify changeNotifier) {
 		this.maxFuel = maxFuel;
-		this.fuelCostModifierFunc = fuelCostModifierFunc;
 		this.fuelPredicate = fuelPredicate;
 		this.fuelValueFunc = fuelValueFunc;
 		this.changeNotifier = changeNotifier;
+
+		fluidConsumer = new FluidFuelConsumerHandler(this);
 	}
 
-	public static FuelHandler createNutrientFuelHandler(int maxFuel, Notify changeNotifier) {
-		return new FuelHandler(maxFuel, IntUnaryOperator.identity(), Nutrients::isValidFuel, Nutrients::getFuelValue, changeNotifier);
+	public static FuelHandlerImpl createNutrientFuelHandler(int maxFuel, Notify changeNotifier) {
+		return new FuelHandlerImpl(maxFuel, Nutrients::isValidFuel, Nutrients::getFuelValue, changeNotifier);
 	}
 
 	@Override
@@ -60,7 +64,7 @@ public class FuelHandler implements IFuelHandler, INBTSerializable<CompoundTag> 
 
 	@Override
 	public int getFuelCost(int craftingCostNutrients) {
-		return fuelCostModifierFunc.applyAsInt(craftingCostNutrients);
+		return craftingCostNutrients;
 	}
 
 	@Override
@@ -76,11 +80,18 @@ public class FuelHandler implements IFuelHandler, INBTSerializable<CompoundTag> 
 	public CompoundTag serializeNBT() {
 		CompoundTag tag = new CompoundTag();
 		tag.putInt("Amount", fuel);
+		tag.put("FluidConsumer", fluidConsumer.serializeNBT());
 		return tag;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundTag tag) {
 		fuel = tag.getInt("Amount");
+		fluidConsumer.deserializeNBT(tag.getCompound("FluidConsumer"));
 	}
+
+	public IFluidHandler getFluidConsumer() {
+		return fluidConsumer;
+	}
+
 }
