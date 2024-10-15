@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.block.biolab;
 
+import com.github.elenterius.biomancy.api.nutrients.FuelHandler;
 import com.github.elenterius.biomancy.crafting.recipe.BioLabRecipe;
 import com.github.elenterius.biomancy.crafting.state.FuelConsumingRecipeCraftingStateData;
 import com.github.elenterius.biomancy.inventory.BehavioralItemHandler;
-import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.world.item.crafting.Recipe;
 
 public class BioLabStateData extends FuelConsumingRecipeCraftingStateData<BioLabRecipe> {
@@ -12,7 +12,7 @@ public class BioLabStateData extends FuelConsumingRecipeCraftingStateData<BioLab
 
 	private final BehavioralItemHandler.LockableItemStackFilterInput inputFilterLock;
 
-	public BioLabStateData(IFuelHandler fuelHandler, BehavioralItemHandler.LockableItemStackFilterInput inputFilterLock) {
+	public BioLabStateData(FuelHandler fuelHandler, BehavioralItemHandler.LockableItemStackFilterInput inputFilterLock) {
 		super(fuelHandler);
 		this.inputFilterLock = inputFilterLock;
 	}

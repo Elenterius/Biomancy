@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.api.nutrients;
+package com.github.elenterius.biomancy.api.nutrients.fluid;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;

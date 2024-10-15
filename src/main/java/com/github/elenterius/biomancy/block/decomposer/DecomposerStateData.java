@@ -1,13 +1,13 @@
 package com.github.elenterius.biomancy.block.decomposer;
 
+import com.github.elenterius.biomancy.api.nutrients.FuelHandler;
 import com.github.elenterius.biomancy.crafting.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.crafting.state.FuelConsumingRecipeCraftingStateData;
-import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.world.item.crafting.Recipe;
 
 public class DecomposerStateData extends FuelConsumingRecipeCraftingStateData<DecomposerRecipe> {
 
-	public DecomposerStateData(IFuelHandler fuelHandler) {
+	public DecomposerStateData(FuelHandler fuelHandler) {
 		super(fuelHandler);
 	}
 

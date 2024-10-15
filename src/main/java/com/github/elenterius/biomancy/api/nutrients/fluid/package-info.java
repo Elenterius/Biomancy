@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.elenterius.biomancy.util.fuel;
+package com.github.elenterius.biomancy.api.nutrients.fluid;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

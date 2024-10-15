@@ -1,13 +1,13 @@
 package com.github.elenterius.biomancy.block.base;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.api.nutrients.FuelHandler;
 import com.github.elenterius.biomancy.crafting.recipe.ProcessingRecipe;
 import com.github.elenterius.biomancy.crafting.state.CraftingState;
 import com.github.elenterius.biomancy.crafting.state.RecipeCraftingStateData;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.inventory.InventoryHandler;
 import com.github.elenterius.biomancy.util.PlayerInteractionPredicate;
-import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Nameable;
@@ -54,7 +54,7 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe, S extends R
 
 	protected abstract InventoryHandler getInputInventory();
 
-	protected abstract IFuelHandler getFuelHandler();
+	protected abstract FuelHandler getFuelHandler();
 
 	public int getFuelCost(R recipeToCraft) {
 		return getFuelHandler().getFuelCost(recipeToCraft.getCraftingCostNutrients(getInputInventory().getRecipeWrapper()));

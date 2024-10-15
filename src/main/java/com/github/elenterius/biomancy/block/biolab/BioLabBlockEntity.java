@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.block.biolab;
 
+import com.github.elenterius.biomancy.api.nutrients.FuelHandler;
+import com.github.elenterius.biomancy.api.nutrients.FuelHandlerImpl;
 import com.github.elenterius.biomancy.block.base.MachineBlock;
 import com.github.elenterius.biomancy.block.base.MachineBlockEntity;
 import com.github.elenterius.biomancy.client.util.ClientLoopingSoundHelper;
@@ -18,9 +20,6 @@ import com.github.elenterius.biomancy.menu.BioLabMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ILoopingSoundHelper;
 import com.github.elenterius.biomancy.util.SoundUtil;
-import com.github.elenterius.biomancy.util.fuel.FluidFuelConsumerHandler;
-import com.github.elenterius.biomancy.util.fuel.FuelHandler;
-import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -67,7 +66,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("bio_lab.idle");
 
 	private final BioLabStateData stateData;
-	private final FuelHandler fuelHandler;
+	private final FuelHandlerImpl fuelHandler;
 	private final InventoryHandler<?> fuelInventory;
 
 	private final InventoryHandler<BehavioralItemHandler.LockableItemStackFilterInput> inputInventory;
@@ -91,8 +90,8 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 
 		optionalCombinedInventory = createCombinedInventory();
 
-		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
-		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
+		fuelHandler = FuelHandlerImpl.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
+		optionalFluidConsumer = LazyOptional.of(fuelHandler::getFluidConsumer);
 
 		stateData = new BioLabStateData(fuelHandler, inputInventory.get());
 	}
@@ -146,7 +145,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	}
 
 	@Override
-	protected IFuelHandler getFuelHandler() {
+	protected FuelHandler getFuelHandler() {
 		return fuelHandler;
 	}
 
@@ -237,7 +236,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		inputInventory.revive();
 		outputInventory.revive();
 		optionalCombinedInventory = createCombinedInventory();
-		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
+		optionalFluidConsumer = LazyOptional.of(fuelHandler::getFluidConsumer);
 	}
 
 	@Override
