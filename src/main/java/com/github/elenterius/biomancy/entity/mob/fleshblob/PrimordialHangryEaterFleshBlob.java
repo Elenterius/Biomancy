@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.entity.mob.PrimordialCradleUser;
 import com.github.elenterius.biomancy.entity.mob.PrimordialFleshkin;
 import com.github.elenterius.biomancy.entity.mob.ai.goal.*;
 import com.github.elenterius.biomancy.init.ModMobEffects;
+import com.github.elenterius.biomancy.init.tags.ModDamageTypeTags;
 import com.github.elenterius.biomancy.util.MobUtil;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import net.minecraft.core.BlockPos;
@@ -12,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -130,8 +132,19 @@ public class PrimordialHangryEaterFleshBlob extends EaterFleshBlob implements En
 	}
 
 	@Override
+	public void handleDamageEvent(DamageSource pDamageSource) {
+		super.handleDamageEvent(pDamageSource);
+	}
+
+	@Override
+	public boolean isInvulnerableTo(DamageSource source) {
+		return super.isInvulnerableTo(source) || source.is(ModDamageTypeTags.FORGE_IS_ACID);
+	}
+
+	@Override
 	public boolean canBeAffected(MobEffectInstance effectInstance) {
 		if (effectInstance.getEffect() == ModMobEffects.PRIMORDIAL_INFESTATION.get()) return false;
+		if (effectInstance.getEffect() == ModMobEffects.CORROSIVE.get()) return false;
 		return super.canBeAffected(effectInstance);
 	}
 
