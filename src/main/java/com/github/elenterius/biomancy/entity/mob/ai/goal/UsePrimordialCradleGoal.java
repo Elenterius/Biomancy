@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
 import com.github.elenterius.biomancy.entity.mob.PrimordialCradleUser;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.util.LevelUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -17,13 +18,22 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class UsePrimordialCradleGoal<T extends PathfinderMob & PrimordialCradleUser> extends MoveToBlockGoal {
+
+	public static final int SEARCH_RANGE = 32;
+
 	private final T cradleUser;
 	private boolean wantsToUseCradle;
 	private boolean canUseCradle;
+	private final double maxUseDistance;
 
 	public UsePrimordialCradleGoal(T mob) {
-		super(mob, 1f, 24, 8);
+		this(mob, 1.5d);
+	}
+
+	public UsePrimordialCradleGoal(T mob, double maxUseDistance) {
+		super(mob, 1f, SEARCH_RANGE, SEARCH_RANGE);
 		cradleUser = mob;
+		this.maxUseDistance = maxUseDistance;
 	}
 
 	@Override
@@ -44,8 +54,9 @@ public class UsePrimordialCradleGoal<T extends PathfinderMob & PrimordialCradleU
 	public void tick() {
 		super.tick();
 
-		cradleUser.getLookControl().setLookAt(blockPos.getX() + 0.5d, blockPos.getY() + 0.5d, blockPos.getZ() + 0.5d, 10f, cradleUser.getMaxHeadXRot());
 		if (!isReachedTarget()) return;
+
+		cradleUser.getLookControl().setLookAt(blockPos.getX() + 0.5d, blockPos.getY() + 0.5d, blockPos.getZ() + 0.5d, 20f, cradleUser.getMaxHeadXRot());
 
 		if (canUseCradle) {
 			Level level = cradleUser.level();
@@ -65,7 +76,7 @@ public class UsePrimordialCradleGoal<T extends PathfinderMob & PrimordialCradleU
 
 	@Override
 	public double acceptedDistance() {
-		return 1.5d;
+		return maxUseDistance;
 	}
 
 	@Override
@@ -78,6 +89,20 @@ public class UsePrimordialCradleGoal<T extends PathfinderMob & PrimordialCradleU
 		return false;
 	}
 
+	@Override
+	protected boolean findNearestBlock() {
+		PrimordialCradleBlockEntity nearestBlockEntity = LevelUtil.findNearestBlockEntity((ServerLevel) mob.level(), mob.blockPosition(), SEARCH_RANGE, PrimordialCradleBlockEntity.class);
+		if (nearestBlockEntity == null) return false;
+
+		BlockPos nearestPos = nearestBlockEntity.getBlockPos();
+		if (mob.isWithinRestriction(nearestPos) && isValidTarget(mob.level(), nearestPos)) {
+			this.blockPos = nearestPos;
+			return true;
+		}
+
+		return false;
+	}
+
 	private boolean sacrificeItem(Level level, BlockPos pos, PrimordialCradleBlockEntity cradle, ItemStack stack) {
 		if (!cradle.isFull() && cradle.insertItem(stack)) {
 			SoundEvent soundEvent = cradle.isFull() ? ModSoundEvents.CRADLE_BECAME_FULL.get() : ModSoundEvents.CRADLE_EAT.get();
@@ -86,5 +111,6 @@ public class UsePrimordialCradleGoal<T extends PathfinderMob & PrimordialCradleU
 		}
 		return false;
 	}
+
 
 }
