@@ -32,6 +32,9 @@ public abstract class PlayerMixin extends LivingEntity {
 	@Shadow
 	public abstract ItemStack getItemBySlot(EquipmentSlot slot);
 
+	@Shadow
+	public abstract float getAttackStrengthScale(float pAdjustTicks);
+
 	protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
 		super(entityType, level);
 	}
@@ -61,7 +64,7 @@ public abstract class PlayerMixin extends LivingEntity {
 		if (stack.getItem() instanceof ItemAttackDamageSourceProvider damageSourceProvider) {
 			Entity target = argRef.get();
 			if (target != null) {
-				DamageSource damageSource = damageSourceProvider.getDamageSource(stack, target, this);
+				DamageSource damageSource = damageSourceProvider.getDamageSource(stack, target, this, getAttackStrengthScale(0.5f));
 				return damageSource != null ? damageSource : source;
 			}
 		}
@@ -80,7 +83,7 @@ public abstract class PlayerMixin extends LivingEntity {
 		if (stack.getItem() instanceof ItemAttackDamageSourceProvider damageSourceProvider) {
 			LivingEntity target = argRef.get();
 			if (target != null) {
-				DamageSource damageSource = damageSourceProvider.getDamageSource(stack, target, this);
+				DamageSource damageSource = damageSourceProvider.getDamageSource(stack, target, this, getAttackStrengthScale(0.5f));
 				return damageSource != null ? damageSource : source;
 			}
 		}

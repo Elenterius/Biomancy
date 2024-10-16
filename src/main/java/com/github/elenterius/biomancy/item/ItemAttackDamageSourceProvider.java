@@ -7,5 +7,5 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public interface ItemAttackDamageSourceProvider {
-	@Nullable DamageSource getDamageSource(ItemStack stack, Entity target, LivingEntity attacker);
+	@Nullable DamageSource getDamageSource(ItemStack stack, Entity target, LivingEntity attacker, float attackStrengthScale);
 }
