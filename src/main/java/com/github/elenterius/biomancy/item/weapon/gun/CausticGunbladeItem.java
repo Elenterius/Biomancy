@@ -226,7 +226,7 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 	}
 
 	@Override
-	public @Nullable DamageSource getDamageSource(ItemStack stack, Entity target, LivingEntity attacker) {
+	public @Nullable DamageSource getDamageSource(ItemStack stack, Entity target, LivingEntity attacker, float attackStrengthScale) {
 		if (GunbladeMode.from(stack) != GunbladeMode.MELEE) return null;
 		if (!Abilities.ACID_COAT.isActive(stack)) return null;
 

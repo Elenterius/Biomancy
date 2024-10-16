@@ -70,7 +70,7 @@ public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemC
 		awakenedAttributes = Lazy.of(() -> createDefaultAttributeModifiers(-1 + attackDamage + 2.5f, attackSpeedModifier, 0.5f).build());
 	}
 
-	private static void playBloodyClawsFX(LivingEntity attacker) {
+	private static void playClawSwipeFX(LivingEntity attacker) {
 		attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_STRONG.get(), attacker.getSoundSource(), 1f, 1f + attacker.getRandom().nextFloat() * 0.5f);
 		if (attacker.level() instanceof ServerLevel serverLevel) {
 			double xOffset = -Mth.sin(attacker.getYRot() * Mth.DEG_TO_RAD);
@@ -209,8 +209,13 @@ public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemC
 	}
 
 	@Override
-	public @Nullable DamageSource getDamageSource(ItemStack stack, Entity target, LivingEntity attacker) {
-		return ModDamageSources.slash(attacker.level(), attacker);
+	public @Nullable DamageSource getDamageSource(ItemStack stack, Entity target, LivingEntity attacker, float attackStrengthScale) {
+		if (attackStrengthScale <= 0.9f) return null;
+
+		return switch (getLivingToolState(stack)) {
+			case BROKEN -> null;
+			case DORMANT, AWAKENED -> ModDamageSources.slash(attacker.level(), attacker);
+		};
 	}
 
 	@Override
@@ -229,7 +234,7 @@ public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemC
 				}
 
 				if (isFullAttackStrength) {
-					playBloodyClawsFX(attacker);
+					playClawSwipeFX(attacker);
 					if (attacker.getRandom().nextInt(12) == 0) { //8.3%
 						attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_BLEED_PROC.get(), attacker.getSoundSource(), 1f, 1f);
 
@@ -252,7 +257,7 @@ public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemC
 				}
 
 				if (isFullAttackStrength) {
-					playBloodyClawsFX(attacker);
+					playClawSwipeFX(attacker);
 					if (attacker.getRandom().nextInt(5) == 0) { //20%
 						attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_BLEED_PROC.get(), attacker.getSoundSource(), 1f, 1f);
 
