@@ -209,10 +209,6 @@ dependencies {
 	compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}") // compile against the JEI API but do not include it at runtime
 	runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") // at runtime, use the full JEI jar
 
-	implementation fg.deobf("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-	implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
-	implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
-
 	runtimeOnly fg.deobf("maven.modrinth:alexs-mobs:1.22.9")
 	runtimeOnly fg.deobf("maven.modrinth:alexs-caves:1.1.5")
 	runtimeOnly fg.deobf("maven.modrinth:citadel:2.6.0")
@@ -250,8 +246,7 @@ tasks.named('processResources', ProcessResources).configure {
 			mod_description     : mod_description,
 
 			geckolib_version    : geckolib_version, geckolib_version_range: geckolib_version_range,
-			jei_version         : jei_version, jei_version_range: jei_version_range,
-			create_version      : create_version, create_version_range: create_version_range
+			jei_version: jei_version, jei_version_range: jei_version_range
 	]
 	inputs.properties replaceProperties
 

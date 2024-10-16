@@ -2,7 +2,6 @@ package com.github.elenterius.biomancy.integration;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.integration.alexscaves.AlexsCavesCompat;
-import com.github.elenterius.biomancy.integration.create.CreateCompat;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconHelper;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconIntegration;
 import com.github.elenterius.biomancy.integration.pehkui.PehkuiHelper;
@@ -15,8 +14,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
-
-import java.util.Arrays;
 
 public final class ModsCompatHandler {
 
@@ -46,25 +43,6 @@ public final class ModsCompatHandler {
 
 	public static void onBiomancyCommonSetup(final FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
-			if (ModList.get().isLoaded("create")) {
-				String versionString = ModList.get().getModFileById("create").versionString();
-				int[] splitVersion = Arrays.stream(versionString.split("\\."))
-						.mapToInt(ModsCompatHandler::parseVersionNumber)
-						.toArray();
-
-				int major = splitVersion[0];
-				int minor = splitVersion[1];
-				int patch = splitVersion[2];
-
-				if (major > 0 || (major == 0 && minor > 5) || (major == 0 && minor == 5 && patch >= 1)) {
-					BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Create compat...");
-					CreateCompat.onPostSetup();
-				}
-				else {
-					BiomancyMod.LOGGER.warn(LOG_MARKER, "Found outdated version of Create (< 0.5.1). Skipping compatibility setup for Create!");
-				}
-			}
-
 			if (ModList.get().isLoaded("tetra")) {
 				BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Tetra compat...");
 				TetraCompat.onPostSetup();
