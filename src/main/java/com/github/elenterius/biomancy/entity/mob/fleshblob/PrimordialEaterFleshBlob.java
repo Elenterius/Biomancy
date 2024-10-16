@@ -57,7 +57,7 @@ public class PrimordialEaterFleshBlob extends EaterFleshBlob implements Primordi
 		goalSelector.addGoal(3, new FindItemGoal(this, 12f, SPECIAL_ITEM_ENTITY_FILTER));
 		goalSelector.addGoal(3, new EatFoodItemGoal<>(this, 0.05f));
 		goalSelector.addGoal(4, new AvoidEntityGoal<>(this, AbstractGolem.class, 6f, 0.8f, 1.2f));
-		goalSelector.addGoal(4, new UsePrimordialCradleGoal<>(this));
+		goalSelector.addGoal(4, new UsePrimordialCradleGoal<>(this, 6d));
 		goalSelector.addGoal(5, new DanceNearJukeboxGoal<>(this));
 		goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1d));
 		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8f));
