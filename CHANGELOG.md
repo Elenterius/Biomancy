@@ -1,3 +1,14 @@
+## [8.17.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.16.0...1.20.1-v2.8.17.0) (2024-10-17)
+
+
+### Features
+
+* give the friendly primordial flesh blob the ability to use Cradles from further distances ([03d007b](https://github.com/Elenterius/Biomancy/commit/03d007b26849b6cc107ae4dfd7d2d9b55342419a))
+* make primordial flesh blobs immune to acid ([8323a66](https://github.com/Elenterius/Biomancy/commit/8323a664070e2342e323396588aa5b7a9f66b329))
+* re-balance ravenous claws, increase base damage by from 3.5 to 4, decrease attack speed from 4 to 3.5 and make attacks ignore invincibility frames only with full attack strength ([83249ea](https://github.com/Elenterius/Biomancy/commit/83249ea64dae7293fc4843d8e88c1f9b7ea8ac46))
+* refactor fluid fuel handling & api ([b4abfc9](https://github.com/Elenterius/Biomancy/commit/b4abfc9f030b763faad1135c2e75f0e3e8c9fd9d))
+* remove integration for the Create mod and move it into a standalone addon mod ([376bd3d](https://github.com/Elenterius/Biomancy/commit/376bd3df958219aa779c7ac46a0292220d5ccd03))
+
 ## [8.16.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.15.0...1.20.1-v2.8.16.0) (2024-10-14)
 
 
@@ -61,11 +72,4 @@
 ### Bug Fixes
 
 * fix server crash related to the primordial infestation effect ([3dcdc0a](https://github.com/Elenterius/Biomancy/commit/3dcdc0a10d3e14712bf577dbf2c5a5c6c0cbd6e5))
-
-## [8.13.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.12.0...1.20.1-v2.8.13.0) (2024-09-13)
-
-
-### Features
-
-* add dispenser behavior for Gastric Acid Buckets ([8a29d19](https://github.com/Elenterius/Biomancy/commit/8a29d192d5bcdd8d68d48ebb3237205a3a0439c2)), closes [#147](https://github.com/Elenterius/Biomancy/issues/147)
 
