@@ -103,10 +103,10 @@ public final class IngameOverlays {
 		int x = screenWidth / 2 + 64;
 		int y = screenHeight / 2 - font.lineHeight - 2;
 
-		drawValueWithLabel(guiGraphics, font, cradle.getSuccessChance(), "Success", x, y);
+		//		drawValueWithLabel(guiGraphics, font, cradle.getSuccessChance(), "Success", x, y);
 		y += font.lineHeight;
 		drawValueWithLabel(guiGraphics, font, cradle.getBiomassPct(), "Biomass", x, y += font.lineHeight + 2);
-		drawValueWithLabel(guiGraphics, font, cradle.getLifeEnergyPct(), "Life Energy", x, y += font.lineHeight + 2);
+		drawValueWithLabel(guiGraphics, font, cradle.getLifeEnergyPct(), "Life", x, y += font.lineHeight + 2);
 		drawValueWithLabel(guiGraphics, font, cradle.getDiseaseChance(), "Disease", x, y += font.lineHeight + 2);
 		drawValueWithLabel(guiGraphics, font, cradle.getHostileChance(), "Hostile", x, y += font.lineHeight + 2);
 		drawValueWithLabel(guiGraphics, font, cradle.getAnomalyChance(), "Anomaly", x, y + (font.lineHeight + 2));
@@ -120,7 +120,7 @@ public final class IngameOverlays {
 	}
 
 	private static void drawValueWithLabel(GuiGraphics guiGraphics, Font font, float value, String label, int x, int y) {
-		drawValueWithLabel(guiGraphics, font, String.valueOf(value), label, x, y, TextStyles.PRIMORDIAL_RUNES_LIGHT_GRAY, TextStyles.PRIMORDIAL_RUNES_GRAY);
+		drawValueWithLabel(guiGraphics, font, String.valueOf(value), label, x, y, TextStyles.LIGHT_GRAY, TextStyles.GRAY);
 	}
 
 	static void renderGunOverlay(ForgeGui gui, GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun gun) {
