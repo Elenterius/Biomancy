@@ -70,11 +70,13 @@ public record MobEffectTribute(int lifeEnergy, int successModifier, int diseaseM
 
 	public static class Builder {
 
+		public static final int BASE_POTION_DURATION = 900;
+
 		private float lifeEnergy = 0;
-		private int diseaseModifier = 0;
-		private int successModifier = 0;
-		private int hostileModifier = 0;
-		private int anomalyModifier = 0;
+		private float diseaseModifier = 0;
+		private float successModifier = 0;
+		private float hostileModifier = 0;
+		private float anomalyModifier = 0;
 
 		private Builder() {}
 
@@ -83,47 +85,50 @@ public record MobEffectTribute(int lifeEnergy, int successModifier, int diseaseM
 			return this;
 		}
 
-		public Builder addEffect(MobEffectInstance instance, float chance) {
-			addEffect(instance.getEffect(), instance.getAmplifier(), chance);
+		public Builder addEffect(MobEffectInstance instance, float multiplier) {
+			addEffect(instance.getEffect(), instance.getAmplifier(), instance.getDuration(), multiplier);
 			return this;
 		}
 
 		public Builder addEffect(MobEffect effect) {
-			addEffect(effect, 1, 1f);
+			addEffect(effect, 0, BASE_POTION_DURATION, 1f);
 			return this;
 		}
 
-		public Builder addEffect(MobEffect effect, int amplifier, float chance) {
+		public Builder addEffect(MobEffect effect, int amplifier, int duration, float multiplier) {
 			if (ModMobEffectTags.isCradleLifeEnergySource(effect)) { //heal, regeneration, health boost, absorption
-				int level = amplifier + 1;
-				lifeEnergy += level * 60 * chance;
+				lifeEnergy += calculateEffectModifier(effect.isInstantenous(), amplifier, duration, 60) * multiplier;
 			}
 
 			if (ModMobEffectTags.isCradleDiseaseSource(effect)) { //weakness, wither, poison
-				int level = amplifier + 1;
-				diseaseModifier += Math.round(level * 15 * chance);
+				diseaseModifier += calculateEffectModifier(effect.isInstantenous(), amplifier, duration, 15) * multiplier;
 			}
 
 			if (ModMobEffectTags.isCradleSuccessSource(effect)) { //luck, saturation, libido
-				int level = amplifier + 1;
-				successModifier += Math.round(level * 50 * chance);
+				successModifier += calculateEffectModifier(effect.isInstantenous(), amplifier, duration, 50) * multiplier;
 			}
 
 			if (ModMobEffectTags.isCradleHostilitySource(effect)) { //hunger, confusion, blindness, harm, wither, poison, bleed
-				int level = amplifier + 1;
-				hostileModifier += Math.round(level * 15 * chance);
+				hostileModifier += calculateEffectModifier(effect.isInstantenous(), amplifier, duration, 15) * multiplier;
 			}
 
 			if (ModMobEffectTags.isCradleAnomalySource(effect)) { //bad omen, darkness, corrosive
-				int level = amplifier + 1;
-				anomalyModifier += Math.round(level * 50 * chance);
+				anomalyModifier += calculateEffectModifier(effect.isInstantenous(), amplifier, duration, 50) * multiplier;
 			}
 
 			return this;
 		}
 
+		private float calculateEffectModifier(boolean isInstantEffect, int amplifier, int duration, float baseAmount) {
+			if (isInstantEffect) return (amplifier + 1f) * baseAmount;
+			if (duration == -1) return 1_000_000f;
+
+			float durationPct = (float) duration / BASE_POTION_DURATION;
+			return durationPct * baseAmount + (amplifier + amplifier * durationPct) * baseAmount;
+		}
+
 		public MobEffectTribute build() {
-			return new MobEffectTribute(Math.round(lifeEnergy), successModifier, diseaseModifier, hostileModifier, anomalyModifier);
+			return new MobEffectTribute(Math.round(lifeEnergy), Math.round(successModifier), Math.round(diseaseModifier), Math.round(hostileModifier), Math.round(anomalyModifier));
 		}
 	}
 
