@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.block.cradle;
 
 import com.github.elenterius.biomancy.BiomancyConfig;
+import com.github.elenterius.biomancy.api.tribute.SacrificeHandler;
 import com.github.elenterius.biomancy.api.tribute.SimpleTribute;
 import com.github.elenterius.biomancy.api.tribute.Tribute;
 import com.github.elenterius.biomancy.block.base.SimpleSyncedBlockEntity;
@@ -19,6 +20,7 @@ import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -33,6 +35,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -50,7 +56,7 @@ import java.util.Set;
 
 public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity implements PrimalEnergyHandler, GeoBlockEntity {
 
-	public static final String SACRIFICE_SYNC_KEY = "SyncSacrificeHandler";
+	//	public static final String SACRIFICE_SYNC_KEY = "SyncSacrificeHandler";
 	public static final String SACRIFICE_KEY = "SacrificeHandler";
 	public static final String PRIMAL_ENERGY_KEY = "PrimalEnergy";
 	public static final String PROC_GEN_VALUES_KEY = "ProcGenValues";
@@ -58,13 +64,19 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	public static final int DURATION_TICKS = 20 * 4;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-	private final SacrificeHandler sacrificeHandler = new SacrificeHandler();
+
+	private final SacrificeHandler sacrificeHandler;
+	private LazyOptional<IFluidHandler> optionalFluidConsumer;
+
 	private long ticks;
 	private int primalEnergy;
 	private @Nullable MoundShape.ProcGenValues procGenValues;
 
 	public PrimordialCradleBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.PRIMORDIAL_CRADLE.get(), pos, state);
+
+		sacrificeHandler = new SacrificeHandler();
+		optionalFluidConsumer = LazyOptional.of(sacrificeHandler::getFluidConsumer);
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, PrimordialCradleBlockEntity cradle) {
@@ -438,6 +450,29 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		}
 	}
 
+	@Override
+	public void invalidateCaps() {
+		super.invalidateCaps();
+		optionalFluidConsumer.invalidate();
+	}
+
+	@Override
+	public void reviveCaps() {
+		super.reviveCaps();
+		optionalFluidConsumer = LazyOptional.of(sacrificeHandler::getFluidConsumer);
+	}
+
+	@Override
+	public <T> @NotNull LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
+		if (remove) return super.getCapability(cap, side);
+
+		if (cap == ModCapabilities.FLUID_HANDLER) {
+			return optionalFluidConsumer.cast();
+		}
+
+		return super.getCapability(cap, side);
+	}
+
 	protected void broadcastAnimation(TriggerableAnimation animation) {
 		triggerAnim(animation.controller(), animation.name());
 	}
@@ -464,9 +499,8 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	}
 
 	protected static final class Animations {
-		private static final List<TriggerableAnimation> TRIGGERABLE_ANIMATIONS = new ArrayList<>();
 		static final String MAIN_CONTROLLER = "main";
-
+		private static final List<TriggerableAnimation> TRIGGERABLE_ANIMATIONS = new ArrayList<>();
 		static final TriggerableAnimation IDLE = register(MAIN_CONTROLLER, "idle", RawAnimation.begin().thenPlay("cradle.idle"));
 		static final TriggerableAnimation WORK = register(MAIN_CONTROLLER, "work", RawAnimation.begin().thenPlay("cradle.work"));
 		static final TriggerableAnimation SPIKE_ATTACK = register(MAIN_CONTROLLER, "spike_attack", RawAnimation.begin().thenPlay("cradle.spike"));

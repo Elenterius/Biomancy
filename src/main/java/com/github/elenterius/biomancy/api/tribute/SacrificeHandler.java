@@ -1,18 +1,21 @@
-package com.github.elenterius.biomancy.block.cradle;
+package com.github.elenterius.biomancy.api.tribute;
 
-import com.github.elenterius.biomancy.api.tribute.Tribute;
-import com.github.elenterius.biomancy.api.tribute.Tributes;
-import com.google.common.math.IntMath;
+import com.github.elenterius.biomancy.api.tribute.fluid.FluidTributeConsumerHandler;
+import com.github.elenterius.biomancy.util.SaturatedMath;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Consumer;
 
+@ApiStatus.Internal
 public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 
 	private static final int MAX_BIOMASS_VALUE = 100;
+	private static final int REQUIRED_LIFE_ENERGY = 100;
 
 	private byte biomass;
 	private int lifeEnergy;
@@ -22,8 +25,11 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	private int anomalyValue;
 	private boolean hasModifiers;
 
+	private final FluidTributeConsumerHandler fluidConsumer;
+
 	public SacrificeHandler() {
 		reset();
+		fluidConsumer = new FluidTributeConsumerHandler(this);
 	}
 
 	public void reset() {
@@ -40,11 +46,20 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	}
 
 	public boolean isFull() {
-		return lifeEnergy >= MAX_BIOMASS_VALUE && biomass >= MAX_BIOMASS_VALUE;
+		return lifeEnergy >= REQUIRED_LIFE_ENERGY && biomass >= getMaxBiomass();
+	}
+
+	public boolean isBiomassFull() {
+		return biomass >= getMaxBiomass();
+	}
+
+	public int getMaxBiomass() {
+		return MAX_BIOMASS_VALUE;
 	}
 
 	public void setBiomass(int amount) {
-		biomass = (byte) Mth.clamp(amount, 0, MAX_BIOMASS_VALUE);
+		biomass = (byte) Mth.clamp(amount, 0, getMaxBiomass());
+		onChange();
 	}
 
 	public boolean addBiomass(int amount) {
@@ -55,7 +70,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 			return true;
 		}
 
-		if (amount > 0 && biomass < MAX_BIOMASS_VALUE) {
+		if (amount > 0 && biomass < getMaxBiomass()) {
 			setBiomass(biomass + amount);
 			return true;
 		}
@@ -73,18 +88,93 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 
 	public void setLifeEnergy(int amount) {
 		lifeEnergy = Mth.clamp(amount, 0, Integer.MAX_VALUE);
+		onChange();
 	}
 
 	public boolean addLifeEnergy(int amount) {
 		if (amount == 0) return false;
 
 		if (amount < 0 && lifeEnergy > 0) {
-			setLifeEnergy(lifeEnergy + amount);
+			lifeEnergy = SaturatedMath.addAndClampToPositiveInteger(lifeEnergy, amount);
+			onChange();
 			return true;
 		}
 
 		if (amount > 0) {
-			setLifeEnergy(IntMath.saturatedAdd(lifeEnergy, amount));
+			lifeEnergy = SaturatedMath.addAndClampToPositiveInteger(lifeEnergy, amount);
+			onChange();
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean addSuccess(int amount) {
+		if (amount == 0) return false;
+
+		if (amount < 0 && successValue > 0) {
+			successValue = SaturatedMath.addAndClampToPositiveInteger(successValue, amount);
+			onChange();
+			return true;
+		}
+
+		if (amount > 0) {
+			successValue = SaturatedMath.addAndClampToPositiveInteger(successValue, amount);
+			onChange();
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean addHostile(int amount) {
+		if (amount == 0) return false;
+
+		if (amount < 0 && hostileValue > 0) {
+			hostileValue = SaturatedMath.addAndClampToPositiveInteger(hostileValue, amount);
+			onChange();
+			return true;
+		}
+
+		if (amount > 0) {
+			hostileValue = SaturatedMath.addAndClampToPositiveInteger(hostileValue, amount);
+			onChange();
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean addAnomaly(int amount) {
+		if (amount == 0) return false;
+
+		if (amount < 0 && anomalyValue > 0) {
+			anomalyValue = SaturatedMath.addAndClampToPositiveInteger(anomalyValue, amount);
+			onChange();
+			return true;
+		}
+
+		if (amount > 0) {
+			anomalyValue = SaturatedMath.addAndClampToPositiveInteger(anomalyValue, amount);
+			onChange();
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean addDisease(int amount) {
+		if (amount == 0) return false;
+
+		if (amount < 0 && diseaseValue > 0) {
+			diseaseValue = SaturatedMath.addAndClampToPositiveInteger(diseaseValue, amount);
+			onChange();
+			return true;
+		}
+
+		if (amount > 0) {
+			diseaseValue = SaturatedMath.addAndClampToPositiveInteger(diseaseValue, amount);
+			onChange();
 			return true;
 		}
 
@@ -170,15 +260,19 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 			int hostileModifier = tribute.hostileModifier();
 			int anomalyModifier = tribute.anomalyModifier();
 
-			if (diseaseModifier != 0 || hostileModifier != 0 || anomalyModifier != 0) hasModifiers = true;
-
 			diseaseValue += diseaseModifier;
 			hostileValue += hostileModifier;
 			anomalyValue += anomalyModifier;
+
+			onChange();
 			return true;
 		}
 
 		return false;
+	}
+
+	protected void onChange() {
+		hasModifiers = diseaseValue != 0 || hostileValue != 0 || anomalyValue != 0;
 	}
 
 	@Override
@@ -194,6 +288,8 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		tag.putInt("Anomaly", anomalyValue);
 
 		tag.putBoolean("HasModifiers", hasModifiers);
+
+		tag.put("FluidConsumer", fluidConsumer.serializeNBT());
 		return tag;
 	}
 
@@ -209,6 +305,12 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		anomalyValue = tag.getInt("Anomaly");
 
 		hasModifiers = tag.getBoolean("HasModifiers");
+
+		fluidConsumer.deserializeNBT(tag.getCompound("FluidConsumer"));
+	}
+
+	public IFluidHandler getFluidConsumer() {
+		return fluidConsumer;
 	}
 
 }
