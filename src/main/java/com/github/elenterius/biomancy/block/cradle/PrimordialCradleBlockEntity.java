@@ -75,7 +75,10 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	public PrimordialCradleBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.PRIMORDIAL_CRADLE.get(), pos, state);
 
-		sacrificeHandler = new SacrificeHandler();
+		sacrificeHandler = new SacrificeHandler(() -> {
+			markChunkAsUnsaved();
+			syncToClient();
+		});
 		optionalFluidConsumer = LazyOptional.of(sacrificeHandler::getFluidConsumer);
 	}
 

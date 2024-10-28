@@ -33,7 +33,7 @@ public final class FluidNutrients {
 		FLUIDS.put(key, func);
 	}
 
-	public static void register(RegistryObject<Fluid> fluidHolder, FluidToFuelConversion func) {
+	public static void register(RegistryObject<? extends Fluid> fluidHolder, FluidToFuelConversion func) {
 		ResourceLocation key = fluidHolder.getId();
 		FLUIDS.put(key, func);
 	}

@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.api.tribute;
 
 import com.github.elenterius.biomancy.api.tribute.fluid.FluidTributeConsumerHandler;
+import com.github.elenterius.biomancy.inventory.Notify;
 import com.github.elenterius.biomancy.util.SaturatedMath;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
@@ -25,11 +26,13 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	private int anomalyValue;
 	private boolean hasModifiers;
 
+	private boolean isDirty = false;
+
 	private final FluidTributeConsumerHandler fluidConsumer;
 
-	public SacrificeHandler() {
+	public SacrificeHandler(Notify onFluidConsumerChange) {
 		reset();
-		fluidConsumer = new FluidTributeConsumerHandler(this);
+		fluidConsumer = new FluidTributeConsumerHandler(this, onFluidConsumerChange);
 	}
 
 	public void reset() {
@@ -43,10 +46,15 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		anomalyValue = 7;
 
 		hasModifiers = false;
+		isDirty = false;
 	}
 
 	public boolean isFull() {
 		return lifeEnergy >= REQUIRED_LIFE_ENERGY && biomass >= getMaxBiomass();
+	}
+
+	public boolean isDirty() {
+		return isDirty;
 	}
 
 	public boolean isBiomassFull() {
@@ -59,7 +67,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 
 	public void setBiomass(int amount) {
 		biomass = (byte) Mth.clamp(amount, 0, getMaxBiomass());
-		onChange();
+		markDirty();
 	}
 
 	public boolean addBiomass(int amount) {
@@ -88,7 +96,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 
 	public void setLifeEnergy(int amount) {
 		lifeEnergy = Mth.clamp(amount, 0, Integer.MAX_VALUE);
-		onChange();
+		markDirty();
 	}
 
 	public boolean addLifeEnergy(int amount) {
@@ -96,89 +104,45 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 
 		if (amount < 0 && lifeEnergy > 0) {
 			lifeEnergy = SaturatedMath.addAndClampToPositiveInteger(lifeEnergy, amount);
-			onChange();
+			markDirty();
 			return true;
 		}
 
 		if (amount > 0) {
 			lifeEnergy = SaturatedMath.addAndClampToPositiveInteger(lifeEnergy, amount);
-			onChange();
+			markDirty();
 			return true;
 		}
 
 		return false;
 	}
 
-	public boolean addSuccess(int amount) {
-		if (amount == 0) return false;
+	public void addSuccess(int amount) {
+		if (amount == 0) return;
 
-		if (amount < 0 && successValue > 0) {
-			successValue = SaturatedMath.addAndClampToPositiveInteger(successValue, amount);
-			onChange();
-			return true;
-		}
-
-		if (amount > 0) {
-			successValue = SaturatedMath.addAndClampToPositiveInteger(successValue, amount);
-			onChange();
-			return true;
-		}
-
-		return false;
+		successValue = SaturatedMath.add(successValue, amount);
+		markDirty();
 	}
 
-	public boolean addHostile(int amount) {
-		if (amount == 0) return false;
+	public void addHostile(int amount) {
+		if (amount == 0) return;
 
-		if (amount < 0 && hostileValue > 0) {
-			hostileValue = SaturatedMath.addAndClampToPositiveInteger(hostileValue, amount);
-			onChange();
-			return true;
-		}
-
-		if (amount > 0) {
-			hostileValue = SaturatedMath.addAndClampToPositiveInteger(hostileValue, amount);
-			onChange();
-			return true;
-		}
-
-		return false;
+		hostileValue = SaturatedMath.add(hostileValue, amount);
+		markDirty();
 	}
 
-	public boolean addAnomaly(int amount) {
-		if (amount == 0) return false;
+	public void addAnomaly(int amount) {
+		if (amount == 0) return;
 
-		if (amount < 0 && anomalyValue > 0) {
-			anomalyValue = SaturatedMath.addAndClampToPositiveInteger(anomalyValue, amount);
-			onChange();
-			return true;
-		}
-
-		if (amount > 0) {
-			anomalyValue = SaturatedMath.addAndClampToPositiveInteger(anomalyValue, amount);
-			onChange();
-			return true;
-		}
-
-		return false;
+		anomalyValue = SaturatedMath.add(anomalyValue, amount);
+		markDirty();
 	}
 
-	public boolean addDisease(int amount) {
-		if (amount == 0) return false;
+	public void addDisease(int amount) {
+		if (amount == 0) return;
 
-		if (amount < 0 && diseaseValue > 0) {
-			diseaseValue = SaturatedMath.addAndClampToPositiveInteger(diseaseValue, amount);
-			onChange();
-			return true;
-		}
-
-		if (amount > 0) {
-			diseaseValue = SaturatedMath.addAndClampToPositiveInteger(diseaseValue, amount);
-			onChange();
-			return true;
-		}
-
-		return false;
+		diseaseValue = SaturatedMath.add(diseaseValue, amount);
+		markDirty();
 	}
 
 	public int getLifeEnergyAmount() {
@@ -254,25 +218,19 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		boolean isModifier = tribute.biomass() == 0 && tribute.lifeEnergy() == 0;
 
 		if (consumeTribute || isModifier) {
-			successValue += tribute.successModifier();
-
-			int diseaseModifier = tribute.diseaseModifier();
-			int hostileModifier = tribute.hostileModifier();
-			int anomalyModifier = tribute.anomalyModifier();
-
-			diseaseValue += diseaseModifier;
-			hostileValue += hostileModifier;
-			anomalyValue += anomalyModifier;
-
-			onChange();
+			addSuccess(tribute.successModifier());
+			addDisease(tribute.diseaseModifier());
+			addHostile(tribute.hostileModifier());
+			addAnomaly(tribute.anomalyModifier());
 			return true;
 		}
 
 		return false;
 	}
 
-	protected void onChange() {
+	protected void markDirty() {
 		hasModifiers = diseaseValue != 0 || hostileValue != 0 || anomalyValue != 0;
+		isDirty = true;
 	}
 
 	@Override
@@ -311,6 +269,10 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 
 	public IFluidHandler getFluidConsumer() {
 		return fluidConsumer;
+	}
+
+	public void setDirty(boolean flag) {
+		isDirty = flag;
 	}
 
 }
