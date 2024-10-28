@@ -12,7 +12,7 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
-@ApiStatus.Experimental
+@ApiStatus.Internal
 public class FuelHandlerImpl implements FuelHandler, INBTSerializable<CompoundTag> {
 	private final int maxFuel;
 	private final Predicate<ItemStack> fuelPredicate;
@@ -20,7 +20,7 @@ public class FuelHandlerImpl implements FuelHandler, INBTSerializable<CompoundTa
 	private final Notify changeNotifier;
 	private int fuel;
 
-	FluidFuelConsumerHandler fluidConsumer;
+	private final FluidFuelConsumerHandler fluidConsumer;
 
 	public FuelHandlerImpl(int maxFuel, Predicate<ItemStack> fuelPredicate, ToIntFunction<ItemStack> fuelValueFunc, Notify changeNotifier) {
 		this.maxFuel = maxFuel;

@@ -11,7 +11,7 @@ import org.jetbrains.annotations.ApiStatus;
 public class FluidFuelConsumerHandler implements IFluidHandler, INBTSerializable<CompoundTag> {
 
 	public static final String FRACTIONAL_FUEL_BUFFER_KEY = "FractionalFuelBuffer";
-	private static final long SCALE_FACTOR = 1_000_000;  //
+	private static final long SCALE_FACTOR = 1_000_000;
 
 	private final FuelHandler fuelHandler;
 	private long fractionalFuelBuffer;
@@ -22,7 +22,7 @@ public class FluidFuelConsumerHandler implements IFluidHandler, INBTSerializable
 
 	@Override
 	public boolean isFluidValid(int tank, FluidStack resource) {
-		return FluidNutrients.isValidFuel(resource);
+		return FluidNutrients.isValid(resource);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class FluidFuelConsumerHandler implements IFluidHandler, INBTSerializable
 		if (resource.isEmpty()) return 0;
 		if (fuelHandler.getFuelAmount() >= fuelHandler.getMaxFuelAmount()) return 0;
 
-		FluidToFuelConversion fuelConversion = FluidNutrients.getFuelConversion(resource);
+		FluidToFuelConversion fuelConversion = FluidNutrients.getConversion(resource);
 		if (fuelConversion == null) return 0;
 
 		int fuelMultiplier = fuelConversion.getFuelMultiplier(resource);
