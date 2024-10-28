@@ -39,6 +39,8 @@ public final class Tributes {
 		register(Items.GOLDEN_APPLE, SimpleTribute.builder().successModifier(10).hostileModifier(-100).build());
 		register(Items.ENCHANTED_GOLDEN_APPLE, SimpleTribute.builder().lifeEnergy(15).successModifier(40).hostileModifier(-200).build());
 		register(Items.CAKE, SimpleTribute.builder().hostileModifier(-80).diseaseModifier(10).build());
+		register(Items.MILK_BUCKET, SimpleTribute.builder().hostileModifier(-2).diseaseModifier(-4).build());
+		register(Items.HONEY_BOTTLE, SimpleTribute.builder().successModifier(2).hostileModifier(-10).diseaseModifier(-2).build());
 
 		register(ModItems.HEALING_ADDITIVE.get(), SimpleTribute.builder().lifeEnergy(55).successModifier(1).diseaseModifier(-5).hostileModifier(-10).build());
 		register(ModItems.REGENERATIVE_FLUID.get(), SimpleTribute.builder().lifeEnergy(5).hostileModifier(-1).build());
@@ -116,7 +118,7 @@ public final class Tributes {
 		return Tribute.EMPTY;
 	}
 
-	private static Tribute combineTributes(Tribute a, Tribute b) {
+	public static Tribute combineTributes(Tribute a, Tribute b) {
 		return new SimpleTribute(
 				a.biomass() + b.biomass(),
 				a.lifeEnergy() + b.lifeEnergy(),
