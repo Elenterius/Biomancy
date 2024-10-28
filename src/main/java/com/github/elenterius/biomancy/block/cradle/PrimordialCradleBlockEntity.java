@@ -8,6 +8,7 @@ import com.github.elenterius.biomancy.config.PrimalEnergySettings;
 import com.github.elenterius.biomancy.entity.mob.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.item.armor.AcolyteArmorItem;
+import com.github.elenterius.biomancy.util.SaturatedMath;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.util.animation.TriggerableAnimation;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
@@ -17,7 +18,6 @@ import com.github.elenterius.biomancy.world.spatial.SpatialShapeManager;
 import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
-import com.google.common.math.IntMath;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -302,7 +302,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	}
 
 	private void addPrimalEnergy(int amount) {
-		primalEnergy = IntMath.saturatedAdd(primalEnergy, amount);
+		primalEnergy = SaturatedMath.add(primalEnergy, amount);
 	}
 
 	@Override
@@ -310,7 +310,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		if (amount <= 0) return 0;
 
 		int prevPrimalEnergy = primalEnergy;
-		primalEnergy = IntMath.saturatedAdd(primalEnergy, amount);
+		primalEnergy = SaturatedMath.add(primalEnergy, amount);
 		int filled = primalEnergy - prevPrimalEnergy;
 
 		setChanged();
