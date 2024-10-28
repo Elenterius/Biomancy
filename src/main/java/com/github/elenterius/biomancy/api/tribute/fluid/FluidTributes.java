@@ -8,7 +8,6 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus;
@@ -21,6 +20,12 @@ import java.util.Map;
 public final class FluidTributes {
 
 	private static final Map<ResourceLocation, FluidToTributeConversion> FLUIDS = new HashMap<>();
+
+	private static final MilliTribute MILK_MILLI_TRIBUTE = MilliTribute.convertToMilliUnit(Tributes.getTribute(Items.MILK_BUCKET.getDefaultInstance()), 1000);
+
+	static {
+		register(ForgeMod.MILK.get(), resource -> MILK_MILLI_TRIBUTE);
+	}
 
 	private FluidTributes() {}
 
