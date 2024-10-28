@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.api.tribute;
 
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
+import com.github.elenterius.biomancy.util.SaturatedMath;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -120,12 +121,12 @@ public final class Tributes {
 
 	public static Tribute combineTributes(Tribute a, Tribute b) {
 		return new SimpleTribute(
-				a.biomass() + b.biomass(),
-				a.lifeEnergy() + b.lifeEnergy(),
-				a.successModifier() + b.successModifier(),
-				a.diseaseModifier() + b.diseaseModifier(),
-				a.hostileModifier() + b.hostileModifier(),
-				a.anomalyModifier() + b.anomalyModifier()
+				SaturatedMath.add(a.biomass(), b.biomass()),
+				SaturatedMath.add(a.lifeEnergy(), b.lifeEnergy()),
+				SaturatedMath.add(a.successModifier(), b.successModifier()),
+				SaturatedMath.add(a.diseaseModifier(), b.diseaseModifier()),
+				SaturatedMath.add(a.hostileModifier(), b.hostileModifier()),
+				SaturatedMath.add(a.anomalyModifier(), b.anomalyModifier())
 		);
 	}
 

@@ -20,12 +20,12 @@ public record MilliTribute(int biomass, int lifeEnergy, int successModifier, int
 		}
 
 		return new MilliTribute(
-				SaturatedMath.clampToPositiveInteger(tribute.biomass() * MilliTribute.UNIT_SCALE / ratio),
-				SaturatedMath.clampToPositiveInteger(tribute.lifeEnergy() * MilliTribute.UNIT_SCALE / ratio),
-				SaturatedMath.clampToPositiveInteger(tribute.successModifier() * MilliTribute.UNIT_SCALE / ratio),
-				SaturatedMath.clampToPositiveInteger(tribute.diseaseModifier() * MilliTribute.UNIT_SCALE / ratio),
-				SaturatedMath.clampToPositiveInteger(tribute.hostileModifier() * MilliTribute.UNIT_SCALE / ratio),
-				SaturatedMath.clampToPositiveInteger(tribute.anomalyModifier() * MilliTribute.UNIT_SCALE / ratio)
+				SaturatedMath.castToInteger(tribute.biomass() * MilliTribute.UNIT_SCALE / ratio),
+				SaturatedMath.castToInteger(tribute.lifeEnergy() * MilliTribute.UNIT_SCALE / ratio),
+				SaturatedMath.castToInteger(tribute.successModifier() * MilliTribute.UNIT_SCALE / ratio),
+				SaturatedMath.castToInteger(tribute.diseaseModifier() * MilliTribute.UNIT_SCALE / ratio),
+				SaturatedMath.castToInteger(tribute.hostileModifier() * MilliTribute.UNIT_SCALE / ratio),
+				SaturatedMath.castToInteger(tribute.anomalyModifier() * MilliTribute.UNIT_SCALE / ratio)
 		);
 	}
 
