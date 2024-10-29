@@ -1,4 +1,7 @@
 {
+  "remove": [
+    "minecraft:rotten_flesh"
+  ],
   "values": [
     "minecraft:beef",
     "minecraft:porkchop",
@@ -87,6 +90,10 @@
     },
     {
       "id": "#forge:raw_fishes",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_meats",
       "required": false
     },
     {
