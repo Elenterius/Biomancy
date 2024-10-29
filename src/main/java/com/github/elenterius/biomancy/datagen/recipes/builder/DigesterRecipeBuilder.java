@@ -30,7 +30,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.IntUnaryOperator;
 
 public final class DigesterRecipeBuilder implements RecipeBuilder {
 
@@ -45,20 +44,15 @@ public final class DigesterRecipeBuilder implements RecipeBuilder {
 	private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
 	private Ingredient recipeIngredient;
 	private int craftingTimeTicks = -1;
+	private int craftingTimeModifier = 0;
 	private int craftingCostNutrients = -1;
+	private int craftingCostModifier = 0;
 	@Nullable
 	private String group;
 
 	private DigesterRecipeBuilder(ResourceLocation recipeId, ItemData result) {
 		this.recipeId = new ResourceLocation(recipeId.getNamespace(), RECIPE_SUB_FOLDER + "/" + recipeId.getPath());
 		recipeResult = result;
-
-		if (recipeResult.getRegistryName().equals(ModItems.NUTRIENT_PASTE.getId())) {
-			craftingTimeTicks = Mth.ceil(200 + 190 * Math.log(recipeResult.getCount()));
-		}
-		else if (recipeResult.getRegistryName().equals(ModItems.NUTRIENT_BAR.getId())) {
-			craftingTimeTicks = Mth.ceil(200 + 190 * Math.log(recipeResult.getCount() * 9d));
-		}
 	}
 
 	public static DigesterRecipeBuilder create(ResourceLocation recipeId, ItemData result) {
@@ -114,17 +108,6 @@ public final class DigesterRecipeBuilder implements RecipeBuilder {
 		return this;
 	}
 
-	public DigesterRecipeBuilder modifyCraftingTime(IntUnaryOperator func) {
-		craftingTimeTicks = func.applyAsInt(craftingTimeTicks);
-		return this;
-	}
-
-	public DigesterRecipeBuilder setCraftingCost(int costNutrients) {
-		if (costNutrients < 0) throw new IllegalArgumentException("Invalid crafting cost: " + costNutrients);
-		craftingCostNutrients = costNutrients;
-		return this;
-	}
-
 	public DigesterRecipeBuilder setIngredient(ItemLike item) {
 		return setIngredient(Ingredient.of(item));
 	}
@@ -153,17 +136,50 @@ public final class DigesterRecipeBuilder implements RecipeBuilder {
 		return this;
 	}
 
+	public DigesterRecipeBuilder setCraftingTime(int time) {
+		if (time < 0) throw new IllegalArgumentException("Invalid crafting time: " + time);
+		craftingTimeTicks = time;
+		return this;
+	}
+
+	public DigesterRecipeBuilder addCraftingTimeModifier(int modifier) {
+		craftingTimeModifier = modifier;
+		return this;
+	}
+
+	public DigesterRecipeBuilder setCraftingCost(int costNutrients) {
+		if (costNutrients < 0) throw new IllegalArgumentException("Invalid crafting cost: " + costNutrients);
+		craftingCostNutrients = costNutrients;
+		return this;
+	}
+
+	public DigesterRecipeBuilder addCraftingCostModifier(int modifier) {
+		craftingCostModifier = modifier;
+		return this;
+	}
+
 	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable RecipeCategory category) {
 		validateCriteria();
 
 		if (craftingTimeTicks < 0) {
-			throw new IllegalArgumentException("Invalid crafting time: " + craftingTimeTicks);
+			if (recipeResult.getRegistryName().equals(ModItems.NUTRIENT_PASTE.getId())) {
+				craftingTimeTicks = Mth.ceil(200 + 190 * Math.log(recipeResult.getCount()));
+			}
+			else if (recipeResult.getRegistryName().equals(ModItems.NUTRIENT_BAR.getId())) {
+				craftingTimeTicks = Mth.ceil(200 + 190 * Math.log(recipeResult.getCount() * 9d));
+			}
 		}
 
 		if (craftingCostNutrients < 0) {
 			craftingCostNutrients = RecipeCostUtil.getCost(DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
 		}
+
+		craftingTimeTicks += craftingTimeModifier;
+		craftingCostNutrients += craftingCostModifier;
+
+		if (craftingTimeTicks < 0) throw new IllegalArgumentException("Invalid crafting time: " + craftingTimeTicks);
+		if (craftingCostNutrients < 0) throw new IllegalArgumentException("Invalid crafting cost: " + craftingCostNutrients);
 
 		advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 
