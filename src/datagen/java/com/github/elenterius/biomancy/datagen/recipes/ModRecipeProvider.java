@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 public class ModRecipeProvider extends RecipeProvider {
 
 	private final DecomposerRecipeProvider decomposerRecipeProvider;
-	private final DigesterRecipeProvider digesterRecipeProvider;
+	private final DigestingRecipeProvider digestingRecipeProvider;
 	private final BioForgeRecipeProvider bioForgeRecipeProvider;
 	private final BioLabRecipeProvider bioLabRecipeProvider;
 	private final VanillaRecipeProvider vanillaRecipeProvider;
@@ -17,7 +17,7 @@ public class ModRecipeProvider extends RecipeProvider {
 	public ModRecipeProvider(PackOutput output) {
 		super(output);
 		decomposerRecipeProvider = new DecomposerRecipeProvider(output);
-		digesterRecipeProvider = new DigesterRecipeProvider(output);
+		digestingRecipeProvider = new DigestingRecipeProvider(output);
 		bioForgeRecipeProvider = new BioForgeRecipeProvider(output);
 		bioLabRecipeProvider = new BioLabRecipeProvider(output);
 		vanillaRecipeProvider = new VanillaRecipeProvider(output);
@@ -26,7 +26,7 @@ public class ModRecipeProvider extends RecipeProvider {
 	@Override
 	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		decomposerRecipeProvider.buildRecipes(consumer);
-		digesterRecipeProvider.buildRecipes(consumer);
+		digestingRecipeProvider.buildRecipes(consumer);
 		bioForgeRecipeProvider.buildRecipes(consumer);
 		bioLabRecipeProvider.buildRecipes(consumer);
 		vanillaRecipeProvider.buildRecipes(consumer);
