@@ -87,7 +87,7 @@ public class DigestingRecipeProvider extends RecipeProvider {
 		nutrientPasteRecipe(1, Items.MOSS_CARPET).addCraftingTimeModifier(-20).save(consumer);
 		nutrientPasteRecipe(2, Items.MOSS_BLOCK).setCraftingCost(3).addCraftingTimeModifier(20).save(consumer);
 
-		nutrientPasteRecipe(2, Items.NETHER_WART).addCraftingTimeModifier(-40).save(consumer);
+		nutrientPasteRecipe(2, Items.NETHER_WART).setCraftingCost(2).addCraftingTimeModifier(-40).save(consumer);
 		nutrientPasteRecipe(2, Items.CACTUS).setCraftingCost(3).save(consumer);
 		nutrientPasteRecipe(2, Items.LARGE_FERN).save(consumer);
 		nutrientPasteRecipe(2, Items.TALL_GRASS).save(consumer);
@@ -102,10 +102,10 @@ public class DigestingRecipeProvider extends RecipeProvider {
 		nutrientPasteRecipe(2, Items.SMALL_DRIPLEAF).save(consumer);
 		nutrientPasteRecipe(4, Items.BIG_DRIPLEAF).setCraftingCost(3).save(consumer);
 
-		nutrientPasteRecipe(4, Items.HONEYCOMB).save(consumer);
-		nutrientPasteRecipe(4, Items.SEA_PICKLE).save(consumer);
-		nutrientPasteRecipe(4, Items.WARPED_WART_BLOCK).save(consumer);
-		nutrientPasteRecipe(9 + 5, Items.NETHER_WART_BLOCK).addCraftingTimeModifier(-120).save(consumer);
+		nutrientPasteRecipe(3, Items.HONEYCOMB).save(consumer);
+		nutrientPasteRecipe(3, Items.SEA_PICKLE).save(consumer);
+		nutrientPasteRecipe(3, Items.WARPED_WART_BLOCK).setCraftingCost(3).save(consumer);
+		nutrientPasteRecipe(9 * 2, Items.NETHER_WART_BLOCK).setCraftingCost(9 * 2 - 2).save(consumer);
 		nutrientPasteRecipe(4, Items.SHROOMLIGHT).setCraftingCost(3).save(consumer);
 
 		nutrientPasteRecipe(Foods.DRIED_KELP.getNutrition(), Items.KELP).setCraftingCost(3).addCraftingTimeModifier(35).save(consumer);

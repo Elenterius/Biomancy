@@ -3,10 +3,10 @@
   "ingredient": {
     "item": "minecraft:warped_wart_block"
   },
-  "nutrientsCost": 2,
-  "processingTime": 464,
+  "nutrientsCost": 3,
+  "processingTime": 409,
   "result": {
-    "count": 4,
+    "count": 3,
     "item": "biomancy:nutrient_paste"
   }
 }
