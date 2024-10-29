@@ -5,19 +5,23 @@ import com.github.elenterius.biomancy.datagen.lang.LangProvider;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.init.ModVillagerTrades;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 
+import java.util.Comparator;
 import java.util.function.Consumer;
 
 import static com.github.elenterius.biomancy.datagen.advancements.ModAdvancementProvider.*;
@@ -94,7 +98,7 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 				.title("Organ Trader")
 				.description("Become the funnel for fleshy parts and trade various organs with villagers.")
 				.frameType(FrameType.CHALLENGE).showToast().announceToChat().hidden()
-				.addCriterion("has_traded_organs", hasTradedItems(ModItems.VOLATILE_GLAND.get(), ModItems.GENERIC_MOB_GLAND.get(), ModItems.TOXIN_GLAND.get()))
+				.addCriterion("has_traded_organs", hasTradedItems(ModVillagerTrades.OrganTradeTracker.ORGANS.stream().sorted(Comparator.comparing(Item::getDescriptionId)).toArray(ItemLike[]::new)))
 				.save(consumer, fileHelper);
 
 		createAdvancement("poacher").parent(greedyButcher).icon(Items.LEATHER)
