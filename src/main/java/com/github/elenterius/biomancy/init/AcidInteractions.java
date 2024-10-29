@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.init;
 
+import com.github.elenterius.biomancy.api.nutrients.Nutrients;
 import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
 import com.github.elenterius.biomancy.crafting.recipe.DigestingRecipe;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
@@ -174,22 +175,24 @@ public final class AcidInteractions {
 		//NBT Tag keys
 		public static final String BASE_DATA_KEY = "biomancy:acid_digestion";
 		public static final String TIMER_KEY = "timer";
+		public static final String DELAY_KEY = "delay";
 		public static final String RECIPE_KEY = "recipe";
 
 		/**
 		 * Balancing multiplier applied to the output of any found recipes.
 		 */
-		public static final double EFFICIENCY = 0.8;
+		public static final double EFFICIENCY = 0.8d;
 
 		/**
 		 * How many times {@link #tryDigestSubmergedItem} should be called on a digestible item before it is processed.<br>
 		 * This is not directly ticks, as submerged items are only actually processed every 10 ticks.
 		 */
-		public static final int DELAY = 10;
+		public static final int BASE_DELAY = 10;
 
 		private InWorldItemDigesting() {}
 
 		public static void tryDigestSubmergedItem(ItemEntity itemEntity) {
+			if (itemEntity.getAge() % 10 != 0) return; //Only tick digestion every 10 ticks.
 			if (!isDigestible(itemEntity)) return;
 
 			Level level = itemEntity.level();
@@ -197,15 +200,17 @@ public final class AcidInteractions {
 			CompoundTag entityData = itemEntity.getPersistentData();
 			CompoundTag digestionData = getOrCreateDigestionData(entityData);
 
-			if (level.isClientSide && digestionData.getInt(TIMER_KEY) > 0) {
+			int digestionTimer = digestionData.getInt(TIMER_KEY);
+
+			if (level.isClientSide && digestionTimer > 0) {
 				Vec3 pos = itemEntity.position();
 				RandomSource random = level.getRandom();
 				level.addParticle(ModParticleTypes.ACID_BUBBLE.get(), pos.x, pos.y, pos.z, random.nextGaussian() / 100, Math.abs(random.nextGaussian() / 50), random.nextGaussian() / 100);
 				level.addParticle(ParticleTypes.SMOKE, pos.x, pos.y, pos.z, random.nextGaussian() / 100, Math.abs(random.nextGaussian() / 100), random.nextGaussian() / 100);
+				if (random.nextFloat() < 0.4f)
+					level.playLocalSound(pos.x, pos.y, pos.z, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 0.5f, 2.6f + (random.nextFloat() - random.nextFloat()) * 0.8f, false);
 				return;
 			}
-
-			if (itemEntity.getAge() % 10 != 0) return; //Only tick digestion every 10 ticks.
 
 			@Nullable ResourceLocation lastRecipeId = ResourceLocation.tryParse(digestionData.getString(RECIPE_KEY));
 			Optional<Pair<ResourceLocation, DigestingRecipe>> optionalRecipe = DigesterBlockEntity.RECIPE_TYPE.get().getRecipeForIngredient(level, itemStack, lastRecipeId);
@@ -217,32 +222,59 @@ public final class AcidInteractions {
 
 			if (!recipeId.equals(lastRecipeId)) {
 				digestionData.putString(RECIPE_KEY, recipeId.toString());
+
+				RecipeWrapper inventory = new RecipeWrapper(new ItemStackHandler(1));
+				inventory.setItem(0, itemStack);
+				digestionData.putInt(DELAY_KEY, recipe.getCraftingTimeTicks(inventory) / 40);
 			}
 
-			int currentDigestionTime = digestionData.getInt(TIMER_KEY);
-			if (currentDigestionTime < DELAY) {
-				digestionData.putInt(TIMER_KEY, currentDigestionTime + 1);
+			if (digestionTimer < BASE_DELAY + digestionData.getInt(DELAY_KEY)) {
+				digestionData.putInt(TIMER_KEY, digestionTimer + 1);
 				entityData.put(BASE_DATA_KEY, digestionData);
 			}
-			else if (!level.isClientSide) {
-				digestAtPos(itemEntity.level(), itemEntity.position(), itemStack, recipe);
-				itemEntity.discard();
+			else {
+				if (!level.isClientSide) {
+					digestAtPos(itemEntity.level(), itemEntity.position(), itemStack, 8, recipe);
+
+					if (itemStack.isEmpty()) {
+						itemEntity.discard();
+					}
+					else {
+						itemEntity.setItem(itemStack); //update ItemStack
+					}
+				}
+
+				digestionData.putInt(TIMER_KEY, 1);
 			}
 		}
 
 		public static CompoundTag getOrCreateDigestionData(CompoundTag entityData) {
-			if (entityData.contains(BASE_DATA_KEY)) return entityData.getCompound(BASE_DATA_KEY); //avoids try catch
+			if (entityData.contains(BASE_DATA_KEY)) return entityData.getCompound(BASE_DATA_KEY); //avoid try catch
 			return new CompoundTag();
 		}
 
-		public static void digestAtPos(Level level, Vec3 pos, ItemStack inputStack, DigestingRecipe recipe) {
+		public static void digestAtPos(Level level, Vec3 pos, ItemStack inputStack, int maxAmount, DigestingRecipe recipe) {
 			RecipeWrapper inventory = new RecipeWrapper(new ItemStackHandler(1));
 			inventory.setItem(0, inputStack);
 
-			ItemStack resultStack = recipe.assemble(inventory, level.registryAccess());
-			int totalCount = Mth.floor(resultStack.getCount() * inputStack.getCount() * EFFICIENCY);
+			int amount = Math.min(inputStack.getCount(), maxAmount);
 
-			spawnItems(level, pos, resultStack, totalCount);
+			ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
+			double fuelValue = Nutrients.getFuelValue(outputStack);
+			double craftingCost = recipe.getCraftingCostNutrients(inventory) / fuelValue;
+			double totalCount = (outputStack.getCount() * amount - craftingCost * amount) * EFFICIENCY;
+
+			int outputCount = Mth.floor(totalCount);
+			if (outputCount > 0) {
+				spawnItems(level, pos, outputStack, outputCount);
+			}
+
+			int remainder = Mth.ceil((totalCount - outputCount) * fuelValue);
+			if (remainder > 0) {
+				spawnItems(level, pos, ModItems.NUTRIENTS.get().getDefaultInstance(), remainder);
+			}
+
+			inputStack.shrink(amount);
 
 			level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS, 1f, 1f);
 		}
