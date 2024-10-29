@@ -74,8 +74,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.addOptional("rats:raw_rat")
 				.addOptional("circus:clown")
 				.addOptional("evilcraft:flesh_humanoid", "evilcraft:flesh_werewolf")
-				.addOptionalTag("forge:raw_fishes")
-				.addOptionalTag("forge:raw_bacon", "forge:raw_beef", "forge:raw_chicken", "forge:raw_pork", "forge:raw_mutton");
+				.addOptionalTag("forge:raw_fishes", "forge:raw_meats")
+				.addOptionalTag("forge:raw_bacon", "forge:raw_beef", "forge:raw_chicken", "forge:raw_pork", "forge:raw_mutton")
+				.remove(ROTTEN_FLESH);
 
 		createTag(ModItemTags.COOKED_MEATS)
 				.add(
