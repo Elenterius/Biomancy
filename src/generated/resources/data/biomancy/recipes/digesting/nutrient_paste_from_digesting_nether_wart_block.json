@@ -3,10 +3,10 @@
   "ingredient": {
     "item": "minecraft:nether_wart_block"
   },
-  "nutrientsCost": 2,
-  "processingTime": 582,
+  "nutrientsCost": 16,
+  "processingTime": 750,
   "result": {
-    "count": 14,
+    "count": 18,
     "item": "biomancy:nutrient_paste"
   }
 }
