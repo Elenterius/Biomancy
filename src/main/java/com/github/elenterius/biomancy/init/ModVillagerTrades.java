@@ -3,12 +3,17 @@ package com.github.elenterius.biomancy.init;
 import com.github.elenterius.biomancy.BiomancyConfig;
 import com.github.elenterius.biomancy.BiomancyMod;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraftforge.common.BasicItemListing;
+import net.minecraftforge.event.entity.player.TradeWithVillagerEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,9 +21,19 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID)
-public class ModVillagerTrades {
+public final class ModVillagerTrades {
+
+	private ModVillagerTrades() {}
+
+	@SubscribeEvent
+	public static void onTradeWithVillager(TradeWithVillagerEvent event) {
+		if (event.getEntity() instanceof ServerPlayer player) {
+			OrganTradeTracker.trackTrade(player, event.getAbstractVillager(), event.getMerchantOffer());
+		}
+	}
 
 	@SubscribeEvent
 	public static void onVillagerTrades(final VillagerTradesEvent event) {
@@ -70,7 +85,6 @@ public class ModVillagerTrades {
 		return new BasicItemListing(emeralds, new ItemStack(item, amount), maxTrades, xp, 0.05F);
 	}
 
-
 	private static void addClericTrades(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
 		TradeLevel.JOURNEYMAN.addItemListings(trades,
 				buyFromPlayer(ModItems.VIAL.get(), 4, 1, 12, 20)
@@ -120,6 +134,27 @@ public class ModVillagerTrades {
 
 		void addItemListings(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades, BasicItemListing... listings) {
 			getItemListings(trades).addAll(Arrays.asList(listings));
+		}
+
+	}
+
+	public static class OrganTradeTracker {
+
+		public static final Set<Item> ORGANS = Set.of(ModItems.GENERIC_MOB_GLAND.get(), ModItems.VOLATILE_GLAND.get(), ModItems.TOXIN_GLAND.get());
+
+		/**
+		 * tracks all trades that somehow involves organs
+		 */
+		private static void trackTrade(ServerPlayer player, AbstractVillager villager, MerchantOffer merchantOffer) {
+			//minecraft only tracks trade results, so we need to check the other involved items
+
+			if (ORGANS.contains(merchantOffer.getBaseCostA().getItem())) {
+				CriteriaTriggers.TRADE.trigger(player, villager, merchantOffer.getBaseCostA());
+			}
+
+			if (ORGANS.contains(merchantOffer.getCostB().getItem())) {
+				CriteriaTriggers.TRADE.trigger(player, villager, merchantOffer.getCostB());
+			}
 		}
 
 	}

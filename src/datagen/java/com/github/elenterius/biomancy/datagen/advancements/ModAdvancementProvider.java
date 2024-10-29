@@ -51,8 +51,12 @@ public class ModAdvancementProvider extends ForgeAdvancementProvider {
 		return SacrificedItemTrigger.TriggerInstance.sacrificedItem(tag);
 	}
 
-	protected static TradeTrigger.TriggerInstance hasTradedItems(ItemLike... items) {
-		return new TradeTrigger.TriggerInstance(EntityPredicate.wrap(EntityPredicate.ANY), EntityPredicate.wrap(EntityPredicate.ANY), ItemPredicate.Builder.item().of(items).build());
+	protected static TradeTrigger.TriggerInstance hasTradedItem(ItemLike item) {
+		return new TradeTrigger.TriggerInstance(EntityPredicate.wrap(EntityPredicate.ANY), EntityPredicate.wrap(EntityPredicate.ANY), ItemPredicate.Builder.item().of(item).build());
+	}
+
+	protected static TradeTrigger.TriggerInstance hasTradedItems(ItemLike... item) {
+		return new TradeTrigger.TriggerInstance(EntityPredicate.wrap(EntityPredicate.ANY), EntityPredicate.wrap(EntityPredicate.ANY), ItemPredicate.Builder.item().of(item).build());
 	}
 
 	protected static RecipeUnlockedTrigger.TriggerInstance hasUnlockedDefaultRecipe(ItemLike itemLike) {
