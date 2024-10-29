@@ -55,7 +55,7 @@ public final class AcolyteArmorItem extends LivingArmorGeoItem implements ShowKn
 
 	@Override
 	public boolean canShowKnowledgeOverlay(ItemStack stack, Player player) {
-		return type == Type.HELMET;
+		return type == Type.HELMET && hasNutrients(stack);
 	}
 
 	@Override
