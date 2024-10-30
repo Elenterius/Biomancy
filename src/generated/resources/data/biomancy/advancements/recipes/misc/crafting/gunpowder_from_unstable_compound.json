@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:crafting/gunpowder_from_unstable_compound"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_unstable_compound": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:unstable_compound"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_unstable_compound",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:crafting/gunpowder_from_unstable_compound"
+    ]
+  },
+  "sends_telemetry_event": false
+}
