@@ -8,27 +8,27 @@ import java.util.function.Consumer;
 
 public class ModRecipeProvider extends RecipeProvider {
 
-	private final DecomposerRecipeProvider decomposerRecipeProvider;
+	private final DecomposingRecipeProvider decomposingRecipeProvider;
 	private final DigestingRecipeProvider digestingRecipeProvider;
-	private final BioForgeRecipeProvider bioForgeRecipeProvider;
-	private final BioLabRecipeProvider bioLabRecipeProvider;
+	private final BioForgingRecipeProvider bioforgingRecipeProvider;
+	private final BioBrewingRecipeProvider biobrewingRecipeProvider;
 	private final VanillaRecipeProvider vanillaRecipeProvider;
 
 	public ModRecipeProvider(PackOutput output) {
 		super(output);
-		decomposerRecipeProvider = new DecomposerRecipeProvider(output);
+		decomposingRecipeProvider = new DecomposingRecipeProvider(output);
 		digestingRecipeProvider = new DigestingRecipeProvider(output);
-		bioForgeRecipeProvider = new BioForgeRecipeProvider(output);
-		bioLabRecipeProvider = new BioLabRecipeProvider(output);
+		bioforgingRecipeProvider = new BioForgingRecipeProvider(output);
+		biobrewingRecipeProvider = new BioBrewingRecipeProvider(output);
 		vanillaRecipeProvider = new VanillaRecipeProvider(output);
 	}
 
 	@Override
 	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-		decomposerRecipeProvider.buildRecipes(consumer);
+		decomposingRecipeProvider.buildRecipes(consumer);
 		digestingRecipeProvider.buildRecipes(consumer);
-		bioForgeRecipeProvider.buildRecipes(consumer);
-		bioLabRecipeProvider.buildRecipes(consumer);
+		bioforgingRecipeProvider.buildRecipes(consumer);
+		biobrewingRecipeProvider.buildRecipes(consumer);
 		vanillaRecipeProvider.buildRecipes(consumer);
 	}
 

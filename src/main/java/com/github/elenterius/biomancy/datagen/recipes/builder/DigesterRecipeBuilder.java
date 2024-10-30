@@ -31,10 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public final class DigesterRecipeBuilder implements RecipeBuilder {
+public final class DigesterRecipeBuilder implements RecipeBuilder<DigesterRecipeBuilder> {
 
 	public static final String RECIPE_SUB_FOLDER = ModRecipes.DIGESTING_RECIPE_TYPE.getId().getPath();
-	public static final String SUFFIX = "_from_" + RECIPE_SUB_FOLDER;
 
 	public static final short DEFAULT_CRAFTING_COST_NUTRIENTS = 2;
 
@@ -60,22 +59,22 @@ public final class DigesterRecipeBuilder implements RecipeBuilder {
 	}
 
 	public static DigesterRecipeBuilder create(String modId, String outputName, ItemData result) {
-		ResourceLocation rl = new ResourceLocation(modId, outputName + SUFFIX);
+		ResourceLocation rl = new ResourceLocation(modId, outputName + "_from_" + result.getItemPath());
 		return new DigesterRecipeBuilder(rl, result);
 	}
 
 	public static DigesterRecipeBuilder create(String outputName, ItemData result) {
-		ResourceLocation rl = BiomancyMod.createRL(outputName + SUFFIX);
+		ResourceLocation rl = BiomancyMod.createRL(outputName + "_from_" + result.getItemPath());
 		return new DigesterRecipeBuilder(rl, result);
 	}
 
 	public static DigesterRecipeBuilder create(ItemData result) {
-		ResourceLocation rl = BiomancyMod.createRL(result.getItemPath() + SUFFIX);
+		ResourceLocation rl = BiomancyMod.createRL(result.getItemPath());
 		return new DigesterRecipeBuilder(rl, result);
 	}
 
 	public static DigesterRecipeBuilder create(ItemData result, String postSuffix) {
-		ResourceLocation rl = BiomancyMod.createRL(result.getItemPath() + SUFFIX + "_" + postSuffix);
+		ResourceLocation rl = BiomancyMod.createRL(result.getItemPath() + "_from_" + postSuffix);
 		return new DigesterRecipeBuilder(rl, result);
 	}
 
@@ -91,8 +90,8 @@ public final class DigesterRecipeBuilder implements RecipeBuilder {
 		return create(new ItemData(item, count));
 	}
 
-	public static DigesterRecipeBuilder create(ItemLike item, int count, String postSuffix) {
-		return create(new ItemData(item, count), postSuffix);
+	public static DigesterRecipeBuilder create(ItemLike item, int count, String suffix) {
+		return create(new ItemData(item, count), suffix);
 	}
 
 	public DigesterRecipeBuilder ifModLoaded(String modId) {

@@ -13,11 +13,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
-public sealed interface RecipeBuilder permits BioForgeRecipeBuilder, BioLabRecipeBuilder, DecomposerRecipeBuilder, DigesterRecipeBuilder {
+public sealed interface RecipeBuilder<T extends RecipeBuilder<?>> permits BioBrewingRecipeBuilder, BioForgingRecipeBuilder, DecomposingRecipeBuilder, DigesterRecipeBuilder, WorkbenchRecipeBuilder.ShapedBuilder, WorkbenchRecipeBuilder.ShapelessBuilder {
 
 	static String getRecipeFolderName(@Nullable RecipeCategory category, String modId) {
 		return category != null ? category.getFolderName() : modId;
@@ -44,30 +44,30 @@ public sealed interface RecipeBuilder permits BioForgeRecipeBuilder, BioLabRecip
 		return tag.location().getPath();
 	}
 
-	RecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterionTrigger);
+	T unlockedBy(String name, CriterionTriggerInstance criterionTrigger);
 
-	default RecipeBuilder unlockedBy(String name, ItemPredicate predicate) {
+	default T unlockedBy(String name, ItemPredicate predicate) {
 		return unlockedBy(name, inventoryTrigger(predicate));
 	}
 
-	default RecipeBuilder unlockedBy(ItemLike itemLike, CriterionTriggerInstance criterionTrigger) {
+	default T unlockedBy(ItemLike itemLike, CriterionTriggerInstance criterionTrigger) {
 		return unlockedBy("has_" + getItemName(itemLike), criterionTrigger);
 	}
 
-	default RecipeBuilder unlockedBy(ItemLike itemLike) {
+	default T unlockedBy(ItemLike itemLike) {
 		return unlockedBy("has_" + getItemName(itemLike), has(itemLike));
 	}
 
-	default RecipeBuilder unlockedBy(RegistryObject<? extends Item> itemHolder) {
+	default T unlockedBy(RegistryObject<? extends Item> itemHolder) {
 		Item item = itemHolder.get();
 		return unlockedBy("has_" + getItemName(item), has(item));
 	}
 
-	default RecipeBuilder unlockedBy(TagKey<Item> tag, CriterionTriggerInstance criterionTrigger) {
+	default T unlockedBy(TagKey<Item> tag, CriterionTriggerInstance criterionTrigger) {
 		return unlockedBy("has_" + getTagName(tag), criterionTrigger);
 	}
 
-	default RecipeBuilder unlockedBy(TagKey<Item> tag) {
+	default T unlockedBy(TagKey<Item> tag) {
 		return unlockedBy("has_" + getTagName(tag), has(tag));
 	}
 
