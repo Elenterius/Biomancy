@@ -18,7 +18,7 @@ public class FleshCowModel<T extends FleshCow> extends DefaultedEntityGeoModel<T
 
 		MolangParser parser = MolangParser.INSTANCE;
 
-		parser.setMemoizedValue("custom_query.limb_swing", () -> {
+		parser.setMemoizedValue("variable.limb_swing", () -> {
 			boolean shouldSit = animatable.isPassenger() && (animatable.getVehicle() != null && animatable.getVehicle().shouldRiderSit());
 
 			float limbSwing = 0;
@@ -31,7 +31,7 @@ public class FleshCowModel<T extends FleshCow> extends DefaultedEntityGeoModel<T
 			return limbSwing;
 		});
 
-		parser.setMemoizedValue("custom_query.limb_swing_amount", () -> {
+		parser.setMemoizedValue("variable.limb_swing_amount", () -> {
 			boolean shouldSit = animatable.isPassenger() && (animatable.getVehicle() != null && animatable.getVehicle().shouldRiderSit());
 
 			float limbSwingAmount = 0;

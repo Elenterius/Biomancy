@@ -38,7 +38,7 @@ public class FleshSheepModel<T extends FleshSheep> extends DefaultedEntityGeoMod
 
 		MolangParser parser = MolangParser.INSTANCE;
 
-		parser.setMemoizedValue("custom_query.limb_swing", () -> {
+		parser.setMemoizedValue("variable.limb_swing", () -> {
 			boolean shouldSit = animatable.isPassenger() && (animatable.getVehicle() != null && animatable.getVehicle().shouldRiderSit());
 
 			float limbSwing = 0;
@@ -51,7 +51,7 @@ public class FleshSheepModel<T extends FleshSheep> extends DefaultedEntityGeoMod
 			return limbSwing;
 		});
 
-		parser.setMemoizedValue("custom_query.limb_swing_amount", () -> {
+		parser.setMemoizedValue("variable.limb_swing_amount", () -> {
 			boolean shouldSit = animatable.isPassenger() && (animatable.getVehicle() != null && animatable.getVehicle().shouldRiderSit());
 
 			float limbSwingAmount = 0;
