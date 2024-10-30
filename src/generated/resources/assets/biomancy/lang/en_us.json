@@ -250,7 +250,7 @@
   "block.biomancy.undead_permeable_membrane_pane": "Undead-Permeable Membrane Pane",
   "block.biomancy.undead_permeable_membrane_pane.tooltip": "Gelatinized phantom membrane reinforced with elastic fibers.\n\nOnly mobs that are undead can diffuse through the membrane.",
   "block.biomancy.biometric_membrane": "Biometric Membrane",
-  "block.biomancy.biometric_membrane.tooltip": "Membrane which is configured via Mob Essence",
+  "block.biomancy.biometric_membrane.tooltip": "An essence-infused organic barrier that filters living entities by type or unique Id.\n\nTo set a type filter, combine it with Essence in the crafting table. For an Id-specific filter, use Tier 3 Essence.",
   "block.biomancy.biometric_membrane.inverted": "Inverted Biometric Membrane",
   "block.biomancy.biometric_membrane.inverted.unique": "Inverted Unique Biometric Membrane",
   "block.biomancy.biometric_membrane.unique": "Unique Biometric Membrane",
