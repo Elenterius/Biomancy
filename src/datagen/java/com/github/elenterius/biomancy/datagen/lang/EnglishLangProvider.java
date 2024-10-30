@@ -634,7 +634,10 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE_PANE, "Primal Membrane Pane", "Gelatinous-like membrane reinforced with elastic fibers.\n\nOnly mobs that are alive can diffuse through the membrane.");
 		addBlock(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE, "Undead-Permeable Membrane", "Gelatinized phantom membrane reinforced with elastic fibers.\n\nOnly mobs that are undead can diffuse through the membrane.");
 		addBlock(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE_PANE, "Undead-Permeable Membrane Pane", "Gelatinized phantom membrane reinforced with elastic fibers.\n\nOnly mobs that are undead can diffuse through the membrane.");
-		addBlock(ModBlocks.BIOMETRIC_MEMBRANE, "Biometric Membrane", "Membrane which is configured via Mob Essence");
+		addBlock(ModBlocks.BIOMETRIC_MEMBRANE, "Biometric Membrane", """
+				An essence-infused organic barrier that filters living entities by type or unique Id.
+				
+				To set a type filter, combine it with Essence in the crafting table. For an Id-specific filter, use Tier 3 Essence.""");
 		add(ModBlocks.BIOMETRIC_MEMBRANE.get().getDescriptionId() + ".inverted", "Inverted Biometric Membrane");
 		add(ModBlocks.BIOMETRIC_MEMBRANE.get().getDescriptionId() + ".inverted.unique", "Inverted Unique Biometric Membrane");
 		add(ModBlocks.BIOMETRIC_MEMBRANE.get().getDescriptionId() + ".unique", "Unique Biometric Membrane");
