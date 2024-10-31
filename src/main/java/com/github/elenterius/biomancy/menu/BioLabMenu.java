@@ -4,8 +4,15 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.nutrients.Nutrients;
 import com.github.elenterius.biomancy.block.biolab.BioLabBlockEntity;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
+import com.github.elenterius.biomancy.inventory.BehavioralItemHandler;
+import com.github.elenterius.biomancy.inventory.InventoryHandler;
+import com.github.elenterius.biomancy.network.ModNetworkHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -13,37 +20,45 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import org.apache.logging.log4j.MarkerManager;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class BioLabMenu extends PlayerContainerMenu {
 
 	protected final Level level;
+	private final Player player;
 
 	private final BioLabBlockEntity bioLab;
+	private final List<Slot> inputSlots;
 
 	protected BioLabMenu(int id, Inventory playerInventory, @Nullable BioLabBlockEntity bioLab) {
 		super(ModMenuTypes.BIO_LAB.get(), id, playerInventory, 137, 195);
 		level = playerInventory.player.level();
+		player = playerInventory.player;
 
 		this.bioLab = bioLab;
 
 		if (bioLab != null) {
 			addSlot(new SlotItemHandler(bioLab.getFuelInventory(), 0, 31, 88));
 
-			IItemHandler itemHandler = bioLab.getInputInventory();
-			addSlot(new SlotItemHandler(itemHandler, 0, 50, 28));
-			addSlot(new SlotItemHandler(itemHandler, 1, 70, 28));
-			addSlot(new SlotItemHandler(itemHandler, 2, 90, 28));
-			addSlot(new SlotItemHandler(itemHandler, 3, 110, 28));
-
-			addSlot(new SlotItemHandler(itemHandler, 4, 80, 62)); // reactant/vial slot
+			InventoryHandler<BehavioralItemHandler.LockableItemStackFilterInput> itemHandler = bioLab.getInputInventory();
+			inputSlots = List.of(
+					addSlot(new SlotItemHandler(itemHandler, 0, 50, 28)),
+					addSlot(new SlotItemHandler(itemHandler, 1, 70, 28)),
+					addSlot(new SlotItemHandler(itemHandler, 2, 90, 28)),
+					addSlot(new SlotItemHandler(itemHandler, 3, 110, 28)),
+					addSlot(new SlotItemHandler(itemHandler, 4, 80, 62)) // reactant/vial slot
+			);
 
 			addSlot(new SlotItemHandler(bioLab.getOutputInventory(), 0, 80, 88));
 
 			addDataSlots(bioLab.getStateData());
+		}
+		else {
+			inputSlots = List.of();
 		}
 	}
 
@@ -59,13 +74,44 @@ public class BioLabMenu extends PlayerContainerMenu {
 
 	@Override
 	public boolean clickMenuButton(Player player, int id) {
-
 		if (id == 0 && !level.isClientSide) {
 			bioLab.getInputInventory().get().toggleLock();
 			return true;
 		}
 
 		return false;
+	}
+
+	@Override
+	public void sendAllDataToRemote() {
+		super.sendAllDataToRemote();
+		if (player instanceof ServerPlayer serverPlayer) {
+			ModNetworkHandler.sendBioLabFilterToClient(serverPlayer, containerId, bioLab.getInputInventory().get().getFilters());
+		}
+	}
+
+	public void setFilters(List<ItemStack> filters) {
+		bioLab.getInputInventory().get().setFilters(filters);
+	}
+
+	public void renderFilters(GuiGraphics guiGraphics, Minecraft minecraft, int leftPos, int topPos) {
+		for (Slot slot : inputSlots) {
+			if (!slot.getItem().isEmpty()) continue;
+
+			int slotIndex = slot.getSlotIndex();
+
+			ItemStack filter = bioLab.getInputInventory().get().getFilterItemStack(slotIndex);
+			if (filter == null || filter.isEmpty()) continue;
+
+			renderFilter(guiGraphics, minecraft, filter, leftPos + slot.x, topPos + slot.y);
+		}
+	}
+
+	private void renderFilter(GuiGraphics guiGraphics, Minecraft minecraft, ItemStack stack, int x, int y) {
+		guiGraphics.fill(x, y, x + 16, y + 16, 0x30ff0000);
+		guiGraphics.renderFakeItem(stack, x, y);
+		guiGraphics.fill(RenderType.guiGhostRecipeOverlay(), x, y, x + 16, y + 16, 0x30ffffff);
+		guiGraphics.renderItemDecorations(minecraft.font, stack, x, y);
 	}
 
 	@Override

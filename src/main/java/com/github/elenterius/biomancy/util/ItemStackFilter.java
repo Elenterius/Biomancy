@@ -38,11 +38,12 @@ public class ItemStackFilter implements Predicate<ItemStack>, INBTSerializable<C
 		return of(filter.getDefaultInstance(), false);
 	}
 
-	public static ItemStackFilter of(ItemStack filter) {
+	public static ItemStackFilter of(@Nullable ItemStack filter) {
 		return of(filter, true);
 	}
 
-	public static ItemStackFilter of(ItemStack filter, boolean isStrict) {
+	private static ItemStackFilter of(@Nullable ItemStack filter, boolean isStrict) {
+		if (filter == null) return ALLOW_ANY;
 		if (filter.isEmpty()) return ALLOW_NONE;
 
 		filter = filter.copyWithCount(1);
@@ -89,6 +90,10 @@ public class ItemStackFilter implements Predicate<ItemStack>, INBTSerializable<C
 
 	public boolean allowsAny() {
 		return filter == null;
+	}
+
+	public @Nullable ItemStack getItemStack() {
+		return filter;
 	}
 
 }

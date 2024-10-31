@@ -7,6 +7,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -34,19 +35,16 @@ public interface BehavioralItemHandler extends IItemHandler {
 			return itemHandler.getSlots();
 		}
 
-		@Nonnull
 		@Override
 		public ItemStack getStackInSlot(int slot) {
 			return itemHandler.getStackInSlot(slot);
 		}
 
-		@Nonnull
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			return itemHandler.insertItem(slot, stack, simulate);
 		}
 
-		@Nonnull
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
 			return itemHandler.extractItem(slot, amount, simulate);
@@ -161,14 +159,13 @@ public interface BehavioralItemHandler extends IItemHandler {
 		}
 
 		@Override
-		public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+		public boolean isItemValid(int slot, ItemStack stack) {
 			if (isInvalidSlot(slot)) return false;
 			return filters.get(slot).test(stack) && itemHandler.isItemValid(slot, stack);
 		}
 
 		@Override
-		@Nonnull
-		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			if (isInvalidSlot(slot)) return stack;
 			if (!filters.get(slot).test(stack)) return stack;
 			return itemHandler.insertItem(slot, stack, simulate);
@@ -189,9 +186,24 @@ public interface BehavioralItemHandler extends IItemHandler {
 		}
 
 		@Override
-		public void setStackInSlot(int slot, @NotNull ItemStack stack) {
+		public void setStackInSlot(int slot, ItemStack stack) {
 			itemHandler.setStackInSlot(slot, stack);
 		}
+
+		public @Nullable ItemStack getFilterItemStack(int slot) {
+			return filters.get(slot).getItemStack();
+		}
+
+		public void setFilters(List<ItemStack> filters) {
+			for (int i = 0; i < itemHandler.getSlots(); i++) {
+				this.filters.set(i, ItemStackFilter.of(filters.get(i)));
+			}
+		}
+
+		public ItemStackFilterList getFilters() {
+			return filters;
+		}
+
 	}
 
 	class LockableItemStackFilterInput extends ItemStackFilterInput {
