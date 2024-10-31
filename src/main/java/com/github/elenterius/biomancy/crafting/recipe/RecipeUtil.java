@@ -6,11 +6,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -20,6 +24,38 @@ public final class RecipeUtil {
 
 	private RecipeUtil() {}
 
+	@SuppressWarnings("DataFlowIssue")
+	public static JsonObject writeItemStack(ItemStack stack) {
+		JsonObject json = new JsonObject();
+		json.addProperty("id", ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
+		if (stack.getCount() > 1) json.addProperty("count", stack.getCount());
+		if (stack.hasTag()) json.addProperty("tag", stack.getTag().toString());
+		return json;
+	}
+
+	@SuppressWarnings("DataFlowIssue")
+	public static ItemStack readItemStack(JsonObject json) {
+		String itemName = GsonHelper.getAsString(json, "id");
+		Item item = CraftingHelper.getItem(itemName, false);
+		if (json.has("tag")) {
+			CompoundTag tag = CraftingHelper.getNBT(json.get("tag"));
+			CompoundTag tmp = new CompoundTag();
+
+			if (tag.contains("ForgeCaps")) {
+				tmp.put("ForgeCaps", tag.get("ForgeCaps"));
+				tag.remove("ForgeCaps");
+			}
+
+			tmp.put("tag", tag);
+			tmp.putString("id", itemName);
+			tmp.putInt("Count", GsonHelper.getAsInt(json, "count", 1));
+
+			return ItemStack.of(tmp);
+		}
+		return new ItemStack(item, GsonHelper.getAsInt(json, "count", 1));
+	}
+
+	@SuppressWarnings("deprecation")
 	public static void writeItem(FriendlyByteBuf buffer, @Nullable Item item) {
 		if (item == null || item == Items.AIR) {
 			buffer.writeBoolean(false);
@@ -30,6 +66,7 @@ public final class RecipeUtil {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public static @Nullable Item readItem(FriendlyByteBuf buffer) {
 		return !buffer.readBoolean() ? null : buffer.readById(BuiltInRegistries.ITEM);
 	}

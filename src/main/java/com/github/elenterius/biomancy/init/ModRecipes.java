@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.crafting.AnyFoodIngredient;
+import com.github.elenterius.biomancy.crafting.EssenceIngredient;
 import com.github.elenterius.biomancy.crafting.recipe.*;
 import com.github.elenterius.biomancy.crafting.recipe.SimpleRecipeType.ItemStackRecipeType;
 import net.minecraft.core.registries.Registries;
@@ -80,6 +81,7 @@ public final class ModRecipes {
 
 	public static void registerIngredientSerializers() {
 		CraftingHelper.register(BiomancyMod.createRL("food_nutrition"), AnyFoodIngredient.Serializer.INSTANCE);
+		CraftingHelper.register(BiomancyMod.createRL("essence"), EssenceIngredient.Serializer.INSTANCE);
 	}
 
 	private static <T extends RecipeType<?>, R extends Recipe<Container>> RegistryObject<RecipeSerializer<R>> registerRecipeSerializer(RegistryObject<T> recipeType, Supplier<RecipeSerializer<R>> serializerSupplier) {

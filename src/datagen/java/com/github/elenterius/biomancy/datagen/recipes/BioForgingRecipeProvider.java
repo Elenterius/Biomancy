@@ -1,21 +1,18 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.api.nutrients.NutrientsContainerItem;
+import com.github.elenterius.biomancy.crafting.EssenceIngredient;
 import com.github.elenterius.biomancy.datagen.recipes.builder.BioForgingRecipeBuilder;
 import com.github.elenterius.biomancy.datagen.recipes.builder.ItemData;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.item.EssenceItem;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.PartialNBTIngredient;
 
 import java.util.function.Consumer;
 
@@ -34,16 +31,6 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 		ItemStack itemStack = item.getDefaultInstance();
 		item.setNutrients(itemStack, Integer.MAX_VALUE);
 		return itemStack;
-	}
-
-	private static Ingredient createMobEssenceIngredient(EntityType<?> entityType) {
-		CompoundTag essenceTag = new CompoundTag();
-		essenceTag.putString(EssenceItem.ENTITY_TYPE_KEY, EntityType.getKey(entityType).toString());
-		essenceTag.putString(EssenceItem.ENTITY_NAME_KEY, entityType.getDescriptionId());
-		CompoundTag tag = new CompoundTag();
-		tag.put(EssenceItem.ESSENCE_DATA_KEY, essenceTag);
-		tag.putInt(EssenceItem.ESSENCE_TIER_KEY, 1);
-		return PartialNBTIngredient.of(ModItems.ESSENCE.get(), tag);
 	}
 
 	@Override
@@ -356,7 +343,7 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 		BioForgingRecipeBuilder.create(Items.PLAYER_HEAD)
 				.setCraftingCost(4)
 				.addIngredient(Items.SKELETON_SKULL)
-				.addIngredient(createMobEssenceIngredient(EntityType.PLAYER))
+				.addIngredient(EssenceIngredient.of(EntityType.PLAYER))
 				.addIngredient(ModItems.FLESH_BITS.get(), 32 + 2)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 9 + 2)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
@@ -365,7 +352,7 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 		BioForgingRecipeBuilder.create(Items.PIGLIN_HEAD)
 				.setCraftingCost(4)
 				.addIngredient(Items.SKELETON_SKULL)
-				.addIngredient(createMobEssenceIngredient(EntityType.PIGLIN))
+				.addIngredient(EssenceIngredient.of(EntityType.PIGLIN))
 				.addIngredient(ModItems.FLESH_BITS.get(), 36 + 2)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 12 + 2)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
