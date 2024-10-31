@@ -6,9 +6,12 @@
       "item": "minecraft:skeleton_skull"
     },
     {
-      "type": "forge:partial_nbt",
-      "item": "biomancy:essence",
-      "nbt": "{essence_data:{entity_type:\"minecraft:piglin\",name:\"entity.minecraft.piglin\"},essence_tier:1}"
+      "type": "biomancy:essence",
+      "item": {
+        "id": "biomancy:essence",
+        "tag": "{colors:[I;10051392,16380836],essence_data:{entity_type:\"minecraft:piglin\",name:\"entity.minecraft.piglin\"},essence_tier:1}"
+      },
+      "predicate_tag": "{essence_data:{entity_type:\"minecraft:piglin\"},essence_tier:1}"
     },
     {
       "count": 38,
