@@ -62,13 +62,21 @@ public class EssenceItem extends Item implements ItemTooltipStyleProvider {
 		return ItemStack.EMPTY;
 	}
 
+	public static ItemStack fromEntityType(EntityType<?> entityType, UUID entityUUID) {
+		return fromEntityType(entityType, entityUUID, 3);
+	}
+
 	public static ItemStack fromEntityType(EntityType<?> entityType, int essenceTier) {
+		return fromEntityType(entityType, null, Mth.clamp(essenceTier, 1, 3));
+	}
+
+	private static ItemStack fromEntityType(EntityType<?> entityType, @Nullable UUID entityUUID, int essenceTier) {
 		EssenceItem essenceItem = ModItems.ESSENCE.get();
 		ItemStack stack = new ItemStack(essenceItem, 1);
 
-		int[] colors = getEssenceColors(entityType);
+		int[] colors = getEssenceColors(entityType, entityUUID, essenceTier);
 
-		if (essenceItem.setEssenceData(stack, Mth.clamp(essenceTier, 1, 3), entityType, null, colors, null)) {
+		if (essenceItem.setEssenceData(stack, essenceTier, entityType, null, colors, null)) {
 			return stack;
 		}
 
@@ -76,14 +84,14 @@ public class EssenceItem extends Item implements ItemTooltipStyleProvider {
 	}
 
 	public static int[] getEssenceColors(LivingEntity livingEntity, int tier) {
-		if (livingEntity instanceof Player player) {
-			if (tier < 3) return getEssenceColors(player.getType());
+		return getEssenceColors(livingEntity.getType(), livingEntity.getUUID(), tier);
+	}
 
-			return getEssenceColors(player.getUUID());
+	public static int[] getEssenceColors(EntityType<?> entityType, @Nullable UUID entityUUID, int tier) {
+		if (entityType == EntityType.PLAYER && entityUUID != null && tier >= 3) {
+			return getEssenceColors(entityUUID);
 		}
-		else {
-			return getEssenceColors(livingEntity.getType());
-		}
+		return getEssenceColors(entityType);
 	}
 
 	public static int[] getEssenceColors(UUID uuid) {
