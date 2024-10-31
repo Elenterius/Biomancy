@@ -7,8 +7,8 @@ import com.github.elenterius.biomancy.client.gui.tooltip.ScreenTooltipStyleProvi
 import com.github.elenterius.biomancy.client.util.ClientSoundUtil;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
-import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
-import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
+import com.github.elenterius.biomancy.crafting.IngredientStack;
+import com.github.elenterius.biomancy.crafting.recipe.BioForgingRecipe;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.styles.ColorStyles;
@@ -197,7 +197,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 	}
 
 	private void renderRecipeResult(GuiGraphics guiGraphics) {
-		BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
+		BioForgingRecipe selectedRecipe = recipeBook.getSelectedRecipe();
 		if (selectedRecipe != null && menu.isResultEmpty()) {
 			ItemStack stack = selectedRecipe.getResultItem(minecraft.level.registryAccess());
 			int x = leftPos + 194 + 2;
@@ -213,14 +213,14 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 		//TODO: refactor - move into the loop below
 		if (recipeBook.hasSelectedRecipe() && recipeBook.isSelectedRecipeVisible()) {
 			int gridIndex = recipeBook.getGridIndexOfSelectedRecipe();
-			BioForgeRecipe recipe = recipeBook.getRecipeByGrid(gridIndex);
+			BioForgingRecipe recipe = recipeBook.getRecipeByGrid(gridIndex);
 			boolean isCraftable = recipeBook.getRecipeCollectionByGrid(gridIndex).isCraftable(recipe);
 			renderTileSelection(guiGraphics, gridIndex, isCraftable);
 		}
 
 		int maxRecipes = recipeBook.getMaxRecipesOnGrid();
 		for (int gridIndex = 0; gridIndex < maxRecipes; gridIndex++) {
-			BioForgeRecipe recipe = recipeBook.getRecipeByGrid(gridIndex);
+			BioForgingRecipe recipe = recipeBook.getRecipeByGrid(gridIndex);
 			boolean isCraftable = recipeBook.getRecipeCollectionByGrid(gridIndex).isCraftable(recipe);
 			renderRecipeTile(guiGraphics, gridIndex, isCraftable, recipe.getResultItem(minecraft.level.registryAccess()));
 		}
@@ -315,7 +315,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 		int maxFuel = menu.getMaxFuelAmount();
 		int fuelAmount = menu.getFuelAmount();
 
-		BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
+		BioForgingRecipe selectedRecipe = recipeBook.getSelectedRecipe();
 		int totalFuelCost = selectedRecipe != null ? selectedRecipe.getCraftingCostNutrients() : 0;
 
 		GuiRenderUtil.drawFuelTooltip(font, guiGraphics, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
@@ -329,7 +329,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 
 		@Override
 		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-			BioForgeRecipe recipe = recipeBook.getSelectedRecipe();
+			BioForgingRecipe recipe = recipeBook.getSelectedRecipe();
 			if (recipe == null) return;
 
 			int x = leftPos + X_OFFSET;
@@ -355,7 +355,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 		}
 
 		private boolean renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-			BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
+			BioForgingRecipe selectedRecipe = recipeBook.getSelectedRecipe();
 			if (selectedRecipe == null) return false;
 
 			List<IngredientStack> ingredients = selectedRecipe.getIngredientQuantities();

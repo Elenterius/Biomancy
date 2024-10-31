@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.datagen.recipes.builder;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
-import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
+import com.github.elenterius.biomancy.crafting.IngredientStack;
+import com.github.elenterius.biomancy.crafting.recipe.BioForgingRecipe;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.menu.BioForgeTab;
@@ -156,7 +156,7 @@ public final class BioForgingRecipeBuilder implements RecipeBuilder<BioForgingRe
 		validateCriteria();
 
 		if (craftingCostNutrients < 0) {
-			craftingCostNutrients = BioForgeRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS;
+			craftingCostNutrients = BioForgingRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS;
 		}
 
 		advancement.parent(new ResourceLocation("recipes/root"))

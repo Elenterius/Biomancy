@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyConfig;
-import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
-import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
+import com.github.elenterius.biomancy.crafting.IngredientStack;
+import com.github.elenterius.biomancy.crafting.recipe.BioForgingRecipe;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModRecipeBookTypes;
 import com.github.elenterius.biomancy.init.client.ModRecipeBookCategories;
@@ -119,15 +119,15 @@ class BioForgeScreenController {
 		return !shownRecipes.isEmpty();
 	}
 
-	public List<BioForgeRecipe> getOrderedRecipes(RecipeCollection recipeCollection) {
+	public List<BioForgingRecipe> getOrderedRecipes(RecipeCollection recipeCollection) {
 		List<Recipe<?>> list = recipeCollection.getDisplayRecipes(true);
 		if (!getPlayer().getRecipeBook().isFiltering(ModRecipeBookTypes.BIO_FORGE)) {
 			list.addAll(recipeCollection.getDisplayRecipes(false));
 		}
-		return list.stream().map(BioForgeRecipe.class::cast).toList();
+		return list.stream().map(BioForgingRecipe.class::cast).toList();
 	}
 
-	private BioForgeRecipe getRecipe(int index) {
+	private BioForgingRecipe getRecipe(int index) {
 		if (index >= shownRecipes.size()) throw new IndexOutOfBoundsException(index);
 		return getOrderedRecipes(shownRecipes.get(index)).get(0);
 		// we disregard all other recipes in the RecipeCollection
@@ -139,7 +139,7 @@ class BioForgeScreenController {
 		return shownRecipes.get(startIndex + gridIndex);
 	}
 
-	public BioForgeRecipe getRecipeByGrid(int gridIndex) {
+	public BioForgingRecipe getRecipeByGrid(int gridIndex) {
 		if (gridIndex >= GRID_SIZE) throw new IndexOutOfBoundsException(gridIndex);
 		return getRecipe(startIndex + gridIndex);
 	}
@@ -194,7 +194,7 @@ class BioForgeScreenController {
 	}
 
 	@Nullable
-	public BioForgeRecipe getSelectedRecipe() {
+	public BioForgingRecipe getSelectedRecipe() {
 		return recipeSelection.recipe;
 	}
 
@@ -205,7 +205,7 @@ class BioForgeScreenController {
 		}
 
 		int recipeIndex = startIndex + gridIndex;
-		BioForgeRecipe recipe = getRecipe(recipeIndex);
+		BioForgingRecipe recipe = getRecipe(recipeIndex);
 		recipeSelection = new RecipeSelection(recipe, activeTab, recipeIndex);
 
 		ModNetworkHandler.sendBioForgeRecipeToServer(menu.containerId, recipe);
@@ -262,8 +262,8 @@ class BioForgeScreenController {
 				fitDimensions.remove(recipe);
 			}
 
-			if (recipe instanceof BioForgeRecipe bioForgeRecipe) {
-				if (canCraftRecipe && bioForgeRecipe.isCraftable(itemCounter)) {
+			if (recipe instanceof BioForgingRecipe bioForgingRecipe) {
+				if (canCraftRecipe && bioForgingRecipe.isCraftable(itemCounter)) {
 					craftable.add(recipe);
 				}
 				else {
@@ -335,7 +335,7 @@ class BioForgeScreenController {
 		updateAndSearchRecipes();
 	}
 
-	record RecipeSelection(@Nullable BioForgeRecipe recipe, int tab, int index) {
+	record RecipeSelection(@Nullable BioForgingRecipe recipe, int tab, int index) {
 		public static RecipeSelection EMPTY = new RecipeSelection(null, -1, -1);
 
 		@Nullable

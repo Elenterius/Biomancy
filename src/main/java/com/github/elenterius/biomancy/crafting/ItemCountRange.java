@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.crafting.recipe;
+package com.github.elenterius.biomancy.crafting;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;

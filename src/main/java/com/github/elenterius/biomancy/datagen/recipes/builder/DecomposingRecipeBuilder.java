@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.datagen.recipes.builder;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.crafting.recipe.DecomposerRecipe;
-import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
-import com.github.elenterius.biomancy.crafting.recipe.ItemCountRange;
-import com.github.elenterius.biomancy.crafting.recipe.VariableProductionOutput;
+import com.github.elenterius.biomancy.crafting.IngredientStack;
+import com.github.elenterius.biomancy.crafting.ItemCountRange;
+import com.github.elenterius.biomancy.crafting.VariableOutput;
+import com.github.elenterius.biomancy.crafting.recipe.DecomposingRecipe;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.google.gson.JsonArray;
@@ -38,7 +38,7 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 
 	public static final String RECIPE_SUB_FOLDER = ModRecipes.DECOMPOSING_RECIPE_TYPE.getId().getPath();
 
-	private final List<VariableProductionOutput> outputs = new ArrayList<>();
+	private final List<VariableOutput> outputs = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
 	private final List<ICondition> conditions = new ArrayList<>();
 	private ResourceLocation recipeId;
@@ -155,27 +155,27 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 	}
 
 	public DecomposingRecipeBuilder addOutput(ItemLike result, int count) {
-		return addOutput(new VariableProductionOutput(result, count));
+		return addOutput(new VariableOutput(result, count));
 	}
 
 	public DecomposingRecipeBuilder addOutput(ItemLike result, int min, int max) {
-		return addOutput(new VariableProductionOutput(result, min, max));
+		return addOutput(new VariableOutput(result, min, max));
 	}
 
 	public DecomposingRecipeBuilder addOutput(ItemLike result, int n, float p) {
-		return addOutput(new VariableProductionOutput(result, n, p));
+		return addOutput(new VariableOutput(result, n, p));
 	}
 
 	public DecomposingRecipeBuilder addRecyclingOutput(ItemLike result, int originalCount) {
-		return addExtraCraftingTime(3 * 20).addExtraCraftingCost(1).addOutput(new VariableProductionOutput(result, (originalCount - 1) / 2, originalCount - 1));
+		return addExtraCraftingTime(3 * 20).addExtraCraftingCost(1).addOutput(new VariableOutput(result, (originalCount - 1) / 2, originalCount - 1));
 	}
 
-	public DecomposingRecipeBuilder addOutput(VariableProductionOutput output) {
+	public DecomposingRecipeBuilder addOutput(VariableOutput output) {
 		outputs.add(output);
 		return this;
 	}
 
-	public DecomposingRecipeBuilder addOutputs(VariableProductionOutput... outputsIn) {
+	public DecomposingRecipeBuilder addOutputs(VariableOutput... outputsIn) {
 		outputs.addAll(Arrays.asList(outputsIn));
 		return this;
 	}
@@ -200,7 +200,7 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 		}
 
 		if (craftingCostNutrients < 0) {
-			craftingCostNutrients = RecipeCostUtil.getCost(DecomposerRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
+			craftingCostNutrients = RecipeCostUtil.getCost(DecomposingRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
 		}
 
 		craftingTimeTicks += extraCraftingTimeTicks;
@@ -229,7 +229,7 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 		private final ResourceLocation id;
 		private final String group;
 		private final IngredientStack ingredientStack;
-		private final List<VariableProductionOutput> outputs;
+		private final List<VariableOutput> outputs;
 		private final int craftingTime;
 		private final int craftingCost;
 		private final List<ICondition> conditions;
@@ -258,7 +258,7 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 			json.add("ingredient", ingredientStack.toJson());
 
 			JsonArray jsonArray = new JsonArray();
-			for (VariableProductionOutput output : outputs) {
+			for (VariableOutput output : outputs) {
 				jsonArray.add(output.serialize());
 			}
 			json.add("results", jsonArray);
@@ -330,15 +330,15 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 			return BASE_TICKS * TICK_MULTIPLIERS.getOrDefault(item, 1f) * Math.max(1, maxAmount);
 		}
 
-		public static int getTotalTicks(List<VariableProductionOutput> outputs) {
+		public static int getTotalTicks(List<VariableOutput> outputs) {
 			float ticks = 0;
-			for (VariableProductionOutput output : outputs) {
+			for (VariableOutput output : outputs) {
 				ticks += getTicks(output.getItem(), getMaxAmount(output));
 			}
 			return Math.round(ticks);
 		}
 
-		static int getMaxAmount(VariableProductionOutput output) {
+		static int getMaxAmount(VariableOutput output) {
 			ItemCountRange countRange = output.getCountRange();
 			if (countRange instanceof ItemCountRange.UniformRange uniform) {
 				return uniform.max();

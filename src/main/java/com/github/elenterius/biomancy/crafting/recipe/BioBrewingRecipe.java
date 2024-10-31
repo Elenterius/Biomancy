@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.crafting.recipe;
 
+import com.github.elenterius.biomancy.crafting.IngredientStack;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.google.gson.JsonObject;
@@ -22,7 +23,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BioLabRecipe extends StaticProcessingRecipe {
+public class BioBrewingRecipe extends StaticProcessingRecipe {
 
 	public static final short DEFAULT_CRAFTING_COST_NUTRIENTS = 2;
 	public static final int MAX_INGREDIENTS = 4;
@@ -33,7 +34,7 @@ public class BioLabRecipe extends StaticProcessingRecipe {
 
 	private final NonNullList<Ingredient> vanillaIngredients;
 
-	public BioLabRecipe(ResourceLocation id, ItemStack result, int craftingTimeTicks, int craftingCostNutrients, List<IngredientStack> ingredients, Ingredient reactant) {
+	public BioBrewingRecipe(ResourceLocation id, ItemStack result, int craftingTimeTicks, int craftingCostNutrients, List<IngredientStack> ingredients, Ingredient reactant) {
 		super(id, craftingTimeTicks, craftingCostNutrients);
 		this.ingredients = ingredients;
 		recipeReactant = reactant;
@@ -113,10 +114,10 @@ public class BioLabRecipe extends StaticProcessingRecipe {
 		return new ItemStack(ModItems.BIO_LAB.get());
 	}
 
-	public static class Serializer implements RecipeSerializer<BioLabRecipe> {
+	public static class Serializer implements RecipeSerializer<BioBrewingRecipe> {
 
 		@Override
-		public BioLabRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+		public BioBrewingRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 			List<IngredientStack> ingredients = RecipeUtil.readIngredientStacks(GsonHelper.getAsJsonArray(json, "ingredients"));
 
 			if (ingredients.isEmpty()) {
@@ -139,12 +140,12 @@ public class BioLabRecipe extends StaticProcessingRecipe {
 			int time = GsonHelper.getAsInt(json, "processingTime", 100);
 			int cost = GsonHelper.getAsInt(json, "nutrientsCost", DEFAULT_CRAFTING_COST_NUTRIENTS);
 
-			return new BioLabRecipe(recipeId, resultStack, time, cost, ingredients, reactant);
+			return new BioBrewingRecipe(recipeId, resultStack, time, cost, ingredients, reactant);
 		}
 
 		@Nullable
 		@Override
-		public BioLabRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+		public BioBrewingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 			ItemStack resultStack = buffer.readItem();
 
 			Ingredient reactant = Ingredient.fromNetwork(buffer);
@@ -157,11 +158,11 @@ public class BioLabRecipe extends StaticProcessingRecipe {
 				ingredients.add(IngredientStack.fromNetwork(buffer));
 			}
 
-			return new BioLabRecipe(recipeId, resultStack, craftingTime, craftingCost, ingredients, reactant);
+			return new BioBrewingRecipe(recipeId, resultStack, craftingTime, craftingCost, ingredients, reactant);
 		}
 
 		@Override
-		public void toNetwork(FriendlyByteBuf buffer, BioLabRecipe recipe) {
+		public void toNetwork(FriendlyByteBuf buffer, BioBrewingRecipe recipe) {
 			buffer.writeItem(recipe.result);
 
 			recipe.recipeReactant.toNetwork(buffer);

@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.init.client;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.BioForgingRecipe;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModRecipeBookTypes;
 import com.github.elenterius.biomancy.init.ModRecipes;
@@ -44,8 +44,8 @@ public final class ModRecipeBookCategories {
 		public static final RecipeBookCategories SEARCH_CATEGORY = createAndRegisterSearchCategory();
 
 		public static final Function<Recipe<?>, RecipeBookCategories> RECIPE_CATEGORY_FINDER = recipe -> {
-			if (recipe instanceof BioForgeRecipe bioForgeRecipe) {
-				return TAB_TO_CATEGORY.get(bioForgeRecipe.getTab().enumId());
+			if (recipe instanceof BioForgingRecipe bioForgingRecipe) {
+				return TAB_TO_CATEGORY.get(bioForgingRecipe.getTab().enumId());
 			}
 			return null;
 		};

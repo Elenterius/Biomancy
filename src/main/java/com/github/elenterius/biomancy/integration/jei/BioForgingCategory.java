@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
-import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
+import com.github.elenterius.biomancy.crafting.IngredientStack;
+import com.github.elenterius.biomancy.crafting.recipe.BioForgingRecipe;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.styles.ColorStyles;
@@ -29,20 +29,20 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 import java.util.Objects;
 
-public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
+public class BioForgingCategory implements IRecipeCategory<BioForgingRecipe> {
 
-	public static final RecipeType<BioForgeRecipe> RECIPE_TYPE = new RecipeType<>(ModRecipes.BIO_FORGING_RECIPE_TYPE.getId(), BioForgeRecipe.class);
+	public static final RecipeType<BioForgingRecipe> RECIPE_TYPE = new RecipeType<>(ModRecipes.BIO_FORGING_RECIPE_TYPE.getId(), BioForgingRecipe.class);
 	private final IDrawable background;
 	private final IDrawable icon;
 
-	public BioForgeRecipeCategory(IGuiHelper guiHelper) {
+	public BioForgingCategory(IGuiHelper guiHelper) {
 		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.BIO_FORGE.get()));
 		ResourceLocation texture = BiomancyMod.createRL("textures/gui/jei/bio_forge_recipe.png");
 		background = guiHelper.drawableBuilder(texture, 0, 0, 152, 32).setTextureSize(152, 32).build();
 	}
 
 	@Override
-	public RecipeType<BioForgeRecipe> getRecipeType() {
+	public RecipeType<BioForgingRecipe> getRecipeType() {
 		return RECIPE_TYPE;
 	}
 
@@ -62,7 +62,7 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, BioForgeRecipe recipe, IFocusGroup focuses) {
+	public void setRecipe(IRecipeLayoutBuilder builder, BioForgingRecipe recipe, IFocusGroup focuses) {
 		ClientLevel level = Objects.requireNonNull(Minecraft.getInstance().level);
 
 		List<IngredientStack> ingredientQuantities = recipe.getIngredientQuantities();
@@ -78,7 +78,7 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 
 	private void addInputSlot(IRecipeLayoutBuilder builder, int x, int y, List<IngredientStack> ingredients, int index) {
 		if (index < 0) throw new IllegalArgumentException("index must be larger or equal to zero");
-		if (index >= BioForgeRecipe.MAX_INGREDIENTS) throw new IllegalArgumentException("index must be smaller than " + BioForgeRecipe.MAX_INGREDIENTS);
+		if (index >= BioForgingRecipe.MAX_INGREDIENTS) throw new IllegalArgumentException("index must be smaller than " + BioForgingRecipe.MAX_INGREDIENTS);
 
 		IRecipeSlotBuilder slotBuilder = builder.addSlot(RecipeIngredientRole.INPUT, x, y);
 		if (index < ingredients.size()) {
@@ -87,7 +87,7 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 	}
 
 	@Override
-	public void draw(BioForgeRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+	public void draw(BioForgingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
 		Font font = Minecraft.getInstance().font;
 		MutableComponent costString = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients());
 		guiGraphics.drawString(font, costString, 108, 32 - font.lineHeight + 1, ColorStyles.WHITE_ARGB);

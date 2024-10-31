@@ -45,10 +45,10 @@ public class BiomancyJeiPlugin implements IModPlugin {
 
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registration) {
-		registration.addRecipeCategories(new DecomposerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-		registration.addRecipeCategories(new BioLabRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-		registration.addRecipeCategories(new DigestingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-		registration.addRecipeCategories(new BioForgeRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+		registration.addRecipeCategories(new DecomposingCategory(registration.getJeiHelpers().getGuiHelper()));
+		registration.addRecipeCategories(new BioBrewingCategory(registration.getJeiHelpers().getGuiHelper()));
+		registration.addRecipeCategories(new DigestingCategory(registration.getJeiHelpers().getGuiHelper()));
+		registration.addRecipeCategories(new BioForgingCategory(registration.getJeiHelpers().getGuiHelper()));
 	}
 
 	@Override
@@ -56,11 +56,11 @@ public class BiomancyJeiPlugin implements IModPlugin {
 		ClientLevel level = Objects.requireNonNull(Minecraft.getInstance().level);
 		RecipeManager recipeManager = level.getRecipeManager();
 
-		registration.addRecipes(DecomposerRecipeCategory.RECIPE_TYPE, recipeManager.getAllRecipesFor(ModRecipes.DECOMPOSING_RECIPE_TYPE.get()));
-		registration.addRecipes(BioLabRecipeCategory.RECIPE_TYPE, recipeManager.getAllRecipesFor(ModRecipes.BIO_BREWING_RECIPE_TYPE.get()));
+		registration.addRecipes(DecomposingCategory.RECIPE_TYPE, recipeManager.getAllRecipesFor(ModRecipes.DECOMPOSING_RECIPE_TYPE.get()));
+		registration.addRecipes(BioBrewingCategory.RECIPE_TYPE, recipeManager.getAllRecipesFor(ModRecipes.BIO_BREWING_RECIPE_TYPE.get()));
 
-		registration.addRecipes(DigestingRecipeCategory.RECIPE_TYPE, DigestingRecipes.getRecipes(level));
-		registration.addRecipes(BioForgeRecipeCategory.RECIPE_TYPE, recipeManager.getAllRecipesFor(ModRecipes.BIO_FORGING_RECIPE_TYPE.get()));
+		registration.addRecipes(DigestingCategory.RECIPE_TYPE, DigestingRecipes.getRecipes(level));
+		registration.addRecipes(BioForgingCategory.RECIPE_TYPE, recipeManager.getAllRecipesFor(ModRecipes.BIO_FORGING_RECIPE_TYPE.get()));
 
 		registration.addRecipes(RecipeTypes.CRAFTING, SpecialCraftingRecipeMaker.createBiometricMembraneRecipes());
 		registration.addRecipes(RecipeTypes.CRAFTING, SpecialCraftingRecipeMaker.createCradleCleansingRecipes());
@@ -69,25 +69,25 @@ public class BiomancyJeiPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-		registration.addRecipeCatalyst(new ItemStack(ModItems.BIO_FORGE.get()), BioForgeRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(new ItemStack(ModItems.BIO_LAB.get()), BioLabRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(new ItemStack(ModItems.DIGESTER.get()), DigestingRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(new ItemStack(ModItems.DECOMPOSER.get()), DecomposerRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(ModItems.BIO_FORGE.get()), BioForgingCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(ModItems.BIO_LAB.get()), BioBrewingCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(ModItems.DIGESTER.get()), DigestingCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(ModItems.DECOMPOSER.get()), DecomposingCategory.RECIPE_TYPE);
 	}
 
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-		registration.addRecipeClickArea(DecomposerScreen.class, 176 - 5 - 10, 4, 10, 10, DecomposerRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeClickArea(BioLabScreen.class, 176 - 5 - 10, 4, 10, 10, BioLabRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeClickArea(DigesterScreen.class, 176 - 5 - 10, 4, 10, 10, DigestingRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeClickArea(BioForgeScreen.class, 292 - 5 - 10, 4, 10, 10, BioForgeRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeClickArea(DecomposerScreen.class, 176 - 5 - 10, 4, 10, 10, DecomposingCategory.RECIPE_TYPE);
+		registration.addRecipeClickArea(BioLabScreen.class, 176 - 5 - 10, 4, 10, 10, BioBrewingCategory.RECIPE_TYPE);
+		registration.addRecipeClickArea(DigesterScreen.class, 176 - 5 - 10, 4, 10, 10, DigestingCategory.RECIPE_TYPE);
+		registration.addRecipeClickArea(BioForgeScreen.class, 292 - 5 - 10, 4, 10, 10, BioForgingCategory.RECIPE_TYPE);
 	}
 
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-		registerInputSlots(registration, ModMenuTypes.DECOMPOSER.get(), DecomposerMenu.class, DecomposerRecipeCategory.RECIPE_TYPE, DecomposerMenu.SlotZone.INPUT_ZONE);
-		registerInputSlots(registration, ModMenuTypes.BIO_LAB.get(), BioLabMenu.class, BioLabRecipeCategory.RECIPE_TYPE, BioLabMenu.SlotZone.INPUT_ZONE);
-		registerInputSlots(registration, ModMenuTypes.DIGESTER.get(), DigesterMenu.class, DigestingRecipeCategory.RECIPE_TYPE, DigesterMenu.SlotZone.INPUT_ZONE);
+		registerInputSlots(registration, ModMenuTypes.DECOMPOSER.get(), DecomposerMenu.class, DecomposingCategory.RECIPE_TYPE, DecomposerMenu.SlotZone.INPUT_ZONE);
+		registerInputSlots(registration, ModMenuTypes.BIO_LAB.get(), BioLabMenu.class, BioBrewingCategory.RECIPE_TYPE, BioLabMenu.SlotZone.INPUT_ZONE);
+		registerInputSlots(registration, ModMenuTypes.DIGESTER.get(), DigesterMenu.class, DigestingCategory.RECIPE_TYPE, DigesterMenu.SlotZone.INPUT_ZONE);
 	}
 
 	private <C extends AbstractContainerMenu, R> void registerInputSlots(IRecipeTransferRegistration registration, @Nullable MenuType<C> menuType, Class<? extends C> containerClass, RecipeType<R> recipeType, ISlotZone slotZone) {

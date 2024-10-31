@@ -1,12 +1,12 @@
 package com.github.elenterius.biomancy.block.biolab;
 
 import com.github.elenterius.biomancy.api.nutrients.FuelHandler;
-import com.github.elenterius.biomancy.crafting.recipe.BioLabRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.BioBrewingRecipe;
 import com.github.elenterius.biomancy.crafting.state.FuelConsumingRecipeCraftingStateData;
 import com.github.elenterius.biomancy.inventory.BehavioralItemHandler;
 import net.minecraft.world.item.crafting.Recipe;
 
-public class BioLabStateData extends FuelConsumingRecipeCraftingStateData<BioLabRecipe> {
+public class BioLabStateData extends FuelConsumingRecipeCraftingStateData<BioBrewingRecipe> {
 
 	public static final int LOCK_INDEX = 4;
 
@@ -19,7 +19,7 @@ public class BioLabStateData extends FuelConsumingRecipeCraftingStateData<BioLab
 
 	@Override
 	protected boolean isRecipeOfInstance(Recipe<?> recipe) {
-		return recipe instanceof BioLabRecipe;
+		return recipe instanceof BioBrewingRecipe;
 	}
 
 	public boolean isFilterLocked() {

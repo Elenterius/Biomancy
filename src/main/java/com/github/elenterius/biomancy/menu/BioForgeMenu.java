@@ -4,8 +4,8 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.nutrients.Nutrients;
 import com.github.elenterius.biomancy.block.bioforge.BioForgeBlockEntity;
 import com.github.elenterius.biomancy.block.bioforge.BioForgeStateData;
-import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
-import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
+import com.github.elenterius.biomancy.crafting.IngredientStack;
+import com.github.elenterius.biomancy.crafting.recipe.BioForgingRecipe;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.ItemStackCounter;
@@ -32,7 +32,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 	private int playerInvChanges;
 	private final ItemStackCounter itemCounter = new ItemStackCounter();
 	@Nullable
-	private BioForgeRecipe selectedRecipe;
+	private BioForgingRecipe selectedRecipe;
 
 	protected BioForgeMenu(int id, Inventory playerInventory, @Nullable BioForgeBlockEntity bioforge) {
 		super(ModMenuTypes.BIO_FORGE.get(), id, playerInventory, 124, 137, 195);
@@ -83,7 +83,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 	private void updateResultSlot(ServerPlayer serverPlayer) {
 		ItemStack resultStack = ItemStack.EMPTY;
 
-		BioForgeRecipe recipe = getSelectedRecipe();
+		BioForgingRecipe recipe = getSelectedRecipe();
 		if (recipe != null && resultContainer.setRecipeUsed(serverPlayer.level(), serverPlayer, recipe) && canCraft(recipe)) {
 			resultStack = recipe.getResultItem(serverPlayer.level().registryAccess()).copy();
 		}
@@ -95,11 +95,11 @@ public class BioForgeMenu extends PlayerContainerMenu {
 	}
 
 	@Nullable
-	public BioForgeRecipe getSelectedRecipe() {
+	public BioForgingRecipe getSelectedRecipe() {
 		return selectedRecipe;
 	}
 
-	public void setSelectedRecipe(@Nullable BioForgeRecipe recipe, ServerPlayer serverPlayer) {
+	public void setSelectedRecipe(@Nullable BioForgingRecipe recipe, ServerPlayer serverPlayer) {
 		selectedRecipe = recipe;
 		countPlayerInvItems(serverPlayer, serverPlayer.getInventory());
 	}
@@ -279,7 +279,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 				return;
 			}
 
-			BioForgeRecipe recipe = getSelectedRecipe();
+			BioForgingRecipe recipe = getSelectedRecipe();
 			if (recipe != null) {
 				consumeCraftingIngredients(player.getInventory(), recipe);
 				broadcastChanges();
@@ -300,11 +300,11 @@ public class BioForgeMenu extends PlayerContainerMenu {
 
 	}
 
-	private boolean canCraft(@Nullable BioForgeRecipe recipe) {
+	private boolean canCraft(@Nullable BioForgingRecipe recipe) {
 		return recipe != null && getFuelAmount() >= recipe.getCraftingCostNutrients() && recipe.isCraftable(itemCounter);
 	}
 
-	private void consumeCraftingIngredients(Inventory inventory, BioForgeRecipe recipe) {
+	private void consumeCraftingIngredients(Inventory inventory, BioForgingRecipe recipe) {
 
 		List<IngredientStack> ingredients = recipe.getIngredientQuantities();
 		int[] ingredientCost = new int[ingredients.size()];

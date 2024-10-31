@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.crafting.recipe;
+package com.github.elenterius.biomancy.crafting;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -15,54 +15,54 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class VariableProductionOutput {
+public class VariableOutput {
 
 	private final Item item;
 	private final @Nullable
 	CompoundTag tag;
 	private final ItemCountRange countRange;
 
-	public VariableProductionOutput(ItemStack stack) {
+	public VariableOutput(ItemStack stack) {
 		this(stack, stack.getCount());
 	}
 
-	public VariableProductionOutput(ItemStack stack, int count) {
+	public VariableOutput(ItemStack stack, int count) {
 		this(stack.getItem(), stack.getTag(), new ItemCountRange.ConstantValue(count));
 	}
 
-	public VariableProductionOutput(ItemStack stack, int min, int max) {
+	public VariableOutput(ItemStack stack, int min, int max) {
 		this(stack.getItem(), stack.getTag(), new ItemCountRange.UniformRange(min, max));
 	}
 
-	public VariableProductionOutput(ItemStack stack, int n, float p) {
+	public VariableOutput(ItemStack stack, int n, float p) {
 		this(stack.getItem(), stack.getTag(), new ItemCountRange.BinomialRange(n, p));
 	}
 
-	public VariableProductionOutput(ItemLike item) {
+	public VariableOutput(ItemLike item) {
 		this(item, 1);
 	}
 
-	public VariableProductionOutput(ItemLike item, int count) {
+	public VariableOutput(ItemLike item, int count) {
 		this(item, new ItemCountRange.ConstantValue(count));
 	}
 
-	public VariableProductionOutput(ItemLike item, int min, int max) {
+	public VariableOutput(ItemLike item, int min, int max) {
 		this(item, new ItemCountRange.UniformRange(min, max));
 	}
 
-	public VariableProductionOutput(ItemLike item, int n, float p) {
+	public VariableOutput(ItemLike item, int n, float p) {
 		this(item, new ItemCountRange.BinomialRange(n, p));
 	}
 
-	public VariableProductionOutput(ItemStack stack, ItemCountRange countRange) {
+	public VariableOutput(ItemStack stack, ItemCountRange countRange) {
 		this(stack.getItem(), stack.getTag(), countRange);
 	}
 
-	public VariableProductionOutput(ItemLike item, ItemCountRange countRange) {
+	public VariableOutput(ItemLike item, ItemCountRange countRange) {
 		this(item, null, countRange);
 	}
 
-	public VariableProductionOutput(ItemLike item, @Nullable CompoundTag tag, ItemCountRange countRange) {
+	public VariableOutput(ItemLike item, @Nullable CompoundTag tag, ItemCountRange countRange) {
 		this.item = item.asItem();
 		this.tag = tag;
 		this.countRange = countRange;
@@ -114,17 +114,17 @@ public class VariableProductionOutput {
 		return result;
 	}
 
-	public static VariableProductionOutput deserialize(JsonObject jsonObject) {
+	public static VariableOutput deserialize(JsonObject jsonObject) {
 		ItemStack stack = ShapedRecipe.itemStackFromJson(jsonObject);
 		ItemCountRange countRange = ItemCountRange.fromJson(GsonHelper.getAsJsonObject(jsonObject, "countRange"));
 		if (stack.isEmpty()) throw new JsonParseException("Result can't be Empty");
-		return new VariableProductionOutput(stack, countRange);
+		return new VariableOutput(stack, countRange);
 	}
 
-	public static VariableProductionOutput fromNetwork(FriendlyByteBuf buffer) {
+	public static VariableOutput fromNetwork(FriendlyByteBuf buffer) {
 		ItemStack stack = buffer.readItem();
 		ItemCountRange range = ItemCountRange.fromNetwork(buffer);
-		return new VariableProductionOutput(stack, range);
+		return new VariableOutput(stack, range);
 	}
 
 	public void toNetwork(FriendlyByteBuf buffer) {

@@ -5,9 +5,9 @@ import com.github.elenterius.biomancy.api.nutrients.FuelHandlerImpl;
 import com.github.elenterius.biomancy.block.base.MachineBlock;
 import com.github.elenterius.biomancy.block.base.MachineBlockEntity;
 import com.github.elenterius.biomancy.client.util.ClientLoopingSoundHelper;
-import com.github.elenterius.biomancy.crafting.recipe.DecomposerRecipe;
+import com.github.elenterius.biomancy.crafting.VariableOutput;
+import com.github.elenterius.biomancy.crafting.recipe.DecomposingRecipe;
 import com.github.elenterius.biomancy.crafting.recipe.SimpleRecipeType;
-import com.github.elenterius.biomancy.crafting.recipe.VariableProductionOutput;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.init.ModRecipes;
@@ -55,15 +55,15 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, DecomposerStateData> implements MenuProvider, GeoBlockEntity {
+public class DecomposerBlockEntity extends MachineBlockEntity<DecomposingRecipe, DecomposerStateData> implements MenuProvider, GeoBlockEntity {
 
 	public static final int FUEL_SLOTS = 1;
-	public static final int INPUT_SLOTS = DecomposerRecipe.MAX_INGREDIENTS;
-	public static final int OUTPUT_SLOTS = DecomposerRecipe.MAX_OUTPUTS;
+	public static final int INPUT_SLOTS = DecomposingRecipe.MAX_INGREDIENTS;
+	public static final int OUTPUT_SLOTS = DecomposingRecipe.MAX_OUTPUTS;
 
 	public static final int MAX_FUEL = 1_000;
 
-	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DecomposerRecipe>> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
+	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DecomposingRecipe>> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
 
 	protected static final RawAnimation WORKING_ANIM = RawAnimation.begin().thenLoop("decomposer.working");
 	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("decomposer.idle");
@@ -150,12 +150,12 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	}
 
 	@Override
-	protected boolean doesRecipeResultFitIntoOutputInv(DecomposerRecipe craftingGoal, ItemStack ignored) {
+	protected boolean doesRecipeResultFitIntoOutputInv(DecomposingRecipe craftingGoal, ItemStack ignored) {
 		DecomposerRecipeResult precomputedResult = getComputedRecipeResult(craftingGoal);
 		return ItemHandlerUtil.doAllItemsFit(outputInventory.getRaw(), precomputedResult.items);
 	}
 
-	DecomposerRecipeResult getComputedRecipeResult(DecomposerRecipe craftingGoal) {
+	DecomposerRecipeResult getComputedRecipeResult(DecomposingRecipe craftingGoal) {
 		if (computedRecipeResult == null || !computedRecipeResult.recipeId.equals(craftingGoal.getId())) {
 			return DecomposerRecipeResult.computeRecipeResult(craftingGoal, level.random.nextInt());
 		}
@@ -164,12 +164,12 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	}
 
 	@Override
-	protected @Nullable DecomposerRecipe resolveRecipeFromInput(Level level) {
+	protected @Nullable DecomposingRecipe resolveRecipeFromInput(Level level) {
 		return RECIPE_TYPE.get().getRecipeFromContainer(level, inputInventory.getRecipeWrapper()).orElse(null);
 	}
 
 	@Override
-	protected boolean doesRecipeMatchInput(DecomposerRecipe recipeToTest, Level level) {
+	protected boolean doesRecipeMatchInput(DecomposingRecipe recipeToTest, Level level) {
 		return recipeToTest.matches(inputInventory.getRecipeWrapper(), level);
 	}
 
@@ -242,7 +242,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	}
 
 	@Override
-	protected boolean craftRecipe(DecomposerRecipe recipeToCraft, Level level) {
+	protected boolean craftRecipe(DecomposingRecipe recipeToCraft, Level level) {
 		DecomposerRecipeResult precomputedResult = getComputedRecipeResult(recipeToCraft);
 
 		if (!ItemHandlerUtil.doAllItemsFit(outputInventory.getRaw(), precomputedResult.items)) return false;
@@ -309,18 +309,18 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 			if (recipeId == null) return null;
 
 			Recipe<Container> recipe = recipeManager.byType(RECIPE_TYPE.get()).get(recipeId);
-			if (recipe instanceof DecomposerRecipe decomposerRecipe) {
-				return computeRecipeResult(decomposerRecipe, tag.getInt("seed"));
+			if (recipe instanceof DecomposingRecipe decomposingRecipe) {
+				return computeRecipeResult(decomposingRecipe, tag.getInt("seed"));
 			}
 
 			return null;
 		}
 
-		public static DecomposerRecipeResult computeRecipeResult(DecomposerRecipe recipe, int seed) {
+		public static DecomposerRecipeResult computeRecipeResult(DecomposingRecipe recipe, int seed) {
 			RandomSource random = RandomSource.create(seed);
 
 			List<ItemStack> items = new ArrayList<>();
-			for (VariableProductionOutput output : recipe.getOutputs()) {
+			for (VariableOutput output : recipe.getOutputs()) {
 				ItemStack stack = output.getItemStack(random);
 				if (!stack.isEmpty()) items.add(stack);
 			}
