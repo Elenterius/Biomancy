@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.datagen.recipes.builder;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.crafting.recipe.BioLabRecipe;
-import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
+import com.github.elenterius.biomancy.crafting.IngredientStack;
+import com.github.elenterius.biomancy.crafting.recipe.BioBrewingRecipe;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.google.gson.JsonArray;
@@ -168,7 +168,7 @@ public final class BioBrewingRecipeBuilder implements RecipeBuilder<BioBrewingRe
 		}
 
 		if (craftingCostNutrients < 0) {
-			craftingCostNutrients = RecipeCostUtil.getCost(BioLabRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
+			craftingCostNutrients = RecipeCostUtil.getCost(BioBrewingRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
 		}
 
 		advancement.parent(new ResourceLocation("recipes/root"))

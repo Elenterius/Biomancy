@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.crafting.recipe;
+package com.github.elenterius.biomancy.crafting;
 
 import com.github.elenterius.biomancy.util.ItemStackCounter;
 import com.google.gson.JsonElement;

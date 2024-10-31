@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.crafting.recipe;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.crafting.IngredientStack;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
@@ -24,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BioForgeRecipe implements Recipe<Container> {
+public class BioForgingRecipe implements Recipe<Container> {
 
 	public static final byte DEFAULT_CRAFTING_COST_NUTRIENTS = 1;
 	public static final int MAX_INGREDIENTS = 5;
@@ -37,7 +38,7 @@ public class BioForgeRecipe implements Recipe<Container> {
 
 	private final int cost;
 
-	public BioForgeRecipe(ResourceLocation id, BioForgeTab tab, ItemStack result, List<IngredientStack> ingredients, int craftingCostNutrients) {
+	public BioForgingRecipe(ResourceLocation id, BioForgeTab tab, ItemStack result, List<IngredientStack> ingredients, int craftingCostNutrients) {
 		registryKey = id;
 		this.tab = tab;
 		this.result = result;
@@ -50,7 +51,7 @@ public class BioForgeRecipe implements Recipe<Container> {
 		cost = craftingCostNutrients;
 	}
 
-	public static boolean areRecipesEqual(BioForgeRecipe recipeA, BioForgeRecipe recipeB) {
+	public static boolean areRecipesEqual(BioForgingRecipe recipeA, BioForgingRecipe recipeB) {
 		return recipeA.isRecipeEqual(recipeB);
 	}
 
@@ -63,7 +64,7 @@ public class BioForgeRecipe implements Recipe<Container> {
 		return cost;
 	}
 
-	public boolean isRecipeEqual(BioForgeRecipe other) {
+	public boolean isRecipeEqual(BioForgingRecipe other) {
 		return registryKey.equals(other.getId());
 	}
 
@@ -172,10 +173,10 @@ public class BioForgeRecipe implements Recipe<Container> {
 		return new ItemStack(ModItems.BIO_FORGE.get());
 	}
 
-	public static class Serializer implements RecipeSerializer<BioForgeRecipe> {
+	public static class Serializer implements RecipeSerializer<BioForgingRecipe> {
 
 		@Override
-		public BioForgeRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+		public BioForgingRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 			List<IngredientStack> ingredients = RecipeUtil.readIngredientStacks(GsonHelper.getAsJsonArray(json, "ingredients"));
 
 			if (ingredients.isEmpty()) {
@@ -200,12 +201,12 @@ public class BioForgeRecipe implements Recipe<Container> {
 				else throw new JsonSyntaxException("Unknown Bio-Forge tab '%s'".formatted(tabId));
 			}
 
-			return new BioForgeRecipe(recipeId, tab, resultStack, ingredients, cost);
+			return new BioForgingRecipe(recipeId, tab, resultStack, ingredients, cost);
 		}
 
 		@Nullable
 		@Override
-		public BioForgeRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+		public BioForgingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 			ItemStack resultStack = buffer.readItem();
 
 			int ingredientCount = buffer.readVarInt();
@@ -218,11 +219,11 @@ public class BioForgeRecipe implements Recipe<Container> {
 
 			BioForgeTab tab = BioForgeTab.fromNetwork(buffer);
 
-			return new BioForgeRecipe(recipeId, tab, resultStack, ingredients, craftingCost);
+			return new BioForgingRecipe(recipeId, tab, resultStack, ingredients, craftingCost);
 		}
 
 		@Override
-		public void toNetwork(FriendlyByteBuf buffer, BioForgeRecipe recipe) {
+		public void toNetwork(FriendlyByteBuf buffer, BioForgingRecipe recipe) {
 			buffer.writeItem(recipe.result);
 
 			buffer.writeVarInt(recipe.ingredients.size());

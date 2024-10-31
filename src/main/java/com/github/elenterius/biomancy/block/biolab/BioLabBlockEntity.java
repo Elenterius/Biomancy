@@ -5,8 +5,8 @@ import com.github.elenterius.biomancy.api.nutrients.FuelHandlerImpl;
 import com.github.elenterius.biomancy.block.base.MachineBlock;
 import com.github.elenterius.biomancy.block.base.MachineBlockEntity;
 import com.github.elenterius.biomancy.client.util.ClientLoopingSoundHelper;
-import com.github.elenterius.biomancy.crafting.recipe.BioLabRecipe;
-import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
+import com.github.elenterius.biomancy.crafting.IngredientStack;
+import com.github.elenterius.biomancy.crafting.recipe.BioBrewingRecipe;
 import com.github.elenterius.biomancy.crafting.recipe.SimpleRecipeType;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
@@ -52,15 +52,15 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabStateData> implements MenuProvider, GeoBlockEntity {
+public class BioLabBlockEntity extends MachineBlockEntity<BioBrewingRecipe, BioLabStateData> implements MenuProvider, GeoBlockEntity {
 
 	public static final int FUEL_SLOTS = 1;
-	public static final int INPUT_SLOTS = BioLabRecipe.MAX_INGREDIENTS + BioLabRecipe.MAX_REACTANT;
+	public static final int INPUT_SLOTS = BioBrewingRecipe.MAX_INGREDIENTS + BioBrewingRecipe.MAX_REACTANT;
 	public static final int OUTPUT_SLOTS = 1;
 
 	public static final int MAX_FUEL = 1_000;
 
-	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<BioLabRecipe>> RECIPE_TYPE = ModRecipes.BIO_BREWING_RECIPE_TYPE;
+	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<BioBrewingRecipe>> RECIPE_TYPE = ModRecipes.BIO_BREWING_RECIPE_TYPE;
 
 	protected static final RawAnimation WORKING_ANIM = RawAnimation.begin().thenLoop("bio_lab.working");
 	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("bio_lab.idle");
@@ -160,18 +160,18 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	}
 
 	@Override
-	protected boolean doesRecipeResultFitIntoOutputInv(BioLabRecipe craftingGoal, ItemStack stackToCraft) {
+	protected boolean doesRecipeResultFitIntoOutputInv(BioBrewingRecipe craftingGoal, ItemStack stackToCraft) {
 		return ItemHandlerUtil.doesItemFit(outputInventory.getRaw(), 0, stackToCraft);
 	}
 
 	@Nullable
 	@Override
-	protected BioLabRecipe resolveRecipeFromInput(Level level) {
+	protected BioBrewingRecipe resolveRecipeFromInput(Level level) {
 		return RECIPE_TYPE.get().getRecipeFromContainer(level, inputInventory.getRecipeWrapper()).orElse(null);
 	}
 
 	@Override
-	protected boolean doesRecipeMatchInput(BioLabRecipe recipeToTest, Level level) {
+	protected boolean doesRecipeMatchInput(BioBrewingRecipe recipeToTest, Level level) {
 		return recipeToTest.matches(inputInventory.getRecipeWrapper(), level);
 	}
 
@@ -240,7 +240,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	}
 
 	@Override
-	protected boolean craftRecipe(BioLabRecipe recipeToCraft, Level level) {
+	protected boolean craftRecipe(BioBrewingRecipe recipeToCraft, Level level) {
 		ItemStack result = recipeToCraft.getResultItem(level.registryAccess()).copy();
 		if (result.isEmpty() || !doesRecipeResultFitIntoOutputInv(recipeToCraft, result)) {
 			return false;

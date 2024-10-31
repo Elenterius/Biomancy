@@ -46,11 +46,11 @@ public class DigestingRecipeProvider extends RecipeProvider {
 	}
 
 	protected DigesterRecipeBuilder simpleRecipe(ItemLike result, int count, TagKey<Item> ingredient) {
-		return (DigesterRecipeBuilder) DigesterRecipeBuilder.create(result, count, getTagName(ingredient)).setIngredient(ingredient).unlockedBy(ingredient);
+		return DigesterRecipeBuilder.create(result, count, getTagName(ingredient)).setIngredient(ingredient).unlockedBy(ingredient);
 	}
 
 	protected DigesterRecipeBuilder simpleRecipe(ItemLike result, int count, ItemLike ingredient) {
-		return (DigesterRecipeBuilder) DigesterRecipeBuilder.create(result, count, getItemName(ingredient)).setIngredient(ingredient).unlockedBy(ingredient);
+		return DigesterRecipeBuilder.create(result, count, getItemName(ingredient)).setIngredient(ingredient).unlockedBy(ingredient);
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.network;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.BioForgingRecipe;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.network.NetworkRegistry;
@@ -27,7 +27,7 @@ public final class ModNetworkHandler {
 		SIMPLE_NETWORK_CHANNEL.sendToServer(new KeyPressMessage(slotIndex, flag));
 	}
 
-	public static void sendBioForgeRecipeToServer(int containerId, BioForgeRecipe recipe) {
+	public static void sendBioForgeRecipeToServer(int containerId, BioForgingRecipe recipe) {
 		SIMPLE_NETWORK_CHANNEL.sendToServer(new BioForgeRecipeMessage(containerId, recipe.getId()));
 	}
 

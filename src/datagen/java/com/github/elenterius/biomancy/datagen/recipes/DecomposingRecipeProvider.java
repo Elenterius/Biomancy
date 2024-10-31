@@ -392,129 +392,129 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.MOB_SINEW).save(consumer);
 	}
 
-	private DecomposingRecipeBuilder createAlexsMobsRecipe() {
+	private DecomposingRecipeBuilder alexsMobsRecipe() {
 		return DecomposingRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID);
 	}
 
-	private DecomposingRecipeBuilder createAlexsCavesRecipe() {
+	private DecomposingRecipeBuilder alexsCavesRecipe() {
 		return DecomposingRecipeBuilder.create().ifModLoaded(AlexsCaves.MODID);
 	}
 
 	private void buildAlexsMobsRecipes(Consumer<FinishedRecipe> consumer) {
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.BEAR_FUR)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), -1, 1)
 				.unlockedBy(AMItemRegistry.BEAR_FUR).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.ROADRUNNER_FEATHER)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 1, 2)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 0, 1)
 				.unlockedBy(AMItemRegistry.ROADRUNNER_FEATHER).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.BONE_SERPENT_TOOTH)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 2, 4)
 				.addOutput(ModItems.BONE_FRAGMENTS.get(), 4, 6)
 				.unlockedBy(AMItemRegistry.BONE_SERPENT_TOOTH).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.GAZELLE_HORN)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 3, 5)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 4, 6)
 				.unlockedBy(AMItemRegistry.GAZELLE_HORN).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.CROCODILE_SCUTE)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 3, 5)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 3)
 				.unlockedBy(AMItemRegistry.CROCODILE_SCUTE).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.MAGGOT)
 				.addOutput(ModItems.BILE.get(), 0, 1)
 				.addOutput(ModItems.FLESH_BITS.get(), 0, 1)
 				.unlockedBy(AMItemRegistry.MAGGOT).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.BLOOD_SAC)
 				.addOutput(ModItems.BILE.get(), 4, 6)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3)
 				.unlockedBy(AMItemRegistry.BLOOD_SAC).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.MOSQUITO_PROBOSCIS)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 0, 2)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3)
 				.unlockedBy(AMItemRegistry.MOSQUITO_PROBOSCIS).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.RATTLESNAKE_RATTLE)
 				.addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 5)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 2, 3)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 3)
 				.unlockedBy(AMItemRegistry.RATTLESNAKE_RATTLE).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.SHARK_TOOTH)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 2)
 				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 4)
 				.unlockedBy(AMItemRegistry.SHARK_TOOTH).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.LOBSTER_TAIL)
 				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 1, 2)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
 				.unlockedBy(AMItemRegistry.LOBSTER_TAIL).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.KOMODO_SPIT)
 				.addOutput(ModItems.BILE.get(), 1, 2)
 				.addOutput(ModItems.TOXIN_EXTRACT.get(), 0, 1)
 				.unlockedBy(AMItemRegistry.KOMODO_SPIT).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.CENTIPEDE_LEG)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 6, 10)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 4, 7)
 				.unlockedBy(AMItemRegistry.CENTIPEDE_LEG).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.MOSQUITO_LARVA)
 				.addOutput(ModItems.FLESH_BITS.get(), 0, 2)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 1, 2)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 2, 3)
 				.unlockedBy(AMItemRegistry.MOSQUITO_LARVA).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.MOOSE_ANTLER)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 3, 5)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 4, 6)
 				.unlockedBy(AMItemRegistry.MOOSE_ANTLER).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.MOOSE_RIBS)
 				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
 				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 5)
 				.unlockedBy(AMItemRegistry.MOOSE_RIBS).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.MIMICREAM)
 				.addOutput(ModItems.BILE.get(), 2, 3)
 				.addOutput(ModItems.REGENERATIVE_FLUID.get(), 1, 2)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 4, 6)
 				.unlockedBy(AMItemRegistry.MIMICREAM).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.RACCOON_TAIL)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 2, 4)
 				.addOutput(ModItems.FLESH_BITS.get(), 2, 3)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3)
 				.unlockedBy(AMItemRegistry.RACCOON_TAIL).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.BLOBFISH)
 				.addOutput(ModItems.BILE.get(), 2, 4)
 				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
@@ -522,106 +522,106 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
 				.unlockedBy(AMItemRegistry.BLOBFISH).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.COCKROACH_WING_FRAGMENT)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 1, 2)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 0, 1)
 				.unlockedBy(AMItemRegistry.COCKROACH_WING_FRAGMENT).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.COCKROACH_WING)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 9, 18)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 8, 10)
 				.unlockedBy(AMItemRegistry.COCKROACH_WING).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.COCKROACH_OOTHECA)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 2)
 				.unlockedBy(AMItemRegistry.COCKROACH_OOTHECA).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.SPIKED_SCUTE)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 3, 5)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 3)
 				.unlockedBy(AMItemRegistry.SPIKED_SCUTE).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.HEMOLYMPH_SAC)
 				.addOutput(ModItems.BILE.get(), 4, 6)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3)
 				.addOutput(ModItems.BIO_LUMENS.get(), 2, 4)
 				.unlockedBy(AMItemRegistry.HEMOLYMPH_SAC).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.STRADDLITE)
 				.addOutput(ModItems.STONE_POWDER.get(), 2, 3)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 4, 8)
 				.unlockedBy(AMItemRegistry.STRADDLITE).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.EMU_FEATHER)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 1, 2)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 0, 1)
 				.unlockedBy(AMItemRegistry.EMU_FEATHER).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.DROPBEAR_CLAW)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 3, 5)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 4, 6)
 				.unlockedBy(AMItemRegistry.DROPBEAR_CLAW).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.KANGAROO_MEAT)
 				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
 				.addOutput(ModItems.BONE_FRAGMENTS.get(), 0, 2)
 				.unlockedBy(AMItemRegistry.KANGAROO_MEAT).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.KANGAROO_HIDE)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 2, 4)
 				.unlockedBy(AMItemRegistry.KANGAROO_HIDE).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.AMBERGRIS)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 3)
 				.addOutput(ModItems.BILE.get(), 4, 6)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 4)
 				.unlockedBy(AMItemRegistry.AMBERGRIS).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.CACHALOT_WHALE_TOOTH)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 2, 4)
 				.addOutput(ModItems.BONE_FRAGMENTS.get(), 4, 6)
 				.unlockedBy(AMItemRegistry.CACHALOT_WHALE_TOOTH).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.LEAFCUTTER_ANT_PUPA)
 				.addOutput(ModItems.BILE.get(), 0, 1)
 				.addOutput(ModItems.FLESH_BITS.get(), 0, 1)
 				.unlockedBy(AMItemRegistry.LEAFCUTTER_ANT_PUPA).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.TARANTULA_HAWK_WING_FRAGMENT)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 1, 2)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 0, 1)
 				.unlockedBy(AMItemRegistry.TARANTULA_HAWK_WING_FRAGMENT).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.TARANTULA_HAWK_WING)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 9, 18)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 8, 10)
 				.unlockedBy(AMItemRegistry.TARANTULA_HAWK_WING).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.VOID_WORM_MANDIBLE)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 20, 25)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 6, 10)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 4, 7)
 				.unlockedBy(AMItemRegistry.VOID_WORM_MANDIBLE).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.VOID_WORM_EYE)
 				.addOutput(ModItems.BILE.get(), 5, 10)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 40, 50)
@@ -629,72 +629,72 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 7)
 				.unlockedBy(AMItemRegistry.VOID_WORM_EYE).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.SERRATED_SHARK_TOOTH)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 2)
 				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 4)
 				.unlockedBy(AMItemRegistry.SERRATED_SHARK_TOOTH).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.FROSTSTALKER_HORN)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 3, 5)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 4, 6)
 				.unlockedBy(AMItemRegistry.FROSTSTALKER_HORN).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.SHED_SNAKE_SKIN)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 0, 2)
 				.unlockedBy(AMItemRegistry.SHED_SNAKE_SKIN).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.ROCKY_SHELL)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 3, 5)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 3)
 				.addOutput(ModItems.STONE_POWDER.get(), 2, 4)
 				.unlockedBy(AMItemRegistry.ROCKY_SHELL).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.RAINBOW_JELLY)
 				.addOutput(ModItems.BILE.get(), 3, 4)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 5)
 				.addOutput(ModItems.BIO_LUMENS.get(), 1, 3)
 				.unlockedBy(AMItemRegistry.RAINBOW_JELLY).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.BISON_FUR)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 0, 1)
 				.unlockedBy(AMItemRegistry.BISON_FUR).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.LOST_TENTACLE)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 8, 15)
 				.addOutput(ModItems.FLESH_BITS.get(), 3, 5)
 				.unlockedBy(AMItemRegistry.LOST_TENTACLE).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.RAW_CATFISH)
 				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
 				.addOutput(ModItems.BONE_FRAGMENTS.get(), 1, 2)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
 				.unlockedBy(AMItemRegistry.RAW_CATFISH).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.ELASTIC_TENDON)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 4, 8)
 				.unlockedBy(AMItemRegistry.ELASTIC_TENDON).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.BANANA_SLUG_SLIME)
 				.addOutput(ModItems.BILE.get(), 2, 4)
 				.unlockedBy(AMItemRegistry.BANANA_SLUG_SLIME).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.FISH_BONES)
 				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 5)
 				.unlockedBy(AMItemRegistry.FISH_BONES).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMItemRegistry.COSMIC_COD)
 				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
 				.addOutput(ModItems.BONE_FRAGMENTS.get(), 1, 2)
@@ -702,13 +702,13 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.EXOTIC_DUST.get(), 1, 2)
 				.unlockedBy(AMItemRegistry.COSMIC_COD).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMBlockRegistry.CAIMAN_EGG.get())
 				.addOutput(ModItems.HORMONE_SECRETION.get(), 1)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 2)
 				.unlockedBy(AMBlockRegistry.CAIMAN_EGG.get()).save(consumer);
 
-		createAlexsMobsRecipe()
+		alexsMobsRecipe()
 				.setIngredient(AMBlockRegistry.TRIOPS_EGGS.get())
 				.addOutput(ModItems.HORMONE_SECRETION.get(), -1, 1)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1)
@@ -716,52 +716,52 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 	}
 
 	private void buildAlexsCavesRecipes(Consumer<FinishedRecipe> consumer) {
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.RAW_SCARLET_NEODYMIUM)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 5, 9)
 				.addOutput(ModItems.STONE_POWDER.get(), 1, 2)
 				.addOutput(Items.RED_DYE, 1, 2)
 				.unlockedBy(ACItemRegistry.RAW_SCARLET_NEODYMIUM).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.RAW_AZURE_NEODYMIUM)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 5, 9)
 				.addOutput(ModItems.STONE_POWDER.get(), 1, 2)
 				.addOutput(Items.BLUE_DYE, 1, 2)
 				.unlockedBy(ACItemRegistry.RAW_AZURE_NEODYMIUM).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.FERROUSLIME_BALL)
 				.addOutput(ModItems.BILE.get(), 2, 3)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 4, 7)
 				.unlockedBy(ACItemRegistry.FERROUSLIME_BALL).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.TRILOCARIS_TAIL)
 				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 1, 2)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
 				.unlockedBy(ACItemRegistry.TRILOCARIS_TAIL).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.PINE_NUTS)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 3)
 				.unlockedBy(ACItemRegistry.PINE_NUTS).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.PEWEN_SAP)
 				.addOutput(ModItems.BILE.get(), 0, 1)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 2)
 				.unlockedBy(ACItemRegistry.PEWEN_SAP).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.AMBER_CURIOSITY)
 				.addOutput(ModItems.BILE.get(), 3, 6)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 3, 5)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 4)
 				.unlockedBy(ACItemRegistry.AMBER_CURIOSITY).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.DINOSAUR_CHOP.get())
 				.addOutput(ModItems.FLESH_BITS.get(), 3 * 12, 6 * 12)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 12, 2 * 12)
@@ -769,19 +769,19 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.HORMONE_SECRETION.get(), 3, 6)
 				.unlockedBy(ACBlockRegistry.DINOSAUR_CHOP.get()).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.TOUGH_HIDE)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 3, 5)
 				.unlockedBy(ACItemRegistry.TOUGH_HIDE).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.HEAVY_BONE)
 				.addOutput(ModItems.BONE_FRAGMENTS.get(), 3 * 2, 6 * 2)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 2)
 				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
 				.unlockedBy(ACItemRegistry.HEAVY_BONE).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.RADGILL)
 				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
@@ -789,12 +789,12 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 4)
 				.unlockedBy(ACItemRegistry.RADGILL).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.TOXIC_PASTE)
 				.addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 4)
 				.unlockedBy(ACItemRegistry.TOXIC_PASTE).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.LANTERNFISH)
 				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 0, 1)
@@ -802,72 +802,72 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.BIO_LUMENS.get(), 2, 4)
 				.unlockedBy(ACItemRegistry.LANTERNFISH).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.TRIPODFISH)
 				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
 				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 3)
 				.unlockedBy(ACItemRegistry.TRIPODFISH).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.SEA_PIG)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1)
 				.addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 3)
 				.addOutput(ModItems.BILE.get(), 2, 4)
 				.unlockedBy(ACItemRegistry.SEA_PIG).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.BIOLUMINESSCENCE)
 				.addOutput(ModItems.BILE.get(), 2, 3)
 				.addOutput(ModItems.BIO_LUMENS.get(), 4, 7)
 				.unlockedBy(ACItemRegistry.BIOLUMINESSCENCE).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.PEARL)
 				.addOutput(ModItems.GEM_FRAGMENTS.get(), 4)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 7)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 5)
 				.unlockedBy(ACItemRegistry.PEARL).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.GUANO)
 				.addOutput(ModItems.BILE.get(), 2, 3)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 3, 6)
 				.unlockedBy(ACItemRegistry.GUANO).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.CORRODENT_TEETH)
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 3)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 2, 4)
 				.addOutput(ModItems.BONE_FRAGMENTS.get(), 4, 6)
 				.unlockedBy(ACItemRegistry.CORRODENT_TEETH).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACItemRegistry.VESPER_WING)
 				.addOutput(ModItems.TOUGH_FIBERS.get(), 9, 18)
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 8, 10)
 				.unlockedBy(ACItemRegistry.VESPER_WING).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.CURLY_FERN.get())
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 4)
 				.addOutput(Items.LIME_DYE, 1, 2)
 				.unlockedBy(ACBlockRegistry.CURLY_FERN.get()).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.ANCIENT_SAPLING.get())
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 3)
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 3)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 1)
 				.unlockedBy(ACBlockRegistry.ANCIENT_SAPLING.get()).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.FLYTRAP.get())
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 4)
 				.addOutput(Items.RED_DYE, 0, 1)
 				.unlockedBy(ACBlockRegistry.FLYTRAP.get()).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.SUBTERRANODON_EGG.get())
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
 				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
@@ -875,7 +875,7 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
 				.unlockedBy(ACBlockRegistry.SUBTERRANODON_EGG.get()).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.VALLUMRAPTOR_EGG.get())
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
 				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
@@ -883,7 +883,7 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
 				.unlockedBy(ACBlockRegistry.VALLUMRAPTOR_EGG.get()).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.GROTTOCERATOPS_EGG.get())
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
 				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
@@ -891,7 +891,7 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
 				.unlockedBy(ACBlockRegistry.GROTTOCERATOPS_EGG.get()).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.TREMORSAURUS_EGG.get())
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
 				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
@@ -899,7 +899,7 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
 				.unlockedBy(ACBlockRegistry.TREMORSAURUS_EGG.get()).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.RELICHEIRUS_EGG.get())
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
 				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
@@ -907,7 +907,7 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
 				.unlockedBy(ACBlockRegistry.RELICHEIRUS_EGG.get()).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.ATLATITAN_EGG.get())
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
 				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
@@ -915,7 +915,7 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
 				.unlockedBy(ACBlockRegistry.ATLATITAN_EGG.get()).save(consumer);
 
-		createAlexsCavesRecipe()
+		alexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.CARMINE_FROGLIGHT.get())
 				.addExtraCraftingCost(1)
 				.addOutput(ModItems.BIO_LUMENS.get(), 5, 9)

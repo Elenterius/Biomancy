@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.crafting.recipe;
 
+import com.github.elenterius.biomancy.crafting.IngredientStack;
+import com.github.elenterius.biomancy.crafting.VariableOutput;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
@@ -47,10 +49,10 @@ public final class RecipeUtil {
 		return list;
 	}
 
-	public static List<VariableProductionOutput> readVariableProductionOutputs(JsonArray jsonArray) {
-		List<VariableProductionOutput> list = new ArrayList<>();
+	public static List<VariableOutput> readVariableProductionOutputs(JsonArray jsonArray) {
+		List<VariableOutput> list = new ArrayList<>();
 		for (int i = 0; i < jsonArray.size(); i++) {
-			list.add(VariableProductionOutput.deserialize(jsonArray.get(i).getAsJsonObject()));
+			list.add(VariableOutput.deserialize(jsonArray.get(i).getAsJsonObject()));
 		}
 		return list;
 	}

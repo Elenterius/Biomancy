@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.network;
 
-import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.BioForgingRecipe;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.menu.BioForgeMenu;
 import net.minecraft.network.FriendlyByteBuf;
@@ -40,8 +40,8 @@ public class BioForgeRecipeMessage {
 			ServerPlayer sender = ctx.get().getSender();
 			if (sender != null && !sender.isSpectator() && sender.containerMenu instanceof BioForgeMenu menu && menu.containerId == packet.containerId) {
 				RecipeManager recipeManager = sender.level().getRecipeManager();
-				Map<ResourceLocation, BioForgeRecipe> recipes = recipeManager.byType(ModRecipes.BIO_FORGING_RECIPE_TYPE.get());
-				BioForgeRecipe recipe = recipes.get(packet.id);
+				Map<ResourceLocation, BioForgingRecipe> recipes = recipeManager.byType(ModRecipes.BIO_FORGING_RECIPE_TYPE.get());
+				BioForgingRecipe recipe = recipes.get(packet.id);
 				menu.setSelectedRecipe(recipe, sender);
 			}
 		});

@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.crafting.recipe;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.crafting.AnyFoodIngredient;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.google.gson.JsonObject;

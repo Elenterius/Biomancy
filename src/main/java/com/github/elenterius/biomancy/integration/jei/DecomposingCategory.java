@@ -2,9 +2,9 @@ package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
-import com.github.elenterius.biomancy.crafting.recipe.DecomposerRecipe;
-import com.github.elenterius.biomancy.crafting.recipe.ItemCountRange;
-import com.github.elenterius.biomancy.crafting.recipe.VariableProductionOutput;
+import com.github.elenterius.biomancy.crafting.ItemCountRange;
+import com.github.elenterius.biomancy.crafting.VariableOutput;
+import com.github.elenterius.biomancy.crafting.recipe.DecomposingRecipe;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.styles.ColorStyles;
@@ -31,15 +31,15 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import java.util.List;
 
-public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecipe> {
+public class DecomposingCategory implements IRecipeCategory<DecomposingRecipe> {
 
-	public static final RecipeType<DecomposerRecipe> RECIPE_TYPE = new RecipeType<>(ModRecipes.DECOMPOSING_RECIPE_TYPE.getId(), DecomposerRecipe.class);
+	public static final RecipeType<DecomposingRecipe> RECIPE_TYPE = new RecipeType<>(ModRecipes.DECOMPOSING_RECIPE_TYPE.getId(), DecomposingRecipe.class);
 	private final IDrawable background;
 	private final IDrawable icon;
 
 	private final RecipeWrapper inputInventoryWrapper;
 
-	public DecomposerRecipeCategory(IGuiHelper guiHelper) {
+	public DecomposingCategory(IGuiHelper guiHelper) {
 		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.DECOMPOSER.get()));
 		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/decomposer_recipe.png"), 0, 0, 128, 64).setTextureSize(128, 64).build();
 
@@ -47,7 +47,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 	}
 
 	@Override
-	public RecipeType<DecomposerRecipe> getRecipeType() {
+	public RecipeType<DecomposingRecipe> getRecipeType() {
 		return RECIPE_TYPE;
 	}
 
@@ -66,27 +66,27 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		return icon;
 	}
 
-	private void addOutputSlot(IRecipeLayoutBuilder builder, int x, int y, List<VariableProductionOutput> outputs, int index) {
+	private void addOutputSlot(IRecipeLayoutBuilder builder, int x, int y, List<VariableOutput> outputs, int index) {
 		assert index >= 0;
-		assert index < DecomposerRecipe.MAX_OUTPUTS;
+		assert index < DecomposingRecipe.MAX_OUTPUTS;
 
 		IRecipeSlotBuilder slotBuilder = builder.addSlot(RecipeIngredientRole.OUTPUT, x, y);
 		if (index < outputs.size()) {
-			VariableProductionOutput output = outputs.get(index);
+			VariableOutput output = outputs.get(index);
 			ItemStack stack = output.getItemStack();
 			slotBuilder.addItemStack(stack);
 		}
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, DecomposerRecipe recipe, IFocusGroup focuses) {
+	public void setRecipe(IRecipeLayoutBuilder builder, DecomposingRecipe recipe, IFocusGroup focuses) {
 		int x = 51;
 		int y0 = 9;
 		int y1 = 38;
 
 		builder.addSlot(RecipeIngredientRole.INPUT, 5, y0).addItemStacks(recipe.getIngredientQuantity().getItemsWithCount());
 
-		List<VariableProductionOutput> outputs = recipe.getOutputs();
+		List<VariableOutput> outputs = recipe.getOutputs();
 		addOutputSlot(builder, x, y0, outputs, 0);
 		addOutputSlot(builder, x, y1, outputs, 1);
 		addOutputSlot(builder, x + 30, y0, outputs, 2);
@@ -96,7 +96,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 	}
 
 	@Override
-	public void draw(DecomposerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+	public void draw(DecomposingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
 		Font font = Minecraft.getInstance().font;
 
 		IRecipeSlotView slotView = recipeSlotsView.getSlotViews(RecipeIngredientRole.INPUT).get(0);
@@ -112,7 +112,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		guiGraphics.drawString(font, costString, 16, 43 - font.lineHeight, ColorStyles.WHITE_ARGB);
 
 		int x = 68;
-		List<VariableProductionOutput> outputs = recipe.getOutputs();
+		List<VariableOutput> outputs = recipe.getOutputs();
 		drawOutputAmount(font, guiGraphics, x, 26, outputs, 0);
 		drawOutputAmount(font, guiGraphics, x, 55, outputs, 1);
 		drawOutputAmount(font, guiGraphics, x + 30, 26, outputs, 2);
@@ -121,12 +121,12 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		drawOutputAmount(font, guiGraphics, x + 30 * 2, 55, outputs, 5);
 	}
 
-	private void drawOutputAmount(Font font, GuiGraphics guiGraphics, int x, int y, List<VariableProductionOutput> outputs, int index) {
+	private void drawOutputAmount(Font font, GuiGraphics guiGraphics, int x, int y, List<VariableOutput> outputs, int index) {
 		assert index >= 0;
-		assert index < DecomposerRecipe.MAX_OUTPUTS;
+		assert index < DecomposingRecipe.MAX_OUTPUTS;
 
 		if (index < outputs.size()) {
-			VariableProductionOutput output = outputs.get(index);
+			VariableOutput output = outputs.get(index);
 			if (output.getItemStack().isEmpty()) return;
 
 			guiGraphics.pose().pushPose();
