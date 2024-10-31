@@ -52,6 +52,7 @@ public class BiometricMembraneRecipe extends CustomRecipe {
 				if (!inversion.isEmpty()) return false;
 				inversion = stack;
 			}
+			else return false;
 		}
 
 		if (membrane.isEmpty()) return false;
@@ -85,6 +86,7 @@ public class BiometricMembraneRecipe extends CustomRecipe {
 				if (!inversion.isEmpty()) return ItemStack.EMPTY;
 				inversion = stack;
 			}
+			else return ItemStack.EMPTY;
 		}
 
 		return !membrane.isEmpty() ? createItem(membrane, essence, inversion) : ItemStack.EMPTY;
