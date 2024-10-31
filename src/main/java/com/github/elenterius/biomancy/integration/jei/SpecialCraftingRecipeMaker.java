@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
+import com.github.elenterius.biomancy.block.membrane.BiometricMembraneBlock;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.EssenceItem;
@@ -20,10 +21,12 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public final class SpecialCraftingRecipeMaker {
 
@@ -95,4 +98,60 @@ public final class SpecialCraftingRecipeMaker {
 		return stack;
 	}
 
+	public static List<CraftingRecipe> createBiometricMembraneRecipes() {
+		UUID pigUUID = UUID.fromString("420faf42-bf42-4b20-af42-c42420e42d42");
+
+		UUID playerUUID = UUID.fromString("853c80ef-3c37-49fd-aa49-938b674adae6");
+		String playerName = "jeb_";
+
+		Stream<CraftingRecipe[]> recipePairs = Stream.of(
+				createRecipePair(EntityType.PIG, false, null),
+				createRecipePair(EntityType.PIG, true, null),
+				createRecipePair(EntityType.PIG, false, pigUUID),
+				createRecipePair(EntityType.PIG, true, pigUUID),
+				createRecipePair(EntityType.PLAYER, false, null),
+				createRecipePair(EntityType.PLAYER, true, null),
+				createUniquePlayerRecipePair(false, playerUUID, playerName),
+				createUniquePlayerRecipePair(true, playerUUID, playerName)
+		);
+
+		return recipePairs.flatMap(Stream::of).toList();
+	}
+
+	private static CraftingRecipe[] createUniquePlayerRecipePair(boolean isInverted, UUID playerUUID, String playerName) {
+		Ingredient ingredient = Ingredient.of(createUniquePlayerEssence(playerUUID, playerName));
+		return createRecipePair(EntityType.PLAYER, isInverted, playerUUID, 3, ingredient);
+	}
+
+	private static CraftingRecipe[] createRecipePair(EntityType<?> entityType, boolean isInverted, @Nullable UUID entityUUID) {
+		int tier = entityUUID != null ? 3 : 1;
+		Ingredient ingredient = Ingredient.of(EssenceItem.fromEntityType(entityType, tier));
+		return createRecipePair(entityType, isInverted, entityUUID, tier, ingredient);
+	}
+
+	private static CraftingRecipe[] createRecipePair(EntityType<?> entityType, boolean isInverted, @Nullable UUID entityUUID, int tier, Ingredient essence) {
+		List<Ingredient> ingredients = new ArrayList<>();
+		ingredients.add(essence);
+		ingredients.add(Ingredient.of(ModItems.BIOMETRIC_MEMBRANE.get()));
+
+		if (isInverted) {
+			ingredients.add(Ingredient.of(Items.REDSTONE_TORCH));
+		}
+
+		NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, ingredients.toArray(Ingredient[]::new));
+
+		ItemStack membraneStack = BiometricMembraneBlock.createItem(entityType, entityUUID, EssenceItem.getEssenceColors(entityType, entityUUID, tier), isInverted);
+
+		String name = ModItems.BIOMETRIC_MEMBRANE.getId().toLanguageKey();
+		String inverted = isInverted ? "inverted." : "";
+		String unique = entityUUID != null ? "unique." : "";
+
+		ResourceLocation createRecipeId = BiomancyMod.createRL(name + "." + inverted + unique + entityType.getDescriptionId());
+		ResourceLocation resetRecipeId = BiomancyMod.createRL(name + ".reset." + inverted + unique + entityType.getDescriptionId());
+
+		return new CraftingRecipe[]{
+				new ShapelessRecipe(createRecipeId, name, CraftingBookCategory.MISC, membraneStack, inputs),
+				new ShapelessRecipe(resetRecipeId, name, CraftingBookCategory.MISC, new ItemStack(ModItems.BIOMETRIC_MEMBRANE.get()), NonNullList.of(Ingredient.EMPTY, Ingredient.of(membraneStack))),
+		};
+	}
 }
