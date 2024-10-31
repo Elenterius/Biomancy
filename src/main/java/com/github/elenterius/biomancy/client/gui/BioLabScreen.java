@@ -55,6 +55,8 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> implements
 		guiGraphics.blit(BACKGROUND_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		drawProgressBar(guiGraphics, menu.getCraftingProgressNormalized());
 		drawFuelBar(guiGraphics, menu.getFuelAmountNormalized());
+
+		menu.renderFilters(guiGraphics, minecraft, leftPos, topPos);
 		drawLock(guiGraphics, menu.isFilterLocked());
 	}
 
