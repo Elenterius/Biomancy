@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.client.gui.tooltip.ScreenTooltipStyleProvi
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
 import com.github.elenterius.biomancy.menu.DigesterMenu;
+import com.github.elenterius.biomancy.styles.ColorStyles;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -53,6 +54,14 @@ public class DigesterScreen extends AbstractContainerScreen<DigesterMenu> implem
 	private void drawFuelBar(GuiGraphics guiGraphics, float fuelPct) {
 		int vHeight = (int) (fuelPct * 36) + (fuelPct > 0 ? 1 : 0);
 		guiGraphics.blit(BACKGROUND_TEXTURE, leftPos + 44, topPos + 28 + 36 - vHeight, 178, 36 - vHeight, 5, vHeight);
+
+		int cost = menu.getFuelCost();
+		if (cost <= 0) return;
+
+		int x = leftPos + 44;
+		int y = topPos + 28 + 36 - ((int) ((cost / (float) menu.getMaxFuelAmount()) * 36) + 1);
+		guiGraphics.fill(x - 3, y, x + 5 + 3, y + 1, 0xff_ffffff);
+		guiGraphics.drawString(font, "" + cost, x + 5 + 3 + 2, y - font.lineHeight / 2, cost <= menu.getFuelAmount() ? ColorStyles.TEXT_SUCCESS : ColorStyles.TEXT_ERROR);
 	}
 
 	@Override

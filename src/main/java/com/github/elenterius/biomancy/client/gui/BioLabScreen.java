@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.client.gui.tooltip.ScreenTooltipStyleProvi
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
 import com.github.elenterius.biomancy.menu.BioLabMenu;
+import com.github.elenterius.biomancy.styles.ColorStyles;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -68,6 +69,14 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> implements
 	private void drawFuelBar(GuiGraphics guiGraphics, float fuelPct) {
 		int vHeight = (int) (fuelPct * 36) + (fuelPct > 0 ? 1 : 0);
 		guiGraphics.blit(BACKGROUND_TEXTURE, leftPos + 36, topPos + 48 + 36 - vHeight, 178, 58 - vHeight, 5, vHeight);
+
+		int cost = menu.getFuelCost();
+		if (cost <= 0) return;
+
+		int x = leftPos + 36;
+		int y = topPos + 48 + 36 - ((int) ((cost / (float) menu.getMaxFuelAmount()) * 36) + 1);
+		guiGraphics.fill(x - 3, y, x + 5 + 3, y + 1, 0xff_ffffff);
+		guiGraphics.drawString(font, "" + cost, x + 5 + 3 + 2, y - font.lineHeight / 2, cost <= menu.getFuelAmount() ? ColorStyles.TEXT_SUCCESS : ColorStyles.TEXT_ERROR);
 	}
 
 	private void drawLock(GuiGraphics guiGraphics, boolean isLocked) {
