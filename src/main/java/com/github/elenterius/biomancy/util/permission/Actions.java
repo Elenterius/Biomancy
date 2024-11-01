@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.permission;
+package com.github.elenterius.biomancy.util.permission;
 
 public final class Actions {
 

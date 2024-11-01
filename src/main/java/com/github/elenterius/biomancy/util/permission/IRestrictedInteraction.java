@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.permission;
+package com.github.elenterius.biomancy.util.permission;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;

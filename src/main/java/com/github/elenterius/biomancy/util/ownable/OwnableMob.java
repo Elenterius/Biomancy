@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.ownable;
+package com.github.elenterius.biomancy.util.ownable;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;

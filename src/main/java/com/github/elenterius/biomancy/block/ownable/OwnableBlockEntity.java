@@ -2,9 +2,9 @@ package com.github.elenterius.biomancy.block.ownable;
 
 import com.github.elenterius.biomancy.block.base.SimpleSyncedBlockEntity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.ownable.Ownable;
-import com.github.elenterius.biomancy.permission.IRestrictedInteraction;
-import com.github.elenterius.biomancy.permission.UserType;
+import com.github.elenterius.biomancy.util.ownable.Ownable;
+import com.github.elenterius.biomancy.util.permission.IRestrictedInteraction;
+import com.github.elenterius.biomancy.util.permission.UserType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

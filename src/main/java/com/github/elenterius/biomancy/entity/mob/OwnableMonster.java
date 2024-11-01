@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.entity.mob;
 
-import com.github.elenterius.biomancy.ownable.OwnableMob;
+import com.github.elenterius.biomancy.util.ownable.OwnableMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
