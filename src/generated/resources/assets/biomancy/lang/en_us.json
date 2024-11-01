@@ -400,6 +400,8 @@
   "ability.biomancy.fleshkin_affinity.desc": "-5% Primordial Cradle Hostility",
   "ability.biomancy.bio_alchemical_epidermis": "Bio-Alchemical Epidermis",
   "ability.biomancy.bio_alchemical_epidermis.desc": "+15% Resistance to external application of harmful Status-Effects\n -25% Injection Resistance\n -25% Injection Damage",
+  "ability.biomancy.primordial_sight": "Primordial Sight",
+  "ability.biomancy.primordial_sight.desc": "Peer inside the Cradle",
   "tooltip.biomancy.fire_rate": "Fire Rate",
   "tooltip.biomancy.accuracy": "Accuracy",
   "tooltip.biomancy.ammo": "Ammo",
