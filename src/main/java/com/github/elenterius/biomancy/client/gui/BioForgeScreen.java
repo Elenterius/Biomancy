@@ -273,6 +273,15 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 		float fuelPct = menu.getFuelAmountNormalized();
 		int vHeight = (int) (fuelPct * 36) + (fuelPct > 0 ? 1 : 0);
 		blit(guiGraphics, leftPos + 144, topPos + 13 + 36 - vHeight, 353, 9 + 36 - vHeight, 5, vHeight);
+
+		BioForgingRecipe selectedRecipe = recipeBook.getSelectedRecipe();
+		int cost = selectedRecipe != null ? selectedRecipe.getCraftingCostNutrients() : 0;
+		if (cost <= 0) return;
+
+		int x = leftPos + 144;
+		int y = topPos + 13 + 36 - ((int) ((cost / (float) menu.getMaxFuelAmount()) * 36) + 1);
+		guiGraphics.fill(x - 3, y, x + 5 + 3, y + 1, 0xff_ffffff);
+		guiGraphics.drawString(font, "" + cost, x + 5 + 3 + 2, y - font.lineHeight / 2, cost <= menu.getFuelAmount() ? ColorStyles.TEXT_SUCCESS : ColorStyles.TEXT_ERROR);
 	}
 
 	@Override
@@ -307,7 +316,6 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 		}
 		return false;
 	}
-
 
 	private boolean renderFuelTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		if (!GuiUtil.isInRect(leftPos + 144, topPos + 13, 5, 36, mouseX, mouseY)) return false;
