@@ -618,7 +618,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.FULL_FLESH_DOOR, "Wide Flesh Door", "A wide sliding door made of flesh...");
 		addBlock(ModBlocks.FLESH_SPIKE, "Flesh Spike", """
 				A deadly trap fashioned from the amalgamation of reinforced bone and sinew. Approach with caution, for any contact will inflict considerable harm.
-								
+				
 				Multiple spikes can be meticulously placed within a single location, intensifying their lethality.""");
 		addBlock(ModBlocks.FLESH_LADDER, "Flesh Ladder", "Ladder mainly made of bones and a little bit of flesh...");
 		addBlock(ModBlocks.YELLOW_BIO_LANTERN, "Yellow Bio-Lantern", "A bioluminescent light source that is energy-efficient and environmentally friendly.");
@@ -626,7 +626,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.PRIMORDIAL_BIO_LANTERN, "Bloom-Lantern", "A magenta light source made from a bioluminescent berry.");
 		addBlock(ModBlocks.BLOOMLIGHT, "Bloomlight", "A malignant light source. This one is magenta as well!");
 		addBlock(ModBlocks.TENDON_CHAIN, "Tendon Chain", "A chain made of tendons.");
-		addBlock(ModBlocks.VIAL_HOLDER, "Vial Holder", "Display and organize your serums.");
+		addBlock(ModBlocks.VIAL_HOLDER, "Vial Holder", "Display and organize your serums.\nSneak click to bulk insert or extract vials.");
 		addBlock(ModBlocks.IMPERMEABLE_MEMBRANE, "Impermeable Membrane", "Gelatinous-like membrane reinforced with elastic fibers.");
 		addBlock(ModBlocks.IMPERMEABLE_MEMBRANE_PANE, "Impermeable Membrane Pane", "Gelatinous-like membrane reinforced with elastic fibers.");
 		addBlock(ModBlocks.BABY_PERMEABLE_MEMBRANE, "Baby-Permeable Membrane", "Gelatinous-like membrane reinforced with elastic fibers.\n\nBaby mobs can diffuse through the membrane.");
@@ -647,10 +647,10 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 		addBlock(ModBlocks.MODULAR_LARYNX, "Modular Larynx", """
 				Similar to a Jukebox but made of an adaptive larynx. Capable of reproducing the sounds of a mob via the insertion of essence and redstone power.
-						
+				
 				Right-Click with Mob Essence in hand to insert it.
 				Or Shift Right-Click with empty hand to extract Mob Essence.
-						
+				
 				You can also use automation like Hoppers to insert and extract the Mob Essence.
 				""");
 		add(TextComponentUtil.getItemTooltipKey(ModBlocks.MODULAR_LARYNX.get()) + ".1", "When Placed on Soul Sand or Soil:");

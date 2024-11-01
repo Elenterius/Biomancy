@@ -228,7 +228,7 @@
   "block.biomancy.tendon_chain": "Tendon Chain",
   "block.biomancy.tendon_chain.tooltip": "A chain made of tendons.",
   "block.biomancy.vial_holder": "Vial Holder",
-  "block.biomancy.vial_holder.tooltip": "Display and organize your serums.",
+  "block.biomancy.vial_holder.tooltip": "Display and organize your serums.\nSneak click to bulk insert or extract vials.",
   "block.biomancy.impermeable_membrane": "Impermeable Membrane",
   "block.biomancy.impermeable_membrane.tooltip": "Gelatinous-like membrane reinforced with elastic fibers.",
   "block.biomancy.impermeable_membrane_pane": "Impermeable Membrane Pane",
