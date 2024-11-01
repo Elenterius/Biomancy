@@ -9,6 +9,7 @@ import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.MaykerBannerPatternItem;
 import com.github.elenterius.biomancy.item.SerumItem;
+import com.github.elenterius.biomancy.item.armor.AcolyteArmorUpgrades;
 import com.github.elenterius.biomancy.menu.BioForgeTab;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.data.CachedOutput;
@@ -232,6 +233,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addAbility("fleshkin_affinity.desc", "-5% Primordial Cradle Hostility");
 		addAbility("bio_alchemical_epidermis", "Bio-Alchemical Epidermis");
 		addAbility("bio_alchemical_epidermis.desc", "+15% Resistance to external application of harmful Status-Effects\n -25% Injection Resistance\n -25% Injection Damage");
+		addAbility(AcolyteArmorUpgrades.PRIMORDIAL_SIGHT.getId().getPath(), "Primordial Sight");
+		addAbility(AcolyteArmorUpgrades.PRIMORDIAL_SIGHT.getId().getPath() + ".desc", "Peer inside the Cradle");
 
 		addTooltip("fire_rate", "Fire Rate");
 		addTooltip("accuracy", "Accuracy");

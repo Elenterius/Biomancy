@@ -303,6 +303,7 @@ public class VanillaRecipeProvider extends RecipeProvider {
 		special(consumer, ModItems.BIOMETRIC_MEMBRANE.get(), ModRecipes.BIOMETRIC_MEMBRANE_CRAFTING_SERIALIZER.get());
 		special(consumer, Items.PLAYER_HEAD, ModRecipes.PLAYER_HEAD_SERIALIZER.get());
 		special(consumer, ModItems.PRIMORDIAL_CRADLE.get(), ModRecipes.CRADLE_CLEANSING_SERIALIZER.get());
+		special(consumer, ModItems.ACOLYTE_ARMOR_HELMET.get(), ModRecipes.ACOLYTE_HELMET_UPGRADE_SERIALIZER.get());
 	}
 
 	private void membrane(Consumer<FinishedRecipe> consumer, SimpleBlockItem pane, SimpleBlockItem membrane) {

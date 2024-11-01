@@ -55,7 +55,7 @@ public final class AcolyteArmorItem extends LivingArmorGeoItem implements ShowKn
 
 	@Override
 	public boolean canShowKnowledgeOverlay(ItemStack stack, Player player) {
-		return type == Type.HELMET && hasNutrients(stack);
+		return AcolyteArmorUpgrades.hasUpgrade(stack, AcolyteArmorUpgrades.PRIMORDIAL_SIGHT) && hasNutrients(stack);
 	}
 
 	@Override
@@ -80,13 +80,16 @@ public final class AcolyteArmorItem extends LivingArmorGeoItem implements ShowKn
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ComponentUtil.emptyLine());
+		AcolyteArmorUpgrades.appendHoverText(stack, tooltip);
 
+		tooltip.add(ComponentUtil.emptyLine());
 		tooltip.add(TextComponentUtil.getAbilityText("fleshkin_affinity").withStyle(ChatFormatting.GRAY));
 		tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getAbilityText("fleshkin_affinity.desc")).withStyle(ChatFormatting.DARK_GRAY));
+
 		tooltip.add(ComponentUtil.emptyLine());
 		tooltip.add(TextComponentUtil.getAbilityText("bio_alchemical_epidermis").withStyle(ChatFormatting.GRAY));
 		tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getAbilityText("bio_alchemical_epidermis.desc")).withStyle(ChatFormatting.DARK_GRAY));
+
 		tooltip.add(ComponentUtil.emptyLine());
 
 		CompoundTag compoundTag = stack.getOrCreateTag().getCompound("damage_resistance_tracker");

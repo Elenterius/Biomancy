@@ -65,6 +65,7 @@ public class BiomancyJeiPlugin implements IModPlugin {
 		registration.addRecipes(RecipeTypes.CRAFTING, SpecialCraftingRecipeMaker.createBiometricMembraneRecipes());
 		registration.addRecipes(RecipeTypes.CRAFTING, SpecialCraftingRecipeMaker.createCradleCleansingRecipes());
 		registration.addRecipes(RecipeTypes.CRAFTING, SpecialCraftingRecipeMaker.createPlayerHeadRecipes());
+		registration.addRecipes(RecipeTypes.CRAFTING, SpecialCraftingRecipeMaker.createAcolyteHelmetUpgradeRecipes());
 	}
 
 	@Override
