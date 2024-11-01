@@ -1,3 +1,32 @@
+## [8.18.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.17.0...1.20.1-v2.8.18.0) (2024-11-01)
+
+
+### Features
+
+* add acolyte helmet upgrade for viewing cradle information ([f9ec5b8](https://github.com/Elenterius/Biomancy/commit/f9ec5b87776d38611145b1fd2c011f671e4e0842))
+* add EssenceIngredient to fix rendering issues with Essence in the Bio-Forge ([d314c4f](https://github.com/Elenterius/Biomancy/commit/d314c4f42ec82be7d81dbf45ac6bf2876bbc3009))
+* add fluid api for cradle tributes ([c36ddeb](https://github.com/Elenterius/Biomancy/commit/c36ddebb03941d15e09a65e2e5d373f11d106c71))
+* add ghost item rendering for lockable bio-lab slots ([7152061](https://github.com/Elenterius/Biomancy/commit/7152061a5a63fc49e60e7120262831e3a150f09d))
+* add JEI crafting examples for player specific Biometric Membrane ([06955c0](https://github.com/Elenterius/Biomancy/commit/06955c06235a3b25a441a702f4f4cb1c814b90a5))
+* deobfuscate cradle text overlay ([64bdd3f](https://github.com/Elenterius/Biomancy/commit/64bdd3f217fab6ca996eae598ee7062d3678fe06))
+* display nutrients cost in machine GUIs ([e06ee55](https://github.com/Elenterius/Biomancy/commit/e06ee55a55937718246f1edcf40429bebc6f6d18))
+* improve handling of potion sacrifices, calculate the value based on the potion duration and level instead of using predefined values. ([0469953](https://github.com/Elenterius/Biomancy/commit/0469953514bd43e7b5b3ee9d5cb586a9628eb1c3))
+* make it possible to sneak click Vial Holders to bulk insert or extract vials ([51719b4](https://github.com/Elenterius/Biomancy/commit/51719b4c382cd03889711e3489051b7efb03eb74))
+* make milk bucket and honey bottle valid cradle tributes ([354d3df](https://github.com/Elenterius/Biomancy/commit/354d3dfdb38f077609cdd2f19d408ee7cf8013be))
+* **nerf:** only show cradle info overlay when the acolyte helmet has nutrients ([da6bcbe](https://github.com/Elenterius/Biomancy/commit/da6bcbed5bc8fcde10ebaeccdc1e567964f44bbf))
+* **nerf:** re-balance bulk acid digesting by making it slower and reducing the output amount by the crafting cost amount ([a74e8ad](https://github.com/Elenterius/Biomancy/commit/a74e8ad57624d14f1d2fabb3e43c34e3985ddb18))
+* re-balance some digesting recipes and nerf warped wart block recipe ([bf819cd](https://github.com/Elenterius/Biomancy/commit/bf819cd1266a490ed68fcc938475d3c6297f8949))
+* reorganize recipe ids ([7077e18](https://github.com/Elenterius/Biomancy/commit/7077e1893eb88959483bed58ec2b17beb27c6a58))
+* tweak raw meats tag ([b77abd1](https://github.com/Elenterius/Biomancy/commit/b77abd122a898e11b424e126e3f65a48a79bc44a))
+* update Alex's Caves compatibility and make all candy biome blocks replaceable by flesh growth ([f6e4919](https://github.com/Elenterius/Biomancy/commit/f6e4919b806b8347251604cddc0f4f8b5d064635))
+* update Biometric Membrane tooltip ([690ee27](https://github.com/Elenterius/Biomancy/commit/690ee27e207901d3e88848cf4318c7ded610d7a4))
+
+
+### Bug Fixes
+
+* fix biometric membrane recipe allowing invalid items to be consumed ([7428e4e](https://github.com/Elenterius/Biomancy/commit/7428e4e92fb28dbe07269de2799f77e05cb357de))
+* fix trading advancement ([ae2f0e6](https://github.com/Elenterius/Biomancy/commit/ae2f0e64ed54709b3de3c4a3333be7210a4f3f9e))
+
 ## [8.17.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.16.0...1.20.1-v2.8.17.0) (2024-10-17)
 
 
@@ -65,11 +94,4 @@
 * tweak recipes for create and migrate them into the biomancy namespace ([9a8361d](https://github.com/Elenterius/Biomancy/commit/9a8361d73f73bcefad97f043f57b0a652839aed2))
 * update raw_meats item tag with missing items from alex's mobs and caves ([f5aca11](https://github.com/Elenterius/Biomancy/commit/f5aca11f226b29a21ac5bab78e38a63a2d712f52))
 * update Russian (ru_ru) translation by Quarkrus ([bf0338b](https://github.com/Elenterius/Biomancy/commit/bf0338b0a97ca89a4c84b5e891e54dbf8679b508))
-
-### [8.13.1](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.13.0...1.20.1-v2.8.13.1) (2024-09-15)
-
-
-### Bug Fixes
-
-* fix server crash related to the primordial infestation effect ([3dcdc0a](https://github.com/Elenterius/Biomancy/commit/3dcdc0a10d3e14712bf577dbf2c5a5c6c0cbd6e5))
 
