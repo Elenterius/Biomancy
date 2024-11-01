@@ -117,7 +117,9 @@ public class ModDespoilLoot extends DespoilLootProvider {
 
 			ACEntityRegistry.TELETOR.get(), ACEntityRegistry.MAGNETRON.get(), ACEntityRegistry.BOUNDROID.get(), ACEntityRegistry.NOTOR.get(), ACEntityRegistry.FERROUSLIME.get(),
 			ACEntityRegistry.RAYCAT.get(), ACEntityRegistry.NUCLEEPER.get(),
-			ACEntityRegistry.MINE_GUARDIAN.get()
+			ACEntityRegistry.MINE_GUARDIAN.get(),
+			ACEntityRegistry.CANIAC.get(), ACEntityRegistry.CANDICORN.get(), ACEntityRegistry.CARAMEL_CUBE.get(), ACEntityRegistry.GINGERBREAD_MAN.get(),
+			ACEntityRegistry.SWEETISH_FISH.get(), ACEntityRegistry.GUMMY_BEAR.get(), ACEntityRegistry.GUMBEEPER.get(), ACEntityRegistry.GUM_WORM.get()
 	);
 
 	@Override

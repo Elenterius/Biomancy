@@ -2,7 +2,10 @@
   "values": [
     "minecraft:clay",
     "#minecraft:sand",
-    "#forge:gravel",
+    {
+      "id": "#forge:gravel",
+      "required": false
+    },
     "minecraft:ice",
     "minecraft:frosted_ice",
     "#minecraft:snow",
@@ -18,6 +21,242 @@
     "minecraft:brown_mushroom_block",
     "minecraft:red_mushroom_block",
     "minecraft:mushroom_stem",
-    "#minecraft:flowers"
+    "#minecraft:flowers",
+    {
+      "id": "alexscaves:block_of_chocolate",
+      "required": false
+    },
+    {
+      "id": "alexscaves:block_of_frosted_chocolate",
+      "required": false
+    },
+    {
+      "id": "alexscaves:block_of_chiseled_chocolate",
+      "required": false
+    },
+    {
+      "id": "alexscaves:block_of_polished_chocolate",
+      "required": false
+    },
+    {
+      "id": "alexscaves:chocolate_ice_cream",
+      "required": false
+    },
+    {
+      "id": "alexscaves:sweetberry_ice_cream",
+      "required": false
+    },
+    {
+      "id": "alexscaves:vanilla_ice_cream",
+      "required": false
+    },
+    {
+      "id": "alexscaves:block_of_frosting",
+      "required": false
+    },
+    {
+      "id": "alexscaves:block_of_chocolate_frosting",
+      "required": false
+    },
+    {
+      "id": "alexscaves:block_of_vanilla_frosting",
+      "required": false
+    },
+    {
+      "id": "alexscaves:sweet_puff",
+      "required": false
+    },
+    {
+      "id": "alexscaves:cake_layer",
+      "required": false
+    },
+    {
+      "id": "alexscaves:dough_block",
+      "required": false
+    },
+    {
+      "id": "alexscaves:cookie_block",
+      "required": false
+    },
+    {
+      "id": "alexscaves:wafer_cookie_block",
+      "required": false
+    },
+    {
+      "id": "alexscaves:wafer_cookie_slab",
+      "required": false
+    },
+    {
+      "id": "alexscaves:wafer_cookie_stairs",
+      "required": false
+    },
+    {
+      "id": "alexscaves:wafer_cookie_wall",
+      "required": false
+    },
+    {
+      "id": "alexscaves:candy_cane",
+      "required": false
+    },
+    {
+      "id": "alexscaves:candy_cane_block",
+      "required": false
+    },
+    {
+      "id": "alexscaves:chiseled_candy_cane_block",
+      "required": false
+    },
+    {
+      "id": "alexscaves:stripped_candy_cane_block",
+      "required": false
+    },
+    {
+      "id": "alexscaves:candy_cane_pole",
+      "required": false
+    },
+    {
+      "id": "alexscaves:stripped_candy_cane_pole",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gummy_ring_blue",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gummy_ring_green",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gummy_ring_pink",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gummy_ring_red",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gummy_ring_yellow",
+      "required": false
+    },
+    {
+      "id": "alexscaves:sundrop",
+      "required": false
+    },
+    {
+      "id": "alexscaves:sugar_glass",
+      "required": false
+    },
+    {
+      "id": "alexscaves:sprinkles",
+      "required": false
+    },
+    {
+      "id": "alexscaves:lollipop_bunch",
+      "required": false
+    },
+    {
+      "id": "alexscaves:frostmint",
+      "required": false
+    },
+    {
+      "id": "alexscaves:small_peppermint",
+      "required": false
+    },
+    {
+      "id": "alexscaves:large_peppermint",
+      "required": false
+    },
+    {
+      "id": "alexscaves:licoroot",
+      "required": false
+    },
+    {
+      "id": "alexscaves:licoroot_vine",
+      "required": false
+    },
+    {
+      "id": "alexscaves:licoroot_sprout",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gingerbread_block",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gingerbread_stairs",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gingerbread_slab",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gingerbread_wall",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gingerbread_door",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gingerbarrel",
+      "required": false
+    },
+    {
+      "id": "alexscaves:frosted_gingerbread_block",
+      "required": false
+    },
+    {
+      "id": "alexscaves:frosted_gingerbread_stairs",
+      "required": false
+    },
+    {
+      "id": "alexscaves:frosted_gingerbread_slab",
+      "required": false
+    },
+    {
+      "id": "alexscaves:frosted_gingerbread_wall",
+      "required": false
+    },
+    {
+      "id": "alexscaves:frosted_gingerbread_door",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gingerbread_bricks",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gingerbread_brick_stairs",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gingerbread_brick_slab",
+      "required": false
+    },
+    {
+      "id": "alexscaves:gingerbread_brick_wall",
+      "required": false
+    },
+    {
+      "id": "alexscaves:frosted_gingerbread_bricks",
+      "required": false
+    },
+    {
+      "id": "alexscaves:frosted_gingerbread_brick_stairs",
+      "required": false
+    },
+    {
+      "id": "alexscaves:frosted_gingerbread_brick_slab",
+      "required": false
+    },
+    {
+      "id": "alexscaves:frosted_gingerbread_brick_wall",
+      "required": false
+    },
+    {
+      "id": "#alexscaves:rock_candies",
+      "required": false
+    }
   ]
 }
