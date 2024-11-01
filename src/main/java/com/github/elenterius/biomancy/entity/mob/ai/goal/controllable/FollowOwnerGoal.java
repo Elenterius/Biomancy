@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.entity.mob.ai.goal.controllable;
 
 import com.github.elenterius.biomancy.entity.mob.ControllableMob;
-import com.github.elenterius.biomancy.ownable.OwnableMob;
+import com.github.elenterius.biomancy.util.ownable.OwnableMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;

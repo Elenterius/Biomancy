@@ -2,10 +2,10 @@ package com.github.elenterius.biomancy.block.ownable;
 
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.item.EssenceItem;
-import com.github.elenterius.biomancy.ownable.Ownable;
-import com.github.elenterius.biomancy.ownable.OwnableEntityBlock;
-import com.github.elenterius.biomancy.permission.Actions;
-import com.github.elenterius.biomancy.permission.IRestrictedInteraction;
+import com.github.elenterius.biomancy.util.ownable.Ownable;
+import com.github.elenterius.biomancy.util.ownable.OwnableEntityBlock;
+import com.github.elenterius.biomancy.util.permission.Actions;
+import com.github.elenterius.biomancy.util.permission.IRestrictedInteraction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;

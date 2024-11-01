@@ -2,9 +2,9 @@ package com.github.elenterius.biomancy.entity.mob;
 
 import com.github.elenterius.biomancy.entity.mob.ai.goal.controllable.FollowOwnerGoal;
 import com.github.elenterius.biomancy.entity.mob.ai.goal.controllable.*;
-import com.github.elenterius.biomancy.ownable.OwnableMob;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ComponentUtil;
+import com.github.elenterius.biomancy.util.ownable.OwnableMob;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
