@@ -98,9 +98,33 @@ public class VialHolderBlockEntity extends SimpleSyncedBlockEntity {
 		}
 	}
 
+	public void extractAllVials(Player player) {
+		for (int slot = 0; slot < inventory.getSlots(); slot++) {
+			ItemStack stack = inventory.extractItem(slot, inventory.getSlotLimit(slot), false);
+			if (!stack.isEmpty() && !player.addItem(stack)) {
+				player.drop(stack, false);
+			}
+		}
+	}
+
 	public ItemStack insertVial(ItemStack stack, int slot) {
 		if (slot < 0 || slot >= inventory.getSlots()) return stack;
 		return inventory.insertItem(slot, stack, false);
+	}
+
+	public ItemStack insertAllVials(ItemStack stack) {
+		for (int slot = 0; slot < inventory.getSlots(); slot++) {
+			if (stack.isEmpty()) return stack;
+			stack = inventory.insertItem(slot, stack, false);
+		}
+		return stack;
+	}
+
+	public boolean hasVials() {
+		for (int slot = 0; slot < inventory.getSlots(); slot++) {
+			if (inventory.getStackInSlot(slot).getItem() instanceof SerumContainer) return true;
+		}
+		return false;
 	}
 
 	public boolean hasVial(int slot) {

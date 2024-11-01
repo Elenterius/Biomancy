@@ -121,6 +121,22 @@ public class VialHolderBlock extends BaseEntityBlock {
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 
 		if (level.getBlockEntity(pos) instanceof VialHolderBlockEntity vialHolder) {
+			ItemStack stackInHand = player.getItemInHand(hand);
+			boolean isHandEmpty = stackInHand.isEmpty();
+
+			if (player.isSecondaryUseActive()) {
+				if (!level.isClientSide) {
+					if (isHandEmpty) {
+						vialHolder.extractAllVials(player);
+					}
+					else {
+						ItemStack remainder = vialHolder.insertAllVials(stackInHand);
+						player.setItemInHand(hand, remainder);
+					}
+				}
+				return InteractionResult.sidedSuccess(level.isClientSide);
+			}
+
 			Direction facing = getFacing(state);
 			Vec3 hitLocation = hit.getLocation();
 
@@ -147,14 +163,11 @@ public class VialHolderBlock extends BaseEntityBlock {
 			if (!vialHolder.isValidSlotIndex(index)) return InteractionResult.FAIL;
 
 			boolean isVialSlotEmpty = !vialHolder.hasVial(index);
-			ItemStack stackInHand = player.getItemInHand(hand);
-			boolean isHandEmpty = stackInHand.isEmpty();
 
 			if (isHandEmpty) {
 				if (isVialSlotEmpty) return InteractionResult.FAIL;
 
 				if (!level.isClientSide) vialHolder.extractVial(player, index);
-
 			}
 			else {
 				if (!isVialSlotEmpty) return InteractionResult.FAIL;
