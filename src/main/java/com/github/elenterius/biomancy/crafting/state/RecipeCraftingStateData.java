@@ -35,6 +35,9 @@ public abstract class RecipeCraftingStateData<T extends ProcessingRecipe> implem
 
 	public void setCraftingState(CraftingState craftingState) {
 		this.craftingState = craftingState;
+		if (craftingState == CraftingState.NONE) {
+			clear();
+		}
 	}
 
 	public boolean isCraftingCanceled() {
@@ -68,11 +71,13 @@ public abstract class RecipeCraftingStateData<T extends ProcessingRecipe> implem
 		recipeId = recipe.getId();
 		timeForCompletion = recipe.getCraftingTimeTicks(inputInventory);
 		nutrientsCost = recipe.getCraftingCostNutrients(inputInventory);
+		timeElapsed = 0;
 	}
 
 	public abstract int getFuelCost();
 
 	public void clear() {
+		craftingState = CraftingState.NONE;
 		recipeId = null;
 		timeElapsed = 0;
 		timeForCompletion = 0;

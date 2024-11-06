@@ -108,29 +108,29 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe, S extends R
 		boolean emitRedstoneSignal = false;
 		if (craftingGoal == null) {
 			state.cancelCrafting();
-		} else {
+		}
+		else {
 			ItemStack itemToCraft = getItemToCraft(level, craftingGoal);
 			if (itemToCraft.isEmpty()) {
 				state.cancelCrafting();
-			} else {
+			}
+			else {
 				if (doesRecipeResultFitIntoOutputInv(craftingGoal, itemToCraft)) {
 					if (state.getCraftingState() == CraftingState.NONE) { // nothing is being crafted, try to start crafting
-						if (hasEnoughFuel(craftingGoal)) { //make sure there is enough fuel to craft the recipe
+						state.setCraftingGoalRecipe(craftingGoal, getInputInventory().getRecipeWrapper());
+						if (hasEnoughFuel(craftingGoal)) {
 							state.setCraftingState(CraftingState.IN_PROGRESS);
-							state.clear(); //safeguard, shouldn't be needed
-							state.setCraftingGoalRecipe(craftingGoal, getInputInventory().getRecipeWrapper()); // this also sets the time required for crafting
 						}
-					} else if (!state.isCraftingCanceled()) { // something is being crafted, check that the crafting goals match
+					}
+					else if (!state.isCraftingCanceled()) { // something is being crafted, check that the crafting goals match
 						R prevCraftingGoal = state.getCraftingGoalRecipe(level).orElse(null);
 						if (prevCraftingGoal == null || !craftingGoal.isRecipeEqual(prevCraftingGoal)) {
 							state.cancelCrafting();
 						}
 					}
 				}
-				else {
-					if (state.getCraftingState() != CraftingState.COMPLETED) {
-						state.cancelCrafting();
-					}
+				else if (state.getCraftingState() != CraftingState.COMPLETED) {
+					state.cancelCrafting();
 				}
 			}
 
@@ -158,13 +158,8 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe, S extends R
 		//clean-up states
 		if (state.isCraftingCanceled()) {
 			state.setCraftingState(CraftingState.NONE);
-			state.clear();
-		}
-		else if (state.getCraftingState() == CraftingState.NONE) {
-			state.clear();
 		}
 
-		//update BlockState to reflect tile state
 		updateBlockState(level, state, emitRedstoneSignal);
 	}
 
