@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.api.tribute.fluid;
 
-import com.github.elenterius.biomancy.api.tribute.MilliTribute;
 import com.github.elenterius.biomancy.api.tribute.Tributes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -21,7 +20,7 @@ public final class FluidTributes {
 
 	private static final Map<ResourceLocation, FluidToTributeConversion> FLUIDS = new HashMap<>();
 
-	private static final MilliTribute MILK_MILLI_TRIBUTE = MilliTribute.convertToMilliUnit(Tributes.getTribute(Items.MILK_BUCKET.getDefaultInstance()), 1000);
+	private static final FluidTribute MILK_MILLI_TRIBUTE = FluidTribute.of(Tributes.getTribute(Items.MILK_BUCKET.getDefaultInstance()), 1000);
 
 	static {
 		register(ForgeMod.MILK.get(), resource -> MILK_MILLI_TRIBUTE);

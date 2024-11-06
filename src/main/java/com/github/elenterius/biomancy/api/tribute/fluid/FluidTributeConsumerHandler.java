@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.api.tribute.fluid;
 
-import com.github.elenterius.biomancy.api.tribute.MilliTribute;
 import com.github.elenterius.biomancy.api.tribute.SacrificeHandler;
 import com.github.elenterius.biomancy.inventory.Notify;
 import net.minecraft.nbt.CompoundTag;
@@ -10,6 +9,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class FluidTributeConsumerHandler implements IFluidHandler, INBTSerializable<CompoundTag> {
+
+	public static final String MILLI_TRIBUTE_BUFFER_KEY = "MilliTributeBuffer";
 
 	private final SacrificeHandler sacrificeHandler;
 	private final Notify onChange;
@@ -33,24 +34,24 @@ public class FluidTributeConsumerHandler implements IFluidHandler, INBTSerializa
 		FluidToTributeConversion conversion = FluidTributes.getConversion(resource);
 		if (conversion == null) return 0;
 
-		MilliTribute milliTribute = conversion.getTributePerUnit(resource);
-		if (milliTribute.isEmpty()) return 0;
-		if (milliTribute.biomass() > 0 && sacrificeHandler.isBiomassFull()) return 0;
+		FluidTribute fluidTribute = conversion.getTributePerUnit(resource);
+		if (fluidTribute.isEmpty()) return 0;
+		if (fluidTribute.biomass() > 0 && sacrificeHandler.isBiomassFull()) return 0;
 
 		long amountToConsume = resource.getAmount();
 
-		int biomassYield = (int) ((milliTributeBuffer[0] + milliTribute.biomass() * amountToConsume) / MilliTribute.UNIT_SCALE);
+		int biomassYield = (int) ((milliTributeBuffer[0] + fluidTribute.biomass() * amountToConsume) / FluidTribute.UNIT_SCALE);
 		int biomassToFill = Math.min(sacrificeHandler.getMaxBiomass() - sacrificeHandler.getBiomassAmount(), biomassYield);
 
 		if (biomassToFill > 0) {
-			long biomassMissing = biomassToFill * MilliTribute.UNIT_SCALE - milliTributeBuffer[0];
-			amountToConsume = Mth.ceil((float) biomassMissing / milliTribute.biomass());
+			long biomassMissing = biomassToFill * FluidTribute.UNIT_SCALE - milliTributeBuffer[0];
+			amountToConsume = Mth.ceil((float) biomassMissing / fluidTribute.biomass());
 
 			if (action.simulate()) return (int) amountToConsume;
 
 			sacrificeHandler.addBiomass(biomassToFill);
 
-			long remainder = (milliTribute.biomass() * amountToConsume - biomassMissing);
+			long remainder = (fluidTribute.biomass() * amountToConsume - biomassMissing);
 			milliTributeBuffer[0] = remainder;
 		}
 
@@ -58,30 +59,30 @@ public class FluidTributeConsumerHandler implements IFluidHandler, INBTSerializa
 
 		int yield;
 
-		milliTributeBuffer[1] += milliTribute.lifeEnergy() * amountToConsume;
-		yield = (int) (milliTributeBuffer[1] / MilliTribute.UNIT_SCALE);
+		milliTributeBuffer[1] += fluidTribute.lifeEnergy() * amountToConsume;
+		yield = (int) (milliTributeBuffer[1] / FluidTribute.UNIT_SCALE);
 		sacrificeHandler.addLifeEnergy(yield);
-		milliTributeBuffer[1] -= yield * MilliTribute.UNIT_SCALE;
+		milliTributeBuffer[1] -= yield * FluidTribute.UNIT_SCALE;
 
-		milliTributeBuffer[2] += milliTribute.successModifier() * amountToConsume;
-		yield = (int) (milliTributeBuffer[2] / MilliTribute.UNIT_SCALE);
+		milliTributeBuffer[2] += fluidTribute.successModifier() * amountToConsume;
+		yield = (int) (milliTributeBuffer[2] / FluidTribute.UNIT_SCALE);
 		sacrificeHandler.addSuccess(yield);
-		milliTributeBuffer[2] -= yield * MilliTribute.UNIT_SCALE;
+		milliTributeBuffer[2] -= yield * FluidTribute.UNIT_SCALE;
 
-		milliTributeBuffer[3] += milliTribute.hostileModifier() * amountToConsume;
-		yield = (int) (milliTributeBuffer[3] / MilliTribute.UNIT_SCALE);
+		milliTributeBuffer[3] += fluidTribute.hostileModifier() * amountToConsume;
+		yield = (int) (milliTributeBuffer[3] / FluidTribute.UNIT_SCALE);
 		sacrificeHandler.addHostile(yield);
-		milliTributeBuffer[3] -= yield * MilliTribute.UNIT_SCALE;
+		milliTributeBuffer[3] -= yield * FluidTribute.UNIT_SCALE;
 
-		milliTributeBuffer[4] += milliTribute.diseaseModifier() * amountToConsume;
-		yield = (int) (milliTributeBuffer[4] / MilliTribute.UNIT_SCALE);
+		milliTributeBuffer[4] += fluidTribute.diseaseModifier() * amountToConsume;
+		yield = (int) (milliTributeBuffer[4] / FluidTribute.UNIT_SCALE);
 		sacrificeHandler.addDisease(yield);
-		milliTributeBuffer[4] -= yield * MilliTribute.UNIT_SCALE;
+		milliTributeBuffer[4] -= yield * FluidTribute.UNIT_SCALE;
 
-		milliTributeBuffer[5] += milliTribute.anomalyModifier() * amountToConsume;
-		yield = (int) (milliTributeBuffer[5] / MilliTribute.UNIT_SCALE);
+		milliTributeBuffer[5] += fluidTribute.anomalyModifier() * amountToConsume;
+		yield = (int) (milliTributeBuffer[5] / FluidTribute.UNIT_SCALE);
 		sacrificeHandler.addAnomaly(yield);
-		milliTributeBuffer[5] -= yield * MilliTribute.UNIT_SCALE;
+		milliTributeBuffer[5] -= yield * FluidTribute.UNIT_SCALE;
 
 		if (sacrificeHandler.isDirty()) {
 			onChange.invoke();
@@ -119,13 +120,13 @@ public class FluidTributeConsumerHandler implements IFluidHandler, INBTSerializa
 	@Override
 	public CompoundTag serializeNBT() {
 		CompoundTag tag = new CompoundTag();
-		tag.putLongArray("MilliTributeBuffer", milliTributeBuffer);
+		tag.putLongArray(MILLI_TRIBUTE_BUFFER_KEY, milliTributeBuffer);
 		return tag;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundTag tag) {
-		long[] buffer = tag.getLongArray("MilliTributeBuffer");
+		long[] buffer = tag.getLongArray(MILLI_TRIBUTE_BUFFER_KEY);
 		System.arraycopy(buffer, 0, milliTributeBuffer, 0, milliTributeBuffer.length);
 	}
 
