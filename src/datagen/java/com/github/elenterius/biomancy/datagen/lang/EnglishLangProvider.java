@@ -485,7 +485,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.LIVING_FLESH, "Living Flesh", "It's alive!\nUnfortunately, it looks too dumb to be the brain of a mob. You should turn it into a construct instead.");
 		addItem(ModItems.PRIMORDIAL_CORE, "Primordial Core", "A ominous artifact made of flesh. Looking at it makes you feel uneasy...");
 		addItem(ModItems.GUIDE_BOOK, "[WIP] Primordial Index", "[WIP] Ask questions?");
-		addItem(ModItems.CREATOR_MIX, "Exotic Flesh Mix", "A meal made for the cradle... not for you.");
+		addItem(ModItems.CREATOR_MIX, "Exotic Flesh Mix", "A carefully constructed tribute for the cradle... This exquisite meal contains raw meat infused with life energy.");
 		addItem(ModItems.INJECTOR, "Bio-Injector", """
 				A simple device which utilizes a razor sharp needle to quickly and forcefully inject Serums into Mobs and Players.
 								
