@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.block.biolab;
 
 import com.github.elenterius.biomancy.api.nutrients.FuelHandler;
 import com.github.elenterius.biomancy.api.nutrients.FuelHandlerImpl;
+import com.github.elenterius.biomancy.api.nutrients.Nutrients;
 import com.github.elenterius.biomancy.block.base.MachineBlock;
 import com.github.elenterius.biomancy.block.base.MachineBlockEntity;
 import com.github.elenterius.biomancy.client.util.ClientLoopingSoundHelper;
@@ -99,8 +100,13 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioBrewingRecipe, BioL
 	private LazyOptional<IItemHandler> createCombinedInventory() {
 		return LazyOptional.of(() -> new CombinedInvWrapper(
 				fuelInventory,
-				new RangedWrapper(inputInventory, inputInventory.getSlots() - 1, inputInventory.getSlots())
-		));
+				new RangedWrapper(inputInventory, inputInventory.getSlots() - 1, inputInventory.getSlots())) {
+					@Override
+					public boolean isItemValid(int slot, ItemStack stack) {
+						return !Nutrients.FUEL_PREDICATE.test(stack) && super.isItemValid(slot, stack);
+					}
+				}
+		);
 	}
 
 	@Override
