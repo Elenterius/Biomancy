@@ -10,11 +10,10 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.Experimental
 public class FluidFuelConsumerHandler implements IFluidHandler, INBTSerializable<CompoundTag> {
 
-	public static final String FRACTIONAL_FUEL_BUFFER_KEY = "FractionalFuelBuffer";
-	private static final long SCALE_FACTOR = 1_000_000;
+	public static final String MILLI_FUEL_BUFFER_KEY = "MilliFuelBuffer";
 
 	private final FuelHandler fuelHandler;
-	private long fractionalFuelBuffer;
+	private long milliFuelBuffer;
 
 	public FluidFuelConsumerHandler(FuelHandler fuelHandler) {
 		this.fuelHandler = fuelHandler;
@@ -30,41 +29,34 @@ public class FluidFuelConsumerHandler implements IFluidHandler, INBTSerializable
 		if (resource.isEmpty()) return 0;
 		if (fuelHandler.getFuelAmount() >= fuelHandler.getMaxFuelAmount()) return 0;
 
-		FluidToFuelConversion fuelConversion = FluidNutrients.getConversion(resource);
-		if (fuelConversion == null) return 0;
+		FluidToFuelConversion conversion = FluidNutrients.getConversion(resource);
+		if (conversion == null) return 0;
 
-		int fuelMultiplier = fuelConversion.getFuelMultiplier(resource);
-		int fluidToFuelRatio = fuelConversion.getFluidToFuelRatio(resource);
-		if (fuelMultiplier <= 0 || fluidToFuelRatio <= 0) return 0;
+		int milliFuel = conversion.getMilliFuelPerUnit(resource);
+		if (milliFuel <= 0) return 0;
 
-		int fuelYield = (resource.getAmount() / fluidToFuelRatio) * fuelMultiplier;
-		if (fuelYield <= 0) {
-			if (action.simulate()) return resource.getAmount();
+		long amountToConsume = resource.getAmount(); //8 of 120 --> 120/8 = 15
+		int fuelYield = (int) ((milliFuelBuffer + milliFuel * amountToConsume) / FluidToFuelConversion.MILLI_FUEL_SCALE); //1600 -> 1,6
 
-			fractionalFuelBuffer += (resource.getAmount() * SCALE_FACTOR / fluidToFuelRatio) * fuelMultiplier;
-			fuelYield = (int) (fractionalFuelBuffer / SCALE_FACTOR);
-			if (fuelYield <= 0) return resource.getAmount();
+		if (fuelYield > 0) {
+			int fuelToFill = Math.min(fuelHandler.getMaxFuelAmount() - fuelHandler.getFuelAmount(), fuelYield); //1
+			long fuelMissing = (long) fuelToFill * FluidToFuelConversion.MILLI_FUEL_SCALE - milliFuelBuffer; //1000 - 800 = 200
 
-			int fuelFilled = Math.min(fuelHandler.getMaxFuelAmount() - fuelHandler.getFuelAmount(), fuelYield);
-			fuelHandler.addFuelAmount(fuelFilled);
-			fractionalFuelBuffer -= fuelFilled * SCALE_FACTOR;
+			amountToConsume = (int) (fuelMissing / milliFuel); // 200/100 = 2
 
-			return resource.getAmount();
+			if (action.simulate()) return (int) amountToConsume;
+
+			fuelHandler.addFuelAmount(fuelToFill);
+
+			long remainder = (milliFuel * amountToConsume - fuelMissing); // 100 * 2 - 200
+			milliFuelBuffer = remainder;
 		}
 		else {
-			int fuelToFill = Math.min(fuelHandler.getMaxFuelAmount() - fuelHandler.getFuelAmount(), fuelYield);
-
-			// calculate how much fluid this fuel corresponds to, based on the ratio
-			int fluidFilled = (fuelToFill * fluidToFuelRatio) / fuelMultiplier; //make sure we only take as much fluid actually "fits inside"
-
-			if (fluidFilled <= 0) return 0;
-			if (action.simulate()) return fluidFilled;
-
-			int fuelFilled = (fluidFilled / fluidToFuelRatio) * fuelMultiplier;
-			fuelHandler.addFuelAmount(fuelFilled);
-
-			return fluidFilled;
+			if (action.simulate()) return (int) amountToConsume;
+			milliFuelBuffer += milliFuel * amountToConsume;
 		}
+
+		return (int) amountToConsume;
 	}
 
 	@Override
@@ -85,7 +77,6 @@ public class FluidFuelConsumerHandler implements IFluidHandler, INBTSerializable
 	@Override
 	public int getTankCapacity(int tank) {
 		return fuelHandler.getMaxFuelAmount(); //misleading value as it does not represent the fluid volume but the amount of fuel stored in the machine
-		//could be Integer.MAX_VALUE instead
 	}
 
 	@Override
@@ -96,13 +87,13 @@ public class FluidFuelConsumerHandler implements IFluidHandler, INBTSerializable
 	@Override
 	public CompoundTag serializeNBT() {
 		CompoundTag tag = new CompoundTag();
-		tag.putLong(FRACTIONAL_FUEL_BUFFER_KEY, fractionalFuelBuffer);
+		tag.putLong(MILLI_FUEL_BUFFER_KEY, milliFuelBuffer);
 		return tag;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundTag tag) {
-		fractionalFuelBuffer = tag.getLong(FRACTIONAL_FUEL_BUFFER_KEY);
+		milliFuelBuffer = tag.getLong(MILLI_FUEL_BUFFER_KEY);
 	}
 
 }
