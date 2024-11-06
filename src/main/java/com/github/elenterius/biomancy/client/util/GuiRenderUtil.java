@@ -10,9 +10,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -35,13 +33,6 @@ public final class GuiRenderUtil {
 		}
 
 		guiGraphics.renderComponentTooltip(font, hoveringText, mouseX, mouseY);
-	}
-
-	public static void drawGhostItem(GuiGraphics guiGraphics, int pX, int pY, ItemStack stack) {
-		guiGraphics.renderFakeItem(stack, pX, pY);
-		RenderSystem.depthFunc(GL11.GL_GREATER); //passes if the fragment's depth value is greater than the stored depth value
-		guiGraphics.fill(pX, pY, pX + 16, pY + 16, 0x30_ff_ff_ff);
-		RenderSystem.depthFunc(GL11.GL_LEQUAL); //passes if the fragment's depth value is equal to the stored depth value
 	}
 
 	public static void drawAttackIndicator(GuiGraphics guiGraphics, int x, int y, float pct) {

@@ -18,6 +18,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -202,7 +203,9 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 			ItemStack stack = selectedRecipe.getResultItem(minecraft.level.registryAccess());
 			int x = leftPos + 194 + 2;
 			int y = topPos + 33 + 2;
-			GuiRenderUtil.drawGhostItem(guiGraphics, x, y, stack);
+			guiGraphics.fill(x, y, x + 16, y + 16, 0x30_ff0000);
+			guiGraphics.renderFakeItem(stack, x, y);
+			guiGraphics.fill(RenderType.guiGhostRecipeOverlay(), x, y, x + 16, y + 16, 0x30_ffffff);
 			guiGraphics.renderItemDecorations(font, stack, x, y);
 		}
 	}
@@ -276,12 +279,13 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 
 		BioForgingRecipe selectedRecipe = recipeBook.getSelectedRecipe();
 		int cost = selectedRecipe != null ? selectedRecipe.getCraftingCostNutrients() : 0;
-		if (cost <= 0) return;
+		if (cost <= menu.getFuelAmount()) return;
 
 		int x = leftPos + 144;
 		int y = topPos + 13 + 36 - ((int) ((cost / (float) menu.getMaxFuelAmount()) * 36) + 1);
-		guiGraphics.fill(x - 3, y, x + 5 + 3, y + 1, 0xff_ffffff);
-		guiGraphics.drawString(font, "" + cost, x + 5 + 3 + 2, y - font.lineHeight / 2, cost <= menu.getFuelAmount() ? ColorStyles.TEXT_SUCCESS : ColorStyles.TEXT_ERROR);
+		guiGraphics.fill(x - 3, y, x + 5 + 3, y + 1, 0x30_ff0000);
+		guiGraphics.fill(x + 5 + 3, y, x + 5 + 3 + 1, y + 1, 0xff_ff0000);
+		guiGraphics.fill(x + 5 + 3 + 1, y - 1, x + 5 + 3 + 2, y + 2, 0xff_ff0000);
 	}
 
 	@Override

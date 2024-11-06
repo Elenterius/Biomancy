@@ -16,6 +16,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -46,6 +48,24 @@ public class BioForgeMenu extends PlayerContainerMenu {
 			addSlot(new CustomResultSlot(playerInventory.player, resultContainer, 0, 194 + 2, 33 + 2));
 
 			addDataSlots(bioforge.getStateData());
+
+			addSlotListener(new ContainerListener() {
+				@Override
+				public void slotChanged(AbstractContainerMenu container, int slot, ItemStack stack) {}
+
+				int fuel = 0;
+
+				@Override
+				public void dataChanged(AbstractContainerMenu container, int index, int value) {
+					if (index == BioForgeStateData.FUEL_INDEX && playerInventory.player instanceof ServerPlayer serverPlayer) {
+						BioForgingRecipe recipe = getSelectedRecipe();
+						if (recipe != null && recipe.getCraftingCostNutrients() > fuel && recipe.getCraftingCostNutrients() <= value) {
+							updateResultSlot(serverPlayer);
+						}
+						fuel = value;
+					}
+				}
+			});
 		}
 	}
 
@@ -70,6 +90,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 	private void trackPlayerInvChanges(ServerPlayer serverPlayer, Inventory inventory) {
 		if (playerInvChanges != inventory.getTimesChanged()) {
 			countPlayerInvItems(serverPlayer, inventory);
+			updateResultSlot(serverPlayer);
 			playerInvChanges = inventory.getTimesChanged();
 		}
 	}
@@ -77,7 +98,6 @@ public class BioForgeMenu extends PlayerContainerMenu {
 	private void countPlayerInvItems(ServerPlayer serverPlayer, Inventory inventory) {
 		itemCounter.clear();
 		itemCounter.accountStacks(inventory.items);
-		updateResultSlot(serverPlayer);
 	}
 
 	private void updateResultSlot(ServerPlayer serverPlayer) {
@@ -102,6 +122,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 	public void setSelectedRecipe(@Nullable BioForgingRecipe recipe, ServerPlayer serverPlayer) {
 		selectedRecipe = recipe;
 		countPlayerInvItems(serverPlayer, serverPlayer.getInventory());
+		updateResultSlot(serverPlayer);
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import com.github.elenterius.biomancy.client.gui.tooltip.ScreenTooltipStyleProvi
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
 import com.github.elenterius.biomancy.menu.DecomposerMenu;
-import com.github.elenterius.biomancy.styles.ColorStyles;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -56,12 +55,13 @@ public class DecomposerScreen extends AbstractContainerScreen<DecomposerMenu> im
 		guiGraphics.blit(BACKGROUND_TEXTURE, leftPos + 44, topPos + 26 + 36 - vHeight, 178, 36 - vHeight, 5, vHeight);
 
 		int cost = menu.getFuelCost();
-		if (cost <= 0) return;
+		if (cost <= menu.getFuelAmount()) return;
 
 		int x = leftPos + 44;
 		int y = topPos + 26 + 36 - ((int) ((cost / (float) menu.getMaxFuelAmount()) * 36) + 1);
-		guiGraphics.fill(x - 3, y, x + 5 + 3, y + 1, 0xff_ffffff);
-		guiGraphics.drawString(font, "" + cost, x + 5 + 3 + 2, y - font.lineHeight / 2, cost <= menu.getFuelAmount() ? ColorStyles.TEXT_SUCCESS : ColorStyles.TEXT_ERROR);
+		guiGraphics.fill(x - 3, y, x + 5 + 3, y + 1, 0x30_ff0000);
+		guiGraphics.fill(x + 5 + 3, y, x + 5 + 3 + 1, y + 1, 0xff_ff0000);
+		guiGraphics.fill(x + 5 + 3 + 1, y - 1, x + 5 + 3 + 2, y + 2, 0xff_ff0000);
 	}
 
 	@Override
