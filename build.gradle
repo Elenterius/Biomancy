@@ -200,6 +200,8 @@ dependencies {
 	minecraftLibrary(group: "com.h2database", name: "h2-mvstore", version: "2.2.224")
 	jarJar(group: "com.h2database", name: "h2-mvstore", version: "[2.2.220,3.0.0)")
 
+	implementation fg.deobf("maven.modrinth:pehkui:3.7.12+1.20.1-forge")
+
 	compileOnly fg.deobf("com.klikli_dev:modonomicon-${minecraft_version}-common:${modonomicon_version}")
 	implementation fg.deobf("com.klikli_dev:modonomicon-${minecraft_version}-forge:${modonomicon_version}")
 	datagenCompileOnly fg.deobf("com.klikli_dev:modonomicon-${minecraft_version}-common:${modonomicon_version}")
@@ -215,9 +217,6 @@ dependencies {
 	datagenImplementation fg.deobf("maven.modrinth:alexs-mobs:1.22.9")
 	datagenImplementation fg.deobf("maven.modrinth:alexs-caves:2.0.2")
 	datagenImplementation fg.deobf("maven.modrinth:citadel:2.6.0")
-
-	compileOnly fg.deobf("maven.modrinth:pehkui:3.7.12+1.20.1-forge")
-	//needs to be compileOnly for datagen to work -> temporarily change to implementation for gameplay testing
 
 //	implementation fg.deobf("se.mickelus.mutil:mutil:1.20.1-6.1.1")
 	compileOnly fg.deobf("maven.modrinth:tetra:6.1.0")
