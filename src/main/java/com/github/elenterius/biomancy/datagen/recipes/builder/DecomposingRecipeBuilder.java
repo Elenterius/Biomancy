@@ -2,11 +2,11 @@ package com.github.elenterius.biomancy.datagen.recipes.builder;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.crafting.IngredientStack;
-import com.github.elenterius.biomancy.crafting.ItemCountRange;
 import com.github.elenterius.biomancy.crafting.VariableOutput;
 import com.github.elenterius.biomancy.crafting.recipe.DecomposingRecipe;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.util.ItemStackCounter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -18,7 +18,9 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
@@ -96,7 +98,6 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 	}
 
 	public DecomposingRecipeBuilder addExtraCraftingTime(int time) {
-		if (time < 0) throw new IllegalArgumentException("Invalid extra crafting time: " + time);
 		extraCraftingTimeTicks = time;
 		return this;
 	}
@@ -108,7 +109,6 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 	}
 
 	public DecomposingRecipeBuilder addExtraCraftingCost(int costNutrients) {
-		if (costNutrients < 0) throw new IllegalArgumentException("Invalid extra crafting cost: " + costNutrients);
 		extraCraftingCostNutrients = costNutrients;
 		return this;
 	}
@@ -193,8 +193,6 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 
 	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable RecipeCategory category) {
-		validate();
-
 		if (craftingTimeTicks < 0) {
 			craftingTimeTicks = CraftingTimeUtil.getTotalTicks(outputs);
 		}
@@ -205,6 +203,8 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 
 		craftingTimeTicks += extraCraftingTimeTicks;
 		craftingCostNutrients += extraCraftingCostNutrients;
+
+		validate();
 
 		advancement.parent(new ResourceLocation("recipes/root"))
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
@@ -222,6 +222,25 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 		if (advancement.getCriteria().isEmpty()) {
 			throw new IllegalStateException("No way of obtaining recipe %s because Criteria are empty.".formatted(recipeId));
 		}
+
+		if (craftingTimeTicks < 0) throw new IllegalArgumentException("Invalid crafting time: " + craftingTimeTicks);
+		if (craftingCostNutrients < 0) throw new IllegalArgumentException("Invalid crafting cost: " + craftingCostNutrients);
+
+		int neededSlots = getNeededSlots();
+		if (neededSlots > DecomposingRecipe.MAX_OUTPUTS) {
+			throw new IllegalArgumentException("Output requires invalid amount of slots: %d of %d slots.".formatted(neededSlots, DecomposingRecipe.MAX_OUTPUTS));
+		}
+	}
+
+	private int getNeededSlots() {
+		ItemStackCounter counter = new ItemStackCounter();
+		for (VariableOutput output : outputs) {
+			ItemStack stack = output.getItemStack();
+			stack.setCount(output.getCountRange().getMaxCount());
+			counter.accountStack(stack);
+		}
+
+		return counter.getItemCounts().stream().mapToInt(countedItem -> Mth.ceil(countedItem.amount() / 64f)).sum();
 	}
 
 	public static class RecipeResult implements FinishedRecipe {
@@ -266,7 +285,6 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 			json.addProperty("processingTime", craftingTime);
 			json.addProperty("nutrientsCost", craftingCost);
 
-			//serialize conditions
 			if (!conditions.isEmpty()) {
 				JsonArray array = new JsonArray();
 				conditions.forEach(c -> array.add(CraftingHelper.serialize(c)));
@@ -333,24 +351,11 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 		public static int getTotalTicks(List<VariableOutput> outputs) {
 			float ticks = 0;
 			for (VariableOutput output : outputs) {
-				ticks += getTicks(output.getItem(), getMaxAmount(output));
+				ticks += getTicks(output.getItem(), output.getCountRange().getMaxCount());
 			}
 			return Math.round(ticks);
 		}
 
-		static int getMaxAmount(VariableOutput output) {
-			ItemCountRange countRange = output.getCountRange();
-			if (countRange instanceof ItemCountRange.UniformRange uniform) {
-				return uniform.max();
-			}
-			else if (countRange instanceof ItemCountRange.ConstantValue constant) {
-				return constant.value();
-			}
-			else if (countRange instanceof ItemCountRange.BinomialRange binomialRange) {
-				return binomialRange.n();
-			}
-			return 1;
-		}
 	}
 
 }

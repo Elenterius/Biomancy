@@ -97,6 +97,8 @@ public interface ItemCountRange {
 
 	int getCount(RandomSource rng);
 
+	int getMaxCount();
+
 	RangeSerializer<?> getSerializer();
 
 	interface RangeSerializer<T extends ItemCountRange> {
@@ -116,6 +118,11 @@ public interface ItemCountRange {
 		@Override
 		public int getCount(RandomSource rng) {
 			return Mth.nextInt(rng, min, max);
+		}
+
+		@Override
+		public int getMaxCount() {
+			return max;
 		}
 
 		@Override
@@ -165,6 +172,11 @@ public interface ItemCountRange {
 		}
 
 		@Override
+		public int getMaxCount() {
+			return n;
+		}
+
+		@Override
 		public RangeSerializer<BinomialRange> getSerializer() {
 			return SERIALIZER;
 		}
@@ -204,6 +216,11 @@ public interface ItemCountRange {
 
 		@Override
 		public int getCount(RandomSource rng) {
+			return value;
+		}
+
+		@Override
+		public int getMaxCount() {
 			return value;
 		}
 
