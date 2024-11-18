@@ -4,6 +4,8 @@ import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
+import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.elenterius.biomancy.crafting.recipe.FoodDigestingRecipe;
 import com.github.elenterius.biomancy.datagen.recipes.builder.DigesterRecipeBuilder;
 import com.github.elenterius.biomancy.init.ModItems;
@@ -19,7 +21,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class DigestingRecipeProvider extends RecipeProvider {
@@ -59,6 +63,7 @@ public class DigestingRecipeProvider extends RecipeProvider {
 		buildFromOrganicRecipes(consumer);
 		buildAlexsMobsRecipes(consumer);
 		buildAlexsCavesRecipes(consumer);
+		buildIceAndFireRecipes(consumer);
 	}
 
 	private void buildFromFoodRecipes(Consumer<FinishedRecipe> consumer) {
@@ -150,6 +155,10 @@ public class DigestingRecipeProvider extends RecipeProvider {
 		return nutrientPasteRecipe(count, ingredient).ifModLoaded(AlexsCaves.MODID);
 	}
 
+	private DigesterRecipeBuilder iceAndFireRecipe(int count, ItemLike ingredient) {
+		return nutrientPasteRecipe(count, ingredient).ifModLoaded(IceAndFire.MODID);
+	}
+
 	private void buildAlexsMobsRecipes(Consumer<FinishedRecipe> consumer) {
 		alexsMobsRecipe(1, AMBlockRegistry.CAIMAN_EGG.get()).save(consumer);
 		alexsMobsRecipe(1, AMBlockRegistry.CROCODILE_EGG.get()).save(consumer);
@@ -178,4 +187,32 @@ public class DigestingRecipeProvider extends RecipeProvider {
 		alexsCavesRecipe(4, ACBlockRegistry.RELICHEIRUS_EGG.get()).setCraftingCost(3).save(consumer);
 		alexsCavesRecipe(4, ACBlockRegistry.ATLATITAN_EGG.get()).setCraftingCost(3).save(consumer);
 	}
+
+	private void buildIceAndFireRecipes(Consumer<FinishedRecipe> consumer) {
+		iceAndFireRecipe(2 * 4 + 1, IafItemRegistry.DRAGON_MEAL.get()).save(consumer);
+		iceAndFireRecipe(2 * 4 + 1 + 2 * 4 + 2 * 4, IafItemRegistry.SICKLY_DRAGON_MEAL.get()).save(consumer);
+
+		iceAndFireRecipe(1, IafItemRegistry.ROTTEN_EGG.get()).addCraftingTimeModifier(20).save(consumer);
+		iceAndFireRecipe(4, IafItemRegistry.HIPPOGRYPH_EGG.get()).setCraftingCost(3).save(consumer);
+		iceAndFireRecipe(4, IafItemRegistry.DEATHWORM_EGG.get()).setCraftingCost(3).save(consumer);
+		iceAndFireRecipe(4, IafItemRegistry.DEATHWORM_EGG_GIGANTIC.get()).setCraftingCost(3).save(consumer);
+		iceAndFireRecipe(4, IafItemRegistry.MYRMEX_DESERT_EGG.get()).setCraftingCost(3).save(consumer);
+		iceAndFireRecipe(4, IafItemRegistry.MYRMEX_JUNGLE_EGG.get()).setCraftingCost(3).save(consumer);
+
+		List<RegistryObject<Item>> dragonEggs = List.of(
+				IafItemRegistry.DRAGONEGG_ELECTRIC,
+				IafItemRegistry.DRAGONEGG_BRONZE, IafItemRegistry.DRAGONEGG_SILVER, IafItemRegistry.DRAGONEGG_COPPER,
+				IafItemRegistry.DRAGONEGG_AMYTHEST, IafItemRegistry.DRAGONEGG_SAPPHIRE,
+				IafItemRegistry.DRAGONEGG_RED, IafItemRegistry.DRAGONEGG_GREEN, IafItemRegistry.DRAGONEGG_BLUE, IafItemRegistry.DRAGONEGG_BLACK, IafItemRegistry.DRAGONEGG_GRAY, IafItemRegistry.DRAGONEGG_WHITE
+		);
+		for (RegistryObject<Item> dragonEgg : dragonEggs) {
+			iceAndFireRecipe(5, dragonEgg.get()).setCraftingCost(3).save(consumer);
+		}
+
+		List<RegistryObject<Item>> hearts = List.of(IafItemRegistry.ICE_DRAGON_HEART, IafItemRegistry.FIRE_DRAGON_HEART, IafItemRegistry.LIGHTNING_DRAGON_HEART, IafItemRegistry.HYDRA_HEART);
+		for (RegistryObject<Item> heart : hearts) {
+			iceAndFireRecipe(8, heart.get()).addCraftingCostModifier(1).save(consumer);
+		}
+	}
+
 }

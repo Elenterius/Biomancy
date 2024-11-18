@@ -1,0 +1,18 @@
+{
+  "type": "biomancy:digesting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "ingredient": {
+    "item": "iceandfire:dragonegg_amythest"
+  },
+  "nutrientsCost": 3,
+  "processingTime": 506,
+  "result": {
+    "count": 5,
+    "item": "biomancy:nutrient_paste"
+  }
+}
