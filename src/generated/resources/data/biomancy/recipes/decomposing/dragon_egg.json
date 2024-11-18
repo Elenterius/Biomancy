@@ -4,7 +4,7 @@
     "item": "minecraft:dragon_egg"
   },
   "nutrientsCost": 10,
-  "processingTime": 7080,
+  "processingTime": 7160,
   "results": [
     {
       "countRange": {
@@ -29,6 +29,14 @@
         "min": 17
       },
       "item": "biomancy:hormone_secretion"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 1
+      },
+      "item": "biomancy:organic_matter"
     }
   ]
 }
