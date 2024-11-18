@@ -213,9 +213,11 @@ dependencies {
 
 	runtimeOnly fg.deobf("maven.modrinth:alexs-mobs:1.22.9")
 	runtimeOnly fg.deobf("maven.modrinth:alexs-caves:2.0.2")
+	runtimeOnly fg.deobf("maven.modrinth:ice-and-fire-dragons:2.1.13-1.20.1-beta-5")
 	runtimeOnly fg.deobf("maven.modrinth:citadel:2.6.0")
 	datagenImplementation fg.deobf("maven.modrinth:alexs-mobs:1.22.9")
 	datagenImplementation fg.deobf("maven.modrinth:alexs-caves:2.0.2")
+	datagenImplementation fg.deobf("maven.modrinth:ice-and-fire-dragons:2.1.13-1.20.1-beta-5")
 	datagenImplementation fg.deobf("maven.modrinth:citadel:2.6.0")
 
 //	implementation fg.deobf("se.mickelus.mutil:mutil:1.20.1-6.1.1")
