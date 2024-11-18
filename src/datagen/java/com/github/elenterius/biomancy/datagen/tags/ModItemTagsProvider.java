@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.datagen.tags;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
@@ -70,6 +71,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 						ACItemRegistry.DEEP_SEA_SUSHI_ROLL.get(),
 						ACBlockRegistry.DINOSAUR_CHOP.get().asItem()
 				)
+				.add(IafItemRegistry.ICE_DRAGON_FLESH.get(), IafItemRegistry.FIRE_DRAGON_FLESH.get(), IafItemRegistry.LIGHTNING_DRAGON_FLESH.get())
 				.addOptional("createfa:ground_chicken", "createfa:ground_beef")
 				.addOptional("rats:raw_rat")
 				.addOptional("circus:clown")
@@ -95,11 +97,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 		createTag(ModItemTags.CLAWS)
 				.add(ModItems.MOB_CLAW.get())
-				.add(AMItemRegistry.DROPBEAR_CLAW.get());
+				.add(AMItemRegistry.DROPBEAR_CLAW.get())
+				.add(IafItemRegistry.HIPPOGRYPH_TALON.get());
 
 		createTag(ModItemTags.FANGS)
 				.add(ModItems.MOB_FANG.get())
-				.add(AMItemRegistry.BONE_SERPENT_TOOTH.get());
+				.add(AMItemRegistry.BONE_SERPENT_TOOTH.get())
+				.add(IafItemRegistry.SERPENT_FANG.get(), IafItemRegistry.HYDRA_FANG.get());
 
 		createTag(ModItemTags.CANNOT_BE_EATEN_BY_CRADLE)
 				.add(DRAGON_EGG, SPAWNER, HEART_OF_THE_SEA)
