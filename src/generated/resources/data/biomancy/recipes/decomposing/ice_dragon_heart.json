@@ -1,0 +1,48 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "ingredient": {
+    "item": "iceandfire:ice_dragon_heart"
+  },
+  "nutrientsCost": 11,
+  "processingTime": 7440,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 30,
+        "min": 10
+      },
+      "item": "biomancy:gem_fragments"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 25,
+        "min": 15
+      },
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 34,
+        "min": 14
+      },
+      "item": "biomancy:regenerative_fluid"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 75,
+        "min": 60
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
+}

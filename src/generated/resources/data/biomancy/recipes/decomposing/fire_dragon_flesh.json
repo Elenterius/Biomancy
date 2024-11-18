@@ -1,0 +1,56 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "ingredient": {
+    "item": "iceandfire:fire_dragon_flesh"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 1105,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 20,
+        "min": 15
+      },
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 7,
+        "min": 3
+      },
+      "item": "biomancy:bone_fragments"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 12,
+        "min": 4
+      },
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 6,
+        "min": 3
+      },
+      "item": "biomancy:volatile_fluid"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 6,
+        "min": 3
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
+}

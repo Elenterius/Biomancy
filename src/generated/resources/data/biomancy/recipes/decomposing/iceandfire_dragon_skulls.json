@@ -1,0 +1,32 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "ingredient": {
+    "tag": "iceandfire:dragon_skulls"
+  },
+  "nutrientsCost": 6,
+  "processingTime": 1480,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 7,
+        "min": 4
+      },
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 48,
+        "min": 28
+      },
+      "item": "biomancy:bone_fragments"
+    }
+  ]
+}

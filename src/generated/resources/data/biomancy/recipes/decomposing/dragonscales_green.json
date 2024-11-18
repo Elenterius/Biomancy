@@ -1,0 +1,32 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "ingredient": {
+    "item": "iceandfire:dragonscales_green"
+  },
+  "nutrientsCost": 6,
+  "processingTime": 1350,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 25,
+        "min": 15
+      },
+      "item": "biomancy:tough_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 15,
+        "min": 5
+      },
+      "item": "biomancy:mineral_fragment"
+    }
+  ]
+}

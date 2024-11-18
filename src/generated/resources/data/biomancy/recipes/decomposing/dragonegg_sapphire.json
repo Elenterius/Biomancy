@@ -1,0 +1,48 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "ingredient": {
+    "item": "iceandfire:dragonegg_sapphire"
+  },
+  "nutrientsCost": 9,
+  "processingTime": 5060,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 12,
+        "min": 6
+      },
+      "item": "biomancy:gem_fragments"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 40,
+        "min": 10
+      },
+      "item": "biomancy:hormone_secretion"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 8,
+        "min": 4
+      },
+      "item": "biomancy:organic_matter"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 70,
+        "min": 30
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
+}

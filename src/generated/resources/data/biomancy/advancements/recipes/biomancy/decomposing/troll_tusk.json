@@ -1,0 +1,47 @@
+{
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "biomancy:decomposing/troll_tusk"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          },
+          "has_troll_tusk": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "iceandfire:troll_tusk"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          }
+        },
+        "requirements": [
+          [
+            "has_troll_tusk",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "biomancy:decomposing/troll_tusk"
+          ]
+        },
+        "sends_telemetry_event": false
+      },
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "iceandfire"
+        }
+      ]
+    }
+  ]
+}

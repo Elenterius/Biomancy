@@ -1,0 +1,32 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "ingredient": {
+    "item": "iceandfire:deathworm_chitin_yellow"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 640,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 12,
+        "min": 7
+      },
+      "item": "biomancy:tough_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 7,
+        "min": 4
+      },
+      "item": "biomancy:mineral_fragment"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "ingredient": {
+    "item": "iceandfire:hydra_heart"
+  },
+  "nutrientsCost": 3,
+  "processingTime": 3124,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 64,
+        "min": 32
+      },
+      "item": "biomancy:regenerative_fluid"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 2
+      },
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 1
+      },
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 16,
+        "min": 8
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
+}

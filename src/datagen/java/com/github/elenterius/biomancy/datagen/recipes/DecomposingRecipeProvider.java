@@ -49,8 +49,11 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 		buildRecyclingRecipes(consumer);
 
 		buildBiomesOPlentyRecipes(consumer);
+
 		buildAlexsMobsRecipes(consumer);
 		buildAlexsCavesRecipes(consumer);
+		buildIceAndFireRecipes(consumer);
+
 		buildTetraRecipes(consumer);
 	}
 
@@ -419,6 +422,10 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 
 	private DecomposingRecipeBuilder alexsCavesRecipe() {
 		return DecomposingRecipeBuilder.create().ifModLoaded(AlexsCaves.MODID);
+	}
+
+	private DecomposingRecipeBuilder iceAndFireRecipe() {
+		return DecomposingRecipeBuilder.create().ifModLoaded(IceAndFire.MODID);
 	}
 
 	private void buildAlexsMobsRecipes(Consumer<FinishedRecipe> consumer) {
@@ -942,6 +949,386 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.BIO_LUMENS.get(), 5, 9)
 				.addOutput(ModItems.BILE.get(), 2, 3)
 				.unlockedBy(ACBlockRegistry.CARMINE_FROGLIGHT.get()).save(consumer);
+	}
+
+	private void buildIceAndFireRecipes(Consumer<FinishedRecipe> consumer) {
+		iceAndFireRecipe().setIngredient(IafItemRegistry.COPPER_NUGGET).addOutput(ModItems.MINERAL_FRAGMENT.get(), 0, 1).unlockedBy(IafItemRegistry.COPPER_NUGGET).save(consumer);
+		iceAndFireRecipe().setIngredient(IafItemRegistry.RAW_SILVER).addExtraCraftingCost(1).addOutput(ModItems.MINERAL_FRAGMENT.get(), 5, 9).addOutput(ModItems.STONE_POWDER.get(), 1, 2).unlockedBy(IafItemRegistry.RAW_SILVER).save(consumer);
+		iceAndFireRecipe().setIngredient(IafItemRegistry.SILVER_NUGGET).addOutput(ModItems.MINERAL_FRAGMENT.get(), 0, 1).unlockedBy(IafItemRegistry.SILVER_NUGGET).save(consumer);
+		iceAndFireRecipe().setIngredient(IafItemRegistry.SILVER_INGOT).addExtraCraftingCost(2).addOutput(ModItems.MINERAL_FRAGMENT.get(), 5, 9).unlockedBy(IafItemRegistry.SILVER_INGOT).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.TROLL_TUSK)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 6, 8)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 4, 6)
+				.unlockedBy(IafItemRegistry.TROLL_TUSK).save(consumer);
+
+		for (EnumTroll troll : EnumTroll.values()) {
+			iceAndFireRecipe()
+					.setIngredient(troll.leather.get())
+					.addOutput(ModItems.TOUGH_FIBERS.get(), 10, 20)
+					.unlockedBy(troll.leather.get()).save(consumer);
+		}
+
+		//feathers
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.STYMPHALIAN_BIRD_FEATHER)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 5, 10)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 4, 8)
+				.unlockedBy(IafItemRegistry.STYMPHALIAN_BIRD_FEATHER).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.AMPHITHERE_FEATHER)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 5, 10)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 2, 6)
+				.unlockedBy(IafItemRegistry.AMPHITHERE_FEATHER).save(consumer);
+
+		//eggs
+		buildIceAndFireDragonEggRecipes(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.FIRE_DRAGON_FLESH)
+				.addOutput(ModItems.FLESH_BITS.get(), 15, 20)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 7)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 12)
+				.addOutput(ModItems.VOLATILE_FLUID.get(), 3, 6)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 3, 6)
+				.unlockedBy(IafItemRegistry.FIRE_DRAGON_FLESH).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.FIRE_DRAGON_HEART).addExtraCraftingCost(4)
+				.addOutput(ModItems.GEM_FRAGMENTS.get(), 10, 30)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 15,25)
+				.addOutput(ModItems.REGENERATIVE_FLUID.get(), 14, 34)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 60, 75)
+				.addOutput(ModItems.VOLATILE_FLUID.get(), 6, 12)
+				.unlockedBy(IafItemRegistry.FIRE_DRAGON_HEART).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.ICE_DRAGON_FLESH)
+				.addOutput(ModItems.FLESH_BITS.get(), 15, 20)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 7)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 12)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 3, 6)
+				.unlockedBy(IafItemRegistry.ICE_DRAGON_FLESH).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.ICE_DRAGON_HEART).addExtraCraftingCost(4)
+				.addOutput(ModItems.GEM_FRAGMENTS.get(), 10, 30)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 15, 25)
+				.addOutput(ModItems.REGENERATIVE_FLUID.get(), 14, 34)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 60, 75)
+				.unlockedBy(IafItemRegistry.ICE_DRAGON_HEART).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.LIGHTNING_DRAGON_FLESH)
+				.addOutput(ModItems.FLESH_BITS.get(), 15, 20)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 7)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 12)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 4, 8)
+				.unlockedBy(IafItemRegistry.LIGHTNING_DRAGON_FLESH).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.LIGHTNING_DRAGON_HEART).addExtraCraftingCost(4)
+				.addOutput(ModItems.GEM_FRAGMENTS.get(), 10, 30)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 15, 25)
+				.addOutput(ModItems.REGENERATIVE_FLUID.get(), 14, 34)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 70, 85)
+				.unlockedBy(IafItemRegistry.LIGHTNING_DRAGON_HEART).save(consumer);
+
+		List<RegistryObject<Item>> dragonScales = List.of(
+				IafItemRegistry.DRAGONSCALES_BLACK, IafItemRegistry.DRAGONSCALES_BLUE, IafItemRegistry.DRAGONSCALES_BRONZE, IafItemRegistry.DRAGONSCALES_COPPER, IafItemRegistry.DRAGONSCALES_ELECTRIC,
+				IafItemRegistry.DRAGONSCALES_GRAY, IafItemRegistry.DRAGONSCALES_GREEN, IafItemRegistry.DRAGONSCALES_RED, IafItemRegistry.DRAGONSCALES_SILVER, IafItemRegistry.DRAGONSCALES_WHITE
+		);
+		for (RegistryObject<Item> dragonScale : dragonScales) {
+			iceAndFireRecipe()
+					.setIngredient(dragonScale).addExtraCraftingCost(4)
+					.addOutput(ModItems.TOUGH_FIBERS.get(), 15, 25)
+					.addOutput(ModItems.MINERAL_FRAGMENT.get(), 5, 15)
+					.unlockedBy(dragonScale).save(consumer);
+		}
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.DRAGONSCALES_AMYTHEST).addExtraCraftingCost(4)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 15, 25)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 5, 15)
+				.addOutput(ModItems.GEM_FRAGMENTS.get(), 3, 5)
+				.unlockedBy(IafItemRegistry.DRAGONSCALES_AMYTHEST).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.DRAGONSCALES_SAPPHIRE).addExtraCraftingCost(4)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 15, 25)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 5, 15)
+				.addOutput(ModItems.GEM_FRAGMENTS.get(), 3, 5)
+				.unlockedBy(IafItemRegistry.DRAGONSCALES_SAPPHIRE).save(consumer);
+
+		for (EnumSeaSerpent serpent : EnumSeaSerpent.values()) {
+			iceAndFireRecipe()
+					.setIngredient(serpent.scale).addExtraCraftingCost(4)
+					.addOutput(ModItems.TOUGH_FIBERS.get(), 15, 25)
+					.addOutput(ModItems.MINERAL_FRAGMENT.get(), 5, 15)
+					.unlockedBy(serpent.scale).save(consumer);
+		}
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.SHINY_SCALES).addExtraCraftingCost(4)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 15, 25)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 5, 15)
+				.unlockedBy(IafItemRegistry.SHINY_SCALES).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.SERPENT_FANG)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 4, 6)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 6, 8)
+				.unlockedBy(IafItemRegistry.SERPENT_FANG).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.HYDRA_FANG)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 4, 6)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 6, 8)
+				.addOutput(ModItems.TOXIN_EXTRACT.get(), 3, 7)
+				.unlockedBy(IafItemRegistry.HYDRA_FANG).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.HYDRA_HEART)
+				.addOutput(ModItems.REGENERATIVE_FLUID.get(), 32, 64)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 3)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 8, 16)
+				.unlockedBy(IafItemRegistry.HYDRA_HEART).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.MYRMEX_STINGER)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 4, 6)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 6, 8)
+				.addOutput(ModItems.TOXIN_EXTRACT.get(), 3, 7)
+				.unlockedBy(IafItemRegistry.MYRMEX_STINGER).save(consumer);
+
+		TagKey<Item> dragonSkulls = ItemTags.create(new ResourceLocation(IceAndFire.MODID, "dragon_skulls"));
+		iceAndFireRecipe().setIngredient(dragonSkulls).addExtraCraftingCost(4)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 4, 7)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 28, 48)
+				.unlockedBy(dragonSkulls).save(consumer);
+
+		for (EnumSkullType skull : EnumSkullType.values()) {
+			iceAndFireRecipe()
+					.setIngredient(skull.skull_item)
+					.addOutput(ModItems.BONE_FRAGMENTS.get(), 6, 12)
+					.unlockedBy(skull.skull_item).save(consumer);
+		}
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.DRAGON_BONE)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 5, 8)
+				.unlockedBy(IafItemRegistry.DRAGON_BONE).save(consumer);
+
+		List<RegistryObject<Item>> chitins = List.of(
+				IafItemRegistry.MYRMEX_DESERT_CHITIN, IafItemRegistry.MYRMEX_JUNGLE_CHITIN,
+				IafItemRegistry.DEATH_WORM_CHITIN_RED, IafItemRegistry.DEATH_WORM_CHITIN_WHITE, IafItemRegistry.DEATH_WORM_CHITIN_YELLOW
+		);
+		for (RegistryObject<Item> chitin : chitins) {
+			iceAndFireRecipe()
+					.setIngredient(chitin)
+					.addOutput(ModItems.TOUGH_FIBERS.get(), 7, 12)
+					.addOutput(ModItems.MINERAL_FRAGMENT.get(), 4, 7)
+					.unlockedBy(chitin).save(consumer);
+		}
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.DEATHWORM_TOUNGE)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 7, 12)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
+				.unlockedBy(IafItemRegistry.DEATHWORM_TOUNGE).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.MYRMEX_DESERT_RESIN)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 4, 7)
+				.addOutput(ModItems.BILE.get(), 5, 7)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 5, 10)
+				.unlockedBy(IafItemRegistry.MYRMEX_DESERT_RESIN).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.MYRMEX_JUNGLE_RESIN)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 4, 7)
+				.addOutput(ModItems.BILE.get(), 5, 7)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 5, 10)
+				.unlockedBy(IafItemRegistry.MYRMEX_JUNGLE_RESIN).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafBlockRegistry.MYRMEX_DESERT_BIOLIGHT.get())
+				.addOutput(ModItems.BIO_LUMENS.get(), 1, 2)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1)
+				.unlockedBy(IafBlockRegistry.MYRMEX_DESERT_BIOLIGHT.get()).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafBlockRegistry.MYRMEX_JUNGLE_BIOLIGHT.get())
+				.addOutput(ModItems.BIO_LUMENS.get(), 1, 2)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1)
+				.unlockedBy(IafBlockRegistry.MYRMEX_JUNGLE_BIOLIGHT.get()).save(consumer);
+
+		List<RegistryObject<Item>> eggs = List.of(
+				IafItemRegistry.DEATHWORM_EGG, IafItemRegistry.MYRMEX_DESERT_EGG, IafItemRegistry.MYRMEX_JUNGLE_EGG, IafItemRegistry.HIPPOGRYPH_EGG
+		);
+		for (RegistryObject<Item> egg : eggs) {
+			iceAndFireRecipe()
+					.setIngredient(egg)
+					.addOutput(ModItems.STONE_POWDER.get(), 4, 8)
+					.addOutput(ModItems.HORMONE_SECRETION.get(), 4, 12)
+					.addOutput(ModItems.ORGANIC_MATTER.get(), 4, 8)
+					.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
+					.unlockedBy(egg).save(consumer);
+		}
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.DEATHWORM_EGG_GIGANTIC)
+				.addOutput(ModItems.STONE_POWDER.get(), 8, 16)
+				.addOutput(ModItems.HORMONE_SECRETION.get(), 8, 24)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 8, 16)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 4, 12)
+				.unlockedBy(IafItemRegistry.DEATHWORM_EGG_GIGANTIC).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.HIPPOCAMPUS_FIN.get())
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 7, 12)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
+				.unlockedBy(IafItemRegistry.HIPPOCAMPUS_FIN.get()).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.SIREN_TEAR.get())
+				.addOutput(ModItems.HORMONE_SECRETION.get(), 4, 8)
+				.addOutput(ModItems.BILE.get(), 1, 2)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 1, 2)
+				.unlockedBy(IafItemRegistry.SIREN_TEAR.get()).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.COCKATRICE_EYE.get())
+				.addOutput(ModItems.BILE.get(), 1, 2)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.WITHERING_OOZE.get(), 1, 3)
+				.unlockedBy(IafItemRegistry.COCKATRICE_EYE.get()).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.CYCLOPS_EYE.get())
+				.addOutput(ModItems.BILE.get(), 1, 4)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 4)
+				.unlockedBy(IafItemRegistry.CYCLOPS_EYE.get()).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.PIXIE_DUST.get())
+				.addOutput(ModItems.BILE.get(), 1)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 1, 2)
+				.unlockedBy(IafItemRegistry.PIXIE_DUST.get()).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.PIXIE_WINGS.get())
+				.addOutput(ModItems.BILE.get(), 1, 3)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 2, 5)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 0, 2)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 3, 7)
+				.unlockedBy(IafItemRegistry.PIXIE_WINGS.get()).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.ROTTEN_EGG.get())
+				.addOutput(ModItems.HORMONE_SECRETION.get(), 0, 1)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 2)
+				.unlockedBy(IafItemRegistry.ROTTEN_EGG.get()).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.SAPPHIRE_GEM.get()).addExtraCraftingCost(1)
+				.addOutput(ModItems.GEM_FRAGMENTS.get(), 3, 5)
+				.unlockedBy(IafItemRegistry.SAPPHIRE_GEM.get()).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.ECTOPLASM.get())
+				.addOutput(ModItems.BILE.get(), 1, 2)
+				.unlockedBy(IafItemRegistry.ECTOPLASM.get()).save(consumer);
+
+		iceAndFireRecipe()
+				.setIngredient(IafItemRegistry.DREAD_SHARD.get())
+				.addOutput(ModItems.STONE_POWDER.get(), 1, 3)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
+				.unlockedBy(IafItemRegistry.DREAD_SHARD.get()).save(consumer);
+	}
+
+	private void buildIceAndFireDragonEggRecipes(Consumer<FinishedRecipe> consumer) {
+		List<RegistryObject<Item>> colorDragonEggs = List.of(
+				IafItemRegistry.DRAGONEGG_ELECTRIC,
+				IafItemRegistry.DRAGONEGG_RED, IafItemRegistry.DRAGONEGG_GREEN, IafItemRegistry.DRAGONEGG_BLUE, IafItemRegistry.DRAGONEGG_BLACK, IafItemRegistry.DRAGONEGG_GRAY, IafItemRegistry.DRAGONEGG_WHITE
+		);
+
+		for (RegistryObject<Item> dragonEgg : colorDragonEggs) {
+			DragonType dragonType = DragonType.FIRE;
+			if (dragonEgg.get() instanceof ItemDragonEgg egg) {
+				dragonType = egg.type.dragonType;
+			}
+
+			DecomposingRecipeBuilder builder = iceAndFireRecipe().setIngredient(dragonEgg).addExtraCraftingCost(4)
+					.addOutput(ModItems.HORMONE_SECRETION.get(), 10, 40)
+					.addOutput(ModItems.ORGANIC_MATTER.get(), 4, 8);
+
+			if (dragonType == DragonType.LIGHTNING)
+				builder.addOutput(ModItems.EXOTIC_DUST.get(), 40, 80);
+			else
+				builder.addOutput(ModItems.EXOTIC_DUST.get(), 20, 60);
+
+			if (dragonType == DragonType.FIRE) {
+				builder.addOutput(ModItems.VOLATILE_FLUID.get(), 6, 12);
+			}
+
+			builder.unlockedBy(dragonEgg).save(consumer);
+		}
+
+		List<RegistryObject<Item>> metalDragonEggs = List.of(IafItemRegistry.DRAGONEGG_BRONZE, IafItemRegistry.DRAGONEGG_SILVER, IafItemRegistry.DRAGONEGG_COPPER);
+
+		for (RegistryObject<Item> dragonEgg : metalDragonEggs) {
+			DragonType dragonType = DragonType.FIRE;
+			if (dragonEgg.get() instanceof ItemDragonEgg egg) {
+				dragonType = egg.type.dragonType;
+			}
+
+			DecomposingRecipeBuilder builder = iceAndFireRecipe().setIngredient(dragonEgg).addExtraCraftingCost(4)
+					.addOutput(ModItems.MINERAL_FRAGMENT.get(), 6, 12)
+					.addOutput(ModItems.HORMONE_SECRETION.get(), 10, 40)
+					.addOutput(ModItems.ORGANIC_MATTER.get(), 4, 8);
+
+			if (dragonType == DragonType.LIGHTNING)
+				builder.addOutput(ModItems.EXOTIC_DUST.get(), 45, 85);
+			else
+				builder.addOutput(ModItems.EXOTIC_DUST.get(), 25, 65);
+
+			if (dragonType == DragonType.FIRE) {
+				builder.addOutput(ModItems.VOLATILE_FLUID.get(), 6, 12);
+			}
+
+			builder.unlockedBy(dragonEgg).save(consumer);
+		}
+
+		List<RegistryObject<Item>> gemDragonEggs = List.of(IafItemRegistry.DRAGONEGG_AMYTHEST, IafItemRegistry.DRAGONEGG_SAPPHIRE);
+
+		for (RegistryObject<Item> dragonEgg : gemDragonEggs) {
+			DragonType dragonType = DragonType.FIRE;
+			if (dragonEgg.get() instanceof ItemDragonEgg egg) {
+				dragonType = egg.type.dragonType;
+			}
+
+			DecomposingRecipeBuilder builder = iceAndFireRecipe().setIngredient(dragonEgg).addExtraCraftingCost(4)
+					.addOutput(ModItems.GEM_FRAGMENTS.get(), 6, 12)
+					.addOutput(ModItems.HORMONE_SECRETION.get(), 10, 40)
+					.addOutput(ModItems.ORGANIC_MATTER.get(), 4, 8);
+
+			if (dragonType == DragonType.LIGHTNING)
+				builder.addOutput(ModItems.EXOTIC_DUST.get(), 50, 90);
+			else
+				builder.addOutput(ModItems.EXOTIC_DUST.get(), 30, 70);
+
+			if (dragonType == DragonType.FIRE) {
+				builder.addOutput(ModItems.VOLATILE_FLUID.get(), 6, 12);
+			}
+
+			builder.unlockedBy(dragonEgg).save(consumer);
+		}
 	}
 
 }

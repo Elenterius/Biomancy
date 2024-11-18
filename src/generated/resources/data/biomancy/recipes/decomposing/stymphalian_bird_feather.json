@@ -1,0 +1,32 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "ingredient": {
+    "item": "iceandfire:stymphalian_bird_feather"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 620,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 10,
+        "min": 5
+      },
+      "item": "biomancy:tough_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 8,
+        "min": 4
+      },
+      "item": "biomancy:mineral_fragment"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "ingredient": {
+    "item": "iceandfire:troll_skull"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 300,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 12,
+        "min": 6
+      },
+      "item": "biomancy:bone_fragments"
+    }
+  ]
+}

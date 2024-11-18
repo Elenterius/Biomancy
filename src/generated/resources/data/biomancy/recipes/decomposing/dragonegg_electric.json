@@ -1,0 +1,40 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "ingredient": {
+    "item": "iceandfire:dragonegg_electric"
+  },
+  "nutrientsCost": 9,
+  "processingTime": 4960,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 40,
+        "min": 10
+      },
+      "item": "biomancy:hormone_secretion"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 8,
+        "min": 4
+      },
+      "item": "biomancy:organic_matter"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 80,
+        "min": 40
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "ingredient": {
+    "item": "iceandfire:myrmex_desert_egg"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 940,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 8,
+        "min": 4
+      },
+      "item": "biomancy:stone_powder"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 12,
+        "min": 4
+      },
+      "item": "biomancy:hormone_secretion"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 8,
+        "min": 4
+      },
+      "item": "biomancy:organic_matter"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 6,
+        "min": 2
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
+}
