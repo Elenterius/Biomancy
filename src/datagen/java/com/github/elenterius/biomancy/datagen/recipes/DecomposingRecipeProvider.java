@@ -206,6 +206,8 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 
 		DecomposingRecipeBuilder.create().setIngredient(Tags.Items.BONES).addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 6).unlockedBy(Tags.Items.BONES).save(consumer);
 
+		TagKey<Item> witherBones = ItemTags.create(new ResourceLocation("forge", "bones/wither"));
+		DecomposingRecipeBuilder.create().setIngredient(witherBones).addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 6).addOutput(ModItems.WITHERING_OOZE.get(), 3, 5).unlockedBy(witherBones).save(consumer);
 	}
 
 	private void build119Recipes(Consumer<FinishedRecipe> consumer) {
