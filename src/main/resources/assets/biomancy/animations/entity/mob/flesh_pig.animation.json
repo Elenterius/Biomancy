@@ -11,11 +11,6 @@
           "scale": {
             "vector": [ 2, 2, 2 ]
           }
-        },
-        "tumors": {
-          "scale": {
-            "vector": [ 0, 0, 0 ]
-          }
         }
       }
     },

@@ -12,6 +12,7 @@ Models and Textures
 
 - Primal Orifice Block
 - Primal Bloom Block
+- Flesh Pig (v2)
 
 ## Shorepion
 
