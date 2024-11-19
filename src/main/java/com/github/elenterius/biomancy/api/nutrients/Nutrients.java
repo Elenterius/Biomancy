@@ -52,6 +52,14 @@ public final class Nutrients {
 		return false;
 	}
 
+	@ApiStatus.Internal
+	public static int getRepairValue(Item resource) {
+		if (REPAIR_VALUES.containsKey(resource)) {
+			return REPAIR_VALUES.getInt(resource);
+		}
+		return 0;
+	}
+
 	public static int getRepairValue(ItemStack resource) {
 		if (resource.isEmpty()) return 0;
 
@@ -82,6 +90,14 @@ public final class Nutrients {
 		}
 
 		return false;
+	}
+
+	@ApiStatus.Internal
+	public static int getFuelValue(Item resource) {
+		if (FUEL_VALUES.containsKey(resource)) {
+			return FUEL_VALUES.getInt(resource);
+		}
+		return 0;
 	}
 
 	public static int getFuelValue(ItemStack resource) {
