@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.integration;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.integration.alexscaves.AlexsCavesCompat;
+import com.github.elenterius.biomancy.integration.farmersdelight.FarmersDelightCompat;
 import com.github.elenterius.biomancy.integration.iceandfire.IceAndFireCompat;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconHelper;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconIntegration;
@@ -47,6 +48,11 @@ public final class ModsCompatHandler {
 			if (ModList.get().isLoaded("tetra")) {
 				BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Tetra compat...");
 				TetraCompat.onPostSetup();
+			}
+
+			if (ModList.get().isLoaded("farmersdelight")) {
+				BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Farmer's Delight compat...");
+				FarmersDelightCompat.onPostSetup();
 			}
 
 			if (ModList.get().isLoaded("alexscaves")) {

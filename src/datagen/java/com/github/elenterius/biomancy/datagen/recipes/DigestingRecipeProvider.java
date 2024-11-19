@@ -22,6 +22,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import vectorwing.farmersdelight.FarmersDelight;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -61,6 +62,9 @@ public class DigestingRecipeProvider extends RecipeProvider {
 	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		buildFromFoodRecipes(consumer);
 		buildFromOrganicRecipes(consumer);
+
+		buildFarmersDelightRecipes(consumer);
+
 		buildAlexsMobsRecipes(consumer);
 		buildAlexsCavesRecipes(consumer);
 		buildIceAndFireRecipes(consumer);
@@ -147,6 +151,10 @@ public class DigestingRecipeProvider extends RecipeProvider {
 		nutrientPasteRecipe(pumpkinNutrition - 4 * seedNutrition, Items.CARVED_PUMPKIN).addCraftingTimeModifier(-100).save(consumer);
 	}
 
+	private DigesterRecipeBuilder farmersDelightRecipe(int count, ItemLike ingredient) {
+		return nutrientPasteRecipe(count, ingredient).ifModLoaded(FarmersDelight.MODID);
+	}
+
 	private DigesterRecipeBuilder alexsMobsRecipe(int count, ItemLike ingredient) {
 		return nutrientPasteRecipe(count, ingredient).ifModLoaded(AlexsMobs.MODID);
 	}
@@ -157,6 +165,20 @@ public class DigestingRecipeProvider extends RecipeProvider {
 
 	private DigesterRecipeBuilder iceAndFireRecipe(int count, ItemLike ingredient) {
 		return nutrientPasteRecipe(count, ingredient).ifModLoaded(IceAndFire.MODID);
+	}
+
+	private void buildFarmersDelightRecipes(Consumer<FinishedRecipe> consumer) {
+		class FarmersDelightItems extends vectorwing.farmersdelight.common.registry.ModItems {}
+
+		farmersDelightRecipe(1, FarmersDelightItems.ROTTEN_TOMATO.get()).addCraftingTimeModifier(50).save(consumer);
+
+		int mushroomNutrition = Math.max(1, Foods.MUSHROOM_STEW.getNutrition() / 2);
+		farmersDelightRecipe(mushroomNutrition * 5, FarmersDelightItems.BROWN_MUSHROOM_COLONY.get()).save(consumer);
+		farmersDelightRecipe(mushroomNutrition * 5, FarmersDelightItems.RED_MUSHROOM_COLONY.get()).save(consumer);
+
+		farmersDelightRecipe(Foods.MELON_SLICE.getNutrition() * 4, FarmersDelightItems.MELON_JUICE.get()).setCraftingCost(3).save(consumer);
+		farmersDelightRecipe(Foods.APPLE.getNutrition() * 2 + 1, FarmersDelightItems.APPLE_CIDER.get()).setCraftingCost(3).save(consumer);
+		farmersDelightRecipe(4 * 2 + 2, FarmersDelightItems.HOT_COCOA.get()).setCraftingCost(3).addCraftingTimeModifier(30).save(consumer);
 	}
 
 	private void buildAlexsMobsRecipes(Consumer<FinishedRecipe> consumer) {

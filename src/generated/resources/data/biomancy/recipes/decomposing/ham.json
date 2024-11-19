@@ -1,0 +1,40 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "farmersdelight"
+    }
+  ],
+  "ingredient": {
+    "item": "farmersdelight:ham"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 370,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 10,
+        "min": 6
+      },
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 6,
+        "min": 4
+      },
+      "item": "biomancy:bone_fragments"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 2
+      },
+      "item": "biomancy:elastic_fibers"
+    }
+  ]
+}

@@ -50,9 +50,16 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 	}
 
 	private void addBiomancyTags() {
+		class FarmersDelightItems extends vectorwing.farmersdelight.common.registry.ModItems {} //alias workaround
+		class AlexsDelightItems extends com.ncpbails.alexsdelight.item.ModItems {} //alias workaround
 
 		createTag(ModItemTags.SUGARS)
 				.add(SUGAR, COOKIE, CAKE, HONEYCOMB, HONEY_BLOCK, HONEYCOMB_BLOCK, HONEY_BOTTLE, SWEET_BERRIES, COCOA_BEANS, APPLE)
+				.add(
+						FarmersDelightItems.HOT_COCOA.get(), FarmersDelightItems.SWEET_BERRY_COOKIE.get(), FarmersDelightItems.HONEY_COOKIE.get(),
+						FarmersDelightItems.GLOW_BERRY_CUSTARD.get(), FarmersDelightItems.MELON_JUICE.get(),
+						FarmersDelightItems.CAKE_SLICE.get(), FarmersDelightItems.APPLE_PIE_SLICE.get(), FarmersDelightItems.CHOCOLATE_PIE_SLICE.get(), FarmersDelightItems.SWEET_BERRY_CHEESECAKE_SLICE.get()
+				)
 				.addOptional("create:sweet_roll", "create:chocolate_glazed_berries", "create:honeyed_apple", "create:bar_of_chocolate")
 				.addOptional("createaddition:chocolate_cake");
 
@@ -62,9 +69,16 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 						COD, SALMON, TROPICAL_FISH, PUFFERFISH
 				)
 				.add(
+						FarmersDelightItems.HAM.get()
+				)
+				.add(
 						AMItemRegistry.MOOSE_RIBS.get(), AMItemRegistry.KANGAROO_MEAT.get(),
 						AMItemRegistry.FLYING_FISH.get(), AMItemRegistry.RAW_CATFISH.get(), AMItemRegistry.BLOBFISH.get(),
 						AMItemRegistry.LOBSTER_TAIL.get(), AMItemRegistry.MAGGOT.get()
+				)
+				.add(
+						AlexsDelightItems.RAW_BISON.get(), AlexsDelightItems.BISON_MINCE.get(), AlexsDelightItems.KANGAROO_SHANK.get(), AlexsDelightItems.LOOSE_MOOSE_RIB.get(),
+						AlexsDelightItems.RAW_BUNFUNGUS.get(), AlexsDelightItems.RAW_BUNFUNGUS_DRUMSTICK.get(), AlexsDelightItems.RAW_CATFISH_SLICE.get()
 				)
 				.add(
 						ACItemRegistry.TRILOCARIS_TAIL.get(), ACItemRegistry.LANTERNFISH.get(), ACItemRegistry.TRIPODFISH.get(), ACItemRegistry.RADGILL.get(),
@@ -85,8 +99,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 						COOKED_BEEF, COOKED_PORKCHOP, COOKED_CHICKEN, COOKED_RABBIT, COOKED_MUTTON,
 						COOKED_COD, COOKED_SALMON)
 				.add(
+						FarmersDelightItems.SMOKED_HAM.get()
+				)
+				.add(
 						AMItemRegistry.COOKED_MOOSE_RIBS.get(), AMItemRegistry.COOKED_KANGAROO_MEAT.get(),
 						AMItemRegistry.COOKED_CATFISH.get(), AMItemRegistry.COOKED_LOBSTER_TAIL.get()
+				)
+				.add(
+						AlexsDelightItems.COOKED_BISON.get(), AlexsDelightItems.BISON_PATTY.get(), AlexsDelightItems.COOKED_KANGAROO_SHANK.get(), AlexsDelightItems.COOKED_LOOSE_MOOSE_RIB.get(),
+						AlexsDelightItems.COOKED_BUNFUNGUS.get(), AlexsDelightItems.COOKED_BUNFUNGUS_DRUMSTICK.get(), AlexsDelightItems.COOKED_CATFISH_SLICE.get(), AlexsDelightItems.COOKED_CENTIPEDE_LEG.get()
 				)
 				.add(
 						ACItemRegistry.COOKED_TRILOCARIS_TAIL.get(), ACItemRegistry.COOKED_LANTERNFISH.get(), ACItemRegistry.COOKED_TRIPODFISH.get(), ACItemRegistry.COOKED_RADGILL.get(),

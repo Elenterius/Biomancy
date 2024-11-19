@@ -1,0 +1,24 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "farmersdelight"
+    }
+  ],
+  "ingredient": {
+    "item": "farmersdelight:red_mushroom_colony"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 200,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 10,
+        "min": 5
+      },
+      "item": "biomancy:organic_matter"
+    }
+  ]
+}

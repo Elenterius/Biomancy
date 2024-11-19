@@ -8,6 +8,10 @@
     "minecraft:cooked_cod",
     "minecraft:cooked_salmon",
     {
+      "id": "farmersdelight:smoked_ham",
+      "required": false
+    },
+    {
       "id": "alexsmobs:cooked_moose_ribs",
       "required": false
     },
@@ -21,6 +25,38 @@
     },
     {
       "id": "alexsmobs:cooked_lobster_tail",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_bison",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:bison_patty",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_kangaroo_shank",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_loose_moose_rib",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_bunfungus",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_bunfungus_drumstick",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_catfish_slice",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_centipede_leg",
       "required": false
     },
     {

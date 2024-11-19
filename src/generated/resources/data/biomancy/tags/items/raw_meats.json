@@ -13,6 +13,10 @@
     "minecraft:tropical_fish",
     "minecraft:pufferfish",
     {
+      "id": "farmersdelight:ham",
+      "required": false
+    },
+    {
       "id": "alexsmobs:moose_ribs",
       "required": false
     },
@@ -38,6 +42,34 @@
     },
     {
       "id": "alexsmobs:maggot",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:raw_bison",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:bison_mince",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:kangaroo_shank",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:loose_moose_rib",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:raw_bunfungus",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:raw_bunfungus_drumstick",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:raw_catfish_slice",
       "required": false
     },
     {

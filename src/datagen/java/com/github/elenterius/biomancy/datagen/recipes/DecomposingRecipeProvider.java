@@ -20,6 +20,7 @@ import com.github.elenterius.biomancy.datagen.recipes.builder.DecomposingRecipeB
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
+import com.ncpbails.alexsdelight.AlexsDelight;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -30,6 +31,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.RegistryObject;
+import vectorwing.farmersdelight.FarmersDelight;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -51,7 +53,10 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 
 		buildBiomesOPlentyRecipes(consumer);
 
+		buildFarmersDelightRecipes(consumer);
+
 		buildAlexsMobsRecipes(consumer);
+		buildAlexsDelightRecipes(consumer);
 		buildAlexsCavesRecipes(consumer);
 		buildIceAndFireRecipes(consumer);
 
@@ -415,6 +420,10 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.MOB_SINEW).save(consumer);
 	}
 
+	private DecomposingRecipeBuilder farmersDelightRecipe() {
+		return DecomposingRecipeBuilder.create().ifModLoaded(FarmersDelight.MODID);
+	}
+
 	private DecomposingRecipeBuilder alexsMobsRecipe() {
 		return DecomposingRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID);
 	}
@@ -425,6 +434,31 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 
 	private DecomposingRecipeBuilder iceAndFireRecipe() {
 		return DecomposingRecipeBuilder.create().ifModLoaded(IceAndFire.MODID);
+	}
+
+	private DecomposingRecipeBuilder alexsDelightRecipe() {
+		return DecomposingRecipeBuilder.create().ifModLoaded(AlexsDelight.MOD_ID);
+	}
+
+	private void buildFarmersDelightRecipes(Consumer<FinishedRecipe> consumer) {
+		class FarmersDelightItems extends vectorwing.farmersdelight.common.registry.ModItems {} //alias workaround
+
+		farmersDelightRecipe()
+				.setIngredient(FarmersDelightItems.BROWN_MUSHROOM_COLONY)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 5, 2 * 5)
+				.unlockedBy(FarmersDelightItems.BROWN_MUSHROOM_COLONY).save(consumer);
+
+		farmersDelightRecipe()
+				.setIngredient(FarmersDelightItems.RED_MUSHROOM_COLONY)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 5, 2 * 5)
+				.unlockedBy(FarmersDelightItems.RED_MUSHROOM_COLONY).save(consumer);
+
+		farmersDelightRecipe()
+				.setIngredient(FarmersDelightItems.HAM)
+				.addOutput(ModItems.FLESH_BITS.get(), 3 * 2, 5 * 2)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2 * 2, 3 * 2)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 2, 2 * 2)
+				.unlockedBy(FarmersDelightItems.HAM).save(consumer);
 	}
 
 	private void buildAlexsMobsRecipes(Consumer<FinishedRecipe> consumer) {
@@ -740,6 +774,59 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.HORMONE_SECRETION.get(), -1, 1)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1)
 				.unlockedBy(AMBlockRegistry.TRIOPS_EGGS.get()).save(consumer);
+	}
+
+	private void buildAlexsDelightRecipes(Consumer<FinishedRecipe> consumer) {
+		class AlexsDelightItems extends com.ncpbails.alexsdelight.item.ModItems {} //alias workaround
+
+		alexsDelightRecipe()
+				.setIngredient(AlexsDelightItems.LOOSE_MOOSE_RIB)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 0, 1)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 1, 2)
+				.unlockedBy(AlexsDelightItems.LOOSE_MOOSE_RIB).save(consumer);
+
+		alexsDelightRecipe()
+				.setIngredient(AlexsDelightItems.KANGAROO_SHANK)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 0, 1)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), -1, 1)
+				.unlockedBy(AlexsDelightItems.KANGAROO_SHANK).save(consumer);
+
+		alexsDelightRecipe()
+				.setIngredient(AlexsDelightItems.RAW_BISON)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 5)
+				.unlockedBy(AlexsDelightItems.RAW_BISON).save(consumer);
+
+		alexsDelightRecipe()
+				.setIngredient(AlexsDelightItems.BISON_MINCE)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 0, 1)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 1, 2)
+				.unlockedBy(AlexsDelightItems.BISON_MINCE).save(consumer);
+
+		alexsDelightRecipe()
+				.setIngredient(AlexsDelightItems.RAW_BUNFUNGUS_DRUMSTICK)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 0, 1)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 1, 2)
+				.unlockedBy(AlexsDelightItems.RAW_BUNFUNGUS_DRUMSTICK).save(consumer);
+
+		alexsDelightRecipe()
+				.setIngredient(AlexsDelightItems.RAW_BUNFUNGUS)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 5)
+				.unlockedBy(AlexsDelightItems.RAW_BUNFUNGUS).save(consumer);
+
+		alexsDelightRecipe()
+				.setIngredient(AlexsDelightItems.RAW_CATFISH_SLICE)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 0, 1)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 0, 1)
+				.unlockedBy(AlexsDelightItems.RAW_CATFISH_SLICE).save(consumer);
 	}
 
 	private void buildAlexsCavesRecipes(Consumer<FinishedRecipe> consumer) {
