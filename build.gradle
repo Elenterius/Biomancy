@@ -211,6 +211,8 @@ dependencies {
 	compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}") // compile against the JEI API but do not include it at runtime
 	runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") // at runtime, use the full JEI jar
 
+	runtimeOnly fg.deobf("maven.modrinth:appleskin:2.5.1+mc1.20.1") // display extra food information
+
 	runtimeOnly fg.deobf("maven.modrinth:alexs-mobs:1.22.9")
 	runtimeOnly fg.deobf("maven.modrinth:alexs-caves:2.0.2")
 	runtimeOnly fg.deobf("maven.modrinth:ice-and-fire-dragons:2.1.13-1.20.1-beta-5")
