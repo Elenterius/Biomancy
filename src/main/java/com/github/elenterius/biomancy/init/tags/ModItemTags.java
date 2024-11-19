@@ -9,6 +9,7 @@ import net.minecraft.world.item.Item;
 public final class ModItemTags {
 
 	public static final TagKey<Item> FORGE_TOOLS_KNIVES = forgeTag("tools/knives");
+	public static final TagKey<Item> FORGE_WITHER_BONES = forgeTag("bones/wither");
 
 	public static final TagKey<Item> FANGS = tag("fangs");
 	public static final TagKey<Item> CLAWS = tag("claws");

@@ -18,6 +18,7 @@ import java.util.function.Predicate;
 @ApiStatus.Experimental
 public final class Tributes {
 
+	//TODO: make this data pack driven
 	private static final Map<Item, Tribute> TRIBUTES = new HashMap<>();
 	private static final List<FuzzyTribute> FUZZY_TRIBUTES = new ArrayList<>();
 
@@ -26,6 +27,7 @@ public final class Tributes {
 	// tributes which are matched when no direct item match was found
 	public static final Tribute RAW_MEAT_TAG = registerFuzzy(stack -> stack.is(ModItemTags.RAW_MEATS), SimpleTribute.builder().biomass(20).successModifier(16).diseaseModifier(5).hostileModifier(-5).build());
 	public static final Tribute COOKED_MEAT_TAG = registerFuzzy(stack -> stack.is(ModItemTags.COOKED_MEATS), SimpleTribute.builder().successModifier(-999).hostileModifier(1).build());
+	public static final Tribute WITHER_BONE_TAG = registerFuzzy(stack -> stack.is(ModItemTags.FORGE_WITHER_BONES), SimpleTribute.builder().successModifier(-30).diseaseModifier(40).build());
 	public static final Tribute BONE_TAG = registerFuzzy(stack -> stack.is(Tags.Items.BONES), SimpleTribute.builder().successModifier(3).diseaseModifier(-5).build());
 	public static final Tribute FANG_TAG = registerFuzzy(stack -> stack.is(ModItemTags.FANGS), SimpleTribute.builder().successModifier(8).hostileModifier(5).build());
 	public static final Tribute CLAW_TAG = registerFuzzy(stack -> stack.is(ModItemTags.CLAWS), SimpleTribute.builder().successModifier(8).hostileModifier(5).build());
@@ -69,7 +71,7 @@ public final class Tributes {
 		register(Items.BONE, SimpleTribute.builder().successModifier(3).diseaseModifier(-10).build());
 		register(Items.BONE_MEAL, SimpleTribute.builder().successModifier(1).diseaseModifier(-1).build());
 		register(ModItems.MOB_MARROW.get(), SimpleTribute.builder().successModifier(5).diseaseModifier(-20).hostileModifier(-10).build());
-		register(ModItems.WITHERED_MOB_MARROW.get(), SimpleTribute.builder().successModifier(-30).diseaseModifier(-40).build());
+		register(ModItems.WITHERED_MOB_MARROW.get(), SimpleTribute.builder().successModifier(-30).diseaseModifier(40).build());
 		register(ModItems.MOB_FANG.get(), SimpleTribute.builder().successModifier(8).hostileModifier(5).build());
 		register(ModItems.MOB_CLAW.get(), SimpleTribute.builder().successModifier(8).hostileModifier(5).build());
 

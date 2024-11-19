@@ -19,6 +19,7 @@ import com.github.elenterius.biomancy.datagen.recipes.builder.DatagenIngredient;
 import com.github.elenterius.biomancy.datagen.recipes.builder.DecomposingRecipeBuilder;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -208,9 +209,7 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 		DecomposingRecipeBuilder.create().setIngredient(Tags.Items.SEEDS).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).unlockedBy(Tags.Items.SEEDS).save(consumer);
 
 		DecomposingRecipeBuilder.create().setIngredient(Tags.Items.BONES).addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 6).unlockedBy(Tags.Items.BONES).save(consumer);
-
-		TagKey<Item> witherBones = ItemTags.create(new ResourceLocation("forge", "bones/wither"));
-		DecomposingRecipeBuilder.create().setIngredient(witherBones).addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 6).addOutput(ModItems.WITHERING_OOZE.get(), 3, 5).unlockedBy(witherBones).save(consumer);
+		DecomposingRecipeBuilder.create().setIngredient(ModItemTags.FORGE_WITHER_BONES).addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 6).addOutput(ModItems.WITHERING_OOZE.get(), 3, 5).unlockedBy(ModItemTags.FORGE_WITHER_BONES).save(consumer);
 	}
 
 	private void build119Recipes(Consumer<FinishedRecipe> consumer) {
