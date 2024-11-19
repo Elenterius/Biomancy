@@ -4,6 +4,8 @@ import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.server.entity.ACEntityRegistry;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
+import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.entity.IafEntityRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import net.minecraft.util.Mth;
@@ -36,13 +38,17 @@ public class ModDespoilLoot extends DespoilLootProvider {
 			EntityType.SKELETON_HORSE, EntityType.SKELETON, EntityType.STRAY,
 			EntityType.WARDEN,
 
-			AMEntityRegistry.SKELEWAG.get(), AMEntityRegistry.BONE_SERPENT.get()
+			AMEntityRegistry.SKELEWAG.get(), AMEntityRegistry.BONE_SERPENT.get(),
+
+			IafEntityRegistry.DREAD_HORSE.get(), IafEntityRegistry.DREAD_LICH.get(), IafEntityRegistry.DREAD_THRALL.get()
 	);
 
 	protected static final Set<EntityType<?>> WITHERED_BONE_MARROW_MOBS = Set.of(
 			EntityType.WITHER_SKELETON, EntityType.WITHER,
 
-			ACEntityRegistry.RAYCAT.get()
+			ACEntityRegistry.RAYCAT.get(),
+
+			IafEntityRegistry.COCKATRICE.get()
 	);
 
 	protected static final Set<EntityType<?>> TOXIC_MOBS = Set.of(
@@ -52,7 +58,10 @@ public class ModDespoilLoot extends DespoilLootProvider {
 
 			AMEntityRegistry.KOMODO_DRAGON.get(), AMEntityRegistry.PLATYPUS.get(), AMEntityRegistry.RATTLESNAKE.get(),
 
-			ACEntityRegistry.RADGILL.get(), ACEntityRegistry.SEA_PIG.get()
+			ACEntityRegistry.RADGILL.get(), ACEntityRegistry.SEA_PIG.get(),
+
+			IafEntityRegistry.HYDRA.get(), IafEntityRegistry.GORGON.get(),
+			IafEntityRegistry.MYRMEX_QUEEN.get(), IafEntityRegistry.MYRMEX_ROYAL.get(), IafEntityRegistry.MYRMEX_SENTINEL.get(), IafEntityRegistry.MYRMEX_SOLDIER.get(), IafEntityRegistry.MYRMEX_SWARMER.get()
 	);
 
 	protected static final Set<EntityType<?>> VOLATILE_MOBS = Set.of(
@@ -60,7 +69,9 @@ public class ModDespoilLoot extends DespoilLootProvider {
 			EntityType.GHAST, EntityType.BLAZE,
 			EntityType.WITHER, EntityType.ENDER_DRAGON,
 
-			ACEntityRegistry.NUCLEEPER.get()
+			ACEntityRegistry.NUCLEEPER.get(),
+
+			IafEntityRegistry.FIRE_DRAGON.get(), IafEntityRegistry.ICE_DRAGON.get(), IafEntityRegistry.LIGHTNING_DRAGON.get()
 	);
 
 	protected static final Set<EntityType<?>> SHARP_CLAW_MOBS = Set.of(
@@ -79,7 +90,10 @@ public class ModDespoilLoot extends DespoilLootProvider {
 			ACEntityRegistry.SUBTERRANODON.get(), ACEntityRegistry.VALLUMRAPTOR.get(), ACEntityRegistry.TREMORSAURUS.get(), ACEntityRegistry.RELICHEIRUS.get(),
 			ACEntityRegistry.RAYCAT.get(),
 			ACEntityRegistry.DEEP_ONE.get(), ACEntityRegistry.DEEP_ONE_KNIGHT.get(),
-			ACEntityRegistry.UNDERZEALOT.get(), ACEntityRegistry.WATCHER.get(), ACEntityRegistry.CORRODENT.get(), ACEntityRegistry.VESPER.get(), ACEntityRegistry.FORSAKEN.get()
+			ACEntityRegistry.UNDERZEALOT.get(), ACEntityRegistry.WATCHER.get(), ACEntityRegistry.CORRODENT.get(), ACEntityRegistry.VESPER.get(), ACEntityRegistry.FORSAKEN.get(),
+
+			IafEntityRegistry.FIRE_DRAGON.get(), IafEntityRegistry.ICE_DRAGON.get(), IafEntityRegistry.LIGHTNING_DRAGON.get(),
+			IafEntityRegistry.COCKATRICE.get(), IafEntityRegistry.STYMPHALIAN_BIRD.get(), IafEntityRegistry.DREAD_BEAST.get()
 	);
 
 	protected static final Set<EntityType<?>> SHARP_FANG_MOBS = Set.of(
@@ -99,7 +113,10 @@ public class ModDespoilLoot extends DespoilLootProvider {
 			ACEntityRegistry.VALLUMRAPTOR.get(), ACEntityRegistry.TREMORSAURUS.get(),
 			ACEntityRegistry.RAYCAT.get(),
 			ACEntityRegistry.HULLBREAKER.get(), ACEntityRegistry.DEEP_ONE.get(), ACEntityRegistry.DEEP_ONE_KNIGHT.get(),
-			ACEntityRegistry.VESPER.get(), ACEntityRegistry.FORSAKEN.get()
+			ACEntityRegistry.VESPER.get(), ACEntityRegistry.FORSAKEN.get(),
+
+			IafEntityRegistry.FIRE_DRAGON.get(), IafEntityRegistry.ICE_DRAGON.get(), IafEntityRegistry.LIGHTNING_DRAGON.get(),
+			IafEntityRegistry.SEA_SERPENT.get(), IafEntityRegistry.DREAD_BEAST.get()
 	);
 
 	protected static final Set<EntityType<?>> INVALID_MOBS_FOR_MEATY_LOOT = Set.of(
@@ -119,12 +136,16 @@ public class ModDespoilLoot extends DespoilLootProvider {
 			ACEntityRegistry.RAYCAT.get(), ACEntityRegistry.NUCLEEPER.get(),
 			ACEntityRegistry.MINE_GUARDIAN.get(),
 			ACEntityRegistry.CANIAC.get(), ACEntityRegistry.CANDICORN.get(), ACEntityRegistry.CARAMEL_CUBE.get(), ACEntityRegistry.GINGERBREAD_MAN.get(),
-			ACEntityRegistry.SWEETISH_FISH.get(), ACEntityRegistry.GUMMY_BEAR.get(), ACEntityRegistry.GUMBEEPER.get(), ACEntityRegistry.GUM_WORM.get()
+			ACEntityRegistry.SWEETISH_FISH.get(), ACEntityRegistry.GUMMY_BEAR.get(), ACEntityRegistry.GUMBEEPER.get(), ACEntityRegistry.GUM_WORM.get(),
+
+			IafEntityRegistry.GHOST.get(), IafEntityRegistry.STONE_STATUE.get(),
+			IafEntityRegistry.DREAD_BEAST.get(), IafEntityRegistry.DREAD_GHOUL.get(), IafEntityRegistry.DREAD_HORSE.get(), IafEntityRegistry.DREAD_KNIGHT.get(), IafEntityRegistry.DREAD_LICH.get(),
+			IafEntityRegistry.DREAD_SCUTTLER.get(), IafEntityRegistry.DREAD_THRALL.get()
 	);
 
 	@Override
 	public void generate() {
-		Set<String> validNamespaces = Set.of("minecraft", BiomancyMod.MOD_ID, AlexsMobs.MODID, AlexsCaves.MODID);
+		Set<String> validNamespaces = Set.of("minecraft", BiomancyMod.MOD_ID, AlexsMobs.MODID, AlexsCaves.MODID, IceAndFire.MODID);
 		Predicate<EntityType<?>> allowedNamespace = entityType -> validNamespaces.contains(Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(entityType)).getNamespace());
 
 		Predicate<EntityType<?>> validEntityType = entityType -> entityType.getCategory() != MobCategory.MISC; //excludes Players & Villagers as well
