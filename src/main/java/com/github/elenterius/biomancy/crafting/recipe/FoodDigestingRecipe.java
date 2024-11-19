@@ -30,7 +30,9 @@ public class FoodDigestingRecipe extends DynamicProcessingRecipe implements Dige
 	private final int multiplier;
 	private final ItemStack resultBaseItem;
 	private final AnyFoodIngredient ingredient;
-	private final NonNullList<Ingredient> ingredients;
+
+	private final int matchPriority;
+	private final NonNullList<Ingredient> vanillaIngredients;
 
 	protected FoodDigestingRecipe(ResourceLocation key, int multiplier, ItemStack resultBaseItem) {
 		super(key, ModRecipes.DIGESTING_RECIPE_TYPE.get());
@@ -38,17 +40,9 @@ public class FoodDigestingRecipe extends DynamicProcessingRecipe implements Dige
 		this.resultBaseItem = resultBaseItem;
 
 		ingredient = new AnyFoodIngredient();
-		ingredients = NonNullList.of(Ingredient.EMPTY, ingredient);
-	}
 
-	@Override
-	public Ingredient getIngredient() {
-		return ingredient;
-	}
-
-	@Override
-	public NonNullList<Ingredient> getIngredients() {
-		return ingredients;
+		vanillaIngredients = NonNullList.of(Ingredient.EMPTY, ingredient);
+		matchPriority = RecipeWithMatchPriority.computeMatchPriority(vanillaIngredients);
 	}
 
 	public static int getFoodNutrition(ItemStack stack) {
@@ -60,15 +54,8 @@ public class FoodDigestingRecipe extends DynamicProcessingRecipe implements Dige
 	}
 
 	@Override
-	public int getCraftingTimeTicks(Container inputInventory) {
-		int nutrition = getFoodNutrition(inputInventory.getItem(0));
-		return nutrition > 0 ? Mth.ceil(200 + 190 * Math.log(nutrition)) : 0;
-	}
-
-	@Override
-	public int getCraftingCostNutrients(Container inputInventory) {
-		float sixtySecondsInTicks = 1200;
-		return 1 + Mth.floor(getCraftingTimeTicks(inputInventory) / sixtySecondsInTicks);
+	public int getMatchPriority() {
+		return matchPriority;
 	}
 
 	@Override
@@ -89,6 +76,28 @@ public class FoodDigestingRecipe extends DynamicProcessingRecipe implements Dige
 	@Override
 	public boolean canCraftInDimensions(int width, int height) {
 		return width * height == 1;
+	}
+
+	@Override
+	public Ingredient getIngredient() {
+		return ingredient;
+	}
+
+	@Override
+	public NonNullList<Ingredient> getIngredients() {
+		return vanillaIngredients;
+	}
+
+	@Override
+	public int getCraftingTimeTicks(Container inputInventory) {
+		int nutrition = getFoodNutrition(inputInventory.getItem(0));
+		return nutrition > 0 ? Mth.ceil(200 + 190 * Math.log(nutrition)) : 0;
+	}
+
+	@Override
+	public int getCraftingCostNutrients(Container inputInventory) {
+		float sixtySecondsInTicks = 1200;
+		return 1 + Mth.floor(getCraftingTimeTicks(inputInventory) / sixtySecondsInTicks);
 	}
 
 	@Override

@@ -105,7 +105,7 @@ public class DigesterMenu extends PlayerContainerMenu {
 	}
 
 	private boolean mergeIntoInputZone(ItemStack stackInSlot) {
-		if (DigesterBlockEntity.RECIPE_TYPE.get().getRecipeForIngredient(level, stackInSlot).isPresent()) {
+		if (DigesterBlockEntity.RECIPE_TYPE.get().getFirstRecipeForIngredient(level, stackInSlot).isPresent()) {
 			return mergeInto(SlotZone.INPUT_ZONE, stackInSlot, false);
 		}
 		return false;

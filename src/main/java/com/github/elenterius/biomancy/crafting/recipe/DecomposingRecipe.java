@@ -28,8 +28,10 @@ public class DecomposingRecipe extends StaticProcessingRecipe {
 	public static final int MAX_OUTPUTS = 6;
 
 	private final IngredientStack ingredientStack;
-	private final NonNullList<Ingredient> vanillaIngredients;
 	private final List<VariableOutput> outputs;
+
+	private final int matchPriority;
+	private final NonNullList<Ingredient> vanillaIngredients;
 
 	public DecomposingRecipe(ResourceLocation id, List<VariableOutput> outputs, IngredientStack ingredientStack, int craftingTimeTicks, int craftingCostNutrients) {
 		super(id, craftingTimeTicks, craftingCostNutrients);
@@ -39,6 +41,13 @@ public class DecomposingRecipe extends StaticProcessingRecipe {
 		List<Ingredient> flatIngredients = RecipeUtil.flattenIngredientStacks(List.of(ingredientStack));
 		vanillaIngredients = NonNullList.createWithCapacity(flatIngredients.size());
 		vanillaIngredients.addAll(flatIngredients);
+
+		matchPriority = RecipeWithMatchPriority.computeMatchPriority(vanillaIngredients);
+	}
+
+	@Override
+	public int getMatchPriority() {
+		return matchPriority;
 	}
 
 	@Override

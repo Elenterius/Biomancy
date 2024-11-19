@@ -213,7 +213,7 @@ public final class AcidInteractions {
 			}
 
 			@Nullable ResourceLocation lastRecipeId = ResourceLocation.tryParse(digestionData.getString(RECIPE_KEY));
-			Optional<Pair<ResourceLocation, DigestingRecipe>> optionalRecipe = DigesterBlockEntity.RECIPE_TYPE.get().getRecipeForIngredient(level, itemStack, lastRecipeId);
+			Optional<Pair<ResourceLocation, DigestingRecipe>> optionalRecipe = DigesterBlockEntity.RECIPE_TYPE.get().getBestRecipeForIngredient(level, itemStack, lastRecipeId);
 
 			if (optionalRecipe.isEmpty()) return;
 

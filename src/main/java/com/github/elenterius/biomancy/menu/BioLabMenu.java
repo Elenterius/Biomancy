@@ -174,7 +174,7 @@ public class BioLabMenu extends PlayerContainerMenu {
 	}
 
 	private boolean mergeIntoInputZone(ItemStack stackInSlot) {
-		if (BioLabBlockEntity.RECIPE_TYPE.get().getRecipeForIngredient(level, stackInSlot).isPresent()) {
+		if (BioLabBlockEntity.RECIPE_TYPE.get().getFirstRecipeForIngredient(level, stackInSlot).isPresent()) {
 			return mergeInto(SlotZone.INPUT_ZONE, stackInSlot, false);
 		}
 		return false;

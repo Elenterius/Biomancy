@@ -63,7 +63,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposingRecipe,
 
 	public static final int MAX_FUEL = 1_000;
 
-	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DecomposingRecipe>> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
+	public static final RegistryObject<SimpleRecipeType.AdvancedRecipeType<DecomposingRecipe>> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
 
 	protected static final RawAnimation WORKING_ANIM = RawAnimation.begin().thenLoop("decomposer.working");
 	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("decomposer.idle");
@@ -165,7 +165,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposingRecipe,
 
 	@Override
 	protected @Nullable DecomposingRecipe resolveRecipeFromInput(Level level) {
-		return RECIPE_TYPE.get().getRecipeFromContainer(level, inputInventory.getRecipeWrapper()).orElse(null);
+		return RECIPE_TYPE.get().getBestRecipeFor(level, inputInventory.getRecipeWrapper()).orElse(null);
 	}
 
 	@Override

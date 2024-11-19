@@ -105,7 +105,6 @@ public final class RecipeUtil {
 		return list;
 	}
 
-
 	public static List<Ingredient> flattenIngredientStacks(List<IngredientStack> ingredients) {
 		List<Ingredient> flatIngredients = new ArrayList<>();
 		for (IngredientStack ingredientStack : ingredients) {

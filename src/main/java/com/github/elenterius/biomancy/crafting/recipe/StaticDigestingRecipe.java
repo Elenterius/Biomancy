@@ -23,14 +23,23 @@ import javax.annotation.Nullable;
 public class StaticDigestingRecipe extends StaticProcessingRecipe implements DigestingRecipe {
 
 	private final Ingredient recipeIngredient;
-	private final NonNullList<Ingredient> recipeIngredients;
 	private final ItemStack recipeResult;
+
+	private final int matchPriority;
+	private final NonNullList<Ingredient> vanillaIngredients;
 
 	public StaticDigestingRecipe(ResourceLocation id, ItemStack result, int craftingTimeTicks, int craftingCostNutrients, Ingredient ingredient) {
 		super(id, craftingTimeTicks, craftingCostNutrients);
 		recipeIngredient = ingredient;
-		recipeIngredients = NonNullList.of(Ingredient.EMPTY, recipeIngredient);
 		recipeResult = result;
+
+		vanillaIngredients = NonNullList.of(Ingredient.EMPTY, recipeIngredient);
+		matchPriority = RecipeWithMatchPriority.computeMatchPriority(vanillaIngredients);
+	}
+
+	@Override
+	public int getMatchPriority() {
+		return matchPriority;
 	}
 
 	@Override
@@ -60,7 +69,7 @@ public class StaticDigestingRecipe extends StaticProcessingRecipe implements Dig
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
-		return recipeIngredients;
+		return vanillaIngredients;
 	}
 
 	@Override

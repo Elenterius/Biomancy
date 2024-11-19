@@ -32,6 +32,7 @@ public class BioBrewingRecipe extends StaticProcessingRecipe {
 	private final Ingredient recipeReactant;
 	private final ItemStack result;
 
+	private final int matchPriority;
 	private final NonNullList<Ingredient> vanillaIngredients;
 
 	public BioBrewingRecipe(ResourceLocation id, ItemStack result, int craftingTimeTicks, int craftingCostNutrients, List<IngredientStack> ingredients, Ingredient reactant) {
@@ -41,12 +42,21 @@ public class BioBrewingRecipe extends StaticProcessingRecipe {
 		this.result = result;
 
 		List<Ingredient> flatIngredients = RecipeUtil.flattenIngredientStacks(ingredients);
+		flatIngredients.add(recipeReactant);
+
 		vanillaIngredients = NonNullList.createWithCapacity(flatIngredients.size());
 		vanillaIngredients.addAll(flatIngredients);
+
+		matchPriority = RecipeWithMatchPriority.computeMatchPriority(vanillaIngredients);
 	}
 
 	@Override
-	public boolean matches(Container inv, Level worldIn) {
+	public int getMatchPriority() {
+		return matchPriority;
+	}
+
+	@Override
+	public boolean matches(Container inv, Level level) {
 		int lastIndex = inv.getContainerSize() - 1;
 		if (!recipeReactant.test(inv.getItem(lastIndex))) return false;
 

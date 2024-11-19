@@ -58,7 +58,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Dig
 
 	public static final int MAX_FUEL = 1_000;
 
-	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DigestingRecipe>> RECIPE_TYPE = ModRecipes.DIGESTING_RECIPE_TYPE;
+	public static final RegistryObject<SimpleRecipeType.AdvancedRecipeType<DigestingRecipe>> RECIPE_TYPE = ModRecipes.DIGESTING_RECIPE_TYPE;
 	protected static final RawAnimation WORKING_ANIM = RawAnimation.begin().thenLoop("digester.working");
 	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("digester.idle");
 
@@ -149,7 +149,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Dig
 
 	@Override
 	protected @Nullable DigestingRecipe resolveRecipeFromInput(Level level) {
-		return RECIPE_TYPE.get().getRecipeFromContainer(level, inputInventory.getRecipeWrapper()).orElse(null);
+		return RECIPE_TYPE.get().getBestRecipeFor(level, inputInventory.getRecipeWrapper()).orElse(null);
 	}
 
 	@Override
