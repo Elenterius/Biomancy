@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.integration;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.integration.alexscaves.AlexsCavesCompat;
+import com.github.elenterius.biomancy.integration.iceandfire.IceAndFireCompat;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconHelper;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconIntegration;
 import com.github.elenterius.biomancy.integration.pehkui.PehkuiHelper;
@@ -51,6 +52,11 @@ public final class ModsCompatHandler {
 			if (ModList.get().isLoaded("alexscaves")) {
 				BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Alex's Caves compat...");
 				AlexsCavesCompat.onPostSetup();
+			}
+
+			if (ModList.get().isLoaded("iceandfire")) {
+				BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Ice And Fire compat...");
+				IceAndFireCompat.onPostSetup();
 			}
 		});
 	}
