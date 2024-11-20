@@ -1,3 +1,22 @@
+## [8.20.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.19.0...1.20.1-v2.8.20.0) (2024-11-20)
+
+
+### Features
+
+* add compatibility for Farmer's Delight and Alex's Delight ([8ed787f](https://github.com/Elenterius/Biomancy/commit/8ed787f73eeb14fb47614742e9ec10ecbc54f36e))
+* add decomposing recipe for withered bones in the #forge:bones/wither item tag ([aafedfa](https://github.com/Elenterius/Biomancy/commit/aafedfab7dd523dab422049f259132ced636cd6c))
+* add decomposing recipes for the IceAndFire mod ([a818d60](https://github.com/Elenterius/Biomancy/commit/a818d60cc73e7f81ca2aab86b4f6bbc5d7dbaab6))
+* add despoil loot for mobs from the Ice And Fire mod ([2ce8144](https://github.com/Elenterius/Biomancy/commit/2ce814451a7cab51c73b5ac83c2a5a806526d4de))
+* add digesting recipes for the IceAndFire Mod ([3ab1430](https://github.com/Elenterius/Biomancy/commit/3ab14309f331c3e0de771ef00d5c3a642497f9ba))
+* add IceAndFire items to Biomancy tags ([b1548e7](https://github.com/Elenterius/Biomancy/commit/b1548e7d8d400b242ea347b889358a0d5fd756b7))
+* add item tag #forge:bones/wither and make it a valid Cradle tribute ([8f01d5a](https://github.com/Elenterius/Biomancy/commit/8f01d5a94cfa8d0f5612b4427ba733e009e61cdb))
+* make dragon hearts, dragon blood, hydra heart and etc. valid Cradle tributes ([b970e7f](https://github.com/Elenterius/Biomancy/commit/b970e7fefd6a89322bb0755a38147333f3de87c3))
+* re-balance cradle tributes of foods with life energy ([5dad166](https://github.com/Elenterius/Biomancy/commit/5dad166c0cf89764906a4b995cfaa7a1938a5d57))
+* resolve recipe conflicts with item and tag based ingredients by making recipe matching of machines biased towards item ingredients ([72ac6d3](https://github.com/Elenterius/Biomancy/commit/72ac6d3ee4a6678024aa34833a6713ad1acc466b))
+* rework flesh chicken visuals with model and texture by TheShroome ([9dadee7](https://github.com/Elenterius/Biomancy/commit/9dadee7055fb3f656e2c3526749b13e559e70513))
+* rework flesh pig visuals with model and texture by TheShroome ([37986bc](https://github.com/Elenterius/Biomancy/commit/37986bccebaa2b4c3671e1d07c7c28f1c7e5e997))
+* update Chinese (zh_cn) translation ([96b4835](https://github.com/Elenterius/Biomancy/commit/96b48351d35bcceaf308492ee99431cf24285da4))
+
 ## [8.19.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.18.0...1.20.1-v2.8.19.0) (2024-11-06)
 
 
@@ -72,16 +91,4 @@
 
 * don't render outer skin layer when wearing acolyte armor ([1d49205](https://github.com/Elenterius/Biomancy/commit/1d4920599e20cbf505f5d78eba4a2efa2efefd96))
 * fix crash when drinking milk under the frenzy effect ([06d6929](https://github.com/Elenterius/Biomancy/commit/06d69297fc4be64d8b24be28b38949378d112c65))
-
-## [8.15.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.14.0...1.20.1-v2.8.15.0) (2024-10-01)
-
-
-### Features
-
-* add player and mob head recipes to the bio-forge ([03f9910](https://github.com/Elenterius/Biomancy/commit/03f99108219d21cf766eb3e0dcb85c4f236f4fad))
-
-
-### Bug Fixes
-
-* fix bio-forge not counting ingredients with nbt data correctly ([333e8a3](https://github.com/Elenterius/Biomancy/commit/333e8a35ca7a1722b2bb0fe437c9d9fa67257410))
 
