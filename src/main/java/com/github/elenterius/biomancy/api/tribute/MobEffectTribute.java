@@ -37,14 +37,14 @@ public record MobEffectTribute(int lifeEnergy, int successModifier, int diseaseM
 		}
 
 		if (isSuspiciousStewItem) {
-			SuspiciousStewItemAccessor.biomancy$ListPotionEffects(stack, effectInstance -> builder.addEffect(effectInstance, 0.95f));
+			SuspiciousStewItemAccessor.biomancy$ListPotionEffects(stack, effectInstance -> builder.addEffect(effectInstance, 1.2f));
 		}
 
 		if (isFoodItem) {
 			for (Pair<MobEffectInstance, Float> pair : food.getEffects()) {
 				MobEffectInstance effectInstance = pair.getFirst();
 				float chance = pair.getSecond();
-				builder.addEffect(effectInstance, chance * 0.9f);
+				builder.addEffect(effectInstance, chance * 1.2f);
 			}
 		}
 
