@@ -1,0 +1,18 @@
+{
+  "type": "biomancy:digesting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "overweight_farming"
+    }
+  ],
+  "ingredient": {
+    "item": "overweight_farming:overweight_golden_apple_block"
+  },
+  "nutrientsCost": 3,
+  "processingTime": 961,
+  "result": {
+    "count": 40,
+    "item": "biomancy:nutrient_paste"
+  }
+}

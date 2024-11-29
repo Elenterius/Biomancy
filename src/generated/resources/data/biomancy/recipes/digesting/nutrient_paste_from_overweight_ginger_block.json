@@ -1,0 +1,22 @@
+{
+  "type": "biomancy:digesting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "overweight_farming"
+    },
+    {
+      "type": "forge:mod_loaded",
+      "modid": "snowyspirit"
+    }
+  ],
+  "ingredient": {
+    "item": "overweight_farming:overweight_ginger_block"
+  },
+  "nutrientsCost": 3,
+  "processingTime": 668,
+  "result": {
+    "count": 10,
+    "item": "biomancy:nutrient_paste"
+  }
+}

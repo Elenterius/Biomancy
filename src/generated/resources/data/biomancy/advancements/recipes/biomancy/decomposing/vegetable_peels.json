@@ -1,0 +1,47 @@
+{
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "biomancy:decomposing/vegetable_peels"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          },
+          "has_vegetable_peels": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "overweight_farming:vegetable_peels"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          }
+        },
+        "requirements": [
+          [
+            "has_vegetable_peels",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "biomancy:decomposing/vegetable_peels"
+          ]
+        },
+        "sends_telemetry_event": false
+      },
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "overweight_farming"
+        }
+      ]
+    }
+  ]
+}

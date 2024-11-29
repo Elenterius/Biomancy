@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.block.property.BlockPropertyUtil;
+import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.util.PillarPlantUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,6 +33,9 @@ public class FertilizerItem extends SimpleItem {
 		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
 
+		if (ModsCompatHandler.getOverweightFarmingHelper().canGrowOverweight(level, pos, state)) {
+			return growOverweightCrop(level, pos, state);
+		}
 		if (block instanceof BonemealableBlock bonemealableBlock) {
 			return growBonmealableBlock(level, pos, state, bonemealableBlock);
 		}
@@ -194,7 +198,7 @@ public class FertilizerItem extends SimpleItem {
 
 	private static boolean growBonmealableBlock(Level level, BlockPos pos, BlockState state, BonemealableBlock block) {
 		if (!block.isValidBonemealTarget(level, pos, state, level.isClientSide)) return false;
-		if (!(level instanceof ServerLevel serverLevel)) return false;
+		if (!(level instanceof ServerLevel serverLevel)) return true;
 
 		final BlockState prevState = state;
 
@@ -223,6 +227,15 @@ public class FertilizerItem extends SimpleItem {
 		return true;
 	}
 
+	private static boolean growOverweightCrop(Level level, BlockPos pos, BlockState state) {
+		if (level instanceof ServerLevel serverLevel) {
+			ModsCompatHandler.getOverweightFarmingHelper().growOverweight(serverLevel, pos, state, serverLevel.random);
+			serverLevel.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
+		}
+
+		return true;
+	}
+
 	@Override
 	public boolean isFoil(ItemStack stack) {
 		return true;
@@ -236,7 +249,7 @@ public class FertilizerItem extends SimpleItem {
 		if (applyFertilizer(stack, level, clickedPos, context.getClickedFace())) {
 			if (!level.isClientSide) {
 				stack.shrink(1);
-				level.playSound(null, clickedPos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1f, 1f);
+				level.playSound(null, clickedPos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1.2f, 1f);
 			}
 			return InteractionResult.sidedSuccess(level.isClientSide);
 		}

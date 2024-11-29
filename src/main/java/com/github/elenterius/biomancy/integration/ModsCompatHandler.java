@@ -6,6 +6,8 @@ import com.github.elenterius.biomancy.integration.farmersdelight.FarmersDelightC
 import com.github.elenterius.biomancy.integration.iceandfire.IceAndFireCompat;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconHelper;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconIntegration;
+import com.github.elenterius.biomancy.integration.overweightfarming.OverweightFarmingHelper;
+import com.github.elenterius.biomancy.integration.overweightfarming.OverweightFarmingIntegration;
 import com.github.elenterius.biomancy.integration.pehkui.PehkuiHelper;
 import com.github.elenterius.biomancy.integration.pehkui.PehkuiIntegration;
 import com.github.elenterius.biomancy.integration.tetra.TetraCompat;
@@ -23,57 +25,59 @@ public final class ModsCompatHandler {
 	static PehkuiHelper PEHKUI_HELPER = PehkuiHelper.EMPTY;
 	static ModonomiconHelper MODONOMICON_HELPER = ModonomiconHelper.EMPTY;
 	static TetraHelper TETRA_HELPER = TetraHelper.EMPTY;
+	static OverweightFarmingHelper OVERWEIGHT_FARMING_HELPER = OverweightFarmingHelper.createEmpty();
 
 	private ModsCompatHandler() {}
 
 	public static void onBiomancyInit(final IEventBus eventBus) {
 		if (ModList.get().isLoaded("pehkui")) {
-			BiomancyMod.LOGGER.info(LOG_MARKER, "Initialize Pehkui compat...");
+			BiomancyMod.LOGGER.info(LOG_MARKER, "Initializing Pehkui Integration...");
 			PehkuiIntegration.init(helper -> PEHKUI_HELPER = helper);
 		}
 
 		if (ModList.get().isLoaded("modonomicon")) {
-			BiomancyMod.LOGGER.info(LOG_MARKER, "Initialize Modonomicon integration...");
+			BiomancyMod.LOGGER.info(LOG_MARKER, "Initializing Modonomicon integration...");
 			ModonomiconIntegration.init(helper -> MODONOMICON_HELPER = helper);
 		}
 
 		if (ModList.get().isLoaded("tetra")) {
-			BiomancyMod.LOGGER.info(LOG_MARKER, "Initialize Modonomicon integration...");
+			BiomancyMod.LOGGER.info(LOG_MARKER, "Initializing Modonomicon integration...");
 			TetraCompat.init(helper -> TETRA_HELPER = helper);
+		}
+
+		if (ModList.get().isLoaded("overweight_farming")) {
+			BiomancyMod.LOGGER.info(LOG_MARKER, "Initializing Overweight Farming integration...");
+			OverweightFarmingIntegration.init(helper -> OVERWEIGHT_FARMING_HELPER = helper);
 		}
 	}
 
 	public static void onBiomancyCommonSetup(final FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
 			if (ModList.get().isLoaded("tetra")) {
-				BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Tetra compat...");
+				BiomancyMod.LOGGER.info(LOG_MARKER, "Setting up Tetra compat...");
 				TetraCompat.onPostSetup();
 			}
 
 			if (ModList.get().isLoaded("farmersdelight")) {
-				BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Farmer's Delight compat...");
+				BiomancyMod.LOGGER.info(LOG_MARKER, "Setting up Farmer's Delight compat...");
 				FarmersDelightCompat.onPostSetup();
 			}
 
 			if (ModList.get().isLoaded("alexscaves")) {
-				BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Alex's Caves compat...");
+				BiomancyMod.LOGGER.info(LOG_MARKER, "Setting up Alex's Caves compat...");
 				AlexsCavesCompat.onPostSetup();
 			}
 
 			if (ModList.get().isLoaded("iceandfire")) {
-				BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Ice And Fire compat...");
+				BiomancyMod.LOGGER.info(LOG_MARKER, "Setting up Ice And Fire compat...");
 				IceAndFireCompat.onPostSetup();
 			}
-		});
-	}
 
-	private static int parseVersionNumber(String s) {
-		try {
-			return Integer.parseInt(s);
-		}
-		catch (NumberFormatException e) {
-			return -1;
-		}
+			if (ModList.get().isLoaded("overweight_farming")) {
+				BiomancyMod.LOGGER.info(LOG_MARKER, "Setting up Overweight Farming compat...");
+				OverweightFarmingIntegration.onPostSetup();
+			}
+		});
 	}
 
 	public static void onBiomancyClientSetup(final FMLClientSetupEvent event) {
@@ -95,6 +99,10 @@ public final class ModsCompatHandler {
 
 	public static TetraHelper getTetraHelper() {
 		return TETRA_HELPER;
+	}
+
+	public static OverweightFarmingHelper getOverweightFarmingHelper() {
+		return OVERWEIGHT_FARMING_HELPER;
 	}
 
 }

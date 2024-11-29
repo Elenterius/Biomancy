@@ -16,7 +16,7 @@ public final class TetraCompat {
 	private TetraCompat() {}
 
 	public static void init(Consumer<TetraHelper> helperSetter) {
-		helperSetter.accept(new TetraCompat.TetraHelperImpl());
+		helperSetter.accept(new TetraHelperImpl());
 	}
 
 	public static void onPostSetup() {
