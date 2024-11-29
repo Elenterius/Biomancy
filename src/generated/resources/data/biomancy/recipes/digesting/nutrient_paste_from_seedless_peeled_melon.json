@@ -1,0 +1,18 @@
+{
+  "type": "biomancy:digesting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "overweight_farming"
+    }
+  ],
+  "ingredient": {
+    "item": "overweight_farming:seedless_peeled_melon"
+  },
+  "nutrientsCost": 3,
+  "processingTime": 671,
+  "result": {
+    "count": 11,
+    "item": "biomancy:nutrient_paste"
+  }
+}

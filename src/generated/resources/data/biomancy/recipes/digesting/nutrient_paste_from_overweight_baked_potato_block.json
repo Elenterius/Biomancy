@@ -1,0 +1,18 @@
+{
+  "type": "biomancy:digesting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "overweight_farming"
+    }
+  ],
+  "ingredient": {
+    "item": "overweight_farming:overweight_baked_potato_block"
+  },
+  "nutrientsCost": 3,
+  "processingTime": 974,
+  "result": {
+    "count": 50,
+    "item": "biomancy:nutrient_paste"
+  }
+}

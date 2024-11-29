@@ -1,0 +1,32 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "overweight_farming"
+    }
+  ],
+  "ingredient": {
+    "item": "overweight_farming:overweight_poisonous_potato_block"
+  },
+  "nutrientsCost": 2,
+  "processingTime": 1400,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 40,
+        "min": 20
+      },
+      "item": "biomancy:toxin_extract"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 30,
+        "min": 10
+      },
+      "item": "biomancy:organic_matter"
+    }
+  ]
+}

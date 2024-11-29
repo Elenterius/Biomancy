@@ -1,0 +1,24 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "overweight_farming"
+    }
+  ],
+  "ingredient": {
+    "item": "overweight_farming:overweight_beetroot_block"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 800,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 40,
+        "min": 20
+      },
+      "item": "biomancy:organic_matter"
+    }
+  ]
+}

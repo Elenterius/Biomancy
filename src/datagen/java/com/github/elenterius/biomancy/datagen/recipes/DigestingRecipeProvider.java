@@ -22,7 +22,11 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.orcinus.overweightfarming.OverweightFarming;
+import net.orcinus.overweightfarming.init.OFBlocks;
+import net.orcinus.overweightfarming.init.OFItems;
 import vectorwing.farmersdelight.FarmersDelight;
+import vectorwing.farmersdelight.common.FoodValues;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -64,6 +68,7 @@ public class DigestingRecipeProvider extends RecipeProvider {
 		buildFromOrganicRecipes(consumer);
 
 		buildFarmersDelightRecipes(consumer);
+		buildOverweightFarmingRecipes(consumer);
 
 		buildAlexsMobsRecipes(consumer);
 		buildAlexsCavesRecipes(consumer);
@@ -155,6 +160,10 @@ public class DigestingRecipeProvider extends RecipeProvider {
 		return nutrientPasteRecipe(count, ingredient).ifModLoaded(FarmersDelight.MODID);
 	}
 
+	private DigesterRecipeBuilder overweightFarmingRecipe(int count, ItemLike ingredient) {
+		return nutrientPasteRecipe(count, ingredient).ifModLoaded(OverweightFarming.MODID);
+	}
+
 	private DigesterRecipeBuilder alexsMobsRecipe(int count, ItemLike ingredient) {
 		return nutrientPasteRecipe(count, ingredient).ifModLoaded(AlexsMobs.MODID);
 	}
@@ -179,6 +188,50 @@ public class DigestingRecipeProvider extends RecipeProvider {
 		farmersDelightRecipe(Foods.MELON_SLICE.getNutrition() * 4, FarmersDelightItems.MELON_JUICE.get()).setCraftingCost(3).save(consumer);
 		farmersDelightRecipe(Foods.APPLE.getNutrition() * 2 + 1, FarmersDelightItems.APPLE_CIDER.get()).setCraftingCost(3).save(consumer);
 		farmersDelightRecipe(4 * 2 + 2, FarmersDelightItems.HOT_COCOA.get()).setCraftingCost(3).addCraftingTimeModifier(30).save(consumer);
+	}
+
+	private void buildOverweightFarmingRecipes(Consumer<FinishedRecipe> consumer) {
+		int peelNutrition = 1;
+		overweightFarmingRecipe(peelNutrition, OFItems.VEGETABLE_PEELS.get()).save(consumer);
+
+		int seedNutrition = 1;
+		overweightFarmingRecipe(7 * Foods.MELON_SLICE.getNutrition() - peelNutrition, OFBlocks.SEEDED_PEELED_MELON.get()).setCraftingCost(3).addCraftingTimeModifier(25).save(consumer);
+		overweightFarmingRecipe(7 * Foods.MELON_SLICE.getNutrition() - peelNutrition - seedNutrition, OFBlocks.HALF_SEEDED_PEELED_MELON.get()).setCraftingCost(3).addCraftingTimeModifier(20).save(consumer);
+		overweightFarmingRecipe(7 * Foods.MELON_SLICE.getNutrition() - peelNutrition - seedNutrition * 2, OFBlocks.SEEDLESS_PEELED_MELON.get()).setCraftingCost(3).addCraftingTimeModifier(15).save(consumer);
+
+		overweightFarmingRecipe(Foods.CARROT.getNutrition() * 10, OFBlocks.OVERWEIGHT_CARROT.get()).setCraftingCost(3).addCraftingTimeModifier(30).save(consumer);
+		overweightFarmingRecipe(Foods.BEETROOT.getNutrition() * 10, OFBlocks.OVERWEIGHT_BEETROOT.get()).setCraftingCost(3).addCraftingTimeModifier(30).save(consumer);
+		overweightFarmingRecipe(Foods.POTATO.getNutrition() * 10, OFBlocks.OVERWEIGHT_POTATO.get()).setCraftingCost(3).addCraftingTimeModifier(30).save(consumer);
+		overweightFarmingRecipe(Foods.POISONOUS_POTATO.getNutrition() * 10, OFBlocks.OVERWEIGHT_POISONOUS_POTATO.get()).setCraftingCost(3).addCraftingTimeModifier(30).save(consumer);
+		overweightFarmingRecipe(Foods.BAKED_POTATO.getNutrition() * 10, OFBlocks.OVERWEIGHT_BAKED_POTATO.get()).setCraftingCost(3).addCraftingTimeModifier(30).save(consumer);
+
+		overweightFarmingRecipe(4 * 10, OFBlocks.OVERWEIGHT_COCOA.get()).setCraftingCost(3).addCraftingTimeModifier(60).save(consumer);
+		overweightFarmingRecipe(4 * 10 - peelNutrition, OFBlocks.PEELED_OVERWEIGHT_COCOA.get()).setCraftingCost(3).addCraftingTimeModifier(45).save(consumer);
+		overweightFarmingRecipe(2 * 10, OFBlocks.OVERWEIGHT_NETHER_WART.get()).setCraftingCost(2 * 10 - 2).addCraftingTimeModifier(30).save(consumer);
+
+		overweightFarmingRecipe(Foods.APPLE.getNutrition() * 10, OFBlocks.OVERWEIGHT_APPLE.get()).setCraftingCost(3).addCraftingTimeModifier(30).save(consumer);
+		overweightFarmingRecipe(Foods.GOLDEN_APPLE.getNutrition() * 10, OFBlocks.OVERWEIGHT_GOLDEN_APPLE.get()).setCraftingCost(3).addCraftingTimeModifier(60).save(consumer);
+
+		overweightFarmingRecipe(FoodValues.ONION.getNutrition() * 10, OFBlocks.OVERWEIGHT_ONION.get()).ifModLoaded(FarmersDelight.MODID)
+				.setCraftingCost(3).addCraftingTimeModifier(30)
+				.save(consumer);
+		overweightFarmingRecipe(FoodValues.CABBAGE.getNutrition() * 10, OFBlocks.OVERWEIGHT_CABBAGE.get()).ifModLoaded(FarmersDelight.MODID)
+				.setCraftingCost(3).addCraftingTimeModifier(30)
+				.save(consumer);
+
+		overweightFarmingRecipe(10, OFBlocks.OVERWEIGHT_KIWI.get()).ifModLoaded("hedgehog")
+				.setCraftingCost(3).addCraftingTimeModifier(30)
+				.save(consumer);
+		overweightFarmingRecipe(10 - peelNutrition, OFBlocks.PEELED_OVERWEIGHT_KIWI.get()).ifModLoaded("hedgehog")
+				.setCraftingCost(3).addCraftingTimeModifier(20)
+				.save(consumer);
+
+		overweightFarmingRecipe(10, OFBlocks.OVERWEIGHT_GINGER.get()).ifModLoaded("snowyspirit")
+				.setCraftingCost(3).addCraftingTimeModifier(30)
+				.save(consumer);
+		overweightFarmingRecipe(10 - peelNutrition, OFBlocks.PEELED_OVERWEIGHT_GINGER.get()).ifModLoaded("snowyspirit")
+				.setCraftingCost(3).addCraftingTimeModifier(25)
+				.save(consumer);
 	}
 
 	private void buildAlexsMobsRecipes(Consumer<FinishedRecipe> consumer) {

@@ -1,0 +1,24 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "overweight_farming"
+    }
+  ],
+  "ingredient": {
+    "item": "overweight_farming:overweight_baked_potato_block"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 1000,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 50,
+        "min": 20
+      },
+      "item": "biomancy:organic_matter"
+    }
+  ]
+}

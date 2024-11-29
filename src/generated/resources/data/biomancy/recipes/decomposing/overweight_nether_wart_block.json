@@ -1,0 +1,32 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "overweight_farming"
+    }
+  ],
+  "ingredient": {
+    "item": "overweight_farming:overweight_nether_wart_block"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 900,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 20,
+        "min": 10
+      },
+      "item": "biomancy:organic_matter"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 10,
+        "min": 4
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
+}

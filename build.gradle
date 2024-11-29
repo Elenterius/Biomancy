@@ -230,7 +230,8 @@ dependencies {
 	datagenImplementation fg.deobf("maven.modrinth:farmers-delight:1.20.1-1.2.5")
 	datagenImplementation fg.deobf("curse.maven:alexs-delight-556448:5028450")
 
-//	implementation fg.deobf("maven.modrinth:overweight-farming:1.20.1-2.1.0-forge")
+	implementation fg.deobf("maven.modrinth:overweight-farming:1.20.1-2.1.0-forge")
+	datagenImplementation fg.deobf("maven.modrinth:overweight-farming:1.20.1-2.1.0-forge")
 
 	datagenImplementation sourceSets.main.output
 }

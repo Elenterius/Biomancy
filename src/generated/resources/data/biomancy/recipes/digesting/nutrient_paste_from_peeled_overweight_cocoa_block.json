@@ -1,0 +1,18 @@
+{
+  "type": "biomancy:digesting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "overweight_farming"
+    }
+  ],
+  "ingredient": {
+    "item": "overweight_farming:peeled_overweight_cocoa_block"
+  },
+  "nutrientsCost": 3,
+  "processingTime": 942,
+  "result": {
+    "count": 39,
+    "item": "biomancy:nutrient_paste"
+  }
+}

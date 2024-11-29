@@ -31,6 +31,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.RegistryObject;
+import net.orcinus.overweightfarming.OverweightFarming;
+import net.orcinus.overweightfarming.init.OFBlocks;
+import net.orcinus.overweightfarming.init.OFItems;
 import vectorwing.farmersdelight.FarmersDelight;
 
 import java.util.List;
@@ -54,6 +57,7 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 		buildBiomesOPlentyRecipes(consumer);
 
 		buildFarmersDelightRecipes(consumer);
+		buildOverweightFarmingRecipes(consumer);
 
 		buildAlexsMobsRecipes(consumer);
 		buildAlexsDelightRecipes(consumer);
@@ -424,6 +428,10 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 		return DecomposingRecipeBuilder.create().ifModLoaded(FarmersDelight.MODID);
 	}
 
+	private DecomposingRecipeBuilder overweightFarmingRecipe() {
+		return DecomposingRecipeBuilder.create().ifModLoaded(OverweightFarming.MODID);
+	}
+
 	private DecomposingRecipeBuilder alexsMobsRecipe() {
 		return DecomposingRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID);
 	}
@@ -459,6 +467,70 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2 * 2, 3 * 2)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 2, 2 * 2)
 				.unlockedBy(FarmersDelightItems.HAM).save(consumer);
+	}
+
+	private void buildOverweightFarmingRecipes(Consumer<FinishedRecipe> consumer) {
+		overweightFarmingRecipe()
+				.setIngredient(OFItems.VEGETABLE_PEELS.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 4)
+				.unlockedBy(OFItems.VEGETABLE_PEELS.get()).save(consumer);
+
+		overweightFarmingRecipe()
+				.setIngredient(OFBlocks.OVERWEIGHT_COCOA.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 2 * 10, 4 * 10)
+				.unlockedBy(OFBlocks.OVERWEIGHT_COCOA.get()).save(consumer);
+
+		overweightFarmingRecipe()
+				.setIngredient(OFBlocks.PEELED_OVERWEIGHT_COCOA.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 2 * 10 - 2, 4 * 10 - 4)
+				.unlockedBy(OFBlocks.OVERWEIGHT_COCOA.get()).save(consumer);
+
+		overweightFarmingRecipe()
+				.setIngredient(OFBlocks.OVERWEIGHT_APPLE.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 10, 2 * 10)
+				.unlockedBy(OFBlocks.OVERWEIGHT_APPLE.get()).save(consumer);
+
+		overweightFarmingRecipe()
+				.setIngredient(OFBlocks.OVERWEIGHT_BEETROOT.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 2 * 10, 4 * 10)
+				.unlockedBy(OFBlocks.OVERWEIGHT_BEETROOT.get()).save(consumer);
+
+		overweightFarmingRecipe()
+				.setIngredient(OFBlocks.OVERWEIGHT_CARROT.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 10, 2 * 10)
+				.unlockedBy(OFBlocks.OVERWEIGHT_CARROT.get()).save(consumer);
+
+		overweightFarmingRecipe()
+				.setIngredient(OFBlocks.OVERWEIGHT_POTATO.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 10, 2 * 10)
+				.unlockedBy(OFBlocks.OVERWEIGHT_POTATO.get()).save(consumer);
+
+		overweightFarmingRecipe()
+				.setIngredient(OFBlocks.OVERWEIGHT_POISONOUS_POTATO.get())
+				.addOutput(ModItems.TOXIN_EXTRACT.get(), 2 * 10, 4 * 10)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 10, 3 * 10)
+				.unlockedBy(OFBlocks.OVERWEIGHT_POISONOUS_POTATO.get()).save(consumer);
+
+		overweightFarmingRecipe()
+				.setIngredient(OFBlocks.OVERWEIGHT_BAKED_POTATO.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 2 * 10, 5 * 10)
+				.unlockedBy(OFBlocks.OVERWEIGHT_BAKED_POTATO.get()).save(consumer);
+
+		overweightFarmingRecipe()
+				.setIngredient(OFBlocks.OVERWEIGHT_NETHER_WART.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 10, 2 * 10)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 4, 10)
+				.unlockedBy(OFBlocks.OVERWEIGHT_NETHER_WART.get()).save(consumer);
+
+		overweightFarmingRecipe().ifModLoaded(FarmersDelight.MODID)
+				.setIngredient(OFBlocks.OVERWEIGHT_CABBAGE.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 10, 2 * 10)
+				.unlockedBy(OFBlocks.OVERWEIGHT_CABBAGE.get()).save(consumer);
+
+		overweightFarmingRecipe().ifModLoaded(FarmersDelight.MODID)
+				.setIngredient(OFBlocks.OVERWEIGHT_ONION.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 10, 2 * 10)
+				.unlockedBy(OFBlocks.OVERWEIGHT_ONION.get()).save(consumer);
 	}
 
 	private void buildAlexsMobsRecipes(Consumer<FinishedRecipe> consumer) {

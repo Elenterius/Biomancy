@@ -1,0 +1,24 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "overweight_farming"
+    }
+  ],
+  "ingredient": {
+    "item": "overweight_farming:peeled_overweight_cocoa_block"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 720,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 36,
+        "min": 18
+      },
+      "item": "biomancy:organic_matter"
+    }
+  ]
+}
