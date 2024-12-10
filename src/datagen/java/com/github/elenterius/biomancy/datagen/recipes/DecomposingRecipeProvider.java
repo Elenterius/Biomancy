@@ -21,6 +21,8 @@ import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.ncpbails.alexsdelight.AlexsDelight;
+import net.mcreator.sonsofsins.SonsOfSinsMod;
+import net.mcreator.sonsofsins.init.SonsOfSinsModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -63,6 +65,8 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 		buildAlexsDelightRecipes(consumer);
 		buildAlexsCavesRecipes(consumer);
 		buildIceAndFireRecipes(consumer);
+
+		buildSonsOfSinsRecipes(consumer);
 
 		buildTetraRecipes(consumer);
 	}
@@ -446,6 +450,10 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 
 	private DecomposingRecipeBuilder alexsDelightRecipe() {
 		return DecomposingRecipeBuilder.create().ifModLoaded(AlexsDelight.MOD_ID);
+	}
+
+	private DecomposingRecipeBuilder sonsOfSinsRecipe() {
+		return DecomposingRecipeBuilder.create().ifModLoaded(SonsOfSinsMod.MODID);
 	}
 
 	private void buildFarmersDelightRecipes(Consumer<FinishedRecipe> consumer) {
@@ -1487,6 +1495,126 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 
 			builder.unlockedBy(dragonEgg).save(consumer);
 		}
+	}
+
+	private void buildSonsOfSinsRecipes(Consumer<FinishedRecipe> consumer) {
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.RIBS)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 5)
+				.unlockedBy(SonsOfSinsModItems.RIBS).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.CREEPER_RIBS)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 5)
+				.addOutput(ModItems.VOLATILE_FLUID.get(), 2, 3)
+				.unlockedBy(SonsOfSinsModItems.CREEPER_RIBS).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.CHARGED_CREEPER_RIBS)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 5)
+				.addOutput(ModItems.VOLATILE_FLUID.get(), 2 * 3, 3 * 3)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 1, 2)
+				.unlockedBy(SonsOfSinsModItems.CHARGED_CREEPER_RIBS).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.MUSCLE)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.unlockedBy(SonsOfSinsModItems.MUSCLE).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.RAVAGER_MUSCLE)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
+				.unlockedBy(SonsOfSinsModItems.RAVAGER_MUSCLE).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.ENDERMAN_MUSCLE)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 3)
+				.unlockedBy(SonsOfSinsModItems.ENDERMAN_MUSCLE).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.STRIDER_MUSCLE)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 2, 3)
+				.addOutput(ModItems.STONE_POWDER.get(), 2, 4)
+				.addOutput(ModItems.FLESH_BITS.get(), 0, 1)
+				.unlockedBy(SonsOfSinsModItems.STRIDER_MUSCLE).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.HEART)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.unlockedBy(SonsOfSinsModItems.HEART).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.SPIDER_HEART)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.unlockedBy(SonsOfSinsModItems.SPIDER_HEART).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.BLAZING_HEART)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 2 * 3)
+				.addOutput(ModItems.BIO_LUMENS.get(), 2 * 3, 4 * 3)
+				.unlockedBy(SonsOfSinsModItems.BLAZING_HEART).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.ICE_HEART)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 2 * 3)
+				.unlockedBy(SonsOfSinsModItems.ICE_HEART).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.BLOODY_BONE)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 6)
+				.unlockedBy(SonsOfSinsModItems.BLOODY_BONE).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.FLESH_OF_DEMISE)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 6)
+				.addOutput(ModItems.FLESH_BITS.get(), -1, 1)
+				.unlockedBy(SonsOfSinsModItems.BLOODY_BONE).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.SLIME_REAR)
+				.addOutput(ModItems.REGENERATIVE_FLUID.get(), 2, 3)
+				.addOutput(ModItems.BILE.get(), 1, 2)
+				.unlockedBy(SonsOfSinsModItems.SLIME_REAR).save(consumer);
+
+		DecomposingRecipeBuilder.create().setIngredient(SonsOfSinsModItems.BLOCK_OF_SLIME_REAR)
+				.addExtraCraftingCost(3)
+				.addOutput(ModItems.REGENERATIVE_FLUID.get(), 2 * 9, 3 * 9)
+				.addOutput(ModItems.BILE.get(), 10, 18)
+				.unlockedBy(SonsOfSinsModItems.BLOCK_OF_SLIME_REAR).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.GOLEM_CUIRASS)
+				.addExtraCraftingCost(2)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 4, 6)
+				.unlockedBy(SonsOfSinsModItems.GOLEM_CUIRASS).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.ETHER_ASHES)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 2)
+				.unlockedBy(SonsOfSinsModItems.ETHER_ASHES).save(consumer);
+
+		sonsOfSinsRecipe()
+				.setIngredient(SonsOfSinsModItems.CRYSTALLIZED_ETHER)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 1, 3)
+				.unlockedBy(SonsOfSinsModItems.CRYSTALLIZED_ETHER).save(consumer);
 	}
 
 }

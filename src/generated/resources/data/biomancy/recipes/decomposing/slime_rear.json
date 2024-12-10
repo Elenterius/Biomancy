@@ -1,0 +1,32 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "sons_of_sins"
+    }
+  ],
+  "ingredient": {
+    "item": "sons_of_sins:slime_rear"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 145,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 2
+      },
+      "item": "biomancy:regenerative_fluid"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 1
+      },
+      "item": "biomancy:bile"
+    }
+  ]
+}

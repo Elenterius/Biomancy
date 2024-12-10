@@ -1,0 +1,56 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "sons_of_sins"
+    }
+  ],
+  "ingredient": {
+    "item": "sons_of_sins:charged_creeper_ribs"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 542,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 2
+      },
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 1
+      },
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 5,
+        "min": 2
+      },
+      "item": "biomancy:bone_fragments"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 9,
+        "min": 6
+      },
+      "item": "biomancy:volatile_fluid"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 1
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
+}

@@ -233,6 +233,9 @@ dependencies {
 	implementation fg.deobf("maven.modrinth:overweight-farming:1.20.1-2.1.0-forge")
 	datagenImplementation fg.deobf("maven.modrinth:overweight-farming:1.20.1-2.1.0-forge")
 
+	implementation fg.deobf("maven.modrinth:sons-of-sins:2.1.6")
+	datagenImplementation fg.deobf("maven.modrinth:sons-of-sins:2.1.6")
+
 	datagenImplementation sourceSets.main.output
 }
 
@@ -278,7 +281,8 @@ private void minifyJsons(String fdir) {
 	for (File file in fileTree(dir: fdir, include: "**/*.json")) {
 		try {
 			file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new Exception("Failed to minimize " + file, e)
 		}
 	}
