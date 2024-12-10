@@ -1,0 +1,24 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "sons_of_sins"
+    }
+  ],
+  "ingredient": {
+    "item": "sons_of_sins:bloody_bone"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 150,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 6,
+        "min": 3
+      },
+      "item": "biomancy:bone_fragments"
+    }
+  ]
+}

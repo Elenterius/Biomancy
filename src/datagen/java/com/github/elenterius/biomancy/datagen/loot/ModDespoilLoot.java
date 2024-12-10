@@ -8,6 +8,8 @@ import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.IafEntityRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
+import net.mcreator.sonsofsins.SonsOfSinsMod;
+import net.mcreator.sonsofsins.init.SonsOfSinsModEntities;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -40,7 +42,9 @@ public class ModDespoilLoot extends DespoilLootProvider {
 
 			AMEntityRegistry.SKELEWAG.get(), AMEntityRegistry.BONE_SERPENT.get(),
 
-			IafEntityRegistry.DREAD_HORSE.get(), IafEntityRegistry.DREAD_LICH.get(), IafEntityRegistry.DREAD_THRALL.get()
+			IafEntityRegistry.DREAD_HORSE.get(), IafEntityRegistry.DREAD_LICH.get(), IafEntityRegistry.DREAD_THRALL.get(),
+
+			SonsOfSinsModEntities.WISTIVER.get(), SonsOfSinsModEntities.DEVOURER.get()
 	);
 
 	protected static final Set<EntityType<?>> WITHERED_BONE_MARROW_MOBS = Set.of(
@@ -93,7 +97,9 @@ public class ModDespoilLoot extends DespoilLootProvider {
 			ACEntityRegistry.UNDERZEALOT.get(), ACEntityRegistry.WATCHER.get(), ACEntityRegistry.CORRODENT.get(), ACEntityRegistry.VESPER.get(), ACEntityRegistry.FORSAKEN.get(),
 
 			IafEntityRegistry.FIRE_DRAGON.get(), IafEntityRegistry.ICE_DRAGON.get(), IafEntityRegistry.LIGHTNING_DRAGON.get(),
-			IafEntityRegistry.COCKATRICE.get(), IafEntityRegistry.STYMPHALIAN_BIRD.get(), IafEntityRegistry.DREAD_BEAST.get()
+			IafEntityRegistry.COCKATRICE.get(), IafEntityRegistry.STYMPHALIAN_BIRD.get(), IafEntityRegistry.DREAD_BEAST.get(),
+
+			SonsOfSinsModEntities.GUZZLER.get()
 	);
 
 	protected static final Set<EntityType<?>> SHARP_FANG_MOBS = Set.of(
@@ -116,7 +122,9 @@ public class ModDespoilLoot extends DespoilLootProvider {
 			ACEntityRegistry.VESPER.get(), ACEntityRegistry.FORSAKEN.get(),
 
 			IafEntityRegistry.FIRE_DRAGON.get(), IafEntityRegistry.ICE_DRAGON.get(), IafEntityRegistry.LIGHTNING_DRAGON.get(),
-			IafEntityRegistry.SEA_SERPENT.get(), IafEntityRegistry.DREAD_BEAST.get()
+			IafEntityRegistry.SEA_SERPENT.get(), IafEntityRegistry.DREAD_BEAST.get(),
+
+			SonsOfSinsModEntities.NIBBLER.get(), SonsOfSinsModEntities.GUZZLER.get()
 	);
 
 	protected static final Set<EntityType<?>> INVALID_MOBS_FOR_MEATY_LOOT = Set.of(
@@ -140,12 +148,15 @@ public class ModDespoilLoot extends DespoilLootProvider {
 
 			IafEntityRegistry.GHOST.get(), IafEntityRegistry.STONE_STATUE.get(),
 			IafEntityRegistry.DREAD_BEAST.get(), IafEntityRegistry.DREAD_GHOUL.get(), IafEntityRegistry.DREAD_HORSE.get(), IafEntityRegistry.DREAD_KNIGHT.get(), IafEntityRegistry.DREAD_LICH.get(),
-			IafEntityRegistry.DREAD_SCUTTLER.get(), IafEntityRegistry.DREAD_THRALL.get()
+			IafEntityRegistry.DREAD_SCUTTLER.get(), IafEntityRegistry.DREAD_THRALL.get(),
+
+			SonsOfSinsModEntities.GRUB_ORGANS.get(), SonsOfSinsModEntities.GUZZLER_ORGANS.get(), SonsOfSinsModEntities.GULBER_ORGANS.get(), SonsOfSinsModEntities.NIBBLER_ORGANS.get(), SonsOfSinsModEntities.DEVOURER_ORGANS.get(),
+			SonsOfSinsModEntities.CURSE.get(), SonsOfSinsModEntities.WALKING_BED.get()
 	);
 
 	@Override
 	public void generate() {
-		Set<String> validNamespaces = Set.of("minecraft", BiomancyMod.MOD_ID, AlexsMobs.MODID, AlexsCaves.MODID, IceAndFire.MODID);
+		Set<String> validNamespaces = Set.of("minecraft", BiomancyMod.MOD_ID, AlexsMobs.MODID, AlexsCaves.MODID, IceAndFire.MODID, SonsOfSinsMod.MODID);
 		Predicate<EntityType<?>> allowedNamespace = entityType -> validNamespaces.contains(Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(entityType)).getNamespace());
 
 		Predicate<EntityType<?>> validEntityType = entityType -> entityType.getCategory() != MobCategory.MISC; //excludes Players & Villagers as well

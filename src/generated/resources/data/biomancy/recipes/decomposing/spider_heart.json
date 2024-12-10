@@ -1,0 +1,32 @@
+{
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "sons_of_sins"
+    }
+  ],
+  "ingredient": {
+    "item": "sons_of_sins:spider_heart"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 116,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 8,
+        "min": 4
+      },
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 1
+      },
+      "item": "biomancy:flesh_bits"
+    }
+  ]
+}

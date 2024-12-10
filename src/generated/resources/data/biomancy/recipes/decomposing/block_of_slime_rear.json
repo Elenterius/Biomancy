@@ -1,0 +1,26 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "sons_of_sins:block_of_slime_rear"
+  },
+  "nutrientsCost": 5,
+  "processingTime": 1305,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 27,
+        "min": 18
+      },
+      "item": "biomancy:regenerative_fluid"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 18,
+        "min": 10
+      },
+      "item": "biomancy:bile"
+    }
+  ]
+}
