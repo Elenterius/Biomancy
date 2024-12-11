@@ -77,7 +77,7 @@ public final class Tributes {
 
 		register(Items.ENDER_PEARL, SimpleTribute.builder().hostileModifier(50).anomalyModifier(50).build());
 
-		register(Items.NETHER_STAR, SimpleTribute.builder().lifeEnergy(15_000).hostileModifier(100).diseaseModifier(100).build());
+		register(Items.NETHER_STAR, SimpleTribute.builder().lifeEnergy(30_000).hostileModifier(100).diseaseModifier(100).build());
 		register(Items.TOTEM_OF_UNDYING, SimpleTribute.builder().lifeEnergy(2_500).successModifier(100).hostileModifier(-500).build());
 
 		register(ModItems.ELASTIC_FIBERS.get(), SimpleTribute.builder().diseaseModifier(1).anomalyModifier(1).build());
