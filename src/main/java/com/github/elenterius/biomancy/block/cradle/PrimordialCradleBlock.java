@@ -61,6 +61,8 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 		if (item instanceof BlockItem blockItem) {
 			Block block = blockItem.getBlock();
 
+			if (ModsCompatHandler.getOverweightFarmingHelper().isOverweightBlock(block)) return false;
+
 			//prevent all items that have a BlockEntity associated with it from being sacrificed
 			// e.g. complex modded blocks such as computers, machines, containers, etc.
 			if (block instanceof EntityBlock) return true;
