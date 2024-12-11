@@ -39,8 +39,8 @@ public final class Tributes {
 
 		register(ModItems.LIVING_FLESH.get(), SimpleTribute.builder().biomass(10).lifeEnergy(10).successModifier(40).anomalyModifier(55).build());
 		register(ModItems.BLOOMBERRY.get(), SimpleTribute.builder().successModifier(10).lifeEnergy(20).anomalyModifier(20).build());
-		register(Items.GOLDEN_APPLE, SimpleTribute.builder().successModifier(10).hostileModifier(-100).build());
-		register(Items.ENCHANTED_GOLDEN_APPLE, SimpleTribute.builder().lifeEnergy(15).successModifier(40).hostileModifier(-200).build());
+		register(Items.GOLDEN_APPLE, SimpleTribute.builder().lifeEnergy(-255).successModifier(10).hostileModifier(-100).build());
+		register(Items.ENCHANTED_GOLDEN_APPLE, SimpleTribute.builder().lifeEnergy(-120).successModifier(40).hostileModifier(-200).build());
 		register(Items.CAKE, SimpleTribute.builder().hostileModifier(-80).diseaseModifier(10).build());
 		register(Items.MILK_BUCKET, SimpleTribute.builder().hostileModifier(-2).diseaseModifier(-4).build());
 		register(Items.HONEY_BOTTLE, SimpleTribute.builder().successModifier(2).hostileModifier(-10).diseaseModifier(-2).build());
