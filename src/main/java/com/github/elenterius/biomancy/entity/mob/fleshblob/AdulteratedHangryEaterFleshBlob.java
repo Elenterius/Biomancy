@@ -6,9 +6,11 @@ import com.github.elenterius.biomancy.entity.mob.ai.goal.BurningOrFreezingPanicG
 import com.github.elenterius.biomancy.entity.mob.ai.goal.DanceNearJukeboxGoal;
 import com.github.elenterius.biomancy.entity.mob.ai.goal.EatFoodItemGoal;
 import com.github.elenterius.biomancy.entity.mob.ai.goal.FindItemGoal;
+import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import com.github.elenterius.biomancy.util.MobUtil;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -22,11 +24,16 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+import java.util.function.Predicate;
+
 public class AdulteratedHangryEaterFleshBlob extends EaterFleshBlob implements Enemy, AdulteratedFleshkin {
 
 	public static final float BASE_MAX_HEALTH = 10;
 	public static final float BASE_ARMOR = 1.25f;
 	public static final float BASE_ATTACK_DAMAGE = 2f;
+
+	public static final Predicate<LivingEntity> MAIN_PREY_SELECTOR = livingEntity -> !livingEntity.getType().is(ModEntityTags.FLESHKIN_IGNORES);
+	public static final Predicate<LivingEntity> PRIMORDIAL_PREY_SELECTOR = PrimordialFleshkin.class::isInstance;
 
 	public AdulteratedHangryEaterFleshBlob(EntityType<? extends AdulteratedHangryEaterFleshBlob> entityType, Level level) {
 		super(entityType, level);
@@ -62,10 +69,10 @@ public class AdulteratedHangryEaterFleshBlob extends EaterFleshBlob implements E
 		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
 		targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, FleshBlob.class, false, PrimordialFleshkin.class::isInstance));
-		targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
-		targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Animal.class, false));
-		targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
+		targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, FleshBlob.class, false, PRIMORDIAL_PREY_SELECTOR));
+		targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, MAIN_PREY_SELECTOR));
+		targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Animal.class, false, MAIN_PREY_SELECTOR));
+		targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false, MAIN_PREY_SELECTOR));
 	}
 
 	@Override

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "#biomancy:fleshkin",
+    {
+      "id": "#sons_of_sins:is_a_flesh_creature",
+      "required": false
+    }
+  ]
+}
