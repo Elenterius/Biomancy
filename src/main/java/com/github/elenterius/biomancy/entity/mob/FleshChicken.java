@@ -1,6 +1,10 @@
 package com.github.elenterius.biomancy.entity.mob;
 
-import com.github.elenterius.biomancy.init.*;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
+import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.init.ModProjectiles;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.init.tags.ModDamageTypeTags;
 import com.github.elenterius.biomancy.util.animation.MobAnimations;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -44,7 +48,7 @@ public class FleshChicken extends Chicken implements RangedAttackMob, GeoEntity 
 
 	@Override
 	public boolean isInvulnerableTo(DamageSource source) {
-		return super.isInvulnerableTo(source) || source.is(ModDamageTypes.CORROSIVE_ACID);
+		return super.isInvulnerableTo(source) || source.is(ModDamageTypeTags.FORGE_IS_ACID);
 	}
 
 	@Override
