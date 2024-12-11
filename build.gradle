@@ -276,6 +276,12 @@ tasks.named('processResources', ProcessResources).configure {
 }
 
 private void minifyJsons(String fdir) {
+	for (final def taskName in getGradle().getStartParameter().getTaskNames()) {
+		if (taskName.toLowerCase().contains("rundata")) {
+			return //skip minimization of jsons during any RunData tasks because they will be (re-)generated during this task and should only be minimized for builds anyways
+		}
+	}
+
 	print "minmizing jsons..."
 	long startTime = System.nanoTime()
 	for (File file in fileTree(dir: fdir, include: "**/*.json")) {
