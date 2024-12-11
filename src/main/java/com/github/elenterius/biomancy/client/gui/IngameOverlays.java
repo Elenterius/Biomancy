@@ -120,7 +120,7 @@ public final class IngameOverlays {
 	}
 
 	private static void drawValueWithLabel(GuiGraphics guiGraphics, Font font, float value, String label, int x, int y) {
-		drawValueWithLabel(guiGraphics, font, String.valueOf(value), label, x, y, TextStyles.LIGHT_GRAY, TextStyles.GRAY);
+		drawValueWithLabel(guiGraphics, font, Math.round(value * 100f) + "%", label, x, y, TextStyles.LIGHT_GRAY, TextStyles.GRAY);
 	}
 
 	static void renderGunOverlay(ForgeGui gui, GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun gun) {
