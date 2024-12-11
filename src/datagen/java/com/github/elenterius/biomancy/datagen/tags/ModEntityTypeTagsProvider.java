@@ -4,6 +4,7 @@ import com.github.alexmodguy.alexscaves.server.misc.ACTagRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
+import net.mcreator.sonsofsins.SonsOfSinsMod;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
@@ -35,6 +36,12 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 				ModEntityTypes.PRIMORDIAL_FLESH_BLOB.get(), ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get(),
 				ModEntityTypes.FLESH_COW.get(), ModEntityTypes.FLESH_SHEEP.get(), ModEntityTypes.FLESH_PIG.get(), ModEntityTypes.FLESH_CHICKEN.get()
 		);
+
+		createTag(ModEntityTags.FLESHKIN_IGNORES)
+				.addTag(
+						ModEntityTags.FLESHKIN
+				)
+				.addOptionalTag(SonsOfSinsMod.MODID + ":is_a_flesh_creature");
 
 		tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
 				ModEntityTypes.FLESH_CHICKEN.get()

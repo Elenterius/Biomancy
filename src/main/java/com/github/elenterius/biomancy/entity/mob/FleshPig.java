@@ -32,7 +32,7 @@ import java.util.function.Predicate;
 
 public class FleshPig extends Pig implements Enemy, GeoEntity {
 
-	public static final Predicate<LivingEntity> PREY_SELECTOR = livingEntity -> !(livingEntity instanceof FleshPig) && !livingEntity.getType().is(ModEntityTags.FLESHKIN);
+	public static final Predicate<LivingEntity> PREY_SELECTOR = livingEntity -> !(livingEntity instanceof FleshPig) && !livingEntity.getType().is(ModEntityTags.FLESHKIN_IGNORES);
 
 	protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -50,9 +50,9 @@ public class FleshPig extends Pig implements Enemy, GeoEntity {
 		goalSelector.addGoal(2, new MeleeAttackGoal(this, 1d, true));
 
 		targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
-		targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+		targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true, PREY_SELECTOR));
 		targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Animal.class, false, PREY_SELECTOR));
-		targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
+		targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false, PREY_SELECTOR));
 	}
 
 	@Override
