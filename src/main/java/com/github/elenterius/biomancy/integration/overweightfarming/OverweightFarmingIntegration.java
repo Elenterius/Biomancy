@@ -14,12 +14,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.DripstoneUtils;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+import net.orcinus.overweightfarming.blocks.CropFullBlock;
 import net.orcinus.overweightfarming.init.OFBlocks;
 import net.orcinus.overweightfarming.util.OverweightGrowthManager;
 
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public final class OverweightFarmingIntegration {
 
@@ -56,6 +59,18 @@ public final class OverweightFarmingIntegration {
 
 		private final OverweightGrowthManager growthManager = new OverweightGrowthManager(RandomSource.create());
 		private Set<Block> validCrops;
+		private Set<Block> overweightCrops;
+
+		@Override
+		public boolean isOverweightBlock(Block block) {
+			if (overweightCrops == null) {
+				overweightCrops = OFBlocks.BLOCKS.getEntries().stream()
+						.map(RegistryObject::get)
+						.filter(CropFullBlock.class::isInstance)
+						.collect(Collectors.toSet());
+			}
+			return overweightCrops.contains(block);
+		}
 
 		@Override
 		public boolean canGrowOverweight(Level level, BlockPos pos, BlockState state) {
