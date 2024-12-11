@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.datagen.tags;
 
+import com.github.alexmodguy.alexscaves.server.misc.ACTagRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
@@ -40,6 +41,11 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 		);
 
 		tag(EntityTypeTags.DISMOUNTS_UNDERWATER).add(
+				ModEntityTypes.FLESH_CHICKEN.get()
+		);
+
+		tag(ACTagRegistry.RESISTS_ACID).add(
+				ModEntityTypes.PRIMORDIAL_FLESH_BLOB.get(), ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get(),
 				ModEntityTypes.FLESH_CHICKEN.get()
 		);
 	}
