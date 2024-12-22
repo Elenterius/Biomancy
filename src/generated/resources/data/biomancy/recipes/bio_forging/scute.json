@@ -3,11 +3,19 @@
   "bio_forge_tab": "biomancy:components",
   "ingredients": [
     {
-      "count": 6,
+      "type": "biomancy:essence",
+      "item": {
+        "id": "biomancy:essence",
+        "tag": "{colors:[I;15198183,44975],essence_data:{entity_type:\"minecraft:turtle\",name:\"entity.minecraft.turtle\"},essence_tier:1}"
+      },
+      "predicate_tag": "{essence_data:{entity_type:\"minecraft:turtle\"},essence_tier:1}"
+    },
+    {
+      "count": 10,
       "item": "biomancy:tough_fibers"
     },
     {
-      "count": 4,
+      "count": 6,
       "item": "biomancy:mineral_fragment"
     },
     {
