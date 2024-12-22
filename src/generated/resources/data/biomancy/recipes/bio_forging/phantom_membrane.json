@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:components",
+  "ingredients": [
+    {
+      "type": "biomancy:essence",
+      "item": {
+        "id": "biomancy:essence",
+        "tag": "{colors:[I;4411786,8978176],essence_data:{entity_type:\"minecraft:phantom\",name:\"entity.minecraft.phantom\"},essence_tier:1}"
+      },
+      "predicate_tag": "{essence_data:{entity_type:\"minecraft:phantom\"},essence_tier:1}"
+    },
+    {
+      "count": 14,
+      "item": "biomancy:tough_fibers"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "count": 6,
+      "item": "biomancy:exotic_dust"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "minecraft:phantom_membrane"
+  }
+}
