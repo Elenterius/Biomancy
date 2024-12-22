@@ -14,11 +14,11 @@
       "predicate_tag": "{essence_data:{entity_type:\"minecraft:piglin\"},essence_tier:1}"
     },
     {
-      "count": 38,
+      "count": 42,
       "item": "biomancy:flesh_bits"
     },
     {
-      "count": 14,
+      "count": 18,
       "item": "biomancy:elastic_fibers"
     }
   ],

@@ -3,14 +3,15 @@
   "bio_forge_tab": "biomancy:components",
   "ingredients": [
     {
-      "count": 7,
+      "count": 10,
       "item": "biomancy:mineral_fragment"
     },
     {
-      "count": 8,
+      "count": 12,
       "item": "biomancy:tough_fibers"
     },
     {
+      "count": 2,
       "item": "biomancy:stone_powder"
     }
   ],

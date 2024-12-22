@@ -3,7 +3,7 @@
   "bio_forge_tab": "biomancy:components",
   "ingredients": [
     {
-      "count": 5,
+      "count": 8,
       "item": "biomancy:tough_fibers"
     },
     {

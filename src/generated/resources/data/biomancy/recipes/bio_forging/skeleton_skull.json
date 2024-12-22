@@ -3,11 +3,11 @@
   "bio_forge_tab": "biomancy:components",
   "ingredients": [
     {
-      "count": 50,
+      "count": 54,
       "item": "biomancy:bone_fragments"
     },
     {
-      "count": 9,
+      "count": 13,
       "item": "biomancy:mineral_fragment"
     }
   ],

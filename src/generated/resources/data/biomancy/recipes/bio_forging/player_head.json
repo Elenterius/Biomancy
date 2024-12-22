@@ -14,11 +14,11 @@
       "predicate_tag": "{essence_data:{entity_type:\"minecraft:player\"},essence_tier:1}"
     },
     {
-      "count": 34,
+      "count": 38,
       "item": "biomancy:flesh_bits"
     },
     {
-      "count": 11,
+      "count": 15,
       "item": "biomancy:elastic_fibers"
     }
   ],

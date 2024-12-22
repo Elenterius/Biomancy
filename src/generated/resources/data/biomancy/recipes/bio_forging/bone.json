@@ -3,14 +3,8 @@
   "bio_forge_tab": "biomancy:components",
   "ingredients": [
     {
-      "count": 5,
+      "count": 12,
       "item": "biomancy:bone_fragments"
-    },
-    {
-      "item": "biomancy:mineral_fragment"
-    },
-    {
-      "item": "biomancy:stone_powder"
     }
   ],
   "nutrientsCost": 1,

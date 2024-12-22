@@ -40,15 +40,6 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 		buildToolRecipes(consumer);
 		buildComponentRecipes(consumer);
 		buildMiscRecipes(consumer);
-
-		/* --------- Testing --------- */
-
-		//		BioForgeRecipeBuilder.create(Items.PAPER)
-		//				.addIngredient(ItemTags.PLANKS, 11)
-		//				.addIngredient(ModItems.ORGANIC_MATTER.get(), 8)
-		//				.addIngredient(ItemTags.SMALL_FLOWERS, 3)
-		//				.setCategory(ModBioForgeTabs.REPLICAS)
-		//				.unlockedBy(Items.PAPER).save(consumer);
 	}
 
 	private void buildMachineRecipes(Consumer<FinishedRecipe> consumer) {
@@ -273,70 +264,77 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.HORMONE_SECRETION.get()).save(consumer);
 
 		BioForgingRecipeBuilder.create(ModItems.MOB_FANG.get())
-				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 6)
-				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 8)
-				.addIngredient(ModItems.STONE_POWDER.get(), 1)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 8)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 12)
+				.addIngredient(ModItems.STONE_POWDER.get(), 2)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(ModItems.MOB_FANG.get()).save(consumer);
 
 		BioForgingRecipeBuilder.create(ModItems.MOB_CLAW.get())
-				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 7)
-				.addIngredient(ModItems.TOUGH_FIBERS.get(), 8)
-				.addIngredient(ModItems.STONE_POWDER.get(), 1)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 10)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 12)
+				.addIngredient(ModItems.STONE_POWDER.get(), 2)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(ModItems.MOB_CLAW.get()).save(consumer);
 
 		BioForgingRecipeBuilder.create(Items.BONE)
-				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 5)
-				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 1)
-				.addIngredient(ModItems.STONE_POWDER.get(), 1)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 12)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(ModItems.BONE_FRAGMENTS.get()).save(consumer);
 
 		BioForgingRecipeBuilder.create(Items.LEATHER)
-				.addIngredient(ModItems.TOUGH_FIBERS.get(), 5)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 8)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 1)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(Items.LEATHER).save(consumer);
 
 		BioForgingRecipeBuilder.create(Items.STRING)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 2)
-				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 1)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 2)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(Items.STRING).save(consumer);
 
 		BioForgingRecipeBuilder.create(Items.COBWEB)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 2 * 4)
-				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 4)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 2 * 4)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(Items.STRING).save(consumer);
 
 		BioForgingRecipeBuilder.create(Items.SCUTE)
-				.addIngredient(ModItems.TOUGH_FIBERS.get(), 6)
-				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 4)
+				.addIngredient(EssenceIngredient.of(EntityType.TURTLE))
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 10)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 6)
 				.addIngredient(ModItems.STONE_POWDER.get(), 1)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(Items.SCUTE).save(consumer);
 
+		BioForgingRecipeBuilder.create(Items.PHANTOM_MEMBRANE)
+				.addIngredient(EssenceIngredient.of(EntityType.PHANTOM))
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 14)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 4)
+				.addIngredient(ModItems.EXOTIC_DUST.get(), 6)
+				.setCategory(ModBioForgeTabs.COMPONENTS)
+				.unlockedBy(Items.PHANTOM_MEMBRANE).save(consumer);
+
 		BioForgingRecipeBuilder.create(Items.NAUTILUS_SHELL)
 				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 11)
 				.addIngredient(ModItems.TOUGH_FIBERS.get(), 8)
-				.addIngredient(ModItems.STONE_POWDER.get(), 1)
+				.addIngredient(ModItems.STONE_POWDER.get(), 4)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(Items.NAUTILUS_SHELL).save(consumer);
 
 		BioForgingRecipeBuilder.create(Items.SKELETON_SKULL)
 				.setCraftingCost(4)
-				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 48 + 2)
-				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 7 + 2)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 48 + 6)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 7 + 6)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(Items.SKELETON_SKULL).save(consumer);
 
 		BioForgingRecipeBuilder.create(Items.WITHER_SKELETON_SKULL)
 				.setCraftingCost(4)
-				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 48 + 2)
-				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 7 + 2)
-				.addIngredient(ModItems.WITHERING_OOZE.get(), 16 + 2)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 48 + 6)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 7 + 6)
+				.addIngredient(ModItems.WITHERING_OOZE.get(), 16 + 4)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(Items.WITHER_SKELETON_SKULL).save(consumer);
 
@@ -344,8 +342,8 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 				.setCraftingCost(4)
 				.addIngredient(Items.SKELETON_SKULL)
 				.addIngredient(EssenceIngredient.of(EntityType.PLAYER))
-				.addIngredient(ModItems.FLESH_BITS.get(), 32 + 2)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 9 + 2)
+				.addIngredient(ModItems.FLESH_BITS.get(), 32 + 6)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 9 + 6)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(Items.SKELETON_SKULL).save(consumer);
 
@@ -353,8 +351,8 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 				.setCraftingCost(4)
 				.addIngredient(Items.SKELETON_SKULL)
 				.addIngredient(EssenceIngredient.of(EntityType.PIGLIN))
-				.addIngredient(ModItems.FLESH_BITS.get(), 36 + 2)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 12 + 2)
+				.addIngredient(ModItems.FLESH_BITS.get(), 36 + 6)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 12 + 6)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(Items.SKELETON_SKULL).save(consumer);
 
