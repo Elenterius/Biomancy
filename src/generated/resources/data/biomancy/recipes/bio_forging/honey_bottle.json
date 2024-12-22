@@ -1,10 +1,13 @@
 {
   "type": "biomancy:bio_forging",
-  "bio_forge_tab": "biomancy:misc",
+  "bio_forge_tab": "biomancy:components",
   "ingredients": [
     {
-      "count": 2,
-      "item": "biomancy:elastic_fibers"
+      "item": "minecraft:yellow_dye"
+    },
+    {
+      "count": 4,
+      "item": "minecraft:sugar"
     },
     {
       "count": 4,
@@ -14,13 +17,11 @@
       "item": "biomancy:gelling_agent"
     },
     {
-      "count": 2,
-      "item": "biomancy:gem_fragments"
+      "item": "minecraft:glass_bottle"
     }
   ],
   "nutrientsCost": 1,
   "result": {
-    "count": 2,
-    "item": "biomancy:impermeable_membrane_pane"
+    "item": "minecraft:honey_bottle"
   }
 }

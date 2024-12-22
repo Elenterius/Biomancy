@@ -1,10 +1,10 @@
 {
   "type": "biomancy:bio_forging",
-  "bio_forge_tab": "biomancy:misc",
+  "bio_forge_tab": "biomancy:components",
   "ingredients": [
     {
-      "count": 2,
-      "item": "biomancy:elastic_fibers"
+      "count": 4,
+      "item": "biomancy:regenerative_fluid"
     },
     {
       "count": 4,
@@ -12,14 +12,10 @@
     },
     {
       "item": "biomancy:gelling_agent"
-    },
-    {
-      "count": 2,
-      "item": "biomancy:gem_fragments"
     }
   ],
   "nutrientsCost": 1,
   "result": {
-    "item": "biomancy:impermeable_membrane"
+    "item": "minecraft:slime_ball"
   }
 }

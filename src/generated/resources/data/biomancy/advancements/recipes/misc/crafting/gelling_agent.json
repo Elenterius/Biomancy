@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_impermeable_membrane": {
+    "has_acid_bucket": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:impermeable_membrane"
+              "biomancy:acid_bucket"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomancy:bio_forging/baby_permeable_membrane_pane"
+        "recipe": "biomancy:crafting/gelling_agent"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_impermeable_membrane",
+      "has_acid_bucket",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "biomancy:bio_forging/baby_permeable_membrane_pane"
+      "biomancy:crafting/gelling_agent"
     ]
   },
   "sends_telemetry_event": false

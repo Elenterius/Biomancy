@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_elastic_fibers": {
+    "has_impermeable_membrane": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:elastic_fibers"
+              "biomancy:impermeable_membrane"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_elastic_fibers",
+      "has_impermeable_membrane",
       "has_the_recipe"
     ]
   ],

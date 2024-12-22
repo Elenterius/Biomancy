@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "biomancy:acid_bucket"
+    },
+    {
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "item": "biomancy:elastic_fibers"
+    }
+  ],
+  "result": {
+    "item": "biomancy:gelling_agent"
+  }
+}

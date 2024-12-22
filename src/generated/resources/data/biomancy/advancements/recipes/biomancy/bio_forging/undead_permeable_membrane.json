@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_phantom_membrane": {
+    "has_impermeable_membrane": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:phantom_membrane"
+              "biomancy:impermeable_membrane"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_phantom_membrane",
+      "has_impermeable_membrane",
       "has_the_recipe"
     ]
   ],

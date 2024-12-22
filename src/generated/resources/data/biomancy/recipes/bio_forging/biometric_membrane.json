@@ -3,8 +3,7 @@
   "bio_forge_tab": "biomancy:misc",
   "ingredients": [
     {
-      "count": 2,
-      "item": "biomancy:elastic_fibers"
+      "item": "biomancy:impermeable_membrane"
     },
     {
       "count": 4,

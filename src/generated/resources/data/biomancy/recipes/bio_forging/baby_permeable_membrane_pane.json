@@ -3,16 +3,11 @@
   "bio_forge_tab": "biomancy:misc",
   "ingredients": [
     {
-      "count": 4,
-      "item": "biomancy:elastic_fibers"
+      "item": "biomancy:impermeable_membrane"
     },
     {
       "count": 4,
       "item": "biomancy:regenerative_fluid"
-    },
-    {
-      "count": 2,
-      "item": "biomancy:gem_fragments"
     }
   ],
   "nutrientsCost": 1,

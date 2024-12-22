@@ -506,6 +506,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 								
 				Right Click the Sac to retrieve the Items.""");
 		addItem(ModItems.ACID_BUCKET, "Gastric Acid Bucket");
+		addItem(ModItems.GELLING_AGENT, "Gellant", "A gelatinous substance which turns liquids into a gel without altering its taste and other major properties.\nUseful for increasing the stability of volatile things.");
 
 		addItem(ModItems.RAVENOUS_CLAWS, "Ravenous Claws", """
 				Extremely hungry and vicious Claws forged by starving living flesh and grafting claws onto it.

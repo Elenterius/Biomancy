@@ -300,6 +300,12 @@ public class VanillaRecipeProvider extends RecipeProvider {
 		membrane(consumer, ModItems.PRIMAL_PERMEABLE_MEMBRANE_PANE.get(), ModItems.PRIMAL_PERMEABLE_MEMBRANE.get());
 		membrane(consumer, ModItems.UNDEAD_PERMEABLE_MEMBRANE_PANE.get(), ModItems.UNDEAD_PERMEABLE_MEMBRANE.get());
 
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GELLING_AGENT.get())
+				.requires(ModItems.ACID_BUCKET.get())
+				.requires(ModItems.ELASTIC_FIBERS.get(), 8)
+				.unlockedBy(hasName(ModItems.ACID_BUCKET.get()), has(ModItems.ACID_BUCKET.get()))
+				.save(consumer);
+
 		special(consumer, ModItems.BIOMETRIC_MEMBRANE.get(), ModRecipes.BIOMETRIC_MEMBRANE_CRAFTING_SERIALIZER.get());
 		special(consumer, Items.PLAYER_HEAD, ModRecipes.PLAYER_HEAD_SERIALIZER.get());
 		special(consumer, ModItems.PRIMORDIAL_CRADLE.get(), ModRecipes.CRADLE_CLEANSING_SERIALIZER.get());
