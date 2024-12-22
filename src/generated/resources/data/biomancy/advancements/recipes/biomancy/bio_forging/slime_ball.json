@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_impermeable_membrane": {
+    "has_gelling_agent": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:impermeable_membrane"
+              "biomancy:gelling_agent"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomancy:bio_forging/baby_permeable_membrane_pane"
+        "recipe": "biomancy:bio_forging/slime_ball"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_impermeable_membrane",
+      "has_gelling_agent",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "biomancy:bio_forging/baby_permeable_membrane_pane"
+      "biomancy:bio_forging/slime_ball"
     ]
   },
   "sends_telemetry_event": false

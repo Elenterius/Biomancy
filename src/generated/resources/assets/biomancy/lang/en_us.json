@@ -77,6 +77,8 @@
   "item.biomancy.gift_sac": "Gift Sac",
   "item.biomancy.gift_sac.tooltip": "Looks like some objects are wrapped in an organic layer of skin. Might be filled with items or toxin if your language is set to German.\n\nRight Click the Sac to retrieve the Items.",
   "item.biomancy.acid_bucket": "Gastric Acid Bucket",
+  "item.biomancy.gelling_agent": "Gellant",
+  "item.biomancy.gelling_agent.tooltip": "A gelatinous substance which turns liquids into a gel without altering its taste and other major properties.\nUseful for increasing the stability of volatile things.",
   "item.biomancy.ravenous_claws": "Ravenous Claws",
   "item.biomancy.ravenous_claws.tooltip": "Extremely hungry and vicious Claws forged by starving living flesh and grafting claws onto it.\n\nRepair the famished claws by feeding them with food via the player inventory, as you would fill a bundle.\n\nKilling Mobs with these claws grants blood charges, which allow you to use the Awakened mode.",
   "item.biomancy.caustic_gunblade": "Caustic Gunblade",

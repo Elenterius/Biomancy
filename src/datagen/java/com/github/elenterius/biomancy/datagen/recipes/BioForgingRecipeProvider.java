@@ -360,6 +360,21 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 		//		DecomposerRecipeBuilder.create().setIngredient(Items.CREEPER_HEAD).addOutput(ModItems.FLESH_BITS.get(), 19, 32).addOutput(ModItems.ELASTIC_FIBERS.get(), 5, 9).addOutput(Items.SKELETON_SKULL, 1).unlockedBy(Items.CREEPER_HEAD).save(consumer);
 		//		DecomposerRecipeBuilder.create().setIngredient(Items.DRAGON_HEAD).addOutput(ModItems.FLESH_BITS.get(), 50).addOutput(ModItems.EXOTIC_DUST.get(), 50).addOutput(ModItems.TOUGH_FIBERS.get(), 25).addOutput(ModItems.MINERAL_FRAGMENT.get(), 20).addOutput(ModItems.BONE_FRAGMENTS.get(), 50).unlockedBy(Items.DRAGON_HEAD).save(consumer);
 
+		BioForgingRecipeBuilder.create(Items.SLIME_BALL)
+				.addIngredient(ModItems.REGENERATIVE_FLUID.get(), 4)
+				.addIngredient(ModItems.BILE.get(), 4)
+				.addIngredient(ModItems.GELLING_AGENT.get(), 1)
+				.setCategory(ModBioForgeTabs.COMPONENTS)
+				.unlockedBy(ModItems.GELLING_AGENT).save(consumer);
+
+		BioForgingRecipeBuilder.create(Items.HONEY_BOTTLE)
+				.addIngredient(Items.YELLOW_DYE, 1)
+				.addIngredient(Items.SUGAR, 4)
+				.addIngredient(ModItems.BILE.get(), 4)
+				.addIngredient(ModItems.GELLING_AGENT.get(), 1)
+				.addIngredient(Items.GLASS_BOTTLE, 1)
+				.setCategory(ModBioForgeTabs.COMPONENTS)
+				.unlockedBy(ModItems.GELLING_AGENT).save(consumer);
 	}
 
 	private void buildMiscRecipes(Consumer<FinishedRecipe> consumer) {
@@ -409,61 +424,59 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 		BioForgingRecipeBuilder.create(ModItems.IMPERMEABLE_MEMBRANE.get())
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 2)
 				.addIngredient(ModItems.BILE.get(), 4)
+				.addIngredient(ModItems.GELLING_AGENT.get(), 1)
 				.addIngredient(ModItems.GEM_FRAGMENTS.get(), 2)
 				.setCategory(ModBioForgeTabs.MISC)
-				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+				.unlockedBy(ModItems.GELLING_AGENT.get()).save(consumer);
 
 		BioForgingRecipeBuilder.create(ModItems.BABY_PERMEABLE_MEMBRANE.get())
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+				.addIngredient(ModItems.IMPERMEABLE_MEMBRANE.get())
 				.addIngredient(ModItems.REGENERATIVE_FLUID.get(), 4)
-				.addIngredient(ModItems.GEM_FRAGMENTS.get(), 2)
 				.setCategory(ModBioForgeTabs.MISC)
-				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+				.unlockedBy(ModItems.IMPERMEABLE_MEMBRANE.get()).save(consumer);
 
 		BioForgingRecipeBuilder.create(ModItems.ADULT_PERMEABLE_MEMBRANE.get())
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+				.addIngredient(ModItems.IMPERMEABLE_MEMBRANE.get())
 				.addIngredient(ModItems.HORMONE_SECRETION.get(), 4)
-				.addIngredient(ModItems.GEM_FRAGMENTS.get(), 2)
 				.setCategory(ModBioForgeTabs.MISC)
-				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+				.unlockedBy(ModItems.IMPERMEABLE_MEMBRANE.get()).save(consumer);
 
 		BioForgingRecipeBuilder.create(ModItems.UNDEAD_PERMEABLE_MEMBRANE.get())
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+				.addIngredient(ModItems.IMPERMEABLE_MEMBRANE.get())
 				.addIngredient(ModItems.BILE.get(), 4)
 				.addIngredient(Items.PHANTOM_MEMBRANE, 1)
 				.setCategory(ModBioForgeTabs.MISC)
-				.unlockedBy(Items.PHANTOM_MEMBRANE).save(consumer);
+				.unlockedBy(ModItems.IMPERMEABLE_MEMBRANE.get()).save(consumer);
 
 		BioForgingRecipeBuilder.create(ModItems.IMPERMEABLE_MEMBRANE_PANE.get(), 2)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 2)
 				.addIngredient(ModItems.BILE.get(), 4)
+				.addIngredient(ModItems.GELLING_AGENT.get(), 1)
 				.addIngredient(ModItems.GEM_FRAGMENTS.get(), 2)
 				.setCategory(ModBioForgeTabs.MISC)
-				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+				.unlockedBy(ModItems.GELLING_AGENT.get()).save(consumer);
 
 		BioForgingRecipeBuilder.create(ModItems.BABY_PERMEABLE_MEMBRANE_PANE.get(), 2)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+				.addIngredient(ModItems.IMPERMEABLE_MEMBRANE.get())
 				.addIngredient(ModItems.REGENERATIVE_FLUID.get(), 4)
-				.addIngredient(ModItems.GEM_FRAGMENTS.get(), 2)
 				.setCategory(ModBioForgeTabs.MISC)
-				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+				.unlockedBy(ModItems.IMPERMEABLE_MEMBRANE.get()).save(consumer);
 
 		BioForgingRecipeBuilder.create(ModItems.ADULT_PERMEABLE_MEMBRANE_PANE.get(), 2)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+				.addIngredient(ModItems.IMPERMEABLE_MEMBRANE.get())
 				.addIngredient(ModItems.HORMONE_SECRETION.get(), 4)
-				.addIngredient(ModItems.GEM_FRAGMENTS.get(), 2)
 				.setCategory(ModBioForgeTabs.MISC)
-				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+				.unlockedBy(ModItems.IMPERMEABLE_MEMBRANE.get()).save(consumer);
 
 		BioForgingRecipeBuilder.create(ModItems.UNDEAD_PERMEABLE_MEMBRANE_PANE.get(), 2)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+				.addIngredient(ModItems.IMPERMEABLE_MEMBRANE.get())
 				.addIngredient(ModItems.BILE.get(), 4)
 				.addIngredient(Items.PHANTOM_MEMBRANE, 1)
 				.setCategory(ModBioForgeTabs.MISC)
-				.unlockedBy(Items.PHANTOM_MEMBRANE).save(consumer);
+				.unlockedBy(ModItems.IMPERMEABLE_MEMBRANE.get()).save(consumer);
 
 		BioForgingRecipeBuilder.create(ModItems.BIOMETRIC_MEMBRANE.get())
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 2)
+				.addIngredient(ModItems.IMPERMEABLE_MEMBRANE.get())
 				.addIngredient(ModItems.BILE.get(), 4)
 				.addIngredient(ModItems.GEM_FRAGMENTS.get(), 2)
 				.addIngredient(ModItems.LIVING_FLESH.get())

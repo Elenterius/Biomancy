@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_elastic_fibers": {
+    "has_gelling_agent": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:elastic_fibers"
+              "biomancy:gelling_agent"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_elastic_fibers",
+      "has_gelling_agent",
       "has_the_recipe"
     ]
   ],
