@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:water_bucket"
+    },
+    {
+      "item": "biomancy:gelling_agent"
+    },
+    {
+      "item": "biomancy:gelling_agent"
+    }
+  ],
+  "result": {
+    "item": "biomancy:water_gel_block"
+  }
+}

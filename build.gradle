@@ -225,8 +225,8 @@ dependencies {
 //	implementation fg.deobf("se.mickelus.mutil:mutil:1.20.1-6.1.1")
 	compileOnly fg.deobf("maven.modrinth:tetra:6.1.0")
 
-	runtimeOnly fg.deobf("maven.modrinth:farmers-delight:1.20.1-1.2.5")
-	runtimeOnly fg.deobf("curse.maven:alexs-delight-556448:5028450")
+	implementation fg.deobf("maven.modrinth:farmers-delight:1.20.1-1.2.5")
+	implementation fg.deobf("curse.maven:alexs-delight-556448:5028450")
 	datagenImplementation fg.deobf("maven.modrinth:farmers-delight:1.20.1-1.2.5")
 	datagenImplementation fg.deobf("curse.maven:alexs-delight-556448:5028450")
 

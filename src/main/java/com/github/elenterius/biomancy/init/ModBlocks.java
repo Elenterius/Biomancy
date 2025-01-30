@@ -131,6 +131,8 @@ public final class ModBlocks {
 
 	//## Fluids
 	public static final RegistryObject<LiquidBlock> ACID_FLUID_BLOCK = register("acid_fluid_block", () -> new LiquidBlock(ModFluids.ACID, copyProperties(Blocks.WATER)));
+	public static final RegistryObject<AcidCauldron> ACID_CAULDRON = register("acid_cauldron", () -> new AcidCauldron(copyProperties(Blocks.CAULDRON)));
+	public static final RegistryObject<WaterGelBlock> WATER_GEL_BLOCK = register("water_gel_block", properties -> new WaterGelBlock(properties.mapColor(MapColor.WATER).strength(100f).speedFactor(0.8f).jumpFactor(1.2f).noOcclusion().sound(SoundType.SLIME_BLOCK).noOcclusion().isRedstoneConductor(ModBlocks::neverValid)));
 
 	//## Misc
 	public static final RegistryObject<LadderBlock> FLESH_LADDER = register("flesh_ladder", () -> new LadderBlock(createBonyFleshProperties().noOcclusion()));
@@ -140,7 +142,6 @@ public final class ModBlocks {
 	public static final RegistryObject<FleshDoorBlock> FLESH_DOOR = register("flesh_door", FleshDoorBlock::new);
 	public static final RegistryObject<FullFleshDoorBlock> FULL_FLESH_DOOR = register("full_flesh_door", FullFleshDoorBlock::new);
 	public static final RegistryObject<FleshChainBlock> TENDON_CHAIN = register("tendon_chain", properties -> new FleshChainBlock(properties.noOcclusion()));
-	public static final RegistryObject<AcidCauldron> ACID_CAULDRON = register("acid_cauldron", () -> new AcidCauldron(copyProperties(Blocks.CAULDRON)));
 
 	private ModBlocks() {}
 

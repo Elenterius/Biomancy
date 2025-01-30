@@ -306,6 +306,12 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(ModItems.ACID_BUCKET.get()), has(ModItems.ACID_BUCKET.get()))
 				.save(consumer);
 
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.WATER_GEL_BLOCK.get())
+				.requires(Items.WATER_BUCKET)
+				.requires(ModItems.GELLING_AGENT.get(), 2)
+				.unlockedBy(hasName(ModItems.GELLING_AGENT.get()), has(ModItems.GELLING_AGENT.get()))
+				.save(consumer);
+
 		special(consumer, ModItems.BIOMETRIC_MEMBRANE.get(), ModRecipes.BIOMETRIC_MEMBRANE_CRAFTING_SERIALIZER.get());
 		special(consumer, Items.PLAYER_HEAD, ModRecipes.PLAYER_HEAD_SERIALIZER.get());
 		special(consumer, ModItems.PRIMORDIAL_CRADLE.get(), ModRecipes.CRADLE_CLEANSING_SERIALIZER.get());

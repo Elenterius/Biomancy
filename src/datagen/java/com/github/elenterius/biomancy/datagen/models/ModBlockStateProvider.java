@@ -156,8 +156,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		directionalBlockWithItem(ModBlocks.CHRYSALIS.get());
 
 		particleOnly(ModBlocks.ACID_FLUID_BLOCK, new ResourceLocation("biomancy:block/acid_flat"));
-
 		layeredCauldron(ModBlocks.ACID_CAULDRON);
+		existingBlockWithItem(ModBlocks.WATER_GEL_BLOCK);
 	}
 
 	public <T extends LayeredCauldronBlock> void layeredCauldron(RegistryObject<T> registryObject) {

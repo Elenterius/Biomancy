@@ -1,16 +1,23 @@
 package com.github.elenterius.biomancy.event;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.block.WaterGelBlock;
 import com.github.elenterius.biomancy.init.AcidInteractions;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.serum.FrenzySerum;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingBreatheEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -26,6 +33,19 @@ public final class LivingEventHandler {
 	@SubscribeEvent
 	public static void onLivingTick(final LivingEvent.LivingTickEvent event) {
 		AcidInteractions.handleEntityInsideAcidFluid(event.getEntity());
+	}
+
+	@SubscribeEvent
+	public static void onLivingBreath(final LivingBreatheEvent event) {
+		LivingEntity livingEntity = event.getEntity();
+		Block blockAtEyePos = livingEntity.level().getBlockState(BlockPos.containing(livingEntity.getX(), livingEntity.getEyeY(), livingEntity.getZ())).getBlock();
+
+		if (blockAtEyePos instanceof WaterGelBlock) {
+			boolean canBreathe = !livingEntity.canDrownInFluidType(Fluids.WATER.getFluidType()) || MobEffectUtil.hasWaterBreathing(livingEntity) || (livingEntity instanceof Player && ((Player) livingEntity).getAbilities().invulnerable);
+			if (!canBreathe) {
+				event.setCanBreathe(false);
+			}
+		}
 	}
 
 	@SubscribeEvent
