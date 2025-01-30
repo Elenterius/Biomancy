@@ -22,6 +22,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
@@ -48,7 +49,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		addFleshyBlocksToHoeTag();
+		addMineableWithToolTags();
 		addCreateTags();
 		addQuarkTags();
 
@@ -131,12 +132,20 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(Membrane.class::isInstance).forEach(impermeableTag::add);
 	}
 
-	private void addFleshyBlocksToHoeTag() {
-		IntrinsicTagAppender<Block> tag = tag(BlockTags.MINEABLE_WITH_HOE);
-		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach((block) -> {
-			if (block instanceof AbstractCauldronBlock) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block); //Lazy hack to get around Elen's lazy hack :P
-			else tag.add(block);
-		});
+	private void addMineableWithToolTags() {
+		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ACID_CAULDRON.get());
+		tag(BlockTags.MINEABLE_WITH_SHOVEL).add(ModBlocks.WATER_GEL_BLOCK.get());
+
+		IntrinsicTagAppender<Block> hoeTag = tag(BlockTags.MINEABLE_WITH_HOE);
+
+		Set<Block> notMineableWithHoe = Set.of(
+				ModBlocks.ACID_CAULDRON.get(), ModBlocks.ACID_FLUID_BLOCK.get(),
+				ModBlocks.WATER_GEL_BLOCK.get()
+		);
+
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get)
+				.filter(block -> !notMineableWithHoe.contains(block))
+				.forEach(hoeTag::add);
 	}
 
 	/**

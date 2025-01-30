@@ -1,0 +1,77 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "particle": "biomancy:block/water_gel_block",
+    "inside": "minecraft:block/water_still",
+    "outside": "biomancy:block/water_gel_block"
+  },
+  "elements": [
+    {
+      "from": [ 3, 3, 3 ],
+      "to": [ 13, 13, 13 ],
+      "faces": {
+        "down": {
+          "uv": [ 3, 3, 13, 13 ],
+          "texture": "#inside"
+        },
+        "up": {
+          "uv": [ 3, 3, 13, 13 ],
+          "texture": "#inside"
+        },
+        "north": {
+          "uv": [ 3, 3, 13, 13 ],
+          "texture": "#inside"
+        },
+        "south": {
+          "uv": [ 3, 3, 13, 13 ],
+          "texture": "#inside"
+        },
+        "west": {
+          "uv": [ 3, 3, 13, 13 ],
+          "texture": "#inside"
+        },
+        "east": {
+          "uv": [ 3, 3, 13, 13 ],
+          "texture": "#inside"
+        }
+      }
+    },
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#outside",
+          "cullface": "down"
+        },
+        "up": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#outside",
+          "cullface": "up"
+        },
+        "north": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#outside",
+          "cullface": "north"
+        },
+        "south": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#outside",
+          "cullface": "south"
+        },
+        "west": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#outside",
+          "cullface": "west"
+        },
+        "east": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#outside",
+          "cullface": "east"
+        }
+      }
+    }
+  ]
+}

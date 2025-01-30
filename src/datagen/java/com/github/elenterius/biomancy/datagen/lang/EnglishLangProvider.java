@@ -684,9 +684,9 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 		addBlock(ModBlocks.PRIMAL_ORIFICE, "Primal Orifice", "A grotesque, flesh mass riddled with holes, oozing gastric juices. These orifices appear to grow inside flesh mound chambers and can be harvested using buckets or bottles, yielding a highly acidic fluid.");
 		addBlock(ModBlocks.ACID_FLUID_BLOCK, "Gastric Acid");
-
 		addBlock(ModBlocks.ACID_CAULDRON,"Gastric Acid Cauldron");
-	}   
+		addBlock(ModBlocks.WATER_GEL_BLOCK, "Water Gel", "A hydrating water gel that supplies moisture to mobs and farmland without spilling liquids everywhere.");
+	}
 
 	private void addEntityTranslations() {
 		addEntityType(ModEntityTypes.HUNGRY_FLESH_BLOB, "Hungry Flesh Blob");

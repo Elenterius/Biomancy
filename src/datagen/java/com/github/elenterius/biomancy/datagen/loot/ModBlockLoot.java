@@ -251,6 +251,7 @@ public class ModBlockLoot extends BlockLootSubProvider {
 
 		add(ModBlocks.ACID_FLUID_BLOCK.get(), noDrop());
 		add(ModBlocks.ACID_CAULDRON.get(), drop(Items.CAULDRON));
+		dropSelf(ModBlocks.WATER_GEL_BLOCK.get());
 	}
 
 	protected <T extends Block> void addCustom(T block, Function<T, LootTable.Builder> function) {
