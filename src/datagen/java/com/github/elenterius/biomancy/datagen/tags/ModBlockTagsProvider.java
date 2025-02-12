@@ -106,6 +106,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 				ModBlocks.PRIMAL_PERMEABLE_MEMBRANE_PANE.get()
 		);
 
+		tag(ModBlockTags.ALLOW_GAS_TO_PASS_THROUGH)
+				.addTag(BlockTags.FENCES)
+				.addTag(BlockTags.FENCE_GATES)
+				.addTag(BlockTags.ANVIL)
+				.add(Blocks.BELL);
+
 		tag(BlockTags.DOORS).add(ModBlocks.FLESH_DOOR.get()).add(ModBlocks.FULL_FLESH_DOOR.get());
 		tag(BlockTags.TRAPDOORS).add(ModBlocks.FLESH_IRIS_DOOR.get());
 

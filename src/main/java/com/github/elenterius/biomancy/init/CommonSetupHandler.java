@@ -1,14 +1,19 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.entity.projectile.GrenadeProjectile;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.item.extractor.ExtractorItem;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
+import net.minecraft.core.Position;
+import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.DispensibleContainerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -113,6 +118,26 @@ public final class CommonSetupHandler {
 				else {
 					return defaultDispenseItemBehavior.dispense(source, stack);
 				}
+			}
+		});
+
+		DispenserBlock.registerBehavior(ModItems.GRENADE.get(), new DispenseItemBehavior() {
+			public ItemStack dispense(BlockSource source, ItemStack itemStack) {
+				return (new AbstractProjectileDispenseBehavior() {
+
+					protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
+						return new GrenadeProjectile(level, position.x(), position.y(), position.z());
+					}
+
+					protected float getUncertainty() {
+						return super.getUncertainty() * 0.5F;
+					}
+
+					protected float getPower() {
+						return super.getPower() * 1.25F;
+					}
+
+				}).dispense(source, itemStack);
 			}
 		});
 	}

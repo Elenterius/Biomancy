@@ -112,6 +112,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
 		dynamicBucket(ModItems.ACID_BUCKET.get());
 		basicItem(ModItems.GELLING_AGENT);
+		weaponItem(ModItems.GRENADE);
 
 		//generate models for all eggs
 		ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(SpawnEggItem.class::isInstance).forEach(this::spawnEggItem);
@@ -184,6 +185,10 @@ public class ModItemModelProvider extends ItemModelProvider {
 				.parent(new ModelFile.UncheckedModelFile("item/generated"))
 				.texture(LAYER_0_TEXTURE, new ResourceLocation(rl.getNamespace(), ITEM_FOLDER + "/serum/generic_serum"))
 				.texture(LAYER_1_TEXTURE, new ResourceLocation(rl.getNamespace(), ITEM_FOLDER + "/serum/generic_serum_overlay"));
+	}
+
+	public <T extends Item> ItemModelBuilder weaponItem(RegistryObject<T> registryObject) {
+		return basicItem(registryObject.getId(), "weapon");
 	}
 
 	public ItemModelBuilder weaponItem(Item item) {

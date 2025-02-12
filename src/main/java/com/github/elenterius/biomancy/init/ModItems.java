@@ -8,6 +8,7 @@ import com.github.elenterius.biomancy.item.extractor.ExtractorItem;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.item.shield.ThornShieldItem;
 import com.github.elenterius.biomancy.item.weapon.DespoilingSwordItem;
+import com.github.elenterius.biomancy.item.weapon.GrenadeItem;
 import com.github.elenterius.biomancy.item.weapon.RavenousClawsItem;
 import com.github.elenterius.biomancy.item.weapon.gun.CausticGunbladeItem;
 import com.github.elenterius.biomancy.item.weapon.gun.DevArmCannonItem;
@@ -115,6 +116,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> CREATOR_MIX = registerSimpleItem("creator_mix");
 	public static final RegistryObject<BucketItem> ACID_BUCKET = registerItem("acid_bucket", properties -> new BucketItem(ModFluids.ACID, properties.craftRemainder(Items.BUCKET).stacksTo(1).rarity(Rarity.COMMON)));
 	public static final RegistryObject<SimpleItem> GELLING_AGENT = registerSimpleItem("gelling_agent");
+	public static final RegistryObject<SimpleItem> GRENADE = registerItem("grenade", props -> new GrenadeItem(props));
 
 	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_BANNER_PATTERNS = registerItem("mascot_patterns", props -> new MaykerBannerPatternItem(ModBannerPatterns.TAG_MASCOT, props));
 
