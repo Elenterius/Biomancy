@@ -362,6 +362,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addSound(ModSoundEvents.FLESH_CHICKEN_AMBIENT, "Flesh Chicken clucks");
 		addSound(ModSoundEvents.FLESH_CHICKEN_HURT, "Flesh Chicken hurts");
 		addSound(ModSoundEvents.FLESH_CHICKEN_DEATH, "Flesh Chicken dies");
+
+		addSound(ModSoundEvents.GRENADE_THROW, "Grenade Thrown");
 	}
 
 	private void addDamageTranslations() {
@@ -507,6 +509,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 				Right Click the Sac to retrieve the Items.""");
 		addItem(ModItems.ACID_BUCKET, "Gastric Acid Bucket");
 		addItem(ModItems.GELLING_AGENT, "Gellant", "A gelatinous substance which turns liquids into a gel without altering its taste and other major properties.\nUseful for increasing the stability of volatile things.");
+		addItem(ModItems.GRENADE, "Grenade", "BOOM");
 
 		addItem(ModItems.RAVENOUS_CLAWS, "Ravenous Claws", """
 				Extremely hungry and vicious Claws forged by starving living flesh and grafting claws onto it.

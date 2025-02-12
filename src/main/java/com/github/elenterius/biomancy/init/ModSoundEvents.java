@@ -98,6 +98,9 @@ public final class ModSoundEvents {
 	public static final RegistryObject<SoundEvent> FLESH_CHICKEN_HURT = register("entity.flesh_chicken.hurt");
 	public static final RegistryObject<SoundEvent> FLESH_CHICKEN_DEATH = register("entity.flesh_chicken.death");
 
+	//# Entities
+	public static final RegistryObject<SoundEvent> GRENADE_THROW = register("entity.grenade.throw");
+
 	private ModSoundEvents() {}
 
 	private static RegistryObject<SoundEvent> register(String name) {

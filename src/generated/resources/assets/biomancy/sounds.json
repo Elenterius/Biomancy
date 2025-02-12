@@ -440,6 +440,16 @@
     ],
     "subtitle": "sounds.biomancy.entity.flesh_sheep.hurt"
   },
+  "entity.grenade.throw": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.snowball.throw",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "sounds.biomancy.entity.grenade.throw"
+  },
   "flesh_block.break": {
     "sounds": [
       "biomancy:flesh_block.break1",

@@ -43,6 +43,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.particle.AttackSweepParticle;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
@@ -121,6 +122,9 @@ public final class ClientSetupHandler {
 		event.registerEntityRenderer(ModEntityTypes.TOOTH_PROJECTILE.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.BLOOMBERRY_PROJECTILE.get(), BloomberryProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.ACID_BLOB_PROJECTILE.get(), AcidBlobProjectileRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.GRENADE_PROJECTILE.get(), ThrownItemRenderer::new);
+
+		event.registerEntityRenderer(ModEntityTypes.GAS_CLOUD.get(), NoopRenderer::new);
 	}
 
 	@SuppressWarnings("removal")

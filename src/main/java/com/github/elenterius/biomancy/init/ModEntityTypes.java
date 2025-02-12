@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.entity.misc.GasCloud;
 import com.github.elenterius.biomancy.entity.mob.*;
 import com.github.elenterius.biomancy.entity.mob.fleshblob.AdulteratedEaterFleshBlob;
 import com.github.elenterius.biomancy.entity.mob.fleshblob.AdulteratedHangryEaterFleshBlob;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -49,6 +51,10 @@ public final class ModEntityTypes {
 	public static final RegistryObject<EntityType<AcidSpitProjectile>> CORROSIVE_ACID_PROJECTILE = registerProjectile("corrosive_acid_projectile", AcidSpitProjectile::new, builder -> builder.sized(0.25f, 0.25f));
 	public static final RegistryObject<EntityType<BloomberryProjectile>> BLOOMBERRY_PROJECTILE = registerProjectile("bloomberry_projectile", BloomberryProjectile::new, builder -> builder.sized(8f / 16f, 8f / 16f));
 	public static final RegistryObject<EntityType<AcidBlobProjectile>> ACID_BLOB_PROJECTILE = registerProjectile("acid_blob_projectile", AcidBlobProjectile::new, builder -> builder.sized(6f / 16f, 6f / 16f));
+	public static final RegistryObject<EntityType<GrenadeProjectile>> GRENADE_PROJECTILE = registerGrenade("grenade_projectile", GrenadeProjectile::new, builder -> builder.sized(0.6f, 0.6f));
+
+	//Misc
+	public static final RegistryObject<EntityType<GasCloud>> GAS_CLOUD = register("gas_cloud", EntityType.Builder.<GasCloud>of(GasCloud::new, MobCategory.MISC).fireImmune().sized(GasCloud.DEFAULT_RADIUS * 2f, GasCloud.DEFAULT_RADIUS * 2f).clientTrackingRange(10).updateInterval(Integer.MAX_VALUE));
 
 	private ModEntityTypes() {}
 
@@ -58,6 +64,10 @@ public final class ModEntityTypes {
 
 	private static <T extends BaseProjectile> RegistryObject<EntityType<T>> registerProjectile(String name, EntityType.EntityFactory<T> factory, UnaryOperator<EntityType.Builder<T>> builder) {
 		return ENTITIES.register(name, () -> builder.apply(EntityType.Builder.of(factory, MobCategory.MISC)).updateInterval(10).build(BiomancyMod.MOD_ID + ":" + name));
+	}
+
+	private static <T extends ThrowableProjectile> RegistryObject<EntityType<T>> registerGrenade(String name, EntityType.EntityFactory<T> factory, UnaryOperator<EntityType.Builder<T>> builder) {
+		return ENTITIES.register(name, () -> builder.apply(EntityType.Builder.of(factory, MobCategory.MISC)).setShouldReceiveVelocityUpdates(true).updateInterval(1).build(BiomancyMod.MOD_ID + ":" + name));
 	}
 
 	@SubscribeEvent

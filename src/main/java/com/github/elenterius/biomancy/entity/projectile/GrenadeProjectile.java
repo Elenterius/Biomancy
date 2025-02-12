@@ -1,0 +1,127 @@
+package com.github.elenterius.biomancy.entity.projectile;
+
+import com.github.elenterius.biomancy.entity.misc.GasCloud;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
+import com.github.elenterius.biomancy.init.ModItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.network.NetworkHooks;
+
+public class GrenadeProjectile extends ThrowableItemProjectile {
+
+	protected static final byte ITEM_BREAK_EVENT = 3;
+	protected static final EntityDataAccessor<Integer> DELAY_DATA = SynchedEntityData.defineId(GrenadeProjectile.class, EntityDataSerializers.INT);
+
+	public GrenadeProjectile(EntityType<? extends GrenadeProjectile> entityType, Level level) {
+		super(entityType, level);
+	}
+
+	public GrenadeProjectile(Level level, LivingEntity thrower) {
+		super(ModEntityTypes.GRENADE_PROJECTILE.get(), thrower, level);
+	}
+
+	public GrenadeProjectile(Level level, double x, double y, double z) {
+		super(ModEntityTypes.GRENADE_PROJECTILE.get(), x, y, z, level);
+	}
+
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(DELAY_DATA, 0);
+	}
+
+	public int getExplodeDelayTicks() {
+		return entityData.get(DELAY_DATA);
+	}
+
+	public void setExplodeDelay(int ticks) {
+		entityData.set(DELAY_DATA, ticks);
+	}
+
+	@Override
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
+	}
+
+	@Override
+	protected void onHitEntity(EntityHitResult hitResult) {
+		hitResult.getEntity().hurt(damageSources().thrown(this, getOwner()), 0F);
+	}
+
+	@Override
+	protected void onHit(HitResult hitResult) {
+		super.onHit(hitResult);
+
+		if (!level().isClientSide) {
+			BlockPos pos = getValidBlockPos(hitResult);
+
+			level().playSound(null, pos, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.2f, 1f);
+
+			GasCloud cloud = new GasCloud(level(), pos);
+			cloud.setRadius(3.5f);
+			cloud.setDuration(10 * 20);
+			cloud.addEffect(new MobEffectInstance(MobEffects.POISON, 5 * 20));
+			level().addFreshEntity(cloud);
+
+			level().broadcastEntityEvent(this, ITEM_BREAK_EVENT);
+			discard();
+		}
+
+	}
+
+	protected BlockPos getValidBlockPos(HitResult hitResult) {
+		if (hitResult.getType() == HitResult.Type.BLOCK && hitResult instanceof BlockHitResult blockHitResult) {
+			return blockHitResult.getBlockPos().relative(blockHitResult.getDirection());
+		}
+		return blockPosition();
+	}
+
+	@Override
+	public void handleEntityEvent(byte eventId) {
+		if (eventId == 3) {
+			double scale = 0.08D;
+			for (int i = 0; i < 8; i++) {
+				double xSpeed = (random.nextDouble() - 0.5d) * scale;
+				double ySpeed = (random.nextDouble() - 0.5d) * scale;
+				double zSpeed = (random.nextDouble() - 0.5d) * scale;
+				level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, getItem()), getX(), getY(), getZ(), xSpeed, ySpeed, zSpeed);
+			}
+		}
+	}
+
+	protected Item getDefaultItem() {
+		return ModItems.GRENADE.get();
+	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag tag) {
+		super.readAdditionalSaveData(tag);
+		setExplodeDelay(tag.getInt("explode_delay_ticks"));
+	}
+
+	@Override
+	public void addAdditionalSaveData(CompoundTag tag) {
+		super.addAdditionalSaveData(tag);
+		tag.putInt("explode_delay_ticks", getExplodeDelayTicks());
+	}
+
+}
