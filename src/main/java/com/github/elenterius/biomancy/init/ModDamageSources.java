@@ -42,6 +42,10 @@ public final class ModDamageSources {
 		return source(ModDamageTypes.BLEED, level, attacker);
 	}
 
+	public static DamageSource toxin(Level level, @Nullable Entity attacker) {
+		return source(ModDamageTypes.TOXIN, level, attacker);
+	}
+
 	public static DamageSource slash(Level level, @Nullable Entity attacker) {
 		return source(ModDamageTypes.SLASH, level, attacker);
 	}

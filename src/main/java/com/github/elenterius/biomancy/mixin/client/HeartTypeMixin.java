@@ -13,7 +13,7 @@ public abstract class HeartTypeMixin {
 
 	@Inject(method = "forPlayer", at = @At("HEAD"), cancellable = true)
 	private static void onForPlayer(Player player, CallbackInfoReturnable<Gui.HeartType> cir) {
-		if (player.hasEffect(ModMobEffects.WITHDRAWAL.get())) {
+		if (player.hasEffect(ModMobEffects.WITHDRAWAL.get()) || player.hasEffect(ModMobEffects.TOXIN.get())) {
 			cir.setReturnValue(Gui.HeartType.POISIONED);
 		}
 	}
