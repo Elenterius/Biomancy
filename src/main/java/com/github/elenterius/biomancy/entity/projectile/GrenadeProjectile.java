@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.entity.projectile;
 import com.github.elenterius.biomancy.entity.misc.GasCloud;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.init.ModMobEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -15,7 +16,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
@@ -79,7 +79,7 @@ public class GrenadeProjectile extends ThrowableItemProjectile {
 			GasCloud cloud = new GasCloud(level(), pos);
 			cloud.setRadius(3.5f);
 			cloud.setDuration(10 * 20);
-			cloud.addEffect(new MobEffectInstance(MobEffects.POISON, 5 * 20));
+			cloud.addEffect(new MobEffectInstance(ModMobEffects.TOXIN.get(), 5 * 20));
 			level().addFreshEntity(cloud);
 
 			level().broadcastEntityEvent(this, ITEM_BREAK_EVENT);

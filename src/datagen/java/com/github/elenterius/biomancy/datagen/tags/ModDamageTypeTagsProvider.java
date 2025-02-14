@@ -25,6 +25,7 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
 				ModDamageTypes.PRIMORDIAL_SPIKES,
 				ModDamageTypes.CHEST_BITE,
 				ModDamageTypes.BLEED,
+				ModDamageTypes.TOXIN,
 				ModDamageTypes.FALL_ON_SPIKE,
 				ModDamageTypes.IMPALED_BY_SPIKE
 		);
@@ -54,6 +55,22 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
 				ModDamageTypes.SLASH
 		);
 
+		tag(DamageTypeTags.WITCH_RESISTANT_TO).add(
+				ModDamageTypes.TOXIN
+		);
+
+		tag(DamageTypeTags.AVOIDS_GUARDIAN_THORNS).add(
+				ModDamageTypes.BLEED,
+				ModDamageTypes.CORROSIVE_ACID,
+				ModDamageTypes.TOXIN
+		);
+
+		tag(DamageTypeTags.ALWAYS_TRIGGERS_SILVERFISH).add(
+				ModDamageTypes.BLEED,
+				ModDamageTypes.CORROSIVE_ACID,
+				ModDamageTypes.TOXIN
+		);
+
 		tag(DamageTypeTags.ALWAYS_HURTS_ENDER_DRAGONS).add(
 				ModDamageTypes.BLEED,
 				ModDamageTypes.CORROSIVE_ACID
@@ -74,6 +91,11 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
 				.addOptionalTag(
 						ACDamageTypes.ACID.location()
 				);
+
+		tag(ModDamageTypeTags.FORGE_IS_POISON).add(
+				ModDamageTypes.TOXIN
+		);
+
 	}
 
 }

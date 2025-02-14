@@ -426,6 +426,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addEffect(ModMobEffects.ARMOR_SHRED, "Armor Shred");
 		addEffect(ModMobEffects.LIBIDO, "Fertility");
 		addEffect(ModMobEffects.BLEED, "Bleed");
+		addEffect(ModMobEffects.TOXIN, "Fatal Toxin");
 		addEffect(ModMobEffects.ESSENCE_ANEMIA, "Essence Anemia");
 		addEffect(ModMobEffects.DROWSY, "Drowsy");
 		addEffect(ModMobEffects.DESPOIL, "Despoil");

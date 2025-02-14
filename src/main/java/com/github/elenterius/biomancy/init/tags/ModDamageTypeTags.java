@@ -9,6 +9,7 @@ import net.minecraft.world.damagesource.DamageType;
 public final class ModDamageTypeTags {
 
 	public static final TagKey<DamageType> FORGE_IS_ACID = forgeTag("is_acid");
+	public static final TagKey<DamageType> FORGE_IS_POISON = forgeTag("is_poison");
 
 	/*
 	public static final TagKey<DamageType> IS_CORROSIVE = tag("is_corrosive");

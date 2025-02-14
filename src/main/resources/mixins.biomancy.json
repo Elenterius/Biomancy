@@ -8,11 +8,11 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "AnimalMixin", "AreaEffectCloudMixin", "ArrowMixin", "BlockMixin", "ChickenMixin", "CowMixin", "FarmBlockMixin", "FlowingFluidMixin", "ItemEntityMixin",
-    "LivingEntityMixin", "MobEffectInstanceMixin", "NodeEvaluatorMixin", "PhantomMixin", "PigMixin", "PlayerMixin", "ServerGamePacketListenerImplMixin",
-    "ServerLevelMixin", "SheepMixin", "SignBlockEntityMixin", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "VillagerMakeLoveMixin", "VillagerMixin",
-    "WallBlockMixin", "accessor.AgeableMobAccessor", "accessor.ArmorStandAccessor", "accessor.BiomeAccessor", "accessor.CreeperAccessor",
-    "accessor.DamageSourceAccessor", "accessor.EntityAccessor", "accessor.IngredientAccessor", "accessor.IntegerPropertyAccessor",
+    "AnimalMixin", "AreaEffectCloudMixin", "ArrowMixin", "BlockMixin", "ChickenMixin", "CowMixin", "FarmBlockMixin", "FlowingFluidMixin",
+    "HoneyBottleItemMixin", "ItemEntityMixin", "LivingEntityMixin", "MobEffectInstanceMixin", "NodeEvaluatorMixin", "PhantomMixin", "PigMixin", "PlayerMixin",
+    "ServerGamePacketListenerImplMixin", "ServerLevelMixin", "SheepMixin", "SignBlockEntityMixin", "ThrownPotionMixin", "UnbreakingEnchantmentMixin",
+    "VillagerMakeLoveMixin", "VillagerMixin", "WallBlockMixin", "accessor.AgeableMobAccessor", "accessor.ArmorStandAccessor", "accessor.BiomeAccessor",
+    "accessor.CreeperAccessor", "accessor.DamageSourceAccessor", "accessor.EntityAccessor", "accessor.IngredientAccessor", "accessor.IntegerPropertyAccessor",
     "accessor.LivingEntityAccessor", "accessor.MobEffectInstanceAccessor", "accessor.MobEntityAccessor", "accessor.ServerLevelAccessor",
     "accessor.SheepAccessor", "accessor.SlimeAccessor", "accessor.SuspiciousStewItemAccessor", "accessor.SwordItemMixinAccessor", "accessor.TadpoleAccessor",
     "accessor.TextureSlotAccessor", "accessor.ZombieVillagerMixinAccessor", "compat.RichSoilFarmlandBlockMixin"

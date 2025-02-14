@@ -18,6 +18,7 @@ public final class ModMobEffects {
 	public static final RegistryObject<ArmorShredEffect> ARMOR_SHRED = EFFECTS.register("armor_shred", () -> new ArmorShredEffect(MobEffectCategory.HARMFUL, 20, 0x909090)
 			.addModifier(Attributes.ARMOR, "a15ed03e-c5db-4cf8-a0f5-4eb4657bb731", -1f, AttributeModifier.Operation.ADDITION));
 	public static final RegistryObject<BleedEffect> BLEED = EFFECTS.register("bleed", () -> new BleedEffect(MobEffectCategory.HARMFUL, 0x8a0303, 2));
+	public static final RegistryObject<ToxinEffect> TOXIN = EFFECTS.register("toxin", () -> new ToxinEffect(MobEffectCategory.HARMFUL, 0x87a363));
 
 	public static final RegistryObject<EssenceAnemiaEffect> ESSENCE_ANEMIA = EFFECTS.register("essence_anemia", () -> new EssenceAnemiaEffect(MobEffectCategory.HARMFUL, 0xfefefe)
 			.addModifier(Attributes.MAX_HEALTH, "a6ca3300-17d9-41c7-b29d-af93fa367b23", -0.2f, AttributeModifier.Operation.MULTIPLY_BASE)

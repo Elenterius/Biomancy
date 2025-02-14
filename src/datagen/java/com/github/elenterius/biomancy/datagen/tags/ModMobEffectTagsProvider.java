@@ -7,6 +7,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -22,6 +24,10 @@ public class ModMobEffectTagsProvider extends IntrinsicHolderTagsProvider<MobEff
 		super(output, Registries.MOB_EFFECT, lookupProvider, mobEffect -> ForgeRegistries.MOB_EFFECTS.getDelegateOrThrow(mobEffect).key(), BiomancyMod.MOD_ID, existingFileHelper);
 	}
 
+	private static TagKey<MobEffect> forgeTag(String path) {
+		return TagKey.create(Registries.MOB_EFFECT, new ResourceLocation("forge", path));
+	}
+
 	@Override
 	public String getName() {
 		return StringUtils.capitalize(modId) + " " + super.getName();
@@ -29,6 +35,12 @@ public class ModMobEffectTagsProvider extends IntrinsicHolderTagsProvider<MobEff
 
 	@Override
 	protected void addTags(HolderLookup.Provider pProvider) {
+		addBiomancyTags();
+
+		tag(forgeTag("is_poison")).add(ModMobEffects.TOXIN.get());
+	}
+
+	private void addBiomancyTags() {
 		tag(ModMobEffectTags.NOT_REMOVABLE_WITH_CLEANSING_SERUM).add(
 				ModMobEffects.ESSENCE_ANEMIA.get(),
 				ModMobEffects.WITHDRAWAL.get()
