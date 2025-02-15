@@ -111,6 +111,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 		flatBlockItem(ModItems.MALIGNANT_FLESH_VEINS);
 
 		dynamicBucket(ModItems.ACID_BUCKET.get());
+		flatBlockItem(ModItems.ACID_SPLATTER, "_0");
+
 		basicItem(ModItems.GELLING_AGENT);
 		weaponItem(ModItems.GRENADE);
 
@@ -258,6 +260,20 @@ public class ModItemModelProvider extends ItemModelProvider {
 		return getBuilder(registryKey.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/generated"))
 				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), BLOCK_FOLDER + "/" + registryKey.getPath()));
+	}
+
+	public <T extends BlockItem> ItemModelBuilder flatBlockItem(RegistryObject<T> registryObject, String suffix) {
+		return flatBlockItem(registryObject.getId(), suffix);
+	}
+
+	public ItemModelBuilder flatBlockItem(BlockItem blockItem, String suffix) {
+		return flatBlockItem(registryKey(blockItem), suffix);
+	}
+
+	public ItemModelBuilder flatBlockItem(ResourceLocation registryKey, String suffix) {
+		return getBuilder(registryKey.toString())
+				.parent(new ModelFile.UncheckedModelFile("item/generated"))
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), BLOCK_FOLDER + "/" + registryKey.getPath() + suffix));
 	}
 
 	public <T extends BlockItem> ItemModelBuilder wallBlockItem(RegistryObject<T> registryObject) {
