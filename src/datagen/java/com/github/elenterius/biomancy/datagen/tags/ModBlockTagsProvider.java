@@ -145,7 +145,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		IntrinsicTagAppender<Block> hoeTag = tag(BlockTags.MINEABLE_WITH_HOE);
 
 		Set<Block> notMineableWithHoe = Set.of(
-				ModBlocks.ACID_CAULDRON.get(), ModBlocks.ACID_FLUID_BLOCK.get(),
+				ModBlocks.ACID_CAULDRON.get(), ModBlocks.ACID_FLUID_BLOCK.get(), ModBlocks.ACID_SPLATTER.get(),
 				ModBlocks.WATER_GEL_BLOCK.get()
 		);
 

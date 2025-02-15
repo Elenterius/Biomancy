@@ -22,10 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.*;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -33,7 +30,6 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -61,6 +57,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	protected ResourceLocation blockAsset(Block block) {
 		ResourceLocation registryKey = registryKey(block);
 		return new ResourceLocation(registryKey.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + registryKey.getPath());
+	}
+
+	protected ResourceLocation blockAsset(Block block, String suffix) {
+		ResourceLocation registryKey = registryKey(block);
+		return new ResourceLocation(registryKey.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + registryKey.getPath() + suffix);
 	}
 
 	protected ResourceLocation extend(ResourceLocation resourceLocation, String suffix) {
@@ -157,6 +158,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		particleOnly(ModBlocks.ACID_FLUID_BLOCK, new ResourceLocation("biomancy:block/acid_flat"));
 		layeredCauldron(ModBlocks.ACID_CAULDRON);
+		multifaceBlockWithPropertyVariants(ModBlocks.ACID_SPLATTER.get(), AcidSplatterBlock.AGE.get());
+
 		existingBlockWithItem(ModBlocks.WATER_GEL_BLOCK);
 	}
 
@@ -649,13 +652,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 	public void veinsBlock(MultifaceBlock block) {
 		String name = path(block);
-		ModelFile model = models()
-				.singleTexture(name, BiomancyMod.createRL("block/template_veins"), blockAsset(block))
-				.renderType("cutout");
+		ResourceLocation parentModel = BiomancyMod.createRL("block/template_veins");
+
+		ModelFile model = models().singleTexture(name, parentModel, blockAsset(block)).renderType("cutout");
 
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
-
-		Collection<BooleanProperty> properties = PipeBlock.PROPERTY_BY_DIRECTION.values();
 
 		PipeBlock.PROPERTY_BY_DIRECTION.forEach((direction, property) -> {
 			if (direction.getAxis().isHorizontal()) {
@@ -665,11 +666,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
 						.rotationY(rotY).uvLock(true).addModel()
 						.condition(property, true)
 						.end();
-
-				MultiPartBlockStateBuilder.PartBuilder partBuilder = builder.part().modelFile(model)
-						.rotationY(rotY).uvLock(true).addModel();
-				properties.forEach(p -> partBuilder.condition(p, false));
-				partBuilder.end();
 			}
 			else if (direction.getAxis().isVertical()) {
 				int rotX = direction == Direction.UP ? 270 : 90;
@@ -678,11 +674,41 @@ public class ModBlockStateProvider extends BlockStateProvider {
 						.rotationX(rotX).uvLock(true).addModel()
 						.condition(property, true)
 						.end();
+			}
+		});
+	}
 
-				MultiPartBlockStateBuilder.PartBuilder partBuilder = builder.part().modelFile(model)
-						.rotationX(rotX).uvLock(true).addModel();
-				properties.forEach(p -> partBuilder.condition(p, false));
-				partBuilder.end();
+	public void multifaceBlockWithPropertyVariants(MultifaceBlock block, IntegerProperty integerProperty) {
+		String modelName = path(block);
+		ResourceLocation parentModel = BiomancyMod.createRL("block/template_veins");
+
+		MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
+
+		PipeBlock.PROPERTY_BY_DIRECTION.forEach((direction, directionProperty) -> {
+			if (direction.getAxis().isHorizontal()) {
+				int rotY = (((int) direction.toYRot()) + 180) % 360;
+
+				for (Integer value : integerProperty.getPossibleValues()) {
+					String suffix = "_" + value;
+					ModelFile model = models().singleTexture(modelName + suffix, parentModel, blockAsset(block, suffix)).renderType("cutout");
+					builder.part().modelFile(model)
+							.rotationY(rotY).uvLock(true).addModel()
+							.condition(directionProperty, true)
+							.condition(integerProperty, value)
+							.end();
+				}
+			}
+			else if (direction.getAxis().isVertical()) {
+				int rotX = direction == Direction.UP ? 270 : 90;
+				for (Integer value : integerProperty.getPossibleValues()) {
+					String suffix = "_" + value;
+					ModelFile model = models().singleTexture(modelName + suffix, parentModel, blockAsset(block, suffix)).renderType("cutout");
+					builder.part().modelFile(model)
+							.rotationX(rotX).uvLock(true).addModel()
+							.condition(directionProperty, true)
+							.condition(integerProperty, value)
+							.end();
+				}
 			}
 		});
 	}

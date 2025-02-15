@@ -251,6 +251,7 @@ public class ModBlockLoot extends BlockLootSubProvider {
 
 		add(ModBlocks.ACID_FLUID_BLOCK.get(), noDrop());
 		add(ModBlocks.ACID_CAULDRON.get(), drop(Items.CAULDRON));
+		add(ModBlocks.ACID_SPLATTER.get(), noDrop());
 		dropSelf(ModBlocks.WATER_GEL_BLOCK.get());
 	}
 
