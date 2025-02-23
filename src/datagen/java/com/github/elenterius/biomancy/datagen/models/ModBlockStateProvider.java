@@ -72,7 +72,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	protected void registerStatesAndModels() {
 		final int fleshVariants = 7;
 		simpleVariantBlockWithItem(ModBlocks.FLESH, fleshVariants);
-		directionalSlabBlockWithItem(ModBlocks.FLESH_SLAB, ModBlocks.FLESH);
+		directionalSlabBlockWithItemAndVariants(ModBlocks.FLESH_SLAB, ModBlocks.FLESH, fleshVariants);
 		stairsBlockWithItem(ModBlocks.FLESH_STAIRS, ModBlocks.FLESH);
 		wallBlock(ModBlocks.FLESH_WALL, ModBlocks.FLESH);
 
@@ -553,6 +553,62 @@ public class ModBlockStateProvider extends BlockStateProvider {
 							}
 
 							return ConfiguredModel.builder().modelFile(full).build();
+						},
+						DirectionalSlabBlock.WATERLOGGED
+				);
+	}
+
+	public <S extends DirectionalSlabBlock, B extends Block> void directionalSlabBlockWithItemAndVariants(RegistryObject<S> slab, RegistryObject<B> fullBlock, int variants) {
+		directionalSlabBlockWithItemAndVariants(slab.get(), fullBlock.get(), variants);
+	}
+
+	public void directionalSlabBlockWithItemAndVariants(DirectionalSlabBlock slab, Block fullBlock, int variants) {
+		ResourceLocation fullModel = blockAsset(fullBlock);
+		ResourceLocation texture = blockAsset(fullBlock);
+		directionalSlabBlockWithVariants(slab, fullModel, texture, variants);
+		simpleBlockItem(slab);
+	}
+
+	public void directionalSlabBlockWithVariants(DirectionalSlabBlock block, ResourceLocation existingModelFull, ResourceLocation texture, int variants) {
+		String path = path(block);
+		ModelFile full = models().getExistingFile(existingModelFull);
+		ModelFile halfMain = models().slab(path, texture, texture, texture);
+
+		getVariantBuilder(block)
+				.forAllStatesExcept(
+						state -> {
+							DirectionalSlabType type = state.getValue(DirectionalSlabBlock.TYPE);
+							Direction facing = type.getFacing();
+							if (type != DirectionalSlabType.FULL) {
+								int xRotation = 0;
+								if (facing == Direction.DOWN) xRotation = 180;
+								else if (facing.getAxis().isHorizontal()) xRotation = 90;
+
+								int yRotation = facing.getAxis().isVertical() ? 0 : ((int) facing.toYRot() + 180) % 360;
+
+								ConfiguredModel.Builder<?> builder = ConfiguredModel.builder().modelFile(halfMain)
+										.rotationX(xRotation).rotationY(yRotation)
+										.weight(2); //make main model more frequent than the variants
+
+								for (int i = 1; i < variants; i++) {
+									String suffix = "_" + i;
+									ResourceLocation textureVariant = extend(texture, suffix);
+									BlockModelBuilder modelVariant = models().slab(path + suffix, textureVariant, textureVariant, textureVariant);
+									builder = builder.nextModel().modelFile(modelVariant).rotationX(xRotation).rotationY(yRotation).weight(1);
+								}
+
+								return builder.build();
+							}
+
+							ConfiguredModel.Builder<?> builder = ConfiguredModel.builder().modelFile(full).weight(2); //make main model more frequent than the variants
+
+							for (int i = 1; i < variants; i++) {
+								String suffix = "_" + i;
+								ModelFile modelVariant = models().getExistingFile(extend(existingModelFull, suffix));
+								builder = builder.nextModel().modelFile(modelVariant).weight(1);
+							}
+
+							return builder.build();
 						},
 						DirectionalSlabBlock.WATERLOGGED
 				);
