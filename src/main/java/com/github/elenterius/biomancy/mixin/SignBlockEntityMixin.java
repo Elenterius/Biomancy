@@ -18,7 +18,8 @@ public abstract class SignBlockEntityMixin {
 
 	@ModifyExpressionValue(
 			method = "setMessages",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/network/chat/Component;getStyle()Lnet/minecraft/network/chat/Style;")
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/network/chat/Component;getStyle()Lnet/minecraft/network/chat/Style;"),
+			require = 0 //allow it to fail (Mohist Server "compat")
 	)
 	private Style onSetMessagesModifyStyle(Style originalStyle, Player player, List<FilteredText> filteredText, SignText text) {
 		if (player.hasEffect(ModMobEffects.PRIMORDIAL_INFESTATION.get())) {
