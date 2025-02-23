@@ -1,33 +1,228 @@
 {
   "variants": {
-    "type=full": {
-      "model": "biomancy:block/flesh"
-    },
-    "type=half_down": {
-      "model": "biomancy:block/flesh_slab",
-      "x": 180
-    },
-    "type=half_east": {
-      "model": "biomancy:block/flesh_slab",
-      "x": 90,
-      "y": 90
-    },
-    "type=half_north": {
-      "model": "biomancy:block/flesh_slab",
-      "x": 90
-    },
-    "type=half_south": {
-      "model": "biomancy:block/flesh_slab",
-      "x": 90,
-      "y": 180
-    },
-    "type=half_up": {
-      "model": "biomancy:block/flesh_slab"
-    },
-    "type=half_west": {
-      "model": "biomancy:block/flesh_slab",
-      "x": 90,
-      "y": 270
-    }
+    "type=full": [
+      {
+        "model": "biomancy:block/flesh",
+        "weight": 2
+      },
+      {
+        "model": "biomancy:block/flesh_1"
+      },
+      {
+        "model": "biomancy:block/flesh_2"
+      },
+      {
+        "model": "biomancy:block/flesh_3"
+      },
+      {
+        "model": "biomancy:block/flesh_4"
+      },
+      {
+        "model": "biomancy:block/flesh_5"
+      },
+      {
+        "model": "biomancy:block/flesh_6"
+      }
+    ],
+    "type=half_down": [
+      {
+        "model": "biomancy:block/flesh_slab",
+        "weight": 2,
+        "x": 180
+      },
+      {
+        "model": "biomancy:block/flesh_slab_1",
+        "x": 180
+      },
+      {
+        "model": "biomancy:block/flesh_slab_2",
+        "x": 180
+      },
+      {
+        "model": "biomancy:block/flesh_slab_3",
+        "x": 180
+      },
+      {
+        "model": "biomancy:block/flesh_slab_4",
+        "x": 180
+      },
+      {
+        "model": "biomancy:block/flesh_slab_5",
+        "x": 180
+      },
+      {
+        "model": "biomancy:block/flesh_slab_6",
+        "x": 180
+      }
+    ],
+    "type=half_east": [
+      {
+        "model": "biomancy:block/flesh_slab",
+        "weight": 2,
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "biomancy:block/flesh_slab_1",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "biomancy:block/flesh_slab_2",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "biomancy:block/flesh_slab_3",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "biomancy:block/flesh_slab_4",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "biomancy:block/flesh_slab_5",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "biomancy:block/flesh_slab_6",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "type=half_north": [
+      {
+        "model": "biomancy:block/flesh_slab",
+        "weight": 2,
+        "x": 90
+      },
+      {
+        "model": "biomancy:block/flesh_slab_1",
+        "x": 90
+      },
+      {
+        "model": "biomancy:block/flesh_slab_2",
+        "x": 90
+      },
+      {
+        "model": "biomancy:block/flesh_slab_3",
+        "x": 90
+      },
+      {
+        "model": "biomancy:block/flesh_slab_4",
+        "x": 90
+      },
+      {
+        "model": "biomancy:block/flesh_slab_5",
+        "x": 90
+      },
+      {
+        "model": "biomancy:block/flesh_slab_6",
+        "x": 90
+      }
+    ],
+    "type=half_south": [
+      {
+        "model": "biomancy:block/flesh_slab",
+        "weight": 2,
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "biomancy:block/flesh_slab_1",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "biomancy:block/flesh_slab_2",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "biomancy:block/flesh_slab_3",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "biomancy:block/flesh_slab_4",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "biomancy:block/flesh_slab_5",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "biomancy:block/flesh_slab_6",
+        "x": 90,
+        "y": 180
+      }
+    ],
+    "type=half_up": [
+      {
+        "model": "biomancy:block/flesh_slab",
+        "weight": 2
+      },
+      {
+        "model": "biomancy:block/flesh_slab_1"
+      },
+      {
+        "model": "biomancy:block/flesh_slab_2"
+      },
+      {
+        "model": "biomancy:block/flesh_slab_3"
+      },
+      {
+        "model": "biomancy:block/flesh_slab_4"
+      },
+      {
+        "model": "biomancy:block/flesh_slab_5"
+      },
+      {
+        "model": "biomancy:block/flesh_slab_6"
+      }
+    ],
+    "type=half_west": [
+      {
+        "model": "biomancy:block/flesh_slab",
+        "weight": 2,
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "biomancy:block/flesh_slab_1",
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "biomancy:block/flesh_slab_2",
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "biomancy:block/flesh_slab_3",
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "biomancy:block/flesh_slab_4",
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "biomancy:block/flesh_slab_5",
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "biomancy:block/flesh_slab_6",
+        "x": 90,
+        "y": 270
+      }
+    ]
   }
 }
