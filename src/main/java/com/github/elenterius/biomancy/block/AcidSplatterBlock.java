@@ -1,7 +1,10 @@
 package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.init.AcidInteractions;
+import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.util.EnhancedIntegerProperty;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -25,7 +28,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Optional;
+import java.util.PriorityQueue;
 
 public class AcidSplatterBlock extends MultifaceBlock {
 
@@ -146,7 +152,7 @@ public class AcidSplatterBlock extends MultifaceBlock {
 		return true;
 	}
 
-	public boolean spreadSplatter(ServerLevel level, BlockPos pos, Direction direction, RandomSource random) {
+	public void spreadSplatter(ServerLevel level, BlockPos pos, Direction direction, RandomSource random) {
 		BlockState state = level.getBlockState(pos);
 
 		if (state.is(this)) {
@@ -154,7 +160,7 @@ public class AcidSplatterBlock extends MultifaceBlock {
 				level.setBlock(pos, AGE.setValue(state, AGE.getMin()), Block.UPDATE_CLIENTS);
 			}
 
-			return spreadSplatterFromSource(level, pos, random);
+			spreadSplatterFromSource(level, pos, random);
 		}
 		else if (state.canBeReplaced(new DirectionalPlaceContext(level, pos, direction.getOpposite(), ItemStack.EMPTY, direction))) {
 			BlockState stateForPlacement = getStateForPlacement(state, level, pos, direction.getOpposite());
@@ -164,14 +170,12 @@ public class AcidSplatterBlock extends MultifaceBlock {
 					getSpreader().spreadFromRandomFaceTowardRandomDirection(stateForPlacement, level, pos, random);
 				}
 				level.playSound(null, pos, SoundEvents.SLIME_BLOCK_FALL, SoundSource.BLOCKS, 0.7f, 0.15f + random.nextFloat() * 0.5f);
-				return true;
 			}
 		}
 
-		return false;
 	}
 
-	protected boolean spreadSplatterFromSource(ServerLevel level, BlockPos pos, RandomSource random) {
+	protected void spreadSplatterFromSource(ServerLevel level, BlockPos pos, RandomSource random) {
 		BlockState state = level.getBlockState(pos);
 
 		boolean hasPlacedVeins = false;
@@ -182,7 +186,50 @@ public class AcidSplatterBlock extends MultifaceBlock {
 				if (spreadPos.isPresent()) hasPlacedVeins = true;
 			}
 		}
-		return hasPlacedVeins;
 	}
+
+	protected record Voxel(BlockPos pos, Direction[] spreadDirections, int cost, int depth, int[] directionCost) {
+		public static Comparator<Voxel> INCREASING_COST_COMPARATOR = Comparator.comparingInt(Voxel::cost);
+	}
+
+	public void propagateAcidSplatters(ServerLevel level, BlockPos startPos, int maxDepth, RandomSource random) {
+		LongSet visited = new LongOpenHashSet();
+		PriorityQueue<Voxel> queue = new PriorityQueue<>(Voxel.INCREASING_COST_COMPARATOR);
+
+		queue.add(new Voxel(startPos, DIRECTIONS, 0, 0, new int[6]));
+
+		while (!queue.isEmpty()) {
+			Voxel voxel = queue.poll();
+
+			for (Direction spreadDirection : voxel.spreadDirections) {
+				spreadSplatter(level, voxel.pos, spreadDirection.getOpposite(), random);
+			}
+
+			int depth = voxel.depth + 1;
+			if (depth >= maxDepth) continue;
+
+			int[] directionCost = Arrays.copyOf(voxel.directionCost, voxel.directionCost.length);
+
+			for (Direction direction : DIRECTIONS) {
+				BlockPos neighborPos = voxel.pos.relative(direction);
+				long key = neighborPos.asLong();
+
+				if (visited.contains(key)) continue;
+				visited.add(key);
+
+				BlockState state = level.getBlockState(neighborPos);
+				if (state.isAir() || (state.canBeReplaced() && state.getFluidState().isEmpty()) || state.getBlock() == ModBlocks.ACID_SPLATTER.get()) {
+					int cost = depth + voxel.directionCost[direction.get3DDataValue()];
+					queue.add(new Voxel(neighborPos, new Direction[]{direction}, cost, depth, directionCost));
+				}
+				else {
+					int dataValue = direction.get3DDataValue();
+					directionCost[dataValue] += 1;
+					directionCost[dataValue] *= 2;
+				}
+			}
+		}
+	}
+
 
 }

@@ -243,6 +243,40 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 				.setCraftingCost(20)
 				.setCategory(ModBioForgeTabs.TOOLS)
 				.unlockedBy(ModItems.EXOTIC_DUST.get()).save(consumer);
+
+		BioForgingRecipeBuilder.create(ModItems.GRENADE_CASING.get())
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 1)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 2)
+				.addIngredient(ModItems.VOLATILE_FLUID.get(), 4)
+				.setCategory(ModBioForgeTabs.TOOLS)
+				.unlockedBy(ModItems.TOUGH_FIBERS.get()).save(consumer);
+
+		BioForgingRecipeBuilder.create(ModItems.TOXIN_GRENADE.get())
+				.addIngredient(ModItems.GRENADE_CASING.get(), 1)
+				.addIngredient(ModItems.TOXIN_EXTRACT.get(), 12)
+				.setCategory(ModBioForgeTabs.TOOLS)
+				.unlockedBy(ModItems.GRENADE_CASING.get()).save(consumer);
+
+		BioForgingRecipeBuilder.create(ModItems.ACID_GRENADE.get())
+				.addIngredient(ModItems.GRENADE_CASING.get(), 1)
+				.addIngredient(ModItems.GELLING_AGENT.get(), 1)
+				.addIngredient(ModItems.ACID_BUCKET.get(), 1)
+				.setCategory(ModBioForgeTabs.TOOLS)
+				.unlockedBy(ModItems.GRENADE_CASING.get()).save(consumer);
+
+		BioForgingRecipeBuilder.create(ModItems.DECAY_GRENADE.get())
+				.addIngredient(ModItems.GRENADE_CASING.get(), 1)
+				.addIngredient(ModItems.WITHERING_OOZE.get(), 2)
+				.addIngredient(ModItems.DECAYING_ADDITIVE.get(), 2)
+				.setCategory(ModBioForgeTabs.TOOLS)
+				.unlockedBy(ModItems.GRENADE_CASING.get()).save(consumer);
+
+		BioForgingRecipeBuilder.create(ModItems.INCENDIARY_GRENADE.get())
+				.addIngredient(ModItems.GRENADE_CASING.get(), 1)
+				.addIngredient(ModItems.GELLING_AGENT.get(), 1)
+				.addIngredient(ModItems.UNSTABLE_COMPOUND.get(), 2)
+				.setCategory(ModBioForgeTabs.TOOLS)
+				.unlockedBy(ModItems.GRENADE_CASING.get()).save(consumer);
 	}
 
 	private void buildComponentRecipes(Consumer<FinishedRecipe> consumer) {

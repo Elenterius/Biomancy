@@ -1,9 +1,11 @@
 package com.github.elenterius.biomancy.entity.projectile;
 
 import com.github.elenterius.biomancy.entity.misc.GasCloud;
+import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModMobEffects;
+import com.github.elenterius.biomancy.util.ExplosionUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -13,6 +15,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,6 +23,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -71,24 +75,37 @@ public class GrenadeProjectile extends ThrowableItemProjectile {
 	protected void onHit(HitResult hitResult) {
 		super.onHit(hitResult);
 
-		if (!level().isClientSide) {
-			BlockPos pos = getValidBlockPos(hitResult);
+		if (!level().isClientSide && level() instanceof ServerLevel serverLevel) {
 
-			level().playSound(null, pos, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.2f, 1f);
+			serverLevel.playSound(null, getX(), getY(), getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.2f, 1f);
 
-			GasCloud cloud = new GasCloud(level(), pos);
-			cloud.setRadius(3.5f);
-			cloud.setDuration(10 * 20);
-			cloud.addEffect(new MobEffectInstance(ModMobEffects.TOXIN.get(), 5 * 20));
-			level().addFreshEntity(cloud);
+			Item item = getItem().getItem();
 
-			level().broadcastEntityEvent(this, ITEM_BREAK_EVENT);
+			if (item == ModItems.TOXIN_GRENADE.get()) {
+				GasCloud cloud = new GasCloud(serverLevel, getImpactPos(hitResult));
+				cloud.setRadius(3.5f);
+				cloud.setDuration(15 * 20);
+				cloud.addEffect(new MobEffectInstance(ModMobEffects.TOXIN.get(), 8 * 20));
+				serverLevel.addFreshEntity(cloud);
+			}
+			else if (item == ModItems.ACID_GRENADE.get()) {
+				serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 1, 0d, 0d, 0d, 1d);
+				ModBlocks.ACID_SPLATTER.get().propagateAcidSplatters(serverLevel, getImpactPos(hitResult), 4, random);
+			}
+			else if (item == ModItems.DECAY_GRENADE.get()) {
+				ExplosionUtil.explodeDecay(serverLevel, this, getX(), getY(), getZ(), 4.5f, Level.ExplosionInteraction.TNT);
+			}
+			else if (item == ModItems.INCENDIARY_GRENADE.get()) {
+				ExplosionUtil.explodeIncendiary(serverLevel, this, getX(), getY(), getZ(), 3.5f, Level.ExplosionInteraction.TNT);
+			}
+
+			serverLevel.broadcastEntityEvent(this, ITEM_BREAK_EVENT);
 			discard();
 		}
 
 	}
 
-	protected BlockPos getValidBlockPos(HitResult hitResult) {
+	protected BlockPos getImpactPos(HitResult hitResult) {
 		if (hitResult.getType() == HitResult.Type.BLOCK && hitResult instanceof BlockHitResult blockHitResult) {
 			return blockHitResult.getBlockPos().relative(blockHitResult.getDirection());
 		}
@@ -98,18 +115,19 @@ public class GrenadeProjectile extends ThrowableItemProjectile {
 	@Override
 	public void handleEntityEvent(byte eventId) {
 		if (eventId == 3) {
+			ItemStack item = getItem();
 			double scale = 0.08D;
 			for (int i = 0; i < 8; i++) {
 				double xSpeed = (random.nextDouble() - 0.5d) * scale;
 				double ySpeed = (random.nextDouble() - 0.5d) * scale;
 				double zSpeed = (random.nextDouble() - 0.5d) * scale;
-				level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, getItem()), getX(), getY(), getZ(), xSpeed, ySpeed, zSpeed);
+				level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, item), getX(), getY(), getZ(), xSpeed, ySpeed, zSpeed);
 			}
 		}
 	}
 
 	protected Item getDefaultItem() {
-		return ModItems.GRENADE.get();
+		return ModItems.TOXIN_GRENADE.get();
 	}
 
 	@Override

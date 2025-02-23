@@ -132,7 +132,7 @@ public final class ModBlocks {
 	//## Fluids
 	public static final RegistryObject<LiquidBlock> ACID_FLUID_BLOCK = register("acid_fluid_block", () -> new LiquidBlock(ModFluids.ACID, copyProperties(Blocks.WATER)));
 	public static final RegistryObject<AcidCauldron> ACID_CAULDRON = register("acid_cauldron", () -> new AcidCauldron(copyProperties(Blocks.CAULDRON)));
-	public static final RegistryObject<AcidSplatterBlock> ACID_SPLATTER = register("acid_splatter", () -> new AcidSplatterBlock(createProperties().mapColor(MapColor.COLOR_LIGHT_GREEN).noOcclusion().noCollission().instabreak().pushReaction(PushReaction.DESTROY).sound(SoundType.FROGSPAWN)));
+	public static final RegistryObject<AcidSplatterBlock> ACID_SPLATTER = register("acid_splatter", () -> new AcidSplatterBlock(createProperties().mapColor(MapColor.COLOR_LIGHT_GREEN).noOcclusion().noCollission().instabreak().replaceable().pushReaction(PushReaction.DESTROY).sound(SoundType.FROGSPAWN)));
 	public static final RegistryObject<WaterGelBlock> WATER_GEL_BLOCK = register("water_gel_block", properties -> new WaterGelBlock(properties.mapColor(MapColor.WATER).strength(100f).speedFactor(0.8f).jumpFactor(1.2f).noOcclusion().sound(SoundType.SLIME_BLOCK).noOcclusion().isRedstoneConductor(ModBlocks::neverValid)));
 
 	//## Misc

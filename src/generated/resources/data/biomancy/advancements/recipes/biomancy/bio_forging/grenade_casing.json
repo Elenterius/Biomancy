@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:bio_forging/grenade_casing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tough_fibers": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:tough_fibers"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_tough_fibers",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:bio_forging/grenade_casing"
+    ]
+  },
+  "sends_telemetry_event": false
+}
