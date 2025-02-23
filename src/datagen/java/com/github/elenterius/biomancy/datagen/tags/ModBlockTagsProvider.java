@@ -60,9 +60,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 				.addTag(BlockTags.LEAVES)
 				.addTag(BlockTags.OVERWORLD_NATURAL_LOGS)
 				.addTag(BlockTags.DIRT)
-				.add(Blocks.DIRT_PATH, Blocks.FARMLAND, Blocks.MOSS_BLOCK, Blocks.VINE)
-				.add(Blocks.MELON, Blocks.PUMPKIN)
-				.add(Blocks.BROWN_MUSHROOM_BLOCK, Blocks.RED_MUSHROOM_BLOCK, Blocks.MUSHROOM_STEM)
+				.add(Blocks.DIRT_PATH, Blocks.FARMLAND, Blocks.MOSS_BLOCK, Blocks.MOSS_CARPET, Blocks.VINE)
+				.add(Blocks.PUMPKIN, Blocks.CARVED_PUMPKIN, Blocks.JACK_O_LANTERN, Blocks.MELON, Blocks.ATTACHED_PUMPKIN_STEM, Blocks.ATTACHED_MELON_STEM)
+				.add(Blocks.BROWN_MUSHROOM, Blocks.BROWN_MUSHROOM_BLOCK, Blocks.RED_MUSHROOM, Blocks.RED_MUSHROOM_BLOCK, Blocks.MUSHROOM_STEM)
 				.addTag(BlockTags.FLOWERS)
 				.add(
 						ACBlockRegistry.BLOCK_OF_CHOCOLATE.get(), ACBlockRegistry.BLOCK_OF_FROSTED_CHOCOLATE.get(), ACBlockRegistry.BLOCK_OF_CHISELED_CHOCOLATE.get(), ACBlockRegistry.BLOCK_OF_POLISHED_CHOCOLATE.get(),
@@ -93,8 +93,48 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
 		tag(ModBlockTags.ACID_DESTRUCTIBLE)
 				.addTag(BlockTags.LEAVES)
-				.add(Blocks.MOSS_BLOCK, Blocks.VINE)
+				.add(Blocks.MOSS_BLOCK, Blocks.MOSS_CARPET, Blocks.VINE)
 				.addTag(BlockTags.FLOWERS);
+
+		tag(ModBlockTags.DECAY_DESTRUCTIBLE)
+				.add(
+						ModBlocks.MALIGNANT_FLESH_VEINS.get(),
+						ModBlocks.MALIGNANT_FLESH.get(),
+						ModBlocks.MALIGNANT_FLESH_SLAB.get(),
+						ModBlocks.MALIGNANT_FLESH_STAIRS.get(),
+						ModBlocks.MALIGNANT_FLESH_WALL.get(),
+						ModBlocks.PRIMAL_BLOOM.get(),
+						ModBlocks.BLOOMLIGHT.get(),
+						ModBlocks.PRIMAL_ORIFICE.get(),
+						ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get(),
+						ModBlocks.PRIMAL_PERMEABLE_MEMBRANE_PANE.get(),
+						ModBlocks.PRIMAL_FLESH.get(),
+						ModBlocks.PRIMAL_FLESH_SLAB.get(),
+						ModBlocks.PRIMAL_FLESH_STAIRS.get(),
+						ModBlocks.PRIMAL_FLESH_WALL.get(),
+						ModBlocks.SMOOTH_PRIMAL_FLESH.get(),
+						ModBlocks.SMOOTH_PRIMAL_FLESH_SLAB.get(),
+						ModBlocks.SMOOTH_PRIMAL_FLESH_STAIRS.get(),
+						ModBlocks.SMOOTH_PRIMAL_FLESH_WALL.get(),
+						ModBlocks.POROUS_PRIMAL_FLESH.get(),
+						ModBlocks.POROUS_PRIMAL_FLESH_SLAB.get(),
+						ModBlocks.POROUS_PRIMAL_FLESH_STAIRS.get(),
+						ModBlocks.POROUS_PRIMAL_FLESH_WALL.get()
+				)
+				.addTag(BlockTags.LEAVES)
+				.addTag(BlockTags.SAPLINGS)
+				.addTag(BlockTags.FLOWERS)
+				.addTag(BlockTags.CROPS)
+				.addTag(BlockTags.CAVE_VINES)
+				.add(Blocks.GRASS, Blocks.FERN, Blocks.DEAD_BUSH, Blocks.VINE, Blocks.GLOW_LICHEN, Blocks.TALL_GRASS, Blocks.LARGE_FERN, Blocks.HANGING_ROOTS)
+				.add(Blocks.MOSS_BLOCK, Blocks.MOSS_CARPET, Blocks.SPORE_BLOSSOM)
+				.add(Blocks.PUMPKIN, Blocks.CARVED_PUMPKIN, Blocks.JACK_O_LANTERN, Blocks.MELON, Blocks.ATTACHED_PUMPKIN_STEM, Blocks.ATTACHED_MELON_STEM)
+				.add(Blocks.SUGAR_CANE, Blocks.COCOA, Blocks.SWEET_BERRY_BUSH)
+				.add(Blocks.BIG_DRIPLEAF, Blocks.BIG_DRIPLEAF_STEM, Blocks.SMALL_DRIPLEAF, Blocks.LILY_PAD)
+				.add(Blocks.BROWN_MUSHROOM, Blocks.BROWN_MUSHROOM_BLOCK, Blocks.RED_MUSHROOM, Blocks.RED_MUSHROOM_BLOCK, Blocks.MUSHROOM_STEM)
+				.add(Blocks.NETHER_WART, Blocks.WARPED_FUNGUS, Blocks.WARPED_ROOTS, Blocks.NETHER_SPROUTS, Blocks.CRIMSON_FUNGUS, Blocks.WEEPING_VINES, Blocks.WEEPING_VINES_PLANT, Blocks.TWISTING_VINES, Blocks.TWISTING_VINES_PLANT, Blocks.CRIMSON_ROOTS)
+				.add(Blocks.SEAGRASS, Blocks.TALL_SEAGRASS)
+				.add(Blocks.CHORUS_PLANT, Blocks.CHORUS_FLOWER);
 
 		tag(ModBlockTags.LAVA_DESTRUCTIBLE).add(
 				ModBlocks.MALIGNANT_FLESH_VEINS.get(),
@@ -107,6 +147,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		);
 
 		tag(ModBlockTags.ALLOW_GAS_TO_PASS_THROUGH)
+				.addTag(BlockTags.LEAVES)
 				.addTag(BlockTags.FENCES)
 				.addTag(BlockTags.FENCE_GATES)
 				.addTag(BlockTags.ANVIL)

@@ -114,7 +114,12 @@ public class ModItemModelProvider extends ItemModelProvider {
 		flatBlockItem(ModItems.ACID_SPLATTER, "_0");
 
 		basicItem(ModItems.GELLING_AGENT);
-		weaponItem(ModItems.GRENADE);
+
+		weaponItem(ModItems.GRENADE_CASING);
+		weaponItem(ModItems.TOXIN_GRENADE);
+		weaponItem(ModItems.ACID_GRENADE);
+		weaponItem(ModItems.DECAY_GRENADE);
+		weaponItem(ModItems.INCENDIARY_GRENADE);
 
 		//generate models for all eggs
 		ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(SpawnEggItem.class::isInstance).forEach(this::spawnEggItem);

@@ -13,6 +13,7 @@ public final class ModBlockTags {
 	public static final TagKey<Block> DISALLOW_VEINS_TO_ATTACH = tag("disallow_veins_to_attach");
 
 	public static final TagKey<Block> ACID_DESTRUCTIBLE = tag("acid_destructible");
+	public static final TagKey<Block> DECAY_DESTRUCTIBLE = tag("decay_destructible");
 	public static final TagKey<Block> LAVA_DESTRUCTIBLE = tag("lava_destructible");
 
 	public static final TagKey<Block> ALLOW_GAS_TO_PASS_THROUGH = tag("allow_gas_to_pass_through");

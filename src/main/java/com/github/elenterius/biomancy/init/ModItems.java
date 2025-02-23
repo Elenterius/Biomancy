@@ -98,6 +98,11 @@ public final class ModItems {
 	public static final RegistryObject<RavenousClawsItem> RAVENOUS_CLAWS = registerItem("ravenous_claws", props -> new RavenousClawsItem(ModTiers.BIOFLESH, 4f, 3.5f, 250, props.rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<CausticGunbladeItem> CAUSTIC_GUNBLADE = registerItem("caustic_gunblade", props -> new CausticGunbladeItem(200, props.stacksTo(1).rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<DevArmCannonItem> DEV_ARM_CANNON = registerItem("dev_arm_cannon", props -> new DevArmCannonItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
+	public static final RegistryObject<SimpleItem> GRENADE_CASING = registerSimpleItem("grenade_casing");
+	public static final RegistryObject<GrenadeItem> TOXIN_GRENADE = registerItem("toxin_grenade", GrenadeItem::new);
+	public static final RegistryObject<GrenadeItem> ACID_GRENADE = registerItem("acid_grenade", GrenadeItem::new);
+	public static final RegistryObject<GrenadeItem> DECAY_GRENADE = registerItem("decay_grenade", GrenadeItem::new);
+	public static final RegistryObject<GrenadeItem> INCENDIARY_GRENADE = registerItem("incendiary_grenade", GrenadeItem::new);
 
 	//# Shield
 	public static final RegistryObject<ThornShieldItem> THORN_SHIELD = registerItem("thorn_shield", props -> new ThornShieldItem(250, props.stacksTo(1).rarity(ModRarities.VERY_RARE)));
@@ -116,7 +121,6 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> CREATOR_MIX = registerSimpleItem("creator_mix");
 	public static final RegistryObject<BucketItem> ACID_BUCKET = registerItem("acid_bucket", properties -> new BucketItem(ModFluids.ACID, properties.craftRemainder(Items.BUCKET).stacksTo(1).rarity(Rarity.COMMON)));
 	public static final RegistryObject<SimpleItem> GELLING_AGENT = registerSimpleItem("gelling_agent");
-	public static final RegistryObject<SimpleItem> GRENADE = registerItem("grenade", props -> new GrenadeItem(props));
 
 	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_BANNER_PATTERNS = registerItem("mascot_patterns", props -> new MaykerBannerPatternItem(ModBannerPatterns.TAG_MASCOT, props));
 

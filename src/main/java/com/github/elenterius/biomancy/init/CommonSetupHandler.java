@@ -121,25 +121,34 @@ public final class CommonSetupHandler {
 			}
 		});
 
-		DispenserBlock.registerBehavior(ModItems.GRENADE.get(), new DispenseItemBehavior() {
+		DispenseItemBehavior grenadeDispenseBehavior = new DispenseItemBehavior() {
+			private final AbstractProjectileDispenseBehavior behavior = new AbstractProjectileDispenseBehavior() {
+
+				protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
+					GrenadeProjectile grenade = new GrenadeProjectile(level, position.x(), position.y(), position.z());
+					grenade.setItem(stack);
+					return grenade;
+				}
+
+				protected float getUncertainty() {
+					return super.getUncertainty() * 0.5F;
+				}
+
+				protected float getPower() {
+					return super.getPower() * 1.25F;
+				}
+
+			};
+
 			public ItemStack dispense(BlockSource source, ItemStack itemStack) {
-				return (new AbstractProjectileDispenseBehavior() {
-
-					protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
-						return new GrenadeProjectile(level, position.x(), position.y(), position.z());
-					}
-
-					protected float getUncertainty() {
-						return super.getUncertainty() * 0.5F;
-					}
-
-					protected float getPower() {
-						return super.getPower() * 1.25F;
-					}
-
-				}).dispense(source, itemStack);
+				return behavior.dispense(source, itemStack);
 			}
-		});
+		};
+
+		DispenserBlock.registerBehavior(ModItems.TOXIN_GRENADE.get(), grenadeDispenseBehavior);
+		DispenserBlock.registerBehavior(ModItems.ACID_GRENADE.get(), grenadeDispenseBehavior);
+		DispenserBlock.registerBehavior(ModItems.DECAY_GRENADE.get(), grenadeDispenseBehavior);
+		DispenserBlock.registerBehavior(ModItems.INCENDIARY_GRENADE.get(), grenadeDispenseBehavior);
 	}
 
 }

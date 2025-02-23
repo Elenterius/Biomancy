@@ -1,0 +1,17 @@
+{
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:tools",
+  "ingredients": [
+    {
+      "item": "biomancy:grenade_casing"
+    },
+    {
+      "count": 12,
+      "item": "biomancy:toxin_extract"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "biomancy:toxin_grenade"
+  }
+}

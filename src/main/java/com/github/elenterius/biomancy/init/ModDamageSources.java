@@ -6,6 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -60,6 +61,14 @@ public final class ModDamageSources {
 
 	public static DamageSource projectile(Holder<DamageType> type, BaseProjectile projectile, @Nullable Entity shooter) {
 		return new DamageSource(type, projectile, shooter);
+	}
+
+	public static DamageSource incendiary(Level level, @Nullable Entity causingEntity, @Nullable Entity directEntity) {
+		return source(DamageTypes.IN_FIRE, level, causingEntity, directEntity);
+	}
+
+	public static DamageSource decay(Level level, @Nullable Entity causingEntity, @Nullable Entity directEntity) {
+		return source(DamageTypes.WITHER, level, causingEntity, directEntity);
 	}
 
 	private static DamageSource source(ResourceKey<DamageType> key, LevelReader level) {

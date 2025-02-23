@@ -396,6 +396,11 @@ public class EnglishLangProvider extends AbstractLangProvider {
 				"%1$s was ripped apart by %2$s",
 				"%1$s was eviscerate by %2$s using %3$s"
 		);
+		addDeathMessage(ModDamageTypes.TOXIN,
+				"%1$s succumbed to a fatal toxin",
+				"%1$s was fatally toxified by %2$s",
+				"%1$s was fatally toxified by %2$s using %3$s"
+		);
 
 		addDeathMessage(ModDamageTypes.TOOTH_PROJECTILE, "[WIP]",
 				"[WIP] %1$s was forcefully implanted with teeth by %2$s",
@@ -510,7 +515,11 @@ public class EnglishLangProvider extends AbstractLangProvider {
 				Right Click the Sac to retrieve the Items.""");
 		addItem(ModItems.ACID_BUCKET, "Gastric Acid Bucket");
 		addItem(ModItems.GELLING_AGENT, "Gellant", "A gelatinous substance which turns liquids into a gel without altering its taste and other major properties.\nUseful for increasing the stability of volatile things.");
-		addItem(ModItems.GRENADE, "Grenade", "BOOM");
+		addItem(ModItems.GRENADE_CASING, "Grenade Casing", "Outer grenade casing made of a hard organic material designed to rupture or detonate on impact.");
+		addItem(ModItems.TOXIN_GRENADE, "Toxin Grenade", "Spreads lethal toxin gas.");
+		addItem(ModItems.ACID_GRENADE, "Acid Grenade", "Covers surfaces in gastric acid.");
+		addItem(ModItems.DECAY_GRENADE, "Decay Grenade", "Decays all soft organic matter such as plants and flesh.");
+		addItem(ModItems.INCENDIARY_GRENADE, "Incendiary Grenade", "Spreads fire and is more effective against flammable blocks.");
 
 		addItem(ModItems.RAVENOUS_CLAWS, "Ravenous Claws", """
 				Extremely hungry and vicious Claws forged by starving living flesh and grafting claws onto it.
