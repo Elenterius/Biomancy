@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "biomancy:gelling_agent"
+    },
+    {
+      "item": "biomancy:bile"
+    },
+    {
+      "item": "biomancy:bile"
+    },
+    {
+      "item": "biomancy:regenerative_fluid"
+    },
+    {
+      "item": "biomancy:regenerative_fluid"
+    },
+    {
+      "item": "biomancy:regenerative_fluid"
+    },
+    {
+      "item": "minecraft:lime_dye"
+    }
+  ],
+  "result": {
+    "item": "minecraft:slime_ball"
+  }
+}

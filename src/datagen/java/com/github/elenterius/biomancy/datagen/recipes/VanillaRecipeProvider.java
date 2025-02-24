@@ -300,10 +300,35 @@ public class VanillaRecipeProvider extends RecipeProvider {
 		membrane(consumer, ModItems.PRIMAL_PERMEABLE_MEMBRANE_PANE.get(), ModItems.PRIMAL_PERMEABLE_MEMBRANE.get());
 		membrane(consumer, ModItems.UNDEAD_PERMEABLE_MEMBRANE_PANE.get(), ModItems.UNDEAD_PERMEABLE_MEMBRANE.get());
 
+		special(consumer, ModItems.BIOMETRIC_MEMBRANE.get(), ModRecipes.BIOMETRIC_MEMBRANE_CRAFTING_SERIALIZER.get());
+		special(consumer, Items.PLAYER_HEAD, ModRecipes.PLAYER_HEAD_SERIALIZER.get());
+		special(consumer, ModItems.PRIMORDIAL_CRADLE.get(), ModRecipes.CRADLE_CLEANSING_SERIALIZER.get());
+		special(consumer, ModItems.ACOLYTE_ARMOR_HELMET.get(), ModRecipes.ACOLYTE_HELMET_UPGRADE_SERIALIZER.get());
+
+		// Gelling Agent Recipes ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GELLING_AGENT.get())
-				.requires(ModItems.ACID_BUCKET.get())
-				.requires(ModItems.ELASTIC_FIBERS.get(), 8)
-				.unlockedBy(hasName(ModItems.ACID_BUCKET.get()), has(ModItems.ACID_BUCKET.get()))
+				.requires(ModItems.BILE.get(), 4)
+				.requires(ModItems.ELASTIC_FIBERS.get(), 5)
+				.unlockedBy(hasName(ModItems.ELASTIC_FIBERS.get()), has(ModItems.ELASTIC_FIBERS.get()))
+				.save(consumer);
+
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.SLIME_BALL)
+				.requires(ModItems.GELLING_AGENT.get(), 1)
+				.requires(ModItems.BILE.get(), 2)
+				.requires(ModItems.REGENERATIVE_FLUID.get(), 3)
+				.requires(Items.LIME_DYE, 1)
+				.unlockedBy(hasName(ModItems.GELLING_AGENT.get()), has(ModItems.GELLING_AGENT.get()))
+				.save(consumer);
+
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.HONEY_BOTTLE)
+				.requires(ModItems.GELLING_AGENT.get(), 1)
+				.requires(ModItems.BILE.get(), 2)
+				.requires(ModItems.NUTRIENTS.get(), 1)
+				.requires(Items.SUGAR, 2)
+				.requires(Items.YELLOW_DYE, 1)
+				.requires(Items.GLASS_BOTTLE, 1)
+				.unlockedBy(hasName(ModItems.GELLING_AGENT.get()), has(ModItems.GELLING_AGENT.get()))
 				.save(consumer);
 
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.WATER_GEL_BLOCK.get())
@@ -311,11 +336,6 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.requires(ModItems.GELLING_AGENT.get(), 2)
 				.unlockedBy(hasName(ModItems.GELLING_AGENT.get()), has(ModItems.GELLING_AGENT.get()))
 				.save(consumer);
-
-		special(consumer, ModItems.BIOMETRIC_MEMBRANE.get(), ModRecipes.BIOMETRIC_MEMBRANE_CRAFTING_SERIALIZER.get());
-		special(consumer, Items.PLAYER_HEAD, ModRecipes.PLAYER_HEAD_SERIALIZER.get());
-		special(consumer, ModItems.PRIMORDIAL_CRADLE.get(), ModRecipes.CRADLE_CLEANSING_SERIALIZER.get());
-		special(consumer, ModItems.ACOLYTE_ARMOR_HELMET.get(), ModRecipes.ACOLYTE_HELMET_UPGRADE_SERIALIZER.get());
 	}
 
 	private void membrane(Consumer<FinishedRecipe> consumer, SimpleBlockItem pane, SimpleBlockItem membrane) {

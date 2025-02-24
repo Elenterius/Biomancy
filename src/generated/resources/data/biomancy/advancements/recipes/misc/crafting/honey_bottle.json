@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_elastic_fibers": {
+    "has_gelling_agent": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:elastic_fibers"
+              "biomancy:gelling_agent"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomancy:crafting/gelling_agent"
+        "recipe": "biomancy:crafting/honey_bottle"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_elastic_fibers",
+      "has_gelling_agent",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "biomancy:crafting/gelling_agent"
+      "biomancy:crafting/honey_bottle"
     ]
   },
   "sends_telemetry_event": false
