@@ -38,15 +38,19 @@ public class VanillaRecipeProvider extends RecipeProvider {
 
 	@Override
 	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-		buildWorkbenchRecipes(consumer);
-		buildCookingRecipes(consumer);
+		buildPrimaryRecipes(consumer);
+		buildFleshBlockRecipes(consumer);
+		buildGellingAgentRecipes(consumer);
+		buildFoodRecipes(consumer);
+		buildMiscRecipes(consumer);
+
+		special(consumer, ModItems.BIOMETRIC_MEMBRANE.get(), ModRecipes.BIOMETRIC_MEMBRANE_CRAFTING_SERIALIZER.get());
+		special(consumer, Items.PLAYER_HEAD, ModRecipes.PLAYER_HEAD_SERIALIZER.get());
+		special(consumer, ModItems.PRIMORDIAL_CRADLE.get(), ModRecipes.CRADLE_CLEANSING_SERIALIZER.get());
+		special(consumer, ModItems.ACOLYTE_ARMOR_HELMET.get(), ModRecipes.ACOLYTE_HELMET_UPGRADE_SERIALIZER.get());
 	}
 
-	private void buildCookingRecipes(Consumer<FinishedRecipe> consumer) {
-		SimpleCookingRecipeBuilder.blasting(Ingredient.of(ModItems.STONE_POWDER.get()), RecipeCategory.BUILDING_BLOCKS, Items.GLASS_PANE, 0.01f, 100).unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get())).save(consumer, getBlastingRecipeId(Items.GLASS_PANE));
-	}
-
-	private void buildWorkbenchRecipes(Consumer<FinishedRecipe> consumer) {
+	private void buildPrimaryRecipes(Consumer<FinishedRecipe> consumer) {
 		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PRIMORDIAL_CORE.get())
 				.pattern("PFB")
 				.pattern("#E#")
@@ -108,8 +112,44 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.pattern("MEM")
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
-		// fuel ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// A recipe for converting between two versions of Flesh Door.
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.FLESH_DOOR.get())
+				.requires(ModItems.FULL_FLESH_DOOR.get())
+				.unlockedBy(ModItems.FULL_FLESH_DOOR.get())
+				.save(consumer, getConversionRecipeId(ModItems.FLESH_DOOR.get(), ModItems.FULL_FLESH_DOOR.get()));
 
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.FULL_FLESH_DOOR.get())
+				.requires(ModItems.FLESH_DOOR.get())
+				.unlockedBy(ModItems.FLESH_DOOR.get())
+				.save(consumer, getConversionRecipeId(ModItems.FULL_FLESH_DOOR.get(), ModItems.FLESH_DOOR.get()));
+
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.PRIMORDIAL_BIO_LANTERN.get())
+				.define('B', ModItems.BLOOMBERRY.get())
+				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
+				.define('C', ModItems.TENDON_CHAIN.get())
+				.pattern(" C ")
+				.pattern("VBV")
+				.pattern(" V ")
+				.unlockedBy(hasName(ModItems.BLOOMBERRY.get()), has(ModItems.BLOOMBERRY.get()))
+				.save(consumer);
+
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BLOOMLIGHT.get(), 4)
+				.define('B', ModItems.BLOOMBERRY.get())
+				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
+				.pattern("BVB")
+				.pattern("VBV")
+				.pattern("BVB")
+				.unlockedBy(hasName(ModItems.BLOOMBERRY.get()), has(ModItems.BLOOMBERRY.get()))
+				.save(consumer);
+
+		membrane(consumer, ModItems.IMPERMEABLE_MEMBRANE_PANE.get(), ModItems.IMPERMEABLE_MEMBRANE.get());
+		membrane(consumer, ModItems.BABY_PERMEABLE_MEMBRANE_PANE.get(), ModItems.BABY_PERMEABLE_MEMBRANE.get());
+		membrane(consumer, ModItems.ADULT_PERMEABLE_MEMBRANE_PANE.get(), ModItems.ADULT_PERMEABLE_MEMBRANE.get());
+		membrane(consumer, ModItems.PRIMAL_PERMEABLE_MEMBRANE_PANE.get(), ModItems.PRIMAL_PERMEABLE_MEMBRANE.get());
+		membrane(consumer, ModItems.UNDEAD_PERMEABLE_MEMBRANE_PANE.get(), ModItems.UNDEAD_PERMEABLE_MEMBRANE.get());
+	}
+
+	private void buildFoodRecipes(Consumer<FinishedRecipe> consumer) {
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.NUTRIENT_BAR.get())
 				.requires(ModItems.NUTRIENT_PASTE.get(), 9)
 				.unlockedBy(ModItems.NUTRIENT_PASTE.get())
@@ -119,8 +159,43 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.requires(ModItems.NUTRIENT_BAR.get())
 				.unlockedBy(ModItems.NUTRIENT_PASTE.get())
 				.save(consumer, getConversionRecipeId(ModItems.NUTRIENT_PASTE.get(), ModItems.NUTRIENT_BAR.get()));
+	}
 
-		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	private void buildGellingAgentRecipes(Consumer<FinishedRecipe> consumer) {
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GELLING_AGENT.get())
+				.requires(ModItems.BILE.get(), 4)
+				.requires(ModItems.ELASTIC_FIBERS.get(), 5)
+				.unlockedBy(hasName(ModItems.ELASTIC_FIBERS.get()), has(ModItems.ELASTIC_FIBERS.get()))
+				.save(consumer);
+
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.SLIME_BALL)
+				.requires(ModItems.GELLING_AGENT.get(), 1)
+				.requires(ModItems.BILE.get(), 2)
+				.requires(ModItems.REGENERATIVE_FLUID.get(), 3)
+				.requires(Items.LIME_DYE, 1)
+				.unlockedBy(hasName(ModItems.GELLING_AGENT.get()), has(ModItems.GELLING_AGENT.get()))
+				.save(consumer);
+
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.HONEY_BOTTLE)
+				.requires(ModItems.GELLING_AGENT.get(), 1)
+				.requires(ModItems.BILE.get(), 2)
+				.requires(ModItems.NUTRIENTS.get(), 1)
+				.requires(Items.SUGAR, 2)
+				.requires(Items.YELLOW_DYE, 1)
+				.requires(Items.GLASS_BOTTLE, 1)
+				.unlockedBy(hasName(ModItems.GELLING_AGENT.get()), has(ModItems.GELLING_AGENT.get()))
+				.save(consumer);
+
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.WATER_GEL_BLOCK.get())
+				.requires(Items.WATER_BUCKET)
+				.requires(ModItems.GELLING_AGENT.get(), 2)
+				.unlockedBy(hasName(ModItems.GELLING_AGENT.get()), has(ModItems.GELLING_AGENT.get()))
+				.save(consumer);
+	}
+
+	private void buildMiscRecipes(Consumer<FinishedRecipe> consumer) {
+		SimpleCookingRecipeBuilder.blasting(Ingredient.of(ModItems.STONE_POWDER.get()), RecipeCategory.BUILDING_BLOCKS, Items.GLASS_PANE, 0.01f, 100).unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get())).save(consumer, getBlastingRecipeId(Items.GLASS_PANE));
+
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Items.DIORITE)
 				.requires(Items.COBBLESTONE)
 				.requires(ModItems.MINERAL_FRAGMENT.get())
@@ -166,10 +241,10 @@ public class VanillaRecipeProvider extends RecipeProvider {
 
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.GUNPOWDER)
 				.requires(Items.CHARCOAL)
-				.requires(ModItems.UNSTABLE_COMPOUND.get())
+				.requires(ModItems.VOLATILE_FLUID.get())
 				.requires(Items.BLAZE_POWDER)
-				.unlockedBy(ModItems.UNSTABLE_COMPOUND.get())
-				.save(consumer, getConversionRecipeId(Items.GUNPOWDER, ModItems.UNSTABLE_COMPOUND.get()));
+				.unlockedBy(ModItems.VOLATILE_FLUID.get())
+				.save(consumer, getConversionRecipeId(Items.GUNPOWDER, ModItems.VOLATILE_FLUID.get()));
 
 		WorkbenchRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Items.GLOW_ITEM_FRAME)
 				.define('F', Items.ITEM_FRAME)
@@ -180,17 +255,18 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.BIO_LUMENS.get())
 				.save(consumer);
 
-		// A recipe for converting between two versions of Flesh Door.
-		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.FLESH_DOOR.get())
-				.requires(ModItems.FULL_FLESH_DOOR.get())
-				.unlockedBy(ModItems.FULL_FLESH_DOOR.get())
-				.save(consumer, getConversionRecipeId(ModItems.FLESH_DOOR.get(), ModItems.FULL_FLESH_DOOR.get()));
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.BONE_MEAL, 4)
+				.requires(ModItems.MOB_FANG.get())
+				.unlockedBy(hasName(ModItems.MOB_FANG.get()), has(ModItems.MOB_FANG.get()))
+				.save(consumer);
 
-		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.FULL_FLESH_DOOR.get())
-				.requires(ModItems.FLESH_DOOR.get())
-				.unlockedBy(ModItems.FLESH_DOOR.get())
-				.save(consumer, getConversionRecipeId(ModItems.FULL_FLESH_DOOR.get(), ModItems.FLESH_DOOR.get()));
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.GRAY_DYE, 4)
+				.requires(ModItems.MOB_CLAW.get())
+				.unlockedBy(hasName(ModItems.MOB_CLAW.get()), has(ModItems.MOB_CLAW.get()))
+				.save(consumer);
+	}
 
+	private void buildFleshBlockRecipes(Consumer<FinishedRecipe> consumer) {
 		stairs(consumer, ModItems.FLESH_STAIRS.get(), ModItems.FLESH_BLOCK.get());
 		slab(consumer, ModItems.FLESH_SLAB.get(), ModItems.FLESH_BLOCK.get());
 		wall(consumer, ModItems.FLESH_WALL.get(), ModItems.FLESH_BLOCK.get());
@@ -273,68 +349,6 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.pattern("VFV")
 				.pattern("VVV")
 				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_BLOCK.get()), has(ModItems.MALIGNANT_FLESH_BLOCK.get()))
-				.save(consumer);
-
-		WorkbenchRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.PRIMORDIAL_BIO_LANTERN.get())
-				.define('B', ModItems.BLOOMBERRY.get())
-				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
-				.define('C', ModItems.TENDON_CHAIN.get())
-				.pattern(" C ")
-				.pattern("VBV")
-				.pattern(" V ")
-				.unlockedBy(hasName(ModItems.BLOOMBERRY.get()), has(ModItems.BLOOMBERRY.get()))
-				.save(consumer);
-
-		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BLOOMLIGHT.get(), 4)
-				.define('B', ModItems.BLOOMBERRY.get())
-				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
-				.pattern("BVB")
-				.pattern("VBV")
-				.pattern("BVB")
-				.unlockedBy(hasName(ModItems.BLOOMBERRY.get()), has(ModItems.BLOOMBERRY.get()))
-				.save(consumer);
-
-		membrane(consumer, ModItems.IMPERMEABLE_MEMBRANE_PANE.get(), ModItems.IMPERMEABLE_MEMBRANE.get());
-		membrane(consumer, ModItems.BABY_PERMEABLE_MEMBRANE_PANE.get(), ModItems.BABY_PERMEABLE_MEMBRANE.get());
-		membrane(consumer, ModItems.ADULT_PERMEABLE_MEMBRANE_PANE.get(), ModItems.ADULT_PERMEABLE_MEMBRANE.get());
-		membrane(consumer, ModItems.PRIMAL_PERMEABLE_MEMBRANE_PANE.get(), ModItems.PRIMAL_PERMEABLE_MEMBRANE.get());
-		membrane(consumer, ModItems.UNDEAD_PERMEABLE_MEMBRANE_PANE.get(), ModItems.UNDEAD_PERMEABLE_MEMBRANE.get());
-
-		special(consumer, ModItems.BIOMETRIC_MEMBRANE.get(), ModRecipes.BIOMETRIC_MEMBRANE_CRAFTING_SERIALIZER.get());
-		special(consumer, Items.PLAYER_HEAD, ModRecipes.PLAYER_HEAD_SERIALIZER.get());
-		special(consumer, ModItems.PRIMORDIAL_CRADLE.get(), ModRecipes.CRADLE_CLEANSING_SERIALIZER.get());
-		special(consumer, ModItems.ACOLYTE_ARMOR_HELMET.get(), ModRecipes.ACOLYTE_HELMET_UPGRADE_SERIALIZER.get());
-
-		// Gelling Agent Recipes ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GELLING_AGENT.get())
-				.requires(ModItems.BILE.get(), 4)
-				.requires(ModItems.ELASTIC_FIBERS.get(), 5)
-				.unlockedBy(hasName(ModItems.ELASTIC_FIBERS.get()), has(ModItems.ELASTIC_FIBERS.get()))
-				.save(consumer);
-
-		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.SLIME_BALL)
-				.requires(ModItems.GELLING_AGENT.get(), 1)
-				.requires(ModItems.BILE.get(), 2)
-				.requires(ModItems.REGENERATIVE_FLUID.get(), 3)
-				.requires(Items.LIME_DYE, 1)
-				.unlockedBy(hasName(ModItems.GELLING_AGENT.get()), has(ModItems.GELLING_AGENT.get()))
-				.save(consumer);
-
-		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.HONEY_BOTTLE)
-				.requires(ModItems.GELLING_AGENT.get(), 1)
-				.requires(ModItems.BILE.get(), 2)
-				.requires(ModItems.NUTRIENTS.get(), 1)
-				.requires(Items.SUGAR, 2)
-				.requires(Items.YELLOW_DYE, 1)
-				.requires(Items.GLASS_BOTTLE, 1)
-				.unlockedBy(hasName(ModItems.GELLING_AGENT.get()), has(ModItems.GELLING_AGENT.get()))
-				.save(consumer);
-
-		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.WATER_GEL_BLOCK.get())
-				.requires(Items.WATER_BUCKET)
-				.requires(ModItems.GELLING_AGENT.get(), 2)
-				.unlockedBy(hasName(ModItems.GELLING_AGENT.get()), has(ModItems.GELLING_AGENT.get()))
 				.save(consumer);
 	}
 

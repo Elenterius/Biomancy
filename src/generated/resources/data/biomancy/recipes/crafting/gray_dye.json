@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "biomancy:mob_claw"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "minecraft:gray_dye"
+  }
+}

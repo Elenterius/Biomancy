@@ -3,16 +3,16 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomancy:crafting/gunpowder_from_unstable_compound"
+        "recipe": "biomancy:crafting/gunpowder_from_volatile_fluid"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_unstable_compound": {
+    "has_volatile_fluid": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:unstable_compound"
+              "biomancy:volatile_fluid"
             ]
           }
         ]
@@ -22,13 +22,13 @@
   },
   "requirements": [
     [
-      "has_unstable_compound",
+      "has_volatile_fluid",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "biomancy:crafting/gunpowder_from_unstable_compound"
+      "biomancy:crafting/gunpowder_from_volatile_fluid"
     ]
   },
   "sends_telemetry_event": false
