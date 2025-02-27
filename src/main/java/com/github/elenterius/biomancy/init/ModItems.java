@@ -88,7 +88,6 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> PRIMORDIAL_CORE = registerSimpleItem("primordial_core", ModRarities.VERY_RARE);
 	public static final RegistryObject<SimpleItem> LIVING_FLESH = registerItem("living_flesh", props -> new SimpleItem(props.food(ModFoods.LIVING_FLESH).rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<EssenceItem> ESSENCE = registerItem("essence", EssenceItem::new);
-	public static final RegistryObject<GiftSacItem> GIFT_SAC = registerItem("gift_sac", props -> new GiftSacItem(props.stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
 
 	//# Tools
 	public static final RegistryObject<GuideBookItem> GUIDE_BOOK = registerItem("guide_book", props -> new GuideBookItem(props.stacksTo(1).rarity(ModRarities.RARE)));
@@ -97,7 +96,6 @@ public final class ModItems {
 	public static final RegistryObject<InjectorItem> INJECTOR = registerItem("injector", props -> new InjectorItem(props.durability(200).rarity(ModRarities.RARE)));
 	public static final RegistryObject<RavenousClawsItem> RAVENOUS_CLAWS = registerItem("ravenous_claws", props -> new RavenousClawsItem(ModTiers.BIOFLESH, 4f, 3.5f, 250, props.rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<CausticGunbladeItem> CAUSTIC_GUNBLADE = registerItem("caustic_gunblade", props -> new CausticGunbladeItem(200, props.stacksTo(1).rarity(ModRarities.VERY_RARE)));
-	public static final RegistryObject<DevArmCannonItem> DEV_ARM_CANNON = registerItem("dev_arm_cannon", props -> new DevArmCannonItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
 	public static final RegistryObject<SimpleItem> GRENADE_CASING = registerSimpleItem("grenade_casing");
 	public static final RegistryObject<GrenadeItem> TOXIN_GRENADE = registerItem("toxin_grenade", GrenadeItem::new);
 	public static final RegistryObject<GrenadeItem> ACID_GRENADE = registerItem("acid_grenade", GrenadeItem::new);
@@ -123,6 +121,9 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> GELLING_AGENT = registerSimpleItem("gelling_agent");
 
 	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_BANNER_PATTERNS = registerItem("mascot_patterns", props -> new MaykerBannerPatternItem(ModBannerPatterns.TAG_MASCOT, props));
+
+	//## Dev
+	public static final RegistryObject<DevArmCannonItem> DEV_ARM_CANNON = registerItem("dev_arm_cannon", props -> new DevArmCannonItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
 
 	//# Block Items
 

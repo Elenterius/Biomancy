@@ -437,10 +437,6 @@ public class PirateLangProvider extends AbstractLangProvider {
 				 - Sailin' through: Increasin' ta' chance to get through yer target's armor
 				 - Numbin' Hands: Preventin' ya from hurtin' the thing ya be injectin'""");
 		addItem(ModItems.FERTILIZER, "Witches' Fertilizer", "Fertilizer that causes yer plants ta' grow quickly, even for Sugar reeds, cactus, verruca o' nether and tall one's flower.");
-		addItem(ModItems.GIFT_SAC, "Sac o' Giftin'", """
-				It be lookin' like some loot be wrapped in a layer o' skin. Might be filled with loot if ye be German.
-								
-				Right Click ta' Sac to retrieve yer loot.""");
 		addItem(ModItems.ACID_BUCKET, "Bucket o' Acid");
 
 		addItem(ModItems.RAVENOUS_CLAWS, "Multi-Cutlass o' Hunger", """

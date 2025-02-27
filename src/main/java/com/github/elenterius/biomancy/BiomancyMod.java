@@ -85,7 +85,6 @@ public final class BiomancyMod {
 			.icon(() -> new ItemStack(ModItems.LIVING_FLESH.get()))
 			.displayItems((params, output) -> {
 				Set<RegistryObject<? extends Item>> hiddenItems = Set.of(
-						ModItems.GIFT_SAC,
 						ModItems.ESSENCE,
 						ModItems.GUIDE_BOOK,
 						ModItems.DEV_ARM_CANNON
