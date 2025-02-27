@@ -509,10 +509,6 @@ public class EnglishLangProvider extends AbstractLangProvider {
 				
 				Furthermore it has the ability to convert patches of dirt into grass or force spread mycelium.
 				""");
-		addItem(ModItems.GIFT_SAC, "Gift Sac", """
-				Looks like some objects are wrapped in an organic layer of skin. Might be filled with items or toxin if your language is set to German.
-								
-				Right Click the Sac to retrieve the Items.""");
 		addItem(ModItems.ACID_BUCKET, "Gastric Acid Bucket");
 		addItem(ModItems.GELLING_AGENT, "Gellant", "A gelatinous substance which turns liquids into a gel without altering its taste and other major properties.\nUseful for increasing the stability of volatile things.");
 		addItem(ModItems.GRENADE_CASING, "Grenade Casing", "Outer grenade casing made of a hard organic material designed to rupture or detonate on impact.");
