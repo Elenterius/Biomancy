@@ -67,10 +67,12 @@ public class VanillaRecipeProvider extends RecipeProvider {
 		WorkbenchRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.DESPOIL_SICKLE.get())
 				.define('B', Tags.Items.BONES)
 				.define('M', ModItemTags.RAW_MEATS)
-				.define('C', ModItems.PRIMORDIAL_CORE.get())
-				.pattern("BB ")
-				.pattern(" BM")
-				.pattern("MC ")
+				.define('F', ModItemTags.FANGS)
+				.define('C', ModItemTags.CLAWS)
+				.define('P', ModItems.PRIMORDIAL_CORE.get())
+				.pattern("CB ")
+				.pattern(" FM")
+				.pattern("MP ")
 				.unlockedBy(ModItems.PRIMORDIAL_CORE.get()).save(consumer);
 
 		//		WorkbenchRecipeBuilder.shapeless(ModItems.GUIDE_BOOK.get())
