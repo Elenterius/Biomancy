@@ -25,12 +25,12 @@ public final class Tributes {
 	public static final Tribute WRONG_ITEM = SimpleTribute.builder().successModifier(-99).diseaseModifier(5).hostileModifier(20).build();
 
 	// tributes which are matched when no direct item match was found
-	public static final Tribute RAW_MEAT_TAG = registerFuzzy(stack -> stack.is(ModItemTags.RAW_MEATS), SimpleTribute.builder().biomass(20).successModifier(16).diseaseModifier(5).hostileModifier(-5).build());
+	public static final Tribute RAW_MEAT_TAG = registerFuzzy(stack -> stack.is(ModItemTags.FRESH_RAW_MEATS), SimpleTribute.builder().biomass(20).successModifier(16).diseaseModifier(5).hostileModifier(-5).build());
 	public static final Tribute COOKED_MEAT_TAG = registerFuzzy(stack -> stack.is(ModItemTags.COOKED_MEATS), SimpleTribute.builder().successModifier(-999).hostileModifier(1).build());
-	public static final Tribute WITHER_BONE_TAG = registerFuzzy(stack -> stack.is(ModItemTags.FORGE_WITHER_BONES), SimpleTribute.builder().successModifier(-30).diseaseModifier(40).build());
+	public static final Tribute WITHER_BONE_TAG = registerFuzzy(stack -> stack.is(ModItemTags.C_WITHER_BONES), SimpleTribute.builder().successModifier(-30).diseaseModifier(40).build());
 	public static final Tribute BONE_TAG = registerFuzzy(stack -> stack.is(Tags.Items.BONES), SimpleTribute.builder().successModifier(3).diseaseModifier(-5).build());
-	public static final Tribute FANG_TAG = registerFuzzy(stack -> stack.is(ModItemTags.FANGS), SimpleTribute.builder().successModifier(8).hostileModifier(5).build());
-	public static final Tribute CLAW_TAG = registerFuzzy(stack -> stack.is(ModItemTags.CLAWS), SimpleTribute.builder().successModifier(8).hostileModifier(5).build());
+	public static final Tribute FANG_TAG = registerFuzzy(stack -> stack.is(ModItemTags.C_FANGS), SimpleTribute.builder().successModifier(8).hostileModifier(5).build());
+	public static final Tribute CLAW_TAG = registerFuzzy(stack -> stack.is(ModItemTags.C_CLAWS), SimpleTribute.builder().successModifier(8).hostileModifier(5).build());
 
 	// normal tributes
 	static {

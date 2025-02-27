@@ -6,10 +6,10 @@
       "tag": "forge:bones"
     },
     "C": {
-      "tag": "biomancy:claws"
+      "tag": "c:claws"
     },
     "F": {
-      "tag": "biomancy:fangs"
+      "tag": "c:fangs"
     },
     "M": {
       "tag": "biomancy:raw_meats"

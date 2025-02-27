@@ -1,7 +1,7 @@
 {
   "type": "biomancy:decomposing",
   "ingredient": {
-    "tag": "forge:bones/wither"
+    "tag": "c:bones/wither"
   },
   "nutrientsCost": 1,
   "processingTime": 275,

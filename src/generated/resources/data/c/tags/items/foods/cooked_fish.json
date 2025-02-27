@@ -1,0 +1,46 @@
+{
+  "values": [
+    {
+      "id": "#c:foods/cooked_fishes",
+      "required": false
+    },
+    {
+      "id": "#forge:cooked_fishes",
+      "required": false
+    },
+    {
+      "id": "#forge:cooked_fish",
+      "required": false
+    },
+    "minecraft:cooked_cod",
+    "minecraft:cooked_salmon",
+    {
+      "id": "alexsmobs:cooked_catfish",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:cooked_lobster_tail",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_catfish_slice",
+      "required": false
+    },
+    {
+      "id": "alexscaves:cooked_trilocaris_tail",
+      "required": false
+    },
+    {
+      "id": "alexscaves:cooked_lanternfish",
+      "required": false
+    },
+    {
+      "id": "alexscaves:cooked_tripodfish",
+      "required": false
+    },
+    {
+      "id": "alexscaves:cooked_radgill",
+      "required": false
+    }
+  ]
+}

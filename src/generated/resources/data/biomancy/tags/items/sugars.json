@@ -1,7 +1,14 @@
 {
   "values": [
+    {
+      "id": "#c:foods/cookie",
+      "required": false
+    },
+    {
+      "id": "#c:foods/candy",
+      "required": false
+    },
     "minecraft:sugar",
-    "minecraft:cookie",
     "minecraft:cake",
     "minecraft:honeycomb",
     "minecraft:honey_block",
@@ -12,14 +19,6 @@
     "minecraft:apple",
     {
       "id": "farmersdelight:hot_cocoa",
-      "required": false
-    },
-    {
-      "id": "farmersdelight:sweet_berry_cookie",
-      "required": false
-    },
-    {
-      "id": "farmersdelight:honey_cookie",
       "required": false
     },
     {

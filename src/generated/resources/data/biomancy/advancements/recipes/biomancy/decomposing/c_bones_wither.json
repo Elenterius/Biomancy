@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:bones/wither"
+            "tag": "c:bones/wither"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomancy:decomposing/forge_bones_wither"
+        "recipe": "biomancy:decomposing/c_bones_wither"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "biomancy:decomposing/forge_bones_wither"
+      "biomancy:decomposing/c_bones_wither"
     ]
   },
   "sends_telemetry_event": false

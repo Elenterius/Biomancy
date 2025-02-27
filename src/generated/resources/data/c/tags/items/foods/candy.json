@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#c:foods/candies",
+      "required": false
+    },
+    {
+      "id": "#forge:candies",
+      "required": false
+    },
+    {
+      "id": "#forge:candy",
+      "required": false
+    }
+  ]
+}
