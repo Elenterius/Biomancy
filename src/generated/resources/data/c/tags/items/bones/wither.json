@@ -1,7 +1,7 @@
 {
   "values": [
     {
-      "id": "c:foods/cooked_meat",
+      "id": "#forge:bones/wither",
       "required": false
     }
   ]

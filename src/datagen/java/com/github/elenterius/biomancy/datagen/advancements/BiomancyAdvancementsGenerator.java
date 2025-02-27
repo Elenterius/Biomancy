@@ -58,7 +58,7 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 				.title("Whispers in the Meat")
 				.description("You feel a presence in the flesh, faint whispers reach your ears:\n\n  \"Raw Meat is useful...\"\n")
 				.showToast()
-				.addHasCriterion(ModItemTags.RAW_MEATS)
+				.addHasCriterion(ModItemTags.FRESH_RAW_MEATS)
 				.save(consumer, fileHelper);
 
 		Advancement meatCollection = createAdvancement("raw_meat_collection").parent(root).icon(Items.PORKCHOP)
@@ -156,7 +156,7 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 				.title("Tartar Delight")
 				.description("Serve raw meat to the Primordial Cradle.")
 				.showToast()
-				.addCriterion("has_sacrificed_raw_meat", hasSacrificedTag(ModItemTags.RAW_MEATS))
+				.addCriterion("has_sacrificed_raw_meat", hasSacrificedTag(ModItemTags.FRESH_RAW_MEATS))
 				.save(consumer, fileHelper);
 
 		createAdvancement("cooked_meat_sacrifice").parent(primalCradle).icon(Items.COOKED_BEEF)

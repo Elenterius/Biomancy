@@ -1,0 +1,60 @@
+{
+  "values": [
+    {
+      "id": "#c:foods/raw_fishes",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_fishes",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_fish",
+      "required": false
+    },
+    "minecraft:cod",
+    "minecraft:salmon",
+    "minecraft:tropical_fish",
+    "minecraft:pufferfish",
+    {
+      "id": "alexsmobs:flying_fish",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:raw_catfish",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:blobfish",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:lobster_tail",
+      "required": false
+    },
+    {
+      "id": "alexscaves:trilocaris_tail",
+      "required": false
+    },
+    {
+      "id": "alexscaves:lanternfish",
+      "required": false
+    },
+    {
+      "id": "alexscaves:tripodfish",
+      "required": false
+    },
+    {
+      "id": "alexscaves:radgill",
+      "required": false
+    },
+    {
+      "id": "alexscaves:deep_sea_sushi_roll",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:raw_catfish_slice",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "values": [
+    {
+      "id": "#c:foods/raw_meats",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_meats",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_meat",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_bacon",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_beef",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_chicken",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_pork",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_mutton",
+      "required": false
+    },
+    "minecraft:beef",
+    "minecraft:porkchop",
+    "minecraft:chicken",
+    "minecraft:rabbit",
+    "minecraft:mutton",
+    {
+      "id": "farmersdelight:ham",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:moose_ribs",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:kangaroo_meat",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:maggot",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:raw_bison",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:bison_mince",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:kangaroo_shank",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:loose_moose_rib",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:raw_bunfungus",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:raw_bunfungus_drumstick",
+      "required": false
+    },
+    {
+      "id": "alexscaves:dinosaur_chop",
+      "required": false
+    },
+    {
+      "id": "iceandfire:ice_dragon_flesh",
+      "required": false
+    },
+    {
+      "id": "iceandfire:fire_dragon_flesh",
+      "required": false
+    },
+    {
+      "id": "iceandfire:lightning_dragon_flesh",
+      "required": false
+    },
+    {
+      "id": "createfa:ground_chicken",
+      "required": false
+    },
+    {
+      "id": "createfa:ground_beef",
+      "required": false
+    },
+    {
+      "id": "rats:raw_rat",
+      "required": false
+    },
+    {
+      "id": "circus:clown",
+      "required": false
+    },
+    {
+      "id": "evilcraft:flesh_humanoid",
+      "required": false
+    },
+    {
+      "id": "evilcraft:flesh_werewolf",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "values": [
+    {
+      "id": "#c:foods/cooked_meats",
+      "required": false
+    },
+    {
+      "id": "#forge:cooked_meat",
+      "required": false
+    },
+    {
+      "id": "#forge:cooked_meats",
+      "required": false
+    },
+    "minecraft:cooked_beef",
+    "minecraft:cooked_porkchop",
+    "minecraft:cooked_chicken",
+    "minecraft:cooked_rabbit",
+    "minecraft:cooked_mutton",
+    {
+      "id": "farmersdelight:smoked_ham",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:cooked_moose_ribs",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:cooked_kangaroo_meat",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_bison",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:bison_patty",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_kangaroo_shank",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_loose_moose_rib",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_bunfungus",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_bunfungus_drumstick",
+      "required": false
+    },
+    {
+      "id": "alexsdelight:cooked_centipede_leg",
+      "required": false
+    },
+    {
+      "id": "alexscaves:cooked_dinosaur_chop",
+      "required": false
+    },
+    {
+      "id": "createfa:schnitzel",
+      "required": false
+    },
+    {
+      "id": "createfa:meatballs",
+      "required": false
+    },
+    {
+      "id": "createfa:chicken_nuggets",
+      "required": false
+    },
+    {
+      "id": "rats:cooked_rat",
+      "required": false
+    }
+  ]
+}

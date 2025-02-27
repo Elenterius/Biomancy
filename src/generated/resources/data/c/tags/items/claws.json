@@ -1,6 +1,9 @@
 {
   "values": [
-    "biomancy:mob_claw",
+    {
+      "id": "#forge:claws",
+      "required": false
+    },
     {
       "id": "alexsmobs:dropbear_claw",
       "required": false

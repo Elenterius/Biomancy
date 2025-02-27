@@ -222,7 +222,7 @@ public class DecomposingRecipeProvider extends RecipeProvider {
 		DecomposingRecipeBuilder.create().setIngredient(Tags.Items.SEEDS).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).unlockedBy(Tags.Items.SEEDS).save(consumer);
 
 		DecomposingRecipeBuilder.create().setIngredient(Tags.Items.BONES).addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 6).unlockedBy(Tags.Items.BONES).save(consumer);
-		DecomposingRecipeBuilder.create().setIngredient(ModItemTags.FORGE_WITHER_BONES).addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 6).addOutput(ModItems.WITHERING_OOZE.get(), 3, 5).unlockedBy(ModItemTags.FORGE_WITHER_BONES).save(consumer);
+		DecomposingRecipeBuilder.create().setIngredient(ModItemTags.C_WITHER_BONES).addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 6).addOutput(ModItems.WITHERING_OOZE.get(), 3, 5).unlockedBy(ModItemTags.C_WITHER_BONES).save(consumer);
 	}
 
 	private void build119Recipes(Consumer<FinishedRecipe> consumer) {

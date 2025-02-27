@@ -1,0 +1,25 @@
+{
+  "values": [
+    {
+      "id": "#c:foods/cookies",
+      "required": false
+    },
+    {
+      "id": "#forge:cookies",
+      "required": false
+    },
+    {
+      "id": "#forge:cookie",
+      "required": false
+    },
+    "minecraft:cookie",
+    {
+      "id": "farmersdelight:sweet_berry_cookie",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:honey_cookie",
+      "required": false
+    }
+  ]
+}

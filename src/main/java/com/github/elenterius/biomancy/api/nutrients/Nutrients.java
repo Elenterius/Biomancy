@@ -46,7 +46,7 @@ public final class Nutrients {
 			FoodProperties foodProperties = resource.getFoodProperties(null);
 			if (foodProperties == null) return false;
 
-			return foodProperties.isMeat() && resource.is(ModItemTags.RAW_MEATS) && foodProperties.getNutrition() > 0;
+			return foodProperties.isMeat() && resource.is(ModItemTags.FRESH_RAW_MEATS) && foodProperties.getNutrition() > 0;
 		}
 
 		return false;
@@ -72,7 +72,7 @@ public final class Nutrients {
 			FoodProperties foodProperties = resource.getFoodProperties(null);
 			if (foodProperties == null) return 0;
 
-			if (foodProperties.isMeat() && resource.is(ModItemTags.RAW_MEATS)) {
+			if (foodProperties.isMeat() && resource.is(ModItemTags.FRESH_RAW_MEATS)) {
 				return RAW_MEAT_NUTRITION_MODIFIER.applyAsInt(foodProperties.getNutrition()) * 2; //TODO: don't give bonus for rotten meats
 			}
 		}
@@ -113,7 +113,7 @@ public final class Nutrients {
 			if (foodProperties == null) return 0;
 
 			int nutrition = foodProperties.getNutrition();
-			if (foodProperties.isMeat() && resource.is(ModItemTags.RAW_MEATS)) {
+			if (foodProperties.isMeat() && resource.is(ModItemTags.FRESH_RAW_MEATS)) {
 				return RAW_MEAT_NUTRITION_MODIFIER.applyAsInt(nutrition);
 			}
 			return nutrition;

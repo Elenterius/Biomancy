@@ -143,7 +143,7 @@ public abstract class LivingEntityMixin extends Entity {
 	private static int biomancy$getRawMeatNutrition(ItemStack itemStack) {
 		if (!itemStack.isEdible()) return 0;
 		FoodProperties food = itemStack.getFoodProperties(null);
-		return food != null && food.isMeat() && itemStack.is(ModItemTags.RAW_MEATS) ? food.getNutrition() : 0;
+		return food != null && food.isMeat() && itemStack.is(ModItemTags.FRESH_RAW_MEATS) ? food.getNutrition() : 0;
 	}
 
 	@Unique
