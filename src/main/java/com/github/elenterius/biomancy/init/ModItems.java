@@ -123,6 +123,7 @@ public final class ModItems {
 	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_BANNER_PATTERNS = registerItem("mascot_patterns", props -> new MaykerBannerPatternItem(ModBannerPatterns.TAG_MASCOT, props));
 
 	//## Dev
+	public static final RegistryObject<SimpleItem> TAB_ICON = registerSimpleItem("tab_icon");
 	public static final RegistryObject<DevArmCannonItem> DEV_ARM_CANNON = registerItem("dev_arm_cannon", props -> new DevArmCannonItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
 
 	//# Block Items

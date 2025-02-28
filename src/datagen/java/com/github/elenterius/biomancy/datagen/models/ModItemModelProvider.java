@@ -36,6 +36,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
+		basicItem(ModItems.TAB_ICON);
+
 		lootItem(ModItems.MOB_FANG);
 		lootItem(ModItems.MOB_CLAW);
 		lootItem(ModItems.MOB_SINEW);
