@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.entity.projectile;
 
 import com.github.elenterius.biomancy.block.cauldron.AcidCauldron;
-import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
+import com.github.elenterius.biomancy.block.mound.MalignantVeinsBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModFluids;
@@ -93,7 +93,7 @@ public class AcidBlobProjectile extends AcidSpitProjectile implements GeoEntity 
 				playHitSound();
 				return true;
 			}
-			else if (stateRelative.getBlock() instanceof FleshVeinsBlock) {
+			else if (stateRelative.getBlock() instanceof MalignantVeinsBlock) {
 				if (!level().isClientSide) {
 					level().setBlock(posRelative, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
 				}

@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.fluid;
 
-import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
+import com.github.elenterius.biomancy.block.mound.MalignantVeinsBlock;
 import com.github.elenterius.biomancy.init.AcidInteractions;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
 import net.minecraft.core.BlockPos;
@@ -28,17 +28,17 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 
 	@Override
 	protected boolean canPassThrough(BlockGetter level, Fluid fluid, BlockPos fromPos, BlockState fromBlockState, Direction direction, BlockPos toPos, BlockState toBlockState, FluidState toFluidState) {
-		return toBlockState.getBlock() instanceof FleshVeinsBlock || super.canPassThrough(level, fluid, fromPos, fromBlockState, direction, toPos, toBlockState, toFluidState);
+		return toBlockState.getBlock() instanceof MalignantVeinsBlock || super.canPassThrough(level, fluid, fromPos, fromBlockState, direction, toPos, toBlockState, toFluidState);
 	}
 
 	@Override
 	protected boolean canSpreadTo(BlockGetter level, BlockPos fromPos, BlockState fromBlockState, Direction direction, BlockPos toPos, BlockState toBlockState, FluidState toFluidState, Fluid fluid) {
-		return toBlockState.getBlock() instanceof FleshVeinsBlock || super.canSpreadTo(level, fromPos, fromBlockState, direction, toPos, toBlockState, toFluidState, fluid);
+		return toBlockState.getBlock() instanceof MalignantVeinsBlock || super.canSpreadTo(level, fromPos, fromBlockState, direction, toPos, toBlockState, toFluidState, fluid);
 	}
 
 	@Override
 	protected void spreadTo(LevelAccessor level, BlockPos pos, BlockState state, Direction direction, FluidState fluidState) {
-		if (state.getBlock() instanceof FleshVeinsBlock) {
+		if (state.getBlock() instanceof MalignantVeinsBlock) {
 			beforeDestroyingBlock(level, pos, state);
 			level.setBlock(pos, fluidState.createLegacyBlock(), Block.UPDATE_ALL);
 			return;
@@ -123,7 +123,7 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 	}
 
 	protected void destroyFleshVeins(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
-		if (block instanceof FleshVeinsBlock) {
+		if (block instanceof MalignantVeinsBlock) {
 			level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, Blocks.AIR.defaultBlockState()));
 			level.levelEvent(LevelEvent.LAVA_FIZZ, pos, 0);
 		}

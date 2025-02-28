@@ -2,15 +2,15 @@ package com.github.elenterius.biomancy.datagen.models;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.*;
-import com.github.elenterius.biomancy.block.bloom.BloomBlock;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
 import com.github.elenterius.biomancy.block.membrane.MembraneBlock;
-import com.github.elenterius.biomancy.block.orifice.OrificeBlock;
+import com.github.elenterius.biomancy.block.mound.BloomBlock;
+import com.github.elenterius.biomancy.block.mound.MalignantVeinsBlock;
+import com.github.elenterius.biomancy.block.mound.OrificeBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.block.property.Orientation;
 import com.github.elenterius.biomancy.block.property.UserSensitivity;
-import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
 import com.github.elenterius.biomancy.block.vialholder.VialHolderBlock;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModBlocks;
@@ -709,7 +709,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		simpleBlockItem(block, hangingModel);
 	}
 
-	public <T extends FleshVeinsBlock> void veinsBlock(RegistryObject<T> block) {
+	public <T extends MalignantVeinsBlock> void veinsBlock(RegistryObject<T> block) {
 		veinsBlock(block.get());
 	}
 

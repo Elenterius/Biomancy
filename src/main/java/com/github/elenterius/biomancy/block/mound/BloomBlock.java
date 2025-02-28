@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.block.bloom;
+package com.github.elenterius.biomancy.block.mound;
 
 import com.github.elenterius.biomancy.block.base.WaterloggedFacingBlock;
 import com.github.elenterius.biomancy.init.ModItems;

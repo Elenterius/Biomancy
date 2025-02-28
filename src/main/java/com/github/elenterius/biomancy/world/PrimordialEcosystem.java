@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.world;
 
 import com.github.elenterius.biomancy.block.DirectionalSlabBlock;
+import com.github.elenterius.biomancy.block.mound.MalignantVeinsBlock;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
-import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
 import com.github.elenterius.biomancy.entity.mob.PrimordialFleshkin;
 import com.github.elenterius.biomancy.entity.mob.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
@@ -73,7 +73,7 @@ public final class PrimordialEcosystem {
 
 	public static boolean placeMalignantBlocks(ServerLevel level, BlockPos pos, RandomSource random, float chargePct) {
 		BlockState currentState = level.getBlockState(pos);
-		FleshVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
+		MalignantVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
 
 		if (currentState.is(veinsBlock)) {
 			if (veinsBlock.getSpreader().spreadAll(currentState, level, pos, false) > 0) {
@@ -116,7 +116,7 @@ public final class PrimordialEcosystem {
 
 	public static <T extends FleshBlob & PrimordialFleshkin> boolean placeMalignantBlocks(ServerLevel level, BlockPos pos, T fleshBlob) {
 		BlockState currentState = level.getBlockState(pos);
-		FleshVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
+		MalignantVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
 		RandomSource random = fleshBlob.getRandom();
 
 		if (currentState.is(veinsBlock)) {
@@ -187,7 +187,7 @@ public final class PrimordialEcosystem {
 				level.playSound(null, relativePos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 				return true;
 			}
-			else if (FleshVeinsBlock.convert(relativeState, level, relativePos, 0, null, 0.5f, null)) {
+			else if (MalignantVeinsBlock.convert(relativeState, level, relativePos, 0, null, 0.5f, null)) {
 				level.playSound(null, relativePos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 				return true;
 			}
@@ -195,7 +195,7 @@ public final class PrimordialEcosystem {
 			return PrimordialEcosystem.spreadMalignantVeinsFromSource(level, relativePos, PrimordialEcosystem.MAX_CHARGE_SUPPLIER);
 		}
 		else if (relativeState.canBeReplaced(new DirectionalPlaceContext(level, relativePos, direction.getOpposite(), ItemStack.EMPTY, direction))) {
-			FleshVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
+			MalignantVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
 			BlockState stateForPlacement = veinsBlock.getStateForPlacement(relativeState, level, relativePos, direction.getOpposite(), 15);
 			if (stateForPlacement != null) {
 				level.setBlock(relativePos, stateForPlacement, Block.UPDATE_CLIENTS);
@@ -211,7 +211,7 @@ public final class PrimordialEcosystem {
 	}
 
 	public static boolean spreadMalignantVeinsFromSource(ServerLevel level, BlockPos pos, IntSupplier chargeSupplier) {
-		FleshVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
+		MalignantVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
 		BlockState state = level.getBlockState(pos);
 		RandomSource random = level.random;
 
@@ -229,7 +229,7 @@ public final class PrimordialEcosystem {
 	}
 
 	public static int increaseMalignantVeinsChargeAroundPos(ServerLevel level, BlockPos pos, IntSupplier chargeSupplier) {
-		FleshVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
+		MalignantVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
 		int usedCharge = 0;
 
 		for (int y = -1; y <= 1; y++) {

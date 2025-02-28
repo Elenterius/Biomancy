@@ -1,6 +1,5 @@
-package com.github.elenterius.biomancy.block.veins;
+package com.github.elenterius.biomancy.block.mound;
 
-import com.github.elenterius.biomancy.block.bloom.BloomBlock;
 import com.github.elenterius.biomancy.block.cradle.PrimalEnergyHandler;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
@@ -52,14 +51,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterloggedBlock {
+public class MalignantVeinsBlock extends MultifaceBlock implements SimpleWaterloggedBlock {
 
 	public static final Predicate<BlockState> BLOCKS_TO_AVOID_PREDICATE = blockState -> blockState.is(ModBlocks.PRIMAL_BLOOM.get());
 	protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final EnhancedIntegerProperty CHARGE = ModBlockProperties.CHARGE;
-	private final MultifaceSpreader spreader = new MultifaceSpreader(new MalignantFleshSpreaderConfig(this));
+	private final MultifaceSpreader spreader = new MultifaceSpreader(new MalignantVeinsSpreaderConfig(this));
 
-	public FleshVeinsBlock(Properties properties) {
+	public MalignantVeinsBlock(Properties properties) {
 		super(properties.randomTicks().ignitedByLava());
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(CHARGE.get(), CHARGE.getMin()));
 	}

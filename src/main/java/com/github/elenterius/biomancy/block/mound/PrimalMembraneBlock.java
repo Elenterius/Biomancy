@@ -1,7 +1,8 @@
-package com.github.elenterius.biomancy.block.membrane;
+package com.github.elenterius.biomancy.block.mound;
 
 import com.github.elenterius.biomancy.block.cradle.PrimalEnergyHandler;
-import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
+import com.github.elenterius.biomancy.block.membrane.IgnoreEntityCollisionPredicate;
+import com.github.elenterius.biomancy.block.membrane.MembraneBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.util.VectorUtil;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
@@ -14,9 +15,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class SpreadingMembraneBlock extends MembraneBlock {
+public class PrimalMembraneBlock extends MembraneBlock {
 
-	public SpreadingMembraneBlock(Properties properties, IgnoreEntityCollisionPredicate predicate) {
+	public PrimalMembraneBlock(Properties properties, IgnoreEntityCollisionPredicate predicate) {
 		super(properties.randomTicks(), predicate);
 	}
 
@@ -28,7 +29,7 @@ public class SpreadingMembraneBlock extends MembraneBlock {
 		BlockPos targetPos = pos.offset(VectorUtil.randomOffsetInCube3i(random));
 		BlockState stateAtTargetPos = level.getBlockState(targetPos);
 
-		if (!stateAtTargetPos.isAir() && !(stateAtTargetPos.getBlock() instanceof FleshVeinsBlock) && !PrimordialEcosystem.isReplaceable(stateAtTargetPos)) return;
+		if (!stateAtTargetPos.isAir() && !(stateAtTargetPos.getBlock() instanceof MalignantVeinsBlock) && !PrimordialEcosystem.isReplaceable(stateAtTargetPos)) return;
 
 		if (SpatialShapeManager.getClosestShape(level, pos, MoundShape.class::isInstance) instanceof MoundShape mound) {
 			BlockEntity blockEntity = level.getExistingBlockEntity(mound.getOrigin());

@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.block.veins;
+package com.github.elenterius.biomancy.block.mound;
 
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
@@ -21,11 +21,11 @@ import net.minecraft.world.level.material.Fluids;
 
 import java.util.Set;
 
-class MalignantFleshSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConfig {
+class MalignantVeinsSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConfig {
 
 	protected static final Set<Block> VALID_SOURCES = Set.of(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlocks.MALIGNANT_FLESH_STAIRS.get(), ModBlocks.MALIGNANT_FLESH.get());
 
-	public MalignantFleshSpreaderConfig(MultifaceBlock block) {
+	public MalignantVeinsSpreaderConfig(MultifaceBlock block) {
 		super(block);
 	}
 

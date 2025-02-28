@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.block.orifice;
+package com.github.elenterius.biomancy.block.mound;
 
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.util.EnhancedIntegerProperty;
