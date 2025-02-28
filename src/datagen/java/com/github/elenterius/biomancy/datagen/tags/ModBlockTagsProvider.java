@@ -53,12 +53,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		addCreateTags();
 		addQuarkTags();
 
+		tag(ModBlockTags.FLESH_PILLAR_REPLACEABLE)
+				.addTag(BlockTags.OVERWORLD_NATURAL_LOGS);
+
 		enhancedTag(ModBlockTags.FLESH_REPLACEABLE)
+				.addTag(ModBlockTags.FLESH_PILLAR_REPLACEABLE)
 				.add(Blocks.CLAY).addTag(BlockTags.SAND).addTag(Tags.Blocks.GRAVEL)
 				.add(Blocks.ICE, Blocks.FROSTED_ICE)
 				.addTag(BlockTags.SNOW)
 				.addTag(BlockTags.LEAVES)
-				.addTag(BlockTags.OVERWORLD_NATURAL_LOGS)
 				.addTag(BlockTags.DIRT)
 				.add(Blocks.DIRT_PATH, Blocks.FARMLAND, Blocks.MOSS_BLOCK, Blocks.MOSS_CARPET, Blocks.VINE)
 				.add(Blocks.PUMPKIN, Blocks.CARVED_PUMPKIN, Blocks.JACK_O_LANTERN, Blocks.MELON, Blocks.ATTACHED_PUMPKIN_STEM, Blocks.ATTACHED_MELON_STEM)

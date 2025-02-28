@@ -209,7 +209,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 			if (noiseValue < cellularNoise.coreThreshold()) {
 				if (stateRelative.hasProperty(RotatedPillarBlock.AXIS)) {
 					Direction.Axis axis = stateRelative.getValue(RotatedPillarBlock.AXIS);
-					replacementState = Blocks.BONE_BLOCK.defaultBlockState().setValue(RotatedPillarBlock.AXIS, axis);
+					replacementState = ModBlocks.PRIMAL_FLESH_PILLAR.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, axis);
 				}
 				else replacementState = ModBlocks.PRIMAL_FLESH_WALL.get().defaultBlockState();
 			}

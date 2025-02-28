@@ -9,6 +9,7 @@ public final class ModBlockTags {
 	public static final TagKey<Block> FLESHY_FENCES = tag("fleshy_fences");
 
 	public static final TagKey<Block> FLESH_REPLACEABLE = tag("flesh_replaceable");
+	public static final TagKey<Block> FLESH_PILLAR_REPLACEABLE = tag("flesh_pillar_replaceable");
 	public static final TagKey<Block> ALLOW_VEINS_TO_ATTACH = tag("allow_veins_to_attach");
 	public static final TagKey<Block> DISALLOW_VEINS_TO_ATTACH = tag("disallow_veins_to_attach");
 

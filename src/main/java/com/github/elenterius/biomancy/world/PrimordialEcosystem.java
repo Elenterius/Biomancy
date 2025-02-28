@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -352,7 +351,7 @@ public final class PrimordialEcosystem {
 	}
 
 	public static boolean isReplaceableLog(BlockState state) {
-		return isReplaceable(state) && state.is(BlockTags.OVERWORLD_NATURAL_LOGS);
+		return isReplaceable(state) && state.is(ModBlockTags.FLESH_PILLAR_REPLACEABLE);
 	}
 
 	public static RandomSource getRandomWithSeed(BlockPos pos) {
