@@ -82,9 +82,10 @@ public final class BiomancyMod {
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, BiomancyMod.MOD_ID);
 	public static final RegistryObject<CreativeModeTab> CREATIVE_TAB = CREATIVE_TABS.register("example", () -> CreativeModeTab.builder()
 			.title(ComponentUtil.translatable("item_group." + MOD_ID))
-			.icon(() -> new ItemStack(ModItems.LIVING_FLESH.get()))
+			.icon(() -> new ItemStack(ModItems.TAB_ICON.get()))
 			.displayItems((params, output) -> {
 				Set<RegistryObject<? extends Item>> hiddenItems = Set.of(
+						ModItems.TAB_ICON,
 						ModItems.ESSENCE,
 						ModItems.GUIDE_BOOK,
 						ModItems.DEV_ARM_CANNON
