@@ -101,9 +101,11 @@ public final class ModBlocks {
 	public static final RegistryObject<DirectionalSlabBlock> MALIGNANT_FLESH_SLAB = registerSlab(MALIGNANT_FLESH, DirectionalSlabBlock::new);
 	public static final RegistryObject<WallBlock> MALIGNANT_FLESH_WALL = registerWall(MALIGNANT_FLESH, WallBlock::new);
 	public static final RegistryObject<FleshVeinsBlock> MALIGNANT_FLESH_VEINS = register("malignant_flesh_veins", () -> new FleshVeinsBlock(createFleshVeinsProperties().noCollission().noOcclusion()));
+
 	public static final RegistryObject<BloomBlock> PRIMAL_BLOOM = register("primal_bloom", properties -> new BloomBlock(properties.randomTicks().noOcclusion().lightLevel(BloomBlock::getLightEmission)));
 	public static final RegistryObject<Block> BLOOMLIGHT = register("bloomlight", properties -> new Block(properties.sound(SoundType.SHROOMLIGHT).lightLevel(x -> 15)));
 	public static final RegistryObject<OrificeBlock> PRIMAL_ORIFICE = register("primal_orifice", properties -> new OrificeBlock(properties.randomTicks()));
+	public static final RegistryObject<RotatedPillarBlock> PRIMAL_FLESH_PILLAR = register("primal_flesh_pillar", () -> new RotatedPillarBlock(createBonyFleshProperties()));
 
 	//## Utility
 	public static final RegistryObject<ModularLarynxBlock> MODULAR_LARYNX = register("modular_larynx", ModularLarynxBlock::new);

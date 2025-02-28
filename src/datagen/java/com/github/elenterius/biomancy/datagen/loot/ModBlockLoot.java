@@ -230,6 +230,7 @@ public class ModBlockLoot extends BlockLootSubProvider {
 		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), block -> createMultifaceBlockDrops(block, HAS_SHEARS_OR_SILK_TOUCH));
 		add(ModBlocks.PRIMAL_BLOOM.get(), this::createShearsOrSilkTouchOnlyDrop);
 		dropSelf(ModBlocks.PRIMAL_ORIFICE.get());
+		dropSelf(ModBlocks.PRIMAL_FLESH_PILLAR.get());
 
 		dropSelf(ModBlocks.IMPERMEABLE_MEMBRANE.get());
 		dropSelf(ModBlocks.IMPERMEABLE_MEMBRANE_PANE.get());

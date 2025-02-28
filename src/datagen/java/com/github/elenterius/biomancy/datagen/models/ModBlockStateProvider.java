@@ -114,6 +114,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		veinsBlock(ModBlocks.MALIGNANT_FLESH_VEINS);
 		malignantBloom(ModBlocks.PRIMAL_BLOOM);
 		orifice(ModBlocks.PRIMAL_ORIFICE);
+		axisBlockWithItem(ModBlocks.PRIMAL_FLESH_PILLAR);
 
 		irisDoor(ModBlocks.FLESH_IRIS_DOOR, true);
 		fleshDoor(ModBlocks.FLESH_DOOR);

@@ -218,6 +218,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> PRIMAL_BLOOM = registerSimpleBlockItem(ModBlocks.PRIMAL_BLOOM);
 	public static final RegistryObject<SimpleBlockItem> BLOOMLIGHT = registerSimpleBlockItem(ModBlocks.BLOOMLIGHT);
 	public static final RegistryObject<SimpleBlockItem> PRIMAL_ORIFICE = registerSimpleBlockItem(ModBlocks.PRIMAL_ORIFICE);
+	public static final RegistryObject<SimpleBlockItem> PRIMAL_FLESH_PILLAR = registerSimpleBlockItem(ModBlocks.PRIMAL_FLESH_PILLAR);
 
 	//# Spawn Eggs
 	public static final RegistryObject<ForgeSpawnEggItem> HUNGRY_FLESH_BLOB_SPAWN_EGG = registerSpawnEgg(ModEntityTypes.HUNGRY_FLESH_BLOB, 0xe9967a, 0xf6d2c6);
