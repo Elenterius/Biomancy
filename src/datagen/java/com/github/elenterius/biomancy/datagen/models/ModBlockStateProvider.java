@@ -1,5 +1,8 @@
 package com.github.elenterius.biomancy.datagen.models;
 
+import java.util.Objects;
+import java.util.function.Function;
+
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.*;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
@@ -29,9 +32,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
-
-import java.util.Objects;
-import java.util.function.Function;
 
 public class ModBlockStateProvider extends BlockStateProvider {
 
@@ -115,6 +115,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		malignantBloom(ModBlocks.PRIMAL_BLOOM);
 		orifice(ModBlocks.PRIMAL_ORIFICE);
 		axisBlockWithItem(ModBlocks.PRIMAL_FLESH_PILLAR);
+		axisBlockWithItem(ModBlocks.PRIMAL_BONE);
 
 		irisDoor(ModBlocks.FLESH_IRIS_DOOR, true);
 		fleshDoor(ModBlocks.FLESH_DOOR);

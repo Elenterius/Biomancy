@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
+import java.util.function.Consumer;
+
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.datagen.recipes.builder.WorkbenchRecipeBuilder;
 import com.github.elenterius.biomancy.init.ModItems;
@@ -17,8 +19,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.function.Consumer;
 
 public class VanillaRecipeProvider extends RecipeProvider {
 
@@ -120,7 +120,7 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.pattern(" C ")
 				.pattern("VBV")
 				.pattern(" V ")
-				.unlockedBy(hasName(ModItems.BLOOMBERRY.get()), has(ModItems.BLOOMBERRY.get()))
+				.unlockedBy(ModItems.BLOOMBERRY.get())
 				.save(consumer);
 
 		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BLOOMLIGHT.get(), 4)
@@ -129,7 +129,7 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.pattern("BVB")
 				.pattern("VBV")
 				.pattern("BVB")
-				.unlockedBy(hasName(ModItems.BLOOMBERRY.get()), has(ModItems.BLOOMBERRY.get()))
+				.unlockedBy(ModItems.BLOOMBERRY.get())
 				.save(consumer);
 
 		membrane(consumer, ModItems.IMPERMEABLE_MEMBRANE_PANE.get(), ModItems.IMPERMEABLE_MEMBRANE.get());
@@ -155,7 +155,7 @@ public class VanillaRecipeProvider extends RecipeProvider {
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GELLING_AGENT.get())
 				.requires(ModItems.BILE.get(), 4)
 				.requires(ModItems.ELASTIC_FIBERS.get(), 5)
-				.unlockedBy(hasName(ModItems.ELASTIC_FIBERS.get()), has(ModItems.ELASTIC_FIBERS.get()))
+				.unlockedBy(ModItems.ELASTIC_FIBERS.get())
 				.save(consumer);
 
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.SLIME_BALL)
@@ -163,7 +163,7 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.requires(ModItems.BILE.get(), 2)
 				.requires(ModItems.REGENERATIVE_FLUID.get(), 3)
 				.requires(Items.LIME_DYE, 1)
-				.unlockedBy(hasName(ModItems.GELLING_AGENT.get()), has(ModItems.GELLING_AGENT.get()))
+				.unlockedBy(ModItems.GELLING_AGENT.get())
 				.save(consumer);
 
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.HONEY_BOTTLE)
@@ -173,18 +173,19 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.requires(Items.SUGAR, 2)
 				.requires(Items.YELLOW_DYE, 1)
 				.requires(Items.GLASS_BOTTLE, 1)
-				.unlockedBy(hasName(ModItems.GELLING_AGENT.get()), has(ModItems.GELLING_AGENT.get()))
+				.unlockedBy(ModItems.GELLING_AGENT.get())
 				.save(consumer);
 
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.WATER_GEL_BLOCK.get())
 				.requires(Items.WATER_BUCKET)
 				.requires(ModItems.GELLING_AGENT.get(), 2)
-				.unlockedBy(hasName(ModItems.GELLING_AGENT.get()), has(ModItems.GELLING_AGENT.get()))
+				.unlockedBy(ModItems.GELLING_AGENT.get())
 				.save(consumer);
 	}
 
 	private void buildMiscRecipes(Consumer<FinishedRecipe> consumer) {
-		SimpleCookingRecipeBuilder.blasting(Ingredient.of(ModItems.STONE_POWDER.get()), RecipeCategory.BUILDING_BLOCKS, Items.GLASS_PANE, 0.01f, 100).unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get())).save(consumer, getBlastingRecipeId(Items.GLASS_PANE));
+		SimpleCookingRecipeBuilder.blasting(Ingredient.of(ModItems.STONE_POWDER.get()), RecipeCategory.BUILDING_BLOCKS, Items.GLASS_PANE, 0.01f, 100)
+				.unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get())).save(consumer, getBlastingRecipeId(Items.GLASS_PANE));
 
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Items.DIORITE)
 				.requires(Items.COBBLESTONE)
@@ -247,13 +248,18 @@ public class VanillaRecipeProvider extends RecipeProvider {
 
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.BONE_MEAL, 4)
 				.requires(ModItems.MOB_FANG.get())
-				.unlockedBy(hasName(ModItems.MOB_FANG.get()), has(ModItems.MOB_FANG.get()))
+				.unlockedBy(ModItems.MOB_FANG.get())
 				.save(consumer);
 
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.GRAY_DYE, 4)
 				.requires(ModItems.MOB_CLAW.get())
-				.unlockedBy(hasName(ModItems.MOB_CLAW.get()), has(ModItems.MOB_CLAW.get()))
+				.unlockedBy(ModItems.MOB_CLAW.get())
 				.save(consumer);
+
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.BONE_MEAL, 9)
+				.requires(ModItems.PRIMAL_BONE.get())
+				.unlockedBy(ModItems.PRIMAL_BONE.get())
+				.save(consumer, getConversionRecipeId(Items.BONE_MEAL, ModItems.PRIMAL_BONE.get()));
 	}
 
 	private void buildFleshBlockRecipes(Consumer<FinishedRecipe> consumer) {
@@ -305,7 +311,7 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.define('P', ModItems.PRIMAL_FLESH_BLOCK.get())
 				.pattern("PM")
 				.pattern("MP")
-				.unlockedBy(hasName(ModItems.PRIMAL_FLESH_BLOCK.get()), has(ModItems.PRIMAL_FLESH_BLOCK.get()))
+				.unlockedBy(ModItems.PRIMAL_FLESH_BLOCK.get())
 				.save(consumer);
 		stairs(consumer, ModItems.POROUS_PRIMAL_FLESH_STAIRS.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
 		slab(consumer, ModItems.POROUS_PRIMAL_FLESH_SLAB.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
@@ -329,7 +335,7 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.pattern("VVV")
 				.pattern("VFV")
 				.pattern("VVV")
-				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_VEINS.get()), has(ModItems.MALIGNANT_FLESH_VEINS.get()))
+				.unlockedBy(ModItems.MALIGNANT_FLESH_VEINS.get())
 				.save(consumer);
 
 		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PRIMAL_FLESH_BLOCK.get())
@@ -338,21 +344,21 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.pattern("VVV")
 				.pattern("VFV")
 				.pattern("VVV")
-				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_BLOCK.get()), has(ModItems.MALIGNANT_FLESH_BLOCK.get()))
+				.unlockedBy(ModItems.MALIGNANT_FLESH_BLOCK.get())
 				.save(consumer);
 	}
 
 	private void membrane(Consumer<FinishedRecipe> consumer, SimpleBlockItem pane, SimpleBlockItem membrane) {
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, pane, 2)
 				.requires(membrane)
-				.unlockedBy(hasName(membrane), has(membrane))
+				.unlockedBy(membrane)
 				.save(consumer, getConversionRecipeId(pane, membrane));
 
 		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, membrane)
 				.define('P', pane)
 				.pattern("P")
 				.pattern("P")
-				.unlockedBy(hasName(pane), has(pane))
+				.unlockedBy(pane)
 				.save(consumer, getConversionRecipeId(membrane, pane));
 	}
 
@@ -419,7 +425,7 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.define('S', slab)
 				.pattern(" S ")
 				.pattern(" S ")
-				.unlockedBy(hasName(slab), has(slab))
+				.unlockedBy(slab)
 				.save(consumer, getRecipeId(result).withSuffix("_from_slabs"));
 	}
 

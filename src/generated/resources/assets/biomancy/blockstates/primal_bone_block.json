@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "biomancy:block/primal_bone_block_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "biomancy:block/primal_bone_block"
+    },
+    "axis=z": {
+      "model": "biomancy:block/primal_bone_block_horizontal",
+      "x": 90
+    }
+  }
+}

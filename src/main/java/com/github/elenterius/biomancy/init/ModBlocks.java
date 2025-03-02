@@ -1,5 +1,8 @@
 package com.github.elenterius.biomancy.init;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.*;
 import com.github.elenterius.biomancy.block.bioforge.BioForgeBlock;
@@ -33,14 +36,12 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public final class ModBlocks {
 
@@ -110,6 +111,7 @@ public final class ModBlocks {
 	public static final RegistryObject<Block> BLOOMLIGHT = register("bloomlight", properties -> new Block(properties.sound(SoundType.SHROOMLIGHT).lightLevel(x -> 15)));
 	public static final RegistryObject<OrificeBlock> PRIMAL_ORIFICE = register("primal_orifice", properties -> new OrificeBlock(properties.randomTicks()));
 	public static final RegistryObject<RotatedPillarBlock> PRIMAL_FLESH_PILLAR = register("primal_flesh_pillar", () -> new RotatedPillarBlock(createBonyFleshProperties()));
+	public static final RegistryObject<RotatedPillarBlock> PRIMAL_BONE = register("primal_bone_block", () -> new RotatedPillarBlock(createBoneProperties()));
 
 	//## Utility
 	public static final RegistryObject<ModularLarynxBlock> MODULAR_LARYNX = register("modular_larynx", ModularLarynxBlock::new);
@@ -250,6 +252,10 @@ public final class ModBlocks {
 
 	public static BlockBehaviour.Properties createBonyFleshProperties() {
 		return BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).strength(FLESH_DESTROY_SPEED + 1, FLESH_EXPLOSION_RESISTANCE * 2).sound(ModSoundTypes.BONY_FLESH_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
+	}
+
+	public static BlockBehaviour.Properties createBoneProperties() {
+		return BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_GRAY).instrument(NoteBlockInstrument.XYLOPHONE).requiresCorrectToolForDrops().strength(FLESH_DESTROY_SPEED * 2, FLESH_EXPLOSION_RESISTANCE * 4).sound(SoundType.BONE_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
 	}
 
 	public static boolean isValidFleshkinSpawn(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType) {

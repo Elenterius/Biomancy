@@ -316,6 +316,8 @@
   "block.biomancy.primal_bloom.tooltip": "An exotic flower of primordial beauty.\n\nIt will spread itself by launching it's ripe berry into the air.\nOn impact the berry explodes and spreads malignant veins as well.",
   "block.biomancy.primal_flesh_pillar": "Primal Flesh Pillar",
   "block.biomancy.primal_flesh_pillar.tooltip": "A Pillar made of primal bones and flesh.",
+  "block.biomancy.primal_bone_block": "Primal Bone",
+  "block.biomancy.primal_bone_block.tooltip": "A thick bone of a primordial flesh creature.",
   "block.biomancy.primal_orifice": "Primal Orifice",
   "block.biomancy.primal_orifice.tooltip": "A grotesque, flesh mass riddled with holes, oozing gastric juices. These orifices appear to grow inside flesh mound chambers and can be harvested using buckets or bottles, yielding a highly acidic fluid.",
   "block.biomancy.acid_fluid_block": "Gastric Acid",

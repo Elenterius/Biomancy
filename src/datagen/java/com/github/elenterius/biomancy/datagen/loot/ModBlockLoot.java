@@ -1,5 +1,12 @@
 package com.github.elenterius.biomancy.datagen.loot;
 
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.IntStream;
+
+import static com.github.elenterius.biomancy.BiomancyMod.LOGGER;
+
 import com.github.elenterius.biomancy.block.DirectionalSlabBlock;
 import com.github.elenterius.biomancy.block.chrysalis.Chrysalis;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
@@ -34,13 +41,6 @@ import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.Marker;
-
-import java.util.List;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.IntStream;
-
-import static com.github.elenterius.biomancy.BiomancyMod.LOGGER;
 
 public class ModBlockLoot extends BlockLootSubProvider {
 
@@ -231,6 +231,7 @@ public class ModBlockLoot extends BlockLootSubProvider {
 		add(ModBlocks.PRIMAL_BLOOM.get(), this::createShearsOrSilkTouchOnlyDrop);
 		dropSelf(ModBlocks.PRIMAL_ORIFICE.get());
 		dropSelf(ModBlocks.PRIMAL_FLESH_PILLAR.get());
+		dropSelf(ModBlocks.PRIMAL_BONE.get());
 
 		dropSelf(ModBlocks.IMPERMEABLE_MEMBRANE.get());
 		dropSelf(ModBlocks.IMPERMEABLE_MEMBRANE_PANE.get());
