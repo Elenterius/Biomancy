@@ -1,8 +1,5 @@
 package com.github.elenterius.biomancy.init;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.*;
 import com.github.elenterius.biomancy.block.bioforge.BioForgeBlock;
@@ -20,10 +17,7 @@ import com.github.elenterius.biomancy.block.membrane.IgnoreEntityCollisionPredic
 import com.github.elenterius.biomancy.block.membrane.MembraneBlock;
 import com.github.elenterius.biomancy.block.membrane.MembranePaneBlock;
 import com.github.elenterius.biomancy.block.modularlarynx.ModularLarynxBlock;
-import com.github.elenterius.biomancy.block.mound.BloomBlock;
-import com.github.elenterius.biomancy.block.mound.MalignantVeinsBlock;
-import com.github.elenterius.biomancy.block.mound.OrificeBlock;
-import com.github.elenterius.biomancy.block.mound.PrimalMembraneBlock;
+import com.github.elenterius.biomancy.block.mound.*;
 import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlock;
 import com.github.elenterius.biomancy.block.tongue.TongueBlock;
@@ -42,6 +36,9 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class ModBlocks {
 
@@ -101,10 +98,11 @@ public final class ModBlocks {
 	public static final RegistryObject<StairBlock> POROUS_PRIMAL_FLESH_STAIRS = registerStairs(POROUS_PRIMAL_FLESH, StairBlock::new);
 	public static final RegistryObject<DirectionalSlabBlock> POROUS_PRIMAL_FLESH_SLAB = registerSlab(POROUS_PRIMAL_FLESH, DirectionalSlabBlock::new);
 	public static final RegistryObject<WallBlock> POROUS_PRIMAL_FLESH_WALL = registerWall(POROUS_PRIMAL_FLESH, WallBlock::new);
-	public static final RegistryObject<FleshBlock> MALIGNANT_FLESH = register("malignant_flesh", properties -> new FleshBlock(properties, ModPlantTypes.PRIMAL_FLESH));
-	public static final RegistryObject<StairBlock> MALIGNANT_FLESH_STAIRS = registerStairs(MALIGNANT_FLESH, StairBlock::new);
-	public static final RegistryObject<DirectionalSlabBlock> MALIGNANT_FLESH_SLAB = registerSlab(MALIGNANT_FLESH, DirectionalSlabBlock::new);
-	public static final RegistryObject<WallBlock> MALIGNANT_FLESH_WALL = registerWall(MALIGNANT_FLESH, WallBlock::new);
+	public static final RegistryObject<FleshBlock> WAXED_MALIGNANT_FLESH = register("malignant_flesh", properties -> new FleshBlock(properties, ModPlantTypes.PRIMAL_FLESH));
+	public static final RegistryObject<FleshBlock> SPREADING_MALIGNANT_FLESH = register("spreading_malignant_flesh", MalignantFleshBlock::new);
+	public static final RegistryObject<StairBlock> MALIGNANT_FLESH_STAIRS = registerStairs(WAXED_MALIGNANT_FLESH, StairBlock::new);
+	public static final RegistryObject<DirectionalSlabBlock> MALIGNANT_FLESH_SLAB = registerSlab(WAXED_MALIGNANT_FLESH, DirectionalSlabBlock::new);
+	public static final RegistryObject<WallBlock> MALIGNANT_FLESH_WALL = registerWall(WAXED_MALIGNANT_FLESH, WallBlock::new);
 	public static final RegistryObject<MalignantVeinsBlock> MALIGNANT_FLESH_VEINS = register("malignant_flesh_veins", () -> new MalignantVeinsBlock(createFleshVeinsProperties().noCollission().noOcclusion()));
 
 	public static final RegistryObject<BloomBlock> PRIMAL_BLOOM = register("primal_bloom", properties -> new BloomBlock(properties.randomTicks().noOcclusion().lightLevel(BloomBlock::getLightEmission)));

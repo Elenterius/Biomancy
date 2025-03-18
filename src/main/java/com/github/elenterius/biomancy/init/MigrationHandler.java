@@ -64,7 +64,7 @@ public final class MigrationHandler {
 				case "flesh_block_slab" -> mapping.remap(ModBlocks.FLESH_SLAB.get());
 				case "flesh_block_stairs" -> mapping.remap(ModBlocks.FLESH_STAIRS.get());
 				case "flesh_irisdoor" -> mapping.remap(ModBlocks.FLESH_IRIS_DOOR.get());
-				case "necrotic_flesh_block" -> mapping.remap(ModBlocks.MALIGNANT_FLESH.get());
+				case "necrotic_flesh_block" -> mapping.remap(ModBlocks.WAXED_MALIGNANT_FLESH.get());
 				case "flesh_tentacle" -> mapping.remap(ModBlocks.MALIGNANT_FLESH_VEINS.get());
 				case "corrupted_primal_flesh" -> mapping.remap(ModBlocks.PRIMAL_FLESH.get());
 

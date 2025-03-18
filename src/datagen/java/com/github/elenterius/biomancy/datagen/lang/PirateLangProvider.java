@@ -561,7 +561,7 @@ public class PirateLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.POROUS_PRIMAL_FLESH_STAIRS, "Porous Ol'-Magic Stairs o' Flesh", "Stairs made of primal flesh.\nFeels primitive and pure...");
 		addBlock(ModBlocks.POROUS_PRIMAL_FLESH_WALL, "Porous Ol'-Magic Wall o' Flesh", "Wall of primal flesh. Is this Terraria?\nYou better start running >:D");
 
-		addBlock(ModBlocks.MALIGNANT_FLESH, "Scurvy-ridden Block o' Flesh", "It be lookin' dangerous, ye better not touch it!");
+		addBlock(ModBlocks.WAXED_MALIGNANT_FLESH, "Scurvy-ridden Block o' Flesh", "It be lookin' dangerous, ye better not touch it!");
 		addBlock(ModBlocks.MALIGNANT_FLESH_SLAB, "Scurvy-ridden Slab o' Flesh", "It be lookin' off-puttin', probably best not to be touchin' it.");
 		addBlock(ModBlocks.MALIGNANT_FLESH_STAIRS, "Scurvy-ridden Stairs o' Flesh", "Stairs made o' scurvy-ridden flesh.");
 		addBlock(ModBlocks.MALIGNANT_FLESH_WALL, "Scurvy-ridden Wall o' Flesh", "Wall o' scurvy-ridden flesh.\nIt's coming for you! ;)");

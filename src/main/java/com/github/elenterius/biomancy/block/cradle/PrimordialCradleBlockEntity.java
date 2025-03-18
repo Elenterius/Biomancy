@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.api.tribute.SacrificeHandler;
 import com.github.elenterius.biomancy.api.tribute.SimpleTribute;
 import com.github.elenterius.biomancy.api.tribute.Tribute;
 import com.github.elenterius.biomancy.block.base.SimpleSyncedBlockEntity;
+import com.github.elenterius.biomancy.block.mound.MalignantFleshBlock;
 import com.github.elenterius.biomancy.config.PrimalEnergySettings;
 import com.github.elenterius.biomancy.entity.mob.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.init.*;
@@ -56,7 +57,6 @@ import java.util.Set;
 
 public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity implements PrimalEnergyHandler, GeoBlockEntity {
 
-	//	public static final String SACRIFICE_SYNC_KEY = "SyncSacrificeHandler";
 	public static final String SACRIFICE_KEY = "SacrificeHandler";
 	public static final String PRIMAL_ENERGY_KEY = "PrimalEnergy";
 	public static final String PROC_GEN_VALUES_KEY = "ProcGenValues";
@@ -271,7 +271,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CRADLE_SPAWN_MOB);
 			}
 
-			PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
+			PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), MalignantFleshBlock.CHARGE.setValue(ModBlocks.SPREADING_MALIGNANT_FLESH.get().defaultBlockState(), MalignantFleshBlock.CHARGE.getMax()));
 
 			level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 1, 0, 0, 0, 0);
 		}
@@ -283,12 +283,12 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 			addPrimalEnergy(Math.round(4096 * energyMultiplier));
 
 			if (sacrificeHandler.getAnomalyChance() > 0.8f) {
-				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
+				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), MalignantFleshBlock.CHARGE.setValue(ModBlocks.SPREADING_MALIGNANT_FLESH.get().defaultBlockState(), MalignantFleshBlock.CHARGE.getMax()));
 				PrimordialEcosystem.spreadMalignantVeinsFromSource(level, pos, PrimordialEcosystem.MAX_CHARGE_SUPPLIER);
 				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CRADLE_SPAWN_PRIMORDIAL_MOB);
 			}
 			else {
-				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.POROUS_PRIMAL_FLESH.get().defaultBlockState());
+				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), MalignantFleshBlock.CHARGE.setValue(ModBlocks.SPREADING_MALIGNANT_FLESH.get().defaultBlockState(), MalignantFleshBlock.CHARGE.getMax()));
 				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CRADLE_SPAWN_MOB);
 			}
 		}
@@ -297,7 +297,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 				attackAOE(level, pos);
 			}
 
-			PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
+			PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), MalignantFleshBlock.CHARGE.setValue(ModBlocks.SPREADING_MALIGNANT_FLESH.get().defaultBlockState(), MalignantFleshBlock.CHARGE.getMax()));
 			PrimordialEcosystem.spreadMalignantVeinsFromSource(level, pos, PrimordialEcosystem.MAX_CHARGE_SUPPLIER);
 
 			addPrimalEnergy(Math.round(3072 * energyMultiplier));
@@ -432,7 +432,6 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 	@Override
 	protected void saveForSyncToClient(CompoundTag tag) {
-		//		tag.put(SACRIFICE_SYNC_KEY, sacrificeHandler.serializeNBT());
 		tag.put(SACRIFICE_KEY, sacrificeHandler.serializeNBT());
 	}
 
@@ -442,9 +441,6 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		if (tag.contains(SACRIFICE_KEY)) {
 			sacrificeHandler.deserializeNBT(tag.getCompound(SACRIFICE_KEY));
 		}
-		//		else if (tag.contains(SACRIFICE_SYNC_KEY)) {
-		//			sacrificeHandler.deserializeNBT(tag.getCompound(SACRIFICE_SYNC_KEY));
-		//		}
 
 		primalEnergy = tag.getInt(PRIMAL_ENERGY_KEY);
 

@@ -48,8 +48,7 @@ public class PrimalMembraneBlock extends MembraneBlock {
 						level.setBlock(targetPos, defaultBlockState(), UPDATE_CLIENTS);
 					}
 					else {
-						level.setBlock(targetPos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), UPDATE_CLIENTS);
-						PrimordialEcosystem.spreadMalignantVeinsFromSource(level, targetPos, PrimordialEcosystem.MAX_CHARGE_SUPPLIER);
+						level.setBlock(targetPos, MalignantFleshBlock.CHARGE.setValue(ModBlocks.SPREADING_MALIGNANT_FLESH.get().defaultBlockState(), energyHandler.drainPrimalEnergy(MalignantFleshBlock.CHARGE.getMax())), UPDATE_CLIENTS);
 					}
 				}
 			}

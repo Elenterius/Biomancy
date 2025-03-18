@@ -1,8 +1,5 @@
 package com.github.elenterius.biomancy.datagen.models;
 
-import java.util.Objects;
-import java.util.function.Function;
-
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.*;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
@@ -32,6 +29,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+
+import java.util.Objects;
+import java.util.function.Function;
 
 public class ModBlockStateProvider extends BlockStateProvider {
 
@@ -107,10 +107,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		stairsBlockWithItem(ModBlocks.POROUS_PRIMAL_FLESH_STAIRS, ModBlocks.POROUS_PRIMAL_FLESH);
 		wallBlock(ModBlocks.POROUS_PRIMAL_FLESH_WALL, ModBlocks.POROUS_PRIMAL_FLESH);
 
-		simpleBlockWithItem(ModBlocks.MALIGNANT_FLESH);
-		directionalSlabBlockWithItem(ModBlocks.MALIGNANT_FLESH_SLAB, ModBlocks.MALIGNANT_FLESH);
-		stairsBlockWithItem(ModBlocks.MALIGNANT_FLESH_STAIRS, ModBlocks.MALIGNANT_FLESH);
-		wallBlock(ModBlocks.MALIGNANT_FLESH_WALL, ModBlocks.MALIGNANT_FLESH);
+		simpleBlockWithItem(ModBlocks.WAXED_MALIGNANT_FLESH);
+		simpleBlockWithItem(ModBlocks.SPREADING_MALIGNANT_FLESH, ModBlocks.WAXED_MALIGNANT_FLESH);
+		directionalSlabBlockWithItem(ModBlocks.MALIGNANT_FLESH_SLAB, ModBlocks.WAXED_MALIGNANT_FLESH);
+		stairsBlockWithItem(ModBlocks.MALIGNANT_FLESH_STAIRS, ModBlocks.WAXED_MALIGNANT_FLESH);
+		wallBlock(ModBlocks.MALIGNANT_FLESH_WALL, ModBlocks.WAXED_MALIGNANT_FLESH);
 		veinsBlock(ModBlocks.MALIGNANT_FLESH_VEINS);
 		malignantBloom(ModBlocks.PRIMAL_BLOOM);
 		orifice(ModBlocks.PRIMAL_ORIFICE);
@@ -314,6 +315,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 	public void simpleBlockWithItem(Block block) {
 		ModelFile model = cubeAll(block);
+		simpleBlock(block, model);
+		simpleBlockItem(block, model);
+	}
+
+	public <S extends Block, B extends Block> void simpleBlockWithItem(RegistryObject<S> block, RegistryObject<B> parent) {
+		simpleBlockWithItem(block.get(), parent.get());
+	}
+
+	public void simpleBlockWithItem(Block block, Block parent) {
+		ModelFile model = cubeAll(parent);
 		simpleBlock(block, model);
 		simpleBlockItem(block, model);
 	}

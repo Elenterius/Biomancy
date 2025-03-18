@@ -4,7 +4,6 @@ import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import com.github.elenterius.biomancy.world.mound.Chamber;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.level.Level;
@@ -22,18 +21,18 @@ public final class ChamberDecorators {
 		}
 
 		@Override
-		public boolean canPlace(Chamber chamber, Level level, BlockPos pos, Direction axisDirection) {
+		public boolean canPlace(Chamber chamber, Level level, BlockPos pos) {
 			return false;
 		}
 
 		@Override
-		public boolean place(Chamber chamber, Level level, BlockPos pos, Direction axisDirection) {
+		public boolean place(Chamber chamber, Level level, BlockPos pos) {
 			return false;
 		}
 	};
 
 	public static final ChamberDecorator PRIMAL_FLESH_PILLARS = new PillarsDecorator(ModBlocks.PRIMAL_FLESH_PILLAR.get().defaultBlockState(), ModBlocks.PRIMAL_FLESH.get().defaultBlockState(), ModBlocks.PRIMAL_FLESH_PILLAR.get().defaultBlockState(), ModBlocks.SMOOTH_PRIMAL_FLESH.get().defaultBlockState());
-	public static final ChamberDecorator MALIGNANT_FLESH_PILLARS = new PillarsDecorator(ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), ModBlocks.POROUS_PRIMAL_FLESH.get().defaultBlockState());
+	public static final ChamberDecorator MALIGNANT_FLESH_PILLARS = new PillarsDecorator(ModBlocks.WAXED_MALIGNANT_FLESH.get().defaultBlockState(), ModBlocks.POROUS_PRIMAL_FLESH.get().defaultBlockState());
 	public static final ChamberDecorator PRIMAL_ORIFICE_PILLARS = new PillarsDecorator(ModBlocks.PRIMAL_ORIFICE.get().defaultBlockState(), ModBlocks.PRIMAL_ORIFICE.get().defaultBlockState(), ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
 	public static final ChamberDecorator PRIMAL_ORIFICE_COMBS = new HangingCombsDecorator(ModBlocks.PRIMAL_ORIFICE.get().defaultBlockState());
 	public static final ChamberDecorator PRIMAL_BONE_PILLARS = new PillarsDecorator(ModBlocks.PRIMAL_BONE.get().defaultBlockState());

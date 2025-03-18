@@ -1,10 +1,5 @@
 package com.github.elenterius.biomancy.datagen.lang;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
-
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.livingtool.LivingToolState;
 import com.github.elenterius.biomancy.api.serum.Serum;
@@ -28,6 +23,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public class EnglishLangProvider extends AbstractLangProvider {
 
@@ -684,7 +684,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.POROUS_PRIMAL_FLESH_SLAB, "Porous Primal Flesh Slab", "Primitive and pure, you better not touch this with your dirty mitts.");
 		addBlock(ModBlocks.POROUS_PRIMAL_FLESH_STAIRS, "Porous Primal Flesh Stairs", "Stairs made of primal flesh.\nFeels primitive and pure...");
 		addBlock(ModBlocks.POROUS_PRIMAL_FLESH_WALL, "Porous Primal Flesh Wall", "Wall of primal flesh. Is this Terraria?\nYou better start running >:D");
-		addBlock(ModBlocks.MALIGNANT_FLESH, "Malignant Flesh Block", "Looks dangerous, you better not touch it!");
+		addBlock(ModBlocks.WAXED_MALIGNANT_FLESH, "Malignant Flesh Block", "Looks dangerous, you better not touch it!");
+		addBlock(ModBlocks.SPREADING_MALIGNANT_FLESH, "Malignant Flesh Block", "Looks dangerous, you better not touch it!");
 		addBlock(ModBlocks.MALIGNANT_FLESH_SLAB, "Malignant Flesh Slab", "Looks off-putting, probably best not to touch it.");
 		addBlock(ModBlocks.MALIGNANT_FLESH_STAIRS, "Malignant Flesh Stairs", "Stairs made of malignant flesh.\nLooks diseased...");
 		addBlock(ModBlocks.MALIGNANT_FLESH_WALL, "Malignant Flesh Wall", "Wall of malignant flesh.\nIt's coming for you! ;)");

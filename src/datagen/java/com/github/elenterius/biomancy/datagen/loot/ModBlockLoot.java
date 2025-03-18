@@ -1,12 +1,5 @@
 package com.github.elenterius.biomancy.datagen.loot;
 
-import java.util.List;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.IntStream;
-
-import static com.github.elenterius.biomancy.BiomancyMod.LOGGER;
-
 import com.github.elenterius.biomancy.block.DirectionalSlabBlock;
 import com.github.elenterius.biomancy.block.chrysalis.Chrysalis;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
@@ -41,6 +34,13 @@ import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.Marker;
+
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.IntStream;
+
+import static com.github.elenterius.biomancy.BiomancyMod.LOGGER;
 
 public class ModBlockLoot extends BlockLootSubProvider {
 
@@ -223,7 +223,8 @@ public class ModBlockLoot extends BlockLootSubProvider {
 		dropSelf(ModBlocks.POROUS_PRIMAL_FLESH_STAIRS.get());
 		dropSelf(ModBlocks.POROUS_PRIMAL_FLESH_WALL.get());
 
-		dropSelf(ModBlocks.MALIGNANT_FLESH.get());
+		dropSelf(ModBlocks.WAXED_MALIGNANT_FLESH.get());
+		dropSelf(ModBlocks.SPREADING_MALIGNANT_FLESH.get());
 		add(ModBlocks.MALIGNANT_FLESH_SLAB.get(), this::createDirectionalSlabTable);
 		dropSelf(ModBlocks.MALIGNANT_FLESH_STAIRS.get());
 		dropSelf(ModBlocks.MALIGNANT_FLESH_WALL.get());

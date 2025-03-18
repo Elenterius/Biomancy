@@ -304,6 +304,8 @@
   "block.biomancy.porous_primal_flesh_wall.tooltip": "Wall of primal flesh. Is this Terraria?\nYou better start running >:D",
   "block.biomancy.malignant_flesh": "Malignant Flesh Block",
   "block.biomancy.malignant_flesh.tooltip": "Looks dangerous, you better not touch it!",
+  "block.biomancy.spreading_malignant_flesh": "Malignant Flesh Block",
+  "block.biomancy.spreading_malignant_flesh.tooltip": "Looks dangerous, you better not touch it!",
   "block.biomancy.malignant_flesh_slab": "Malignant Flesh Slab",
   "block.biomancy.malignant_flesh_slab.tooltip": "Looks off-putting, probably best not to touch it.",
   "block.biomancy.malignant_flesh_stairs": "Malignant Flesh Stairs",

@@ -40,7 +40,7 @@ public final class PrimordialEcosystem {
 	//	public static final Set<Block> SMOOTH_UPGRADE_TARGETS = Set.of(ModBlocks.SMOOTH_PRIMAL_FLESH_SLAB.get(), ModBlocks.SMOOTH_PRIMAL_FLESH_STAIRS.get());
 
 	public static final Set<Block> FULL_FLESH_BLOCKS = Set.of(
-			ModBlocks.MALIGNANT_FLESH.get(),
+			ModBlocks.WAXED_MALIGNANT_FLESH.get(),
 			ModBlocks.PRIMAL_FLESH.get(),
 			ModBlocks.SMOOTH_PRIMAL_FLESH.get(),
 			ModBlocks.POROUS_PRIMAL_FLESH.get(),
@@ -48,7 +48,7 @@ public final class PrimordialEcosystem {
 	);
 
 	public static final Set<Block> SOLID_FLESH_BLOCKS = Set.of(
-			ModBlocks.MALIGNANT_FLESH.get(),
+			ModBlocks.WAXED_MALIGNANT_FLESH.get(),
 			ModBlocks.PRIMAL_FLESH.get(),
 			ModBlocks.SMOOTH_PRIMAL_FLESH.get(),
 			ModBlocks.POROUS_PRIMAL_FLESH.get()
@@ -85,7 +85,7 @@ public final class PrimordialEcosystem {
 				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 			}
 			else {
-				Block block = chargePct < 1f ? ModBlocks.MALIGNANT_FLESH_SLAB.get() : ModBlocks.MALIGNANT_FLESH.get();
+				Block block = chargePct < 1f ? ModBlocks.MALIGNANT_FLESH_SLAB.get() : ModBlocks.WAXED_MALIGNANT_FLESH.get();
 				level.setBlockAndUpdate(pos, block.defaultBlockState());
 				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 			}
@@ -94,7 +94,7 @@ public final class PrimordialEcosystem {
 		else if (currentState.is(ModBlocks.MALIGNANT_FLESH_SLAB.get())) {
 			if (currentState.getValue(DirectionalSlabBlock.TYPE) == DirectionalSlabType.FULL) return false;
 
-			level.setBlockAndUpdate(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
+			level.setBlockAndUpdate(pos, ModBlocks.WAXED_MALIGNANT_FLESH.get().defaultBlockState());
 
 			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + level.random.nextFloat() * 0.5f);
 			return true;
@@ -129,7 +129,7 @@ public final class PrimordialEcosystem {
 				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 			}
 			else {
-				Block block = fleshBlob.getBlobSize() < FleshBlob.MAX_SIZE / 2f ? ModBlocks.MALIGNANT_FLESH_SLAB.get() : ModBlocks.MALIGNANT_FLESH.get();
+				Block block = fleshBlob.getBlobSize() < FleshBlob.MAX_SIZE / 2f ? ModBlocks.MALIGNANT_FLESH_SLAB.get() : ModBlocks.WAXED_MALIGNANT_FLESH.get();
 				level.setBlockAndUpdate(pos, block.defaultBlockState());
 				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 			}
@@ -138,7 +138,7 @@ public final class PrimordialEcosystem {
 		else if (currentState.is(ModBlocks.MALIGNANT_FLESH_SLAB.get())) {
 			if (currentState.getValue(DirectionalSlabBlock.TYPE) == DirectionalSlabType.FULL) return false;
 
-			level.setBlockAndUpdate(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
+			level.setBlockAndUpdate(pos, ModBlocks.WAXED_MALIGNANT_FLESH.get().defaultBlockState());
 
 			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + level.random.nextFloat() * 0.5f);
 			return true;
@@ -162,7 +162,7 @@ public final class PrimordialEcosystem {
 
 		BlockState state = level.getBlockState(pos);
 		if (MALIGNANT_UPGRADE_TARGETS.contains(state.getBlock())) {
-			level.setBlock(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+			level.setBlock(pos, ModBlocks.WAXED_MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
 			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + level.random.nextFloat() * 0.5f);
 			return true;
 		}
@@ -347,7 +347,7 @@ public final class PrimordialEcosystem {
 	}
 
 	public static boolean isReplaceable(BlockState state) {
-		return state.canBeReplaced() || state.is(ModBlockTags.FLESH_REPLACEABLE);
+		return state.isAir() || state.canBeReplaced() || state.is(ModBlockTags.FLESH_REPLACEABLE);
 	}
 
 	public static boolean isReplaceableLog(BlockState state) {
@@ -367,15 +367,15 @@ public final class PrimordialEcosystem {
 		FastNoiseLite cellularNoise = new FastNoiseLite(seed);
 		cellularNoise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
 		cellularNoise.SetRotationType3D(FastNoiseLite.RotationType3D.ImproveXZPlanes);
-		cellularNoise.SetFrequency(0.05f);
+		cellularNoise.SetFrequency(0.075f);
 
 		FastNoiseLite domainWarp = new FastNoiseLite(seed);
 		domainWarp.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2Reduced);
 		domainWarp.SetRotationType3D(FastNoiseLite.RotationType3D.ImproveXZPlanes);
 		domainWarp.SetDomainWarpAmp(50f);
-		domainWarp.SetFrequency(0.005f);
+		domainWarp.SetFrequency(0.0075f);
 
-		return new CellularNoiseWithDomainWarp(cellularNoise, domainWarp, 0.16f, 0.13f);
+		return new CellularNoiseWithDomainWarp(cellularNoise, domainWarp, 0.64f, 0.4f);
 	}
 
 }

@@ -1,9 +1,5 @@
 package com.github.elenterius.biomancy.init;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
-
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.item.*;
@@ -28,6 +24,10 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public final class ModItems {
 
@@ -210,7 +210,8 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> POROUS_PRIMAL_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.POROUS_PRIMAL_FLESH_SLAB);
 	public static final RegistryObject<SimpleBlockItem> POROUS_PRIMAL_FLESH_STAIRS = registerSimpleBlockItem(ModBlocks.POROUS_PRIMAL_FLESH_STAIRS);
 	public static final RegistryObject<SimpleBlockItem> POROUS_PRIMAL_FLESH_WALL = registerSimpleBlockItem(ModBlocks.POROUS_PRIMAL_FLESH_WALL);
-	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH);
+	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.WAXED_MALIGNANT_FLESH);
+	public static final RegistryObject<SimpleBlockItem> SPREADING_MALIGNANT_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.SPREADING_MALIGNANT_FLESH);
 	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH_SLAB);
 	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_STAIRS = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH_STAIRS);
 	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_WALL = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH_WALL);

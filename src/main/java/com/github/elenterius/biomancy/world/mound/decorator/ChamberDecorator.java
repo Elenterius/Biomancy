@@ -2,18 +2,17 @@ package com.github.elenterius.biomancy.world.mound.decorator;
 
 import com.github.elenterius.biomancy.world.mound.Chamber;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public interface ChamberDecorator {
 	PartOfDecorationResult isBlockPartOfDecoration(Chamber chamber, Level level, BlockPos pos, BlockState state);
 
-	boolean canPlace(Chamber chamber, Level level, BlockPos pos, Direction axisDirection);
+	boolean canPlace(Chamber chamber, Level level, BlockPos pos);
 
-	boolean place(Chamber chamber, Level level, BlockPos pos, Direction axisDirection);
+	boolean place(Chamber chamber, Level level, BlockPos pos);
 
-	public enum PartOfDecorationResult {
+	enum PartOfDecorationResult {
 		POSITION_AND_MATERIAL_ARE_VALID(true, true),
 		POSITION_AND_MATERIAL_ARE_INVALID(false, false),
 		POSITION_IS_VALID_AND_MATERIAL_IS_INVALID(true, false),

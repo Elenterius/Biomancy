@@ -1,12 +1,5 @@
 package com.github.elenterius.biomancy.datagen.tags;
 
-import javax.annotation.Nullable;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Predicate;
-
-import static com.github.elenterius.biomancy.BiomancyMod.MOD_ID;
-
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.misc.ACTagRegistry;
 import com.github.elenterius.biomancy.block.DirectionalSlabBlock;
@@ -27,6 +20,13 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Nullable;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
+
+import static com.github.elenterius.biomancy.BiomancyMod.MOD_ID;
 
 public class ModBlockTagsProvider extends BlockTagsProvider {
 
@@ -102,7 +102,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		tag(ModBlockTags.DECAY_DESTRUCTIBLE)
 				.add(
 						ModBlocks.MALIGNANT_FLESH_VEINS.get(),
-						ModBlocks.MALIGNANT_FLESH.get(),
+						ModBlocks.WAXED_MALIGNANT_FLESH.get(),
 						ModBlocks.MALIGNANT_FLESH_SLAB.get(),
 						ModBlocks.MALIGNANT_FLESH_STAIRS.get(),
 						ModBlocks.MALIGNANT_FLESH_WALL.get(),

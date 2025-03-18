@@ -23,7 +23,7 @@ import java.util.Set;
 
 class MalignantVeinsSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConfig {
 
-	protected static final Set<Block> VALID_SOURCES = Set.of(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlocks.MALIGNANT_FLESH_STAIRS.get(), ModBlocks.MALIGNANT_FLESH.get());
+	protected static final Set<Block> VALID_SOURCES = Set.of(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlocks.MALIGNANT_FLESH_STAIRS.get(), ModBlocks.WAXED_MALIGNANT_FLESH.get());
 
 	public MalignantVeinsSpreaderConfig(MultifaceBlock block) {
 		super(block);
@@ -69,7 +69,7 @@ class MalignantVeinsSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConf
 	public boolean placeBlock(LevelAccessor level, MultifaceSpreader.SpreadPos spreadPos, BlockState state, boolean markForPostprocessing) {
 		if (PrimordialEcosystem.MALIGNANT_UPGRADE_TARGETS.contains(state.getBlock())) {
 			if (level.getRandom().nextFloat() < 0.25f) {
-				return level.setBlock(spreadPos.pos(), ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+				return level.setBlock(spreadPos.pos(), ModBlocks.WAXED_MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
 			}
 			return false; //prevent upgrade target from being replaced by veins
 		}

@@ -142,8 +142,8 @@ public class MalignantVeinsBlock extends MultifaceBlock implements SimpleWaterlo
 					}
 				}
 
-				if (chamberDecorator.canPlace(chamber, level, pos, axisDirection)) {
-					return chamberDecorator.place(chamber, level, pos, axisDirection);
+				if (chamberDecorator.canPlace(chamber, level, pos)) {
+					return chamberDecorator.place(chamber, level, pos);
 				}
 
 				BlockPos farOffsetPos = pos.relative(axisDirection, 2);
@@ -170,7 +170,7 @@ public class MalignantVeinsBlock extends MultifaceBlock implements SimpleWaterlo
 						replacementState = level.random.nextFloat() < 0.75f ? ModBlocks.PRIMAL_FLESH.get().defaultBlockState() : ModBlocks.SMOOTH_PRIMAL_FLESH.get().defaultBlockState();
 					}
 					else {
-						replacementState = level.random.nextFloat() < 0.75f ? ModBlocks.MALIGNANT_FLESH.get().defaultBlockState() : ModBlocks.POROUS_PRIMAL_FLESH.get().defaultBlockState();
+						replacementState = level.random.nextFloat() < 0.75f ? ModBlocks.WAXED_MALIGNANT_FLESH.get().defaultBlockState() : ModBlocks.POROUS_PRIMAL_FLESH.get().defaultBlockState();
 					}
 					return level.setBlock(farOffsetPos, replacementState, Block.UPDATE_CLIENTS);
 				}
@@ -194,13 +194,13 @@ public class MalignantVeinsBlock extends MultifaceBlock implements SimpleWaterlo
 		BlockState replacementState = null;
 
 		if (directNeighbors > 2) {
-			if (stateRelative.getBlock() == ModBlocks.PRIMAL_FLESH.get() || stateRelative.getBlock() == ModBlocks.MALIGNANT_FLESH.get()) {
+			if (stateRelative.getBlock() == ModBlocks.PRIMAL_FLESH.get() || stateRelative.getBlock() == ModBlocks.WAXED_MALIGNANT_FLESH.get()) {
 				posRelative = pos.relative(axisDirection, 2);
 				stateRelative = level.getBlockState(posRelative);
 				return PrimordialEcosystem.tryToReplaceBlock(level, posRelative, stateRelative, ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
 			}
 			else {
-				replacementState = ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
+				replacementState = ModBlocks.WAXED_MALIGNANT_FLESH.get().defaultBlockState();
 			}
 		}
 
@@ -243,7 +243,7 @@ public class MalignantVeinsBlock extends MultifaceBlock implements SimpleWaterlo
 	}
 
 	protected static boolean convertSelfIntoFullBlock(ServerLevel level, BlockPos pos) {
-		return level.setBlock(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+		return level.setBlock(pos, ModBlocks.WAXED_MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
 	}
 
 	protected static boolean convertSelfIntoStairs(ServerLevel level, BlockPos pos, Bit32Set facesSet) {
@@ -523,8 +523,7 @@ public class MalignantVeinsBlock extends MultifaceBlock implements SimpleWaterlo
 		if (SpatialShapeManager.getClosestShape(level, pos, MoundShape.class::isInstance) instanceof MoundShape moundShape) {
 			mound = moundShape;
 
-			BlockPos origin = mound.getOrigin();
-			BlockEntity existingBlockEntity = level.getExistingBlockEntity(origin);
+			BlockEntity existingBlockEntity = level.getExistingBlockEntity(mound.getOrigin());
 			if (existingBlockEntity instanceof PrimalEnergyHandler peh) {
 				energyHandler = peh;
 			}

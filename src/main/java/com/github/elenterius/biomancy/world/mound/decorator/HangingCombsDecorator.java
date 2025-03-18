@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.world.mound.decorator;
 import com.github.elenterius.biomancy.util.random.FastNoiseLite;
 import com.github.elenterius.biomancy.world.mound.Chamber;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -34,12 +33,12 @@ public class HangingCombsDecorator implements ChamberDecorator {
 	}
 
 	@Override
-	public boolean canPlace(Chamber chamber, Level level, BlockPos pos, Direction axisDirection) {
+	public boolean canPlace(Chamber chamber, Level level, BlockPos pos) {
 		return isPosInsideAnyComb(chamber, pos);
 	}
 
 	@Override
-	public boolean place(Chamber chamber, Level level, BlockPos pos, Direction axisDirection) {
+	public boolean place(Chamber chamber, Level level, BlockPos pos) {
 		return level.setBlock(pos, material, Block.UPDATE_CLIENTS);
 	}
 
