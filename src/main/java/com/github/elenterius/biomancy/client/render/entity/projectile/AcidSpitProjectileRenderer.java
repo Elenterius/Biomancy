@@ -13,12 +13,12 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class AcidProjectileRenderer extends EntityRenderer<AcidSpitProjectile> {
+public class AcidSpitProjectileRenderer extends EntityRenderer<AcidSpitProjectile> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/llama/spit.png");
 	private final LlamaSpitModel<AcidSpitProjectile> model;
 
-	public AcidProjectileRenderer(EntityRendererProvider.Context context) {
+	public AcidSpitProjectileRenderer(EntityRendererProvider.Context context) {
 		super(context);
 		model = new LlamaSpitModel<>(context.bakeLayer(ModelLayers.LLAMA_SPIT));
 	}

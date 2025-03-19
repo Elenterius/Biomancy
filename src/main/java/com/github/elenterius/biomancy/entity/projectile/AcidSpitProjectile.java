@@ -21,7 +21,7 @@ public class AcidSpitProjectile extends BaseProjectile {
 	}
 
 	public AcidSpitProjectile(Level level, double x, double y, double z) {
-		super(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), level, x, y, z);
+		super(ModEntityTypes.ACID_SPIT_PROJECTILE.get(), level, x, y, z);
 	}
 
 	public AcidSpitProjectile(EntityType<? extends AcidSpitProjectile> entityType, Level level, double x, double y, double z) {
