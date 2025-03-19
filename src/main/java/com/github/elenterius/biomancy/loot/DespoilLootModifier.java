@@ -179,8 +179,8 @@ public class DespoilLootModifier extends LootModifier {
 				.withParameter(LootContextParams.THIS_ENTITY, context.getParam(LootContextParams.THIS_ENTITY))
 				.withParameter(LootContextParams.ORIGIN, context.getParam(LootContextParams.ORIGIN))
 				.withParameter(LootContextParams.DAMAGE_SOURCE, context.getParam(LootContextParams.DAMAGE_SOURCE))
-				.withOptionalParameter(LootContextParams.KILLER_ENTITY, context.getParam(LootContextParams.KILLER_ENTITY))
-				.withOptionalParameter(LootContextParams.DIRECT_KILLER_ENTITY, context.getParam(LootContextParams.DIRECT_KILLER_ENTITY));
+				.withOptionalParameter(LootContextParams.KILLER_ENTITY, context.getParamOrNull(LootContextParams.KILLER_ENTITY))
+				.withOptionalParameter(LootContextParams.DIRECT_KILLER_ENTITY, context.getParamOrNull(LootContextParams.DIRECT_KILLER_ENTITY));
 
 		if (context.hasParam(LootContextParams.LAST_DAMAGE_PLAYER)) {
 			Player player = context.getParam(LootContextParams.LAST_DAMAGE_PLAYER);
