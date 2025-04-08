@@ -34,20 +34,20 @@ public class EssenceIngredient extends AbstractIngredient {
 	}
 
 	public static EssenceIngredient of(EntityType<?> entityType) {
-		return of(entityType, 1);
+		return of(entityType, null);
 	}
 
-	public static EssenceIngredient of(EntityType<?> entityType, int tier) {
-		if (tier < 1 || tier > 3) throw new IllegalArgumentException("Cannot create a EssenceIngredient with invalid tier");
+	public static EssenceIngredient of(EntityType<?> entityType, @Nullable Integer tier) {
+		if (tier != null && (tier < 1 || tier > 3)) throw new IllegalArgumentException("Cannot create a EssenceIngredient with invalid tier");
 
 		CompoundTag essenceTag = new CompoundTag();
 		essenceTag.putString(EssenceItem.ENTITY_TYPE_KEY, EntityType.getKey(entityType).toString());
 
 		CompoundTag partialTag = new CompoundTag();
 		partialTag.put(EssenceItem.ESSENCE_DATA_KEY, essenceTag);
-		partialTag.putInt(EssenceItem.ESSENCE_TIER_KEY, tier);
+		if (tier != null) partialTag.putInt(EssenceItem.ESSENCE_TIER_KEY, tier);
 
-		ItemStack stack = EssenceItem.fromEntityType(entityType, tier);
+		ItemStack stack = EssenceItem.fromEntityType(entityType, tier != null ? tier : 1);
 
 		return new EssenceIngredient(stack, partialTag);
 	}
