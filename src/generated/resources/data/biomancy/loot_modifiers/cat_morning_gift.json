@@ -4,7 +4,7 @@
     {
       "condition": "minecraft:entity_properties",
       "entity": "this",
-      "predicate": { }
+      "predicate": {}
     },
     {
       "condition": "forge:loot_table_id",

@@ -9,7 +9,7 @@
     }
   },
   "loader": "forge:item_layers",
-  "render_types": { },
+  "render_types": {},
   "textures": {
     "layer0": "biomancy:item/primordial_core",
     "layer1": "biomancy:item/primordial_core_emissive"
