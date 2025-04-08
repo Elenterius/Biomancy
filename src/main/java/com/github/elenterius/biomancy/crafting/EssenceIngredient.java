@@ -45,7 +45,9 @@ public class EssenceIngredient extends AbstractIngredient {
 
 		CompoundTag partialTag = new CompoundTag();
 		partialTag.put(EssenceItem.ESSENCE_DATA_KEY, essenceTag);
-		partialTag.putInt(EssenceItem.ESSENCE_TIER_KEY, tier);
+		// Temporary fix, as it caused issues in Bio Forge recipes.
+		// The tier wasn't being used anyway.
+		// partialTag.putInt(EssenceItem.ESSENCE_TIER_KEY, tier);
 
 		ItemStack stack = EssenceItem.fromEntityType(entityType, tier);
 
