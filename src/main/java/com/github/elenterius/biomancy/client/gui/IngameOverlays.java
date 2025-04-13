@@ -10,6 +10,7 @@ import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.ShowKnowledgeOverlay;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.item.weapon.gun.Gun;
+import com.github.elenterius.biomancy.item.weapon.gun.GunProperties;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -22,6 +23,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -189,8 +191,19 @@ public final class IngameOverlays {
 			GuiRenderUtil.drawSquareProgressBar(guiGraphics, screenWidth / 2, screenHeight / 2, zDepth, 10, reloadProgress);
 		}
 		else {
-			long elapsedTime = player.clientLevel.getGameTime() - gun.getShootTimestamp(stack);
-			renderAttackIndicator(guiGraphics, screenWidth, screenHeight, zDepth, player, elapsedTime, gun.getShootDelayTicks(stack));
+			long elapsedTimeFromShot = player.clientLevel.getGameTime() - gun.getShootTimestamp(stack);
+
+			if (gun.getShootBehavior() != GunProperties.ShootBehavior.INSTANT) {
+				int delayBetweenShots = Math.max(gun.getDelayBetweenShots(stack), 1);
+				int ticksUsingItem = player.getTicksUsingItem();
+				if (ticksUsingItem >= 0) {
+					float pct = ticksUsingItem / (float) delayBetweenShots;
+					float chargeProgress = Mth.clamp(pct - Mth.floor(pct), 0f, 1f);
+					GuiRenderUtil.drawSquareProgressBar(guiGraphics, screenWidth / 2, screenHeight / 2, zDepth, 10, chargeProgress);
+				}
+			}
+
+			renderAttackIndicator(guiGraphics, screenWidth, screenHeight, zDepth, player, elapsedTimeFromShot, gun.getDelayBetweenShots(stack));
 		}
 	}
 

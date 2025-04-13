@@ -29,6 +29,7 @@ import com.github.elenterius.biomancy.client.render.entity.mob.fleshblob.Primord
 import com.github.elenterius.biomancy.client.render.entity.mob.sheep.ChromaSheepRenderer;
 import com.github.elenterius.biomancy.client.render.entity.mob.sheep.ThickFurSheepRenderer;
 import com.github.elenterius.biomancy.client.render.entity.projectile.AcidSpitProjectileRenderer;
+import com.github.elenterius.biomancy.client.render.entity.projectile.ImpalerProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.projectile.acidblob.AcidBlobProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.projectile.bloomberry.BloomberryProjectileRenderer;
 import com.github.elenterius.biomancy.init.*;
@@ -87,6 +88,7 @@ public final class ClientSetupHandler {
 
 	private static void onPostSetup() {
 		registerItemModelProperties();
+		ModArmPoses.init();
 	}
 
 	@SubscribeEvent
@@ -120,6 +122,7 @@ public final class ClientSetupHandler {
 
 		event.registerEntityRenderer(ModEntityTypes.ACID_SPIT_PROJECTILE.get(), AcidSpitProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.TOOTH_PROJECTILE.get(), ThrownItemRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.IMPALER_PROJECTILE.get(), ImpalerProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.BLOOMBERRY_PROJECTILE.get(), BloomberryProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.ACID_BLOB_PROJECTILE.get(), AcidBlobProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.GRENADE_PROJECTILE.get(), ThrownItemRenderer::new);

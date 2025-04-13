@@ -14,6 +14,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
@@ -98,6 +99,18 @@ public final class MobUtil {
 		AttributeInstance instance = livingEntity.getAttribute(attribute);
 		if (instance != null) instance.setBaseValue(value);
 		else BiomancyMod.LOGGER.warn(LOG_MARKER, "Tried to set the value of a missing Attribute: {}, {}", attribute, livingEntity);
+	}
+
+	public static void addTransientAttributeModifier(LivingEntity livingEntity, Attribute attribute, AttributeModifier modifier) {
+		AttributeInstance instance = livingEntity.getAttribute(attribute);
+		if (instance != null) instance.addTransientModifier(modifier);
+		else BiomancyMod.LOGGER.warn(LOG_MARKER, "Tried to add modifier to a missing Attribute: {}, {}", attribute, livingEntity);
+	}
+
+	public static void removeTransientAttributeModifier(LivingEntity livingEntity, Attribute attribute, AttributeModifier modifier) {
+		AttributeInstance instance = livingEntity.getAttribute(attribute);
+		if (instance != null) instance.removeModifier(modifier);
+		else BiomancyMod.LOGGER.warn(LOG_MARKER, "Tried to remove modifier from a missing Attribute: {}, {}", attribute, livingEntity);
 	}
 
 	/**

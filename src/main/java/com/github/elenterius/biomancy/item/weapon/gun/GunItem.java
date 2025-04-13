@@ -112,7 +112,7 @@ public abstract class GunItem extends ProjectileWeaponItem implements Gun, KeyPr
 
 	@Override
 	public UseAnim getUseAnimation(ItemStack stack) {
-		return UseAnim.NONE;
+		return UseAnim.CUSTOM;
 	}
 
 	@Override
@@ -152,15 +152,23 @@ public abstract class GunItem extends ProjectileWeaponItem implements Gun, KeyPr
 				return;
 			}
 
-			float elapsedTime = (getUseDuration(stack) - remainingUseDuration);
-			int shootDelay = getShootDelayTicks(stack);
+			int elapsedTime = getUseDuration(stack) - remainingUseDuration;
+			int delayBetweenShots = getDelayBetweenShots(stack);
+
 			//prevent right click spam attack by user
-			if (elapsedTime == 0 && serverLevel.getGameTime() - getShootTimestamp(stack) < shootDelay) {
-				playSFX(serverLevel, shooter, SoundEvents.DISPENSER_FAIL);
+			if (elapsedTime == 0 && serverLevel.getGameTime() - getShootTimestamp(stack) < delayBetweenShots) {
+				// play sound to indicate that the gun is "jammed"
+				// playSFX(serverLevel, shooter, SoundEvents.DISPENSER_FAIL); //we don't play this sounds because it's misleading
 				return;
 			}
 
-			if (elapsedTime % shootDelay == 0) {
+			boolean canShoot = switch (gunProperties.shootBehavior()) {
+				case INSTANT -> elapsedTime % delayBetweenShots == 0;
+				case ON_FULL_CHARGE -> elapsedTime % delayBetweenShots == 0 && elapsedTime > 0;
+				case ON_RELEASE_INSTANT, ON_RELEASE_WITH_FULL_CHARGE -> false;
+			};
+
+			if (canShoot) {
 				shoot(serverLevel, shooter, shooter.getUsedItemHand(), stack);
 				stack.getOrCreateTag().putLong(SHOOT_TIMESTAMP_KEY, serverLevel.getGameTime());
 			}
@@ -168,10 +176,26 @@ public abstract class GunItem extends ProjectileWeaponItem implements Gun, KeyPr
 	}
 
 	@Override
-	public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeCharged) {
+	public void releaseUsing(ItemStack stack, Level level, LivingEntity shooter, int remainingUseDuration) {
+		if (level instanceof ServerLevel serverLevel && gunProperties.shootBehavior().isOnRelease()) {
+			int elapsedTime = getUseDuration(stack) - remainingUseDuration;
+			int delayBetweenShots = getDelayBetweenShots(stack);
+
+			boolean mayShoot = switch (gunProperties.shootBehavior()) {
+				case ON_RELEASE_INSTANT -> true;
+				case ON_RELEASE_WITH_FULL_CHARGE -> elapsedTime >= delayBetweenShots;
+				default -> false;
+			};
+
+			if (mayShoot && serverLevel.getGameTime() - getShootTimestamp(stack) < delayBetweenShots) {
+				shoot(serverLevel, shooter, shooter.getUsedItemHand(), stack);
+				stack.getOrCreateTag().putLong(SHOOT_TIMESTAMP_KEY, serverLevel.getGameTime());
+			}
+		}
+
 		setGunState(stack, GunState.NONE);
 
-		if (livingEntity instanceof Player player) {
+		if (shooter instanceof Player player) {
 			player.awardStat(Stats.ITEM_USED.get(this));
 		}
 	}
@@ -208,8 +232,8 @@ public abstract class GunItem extends ProjectileWeaponItem implements Gun, KeyPr
 	}
 
 	@Override
-	public int getShootDelayTicks(ItemStack stack) {
-		return gunProperties.shootDelayTicks() - getBonusShootDelayReduction(stack);
+	public int getDelayBetweenShots(ItemStack stack) {
+		return gunProperties.delayBetweenShots() - getBonusShootDelayReduction(stack);
 	}
 
 	@Override
@@ -225,6 +249,11 @@ public abstract class GunItem extends ProjectileWeaponItem implements Gun, KeyPr
 	@Override
 	public int modifyProjectileKnockBack(int baseKnockBack, ItemStack stack) {
 		return baseKnockBack + getBonusProjectileKnockBackModifier(stack);
+	}
+
+	@Override
+	public GunProperties.ShootBehavior getShootBehavior() {
+		return gunProperties.shootBehavior();
 	}
 
 	@Override
@@ -266,7 +295,7 @@ public abstract class GunItem extends ProjectileWeaponItem implements Gun, KeyPr
 		DecimalFormat df = ClientTextUtil.getDecimalFormatter("#.###");
 
 		float fireRate = getFireRate(stack);
-		float bonusFireRate = fireRate - (ONE_SECOND_IN_TICKS / (float) gunProperties.shootDelayTicks());
+		float bonusFireRate = fireRate - (ONE_SECOND_IN_TICKS / (float) gunProperties.delayBetweenShots());
 		tooltip.add(TextComponentUtil.getTooltipText("fire_rate").append(String.format(": %s RPS ", df.format(fireRate))).append(formatBonusValue(df, bonusFireRate)).withStyle(ChatFormatting.GRAY));
 
 		float inaccuracy = modifyProjectileInaccuracy(configuredProjectile.inaccuracy(), stack);

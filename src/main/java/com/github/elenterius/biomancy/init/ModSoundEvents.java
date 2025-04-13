@@ -18,6 +18,7 @@ public final class ModSoundEvents {
 	public static final RegistryObject<SoundEvent> INJECTOR_INJECT = register("item.injector.inject");
 	public static final RegistryObject<SoundEvent> INJECTOR_FAIL = register("item.injector.fail");
 	public static final RegistryObject<SoundEvent> MARROW_DRINK = register("item.bone_marrow.drink");
+	public static final RegistryObject<SoundEvent> IMPALER_SHOOT = register("item.impaler.shoot");
 
 	//# Blocks
 	public static final RegistryObject<SoundEvent> FLESH_BLOCK_PLACE = register("flesh_block.place");
@@ -38,6 +39,7 @@ public final class ModSoundEvents {
 	//# Fleshkin
 	public static final RegistryObject<SoundEvent> FLESHKIN_NO = register("fleshkin.no");
 	public static final RegistryObject<SoundEvent> FLESHKIN_EAT = register("fleshkin.eat");
+	public static final RegistryObject<SoundEvent> FLESHKIN_BURP = register("fleshkin.burp");
 	public static final RegistryObject<SoundEvent> FLESHKIN_BREAK = register("fleshkin.break");
 	public static final RegistryObject<SoundEvent> FLESHKIN_BECOME_DORMANT = register("fleshkin.dormant");
 	public static final RegistryObject<SoundEvent> FLESHKIN_BECOME_AWAKENED = register("fleshkin.awakened");

@@ -287,6 +287,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addSound(ModSoundEvents.INJECTOR_INJECT, "Injecting Serum");
 		addSound(ModSoundEvents.INJECTOR_FAIL, "Injection Failed");
 		addSound(ModSoundEvents.MARROW_DRINK, "Slurping Bone Marrow");
+		addSound(ModSoundEvents.IMPALER_SHOOT, "Shooting Impaler");
 
 		addSound(ModSoundEvents.FLESH_BLOCK_HIT, "Hit Fleshy Block");
 		addSound(ModSoundEvents.FLESH_BLOCK_PLACE, "Place Fleshy Block");
@@ -526,6 +527,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.CAUSTIC_GUNBLADE, "Caustic Gunblade", """
 				A caustic gunblade that can alternate between melee and ranged mode and utilizes acidic ammo to damage its targets.
 				The acidic ammunition regenerates by itself after 5s of no usage.""");
+		addItem(ModItems.IMPALER, "Impaler", "Railgun made of flesh...");
 		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
 
 		addItem(ModItems.ACOLYTE_ARMOR_HELMET, "Acolyte Helmet");

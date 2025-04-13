@@ -528,6 +528,17 @@
     ],
     "subtitle": "sounds.biomancy.fleshkin.break"
   },
+  "fleshkin.burp": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.burp",
+        "pitch": 0.5,
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "sounds.biomancy.fleshkin.burp"
+  },
   "fleshkin.dormant": {
     "sounds": [
       {
@@ -595,6 +606,12 @@
       }
     ],
     "subtitle": "sounds.biomancy.item.bone_marrow.drink"
+  },
+  "item.impaler.shoot": {
+    "sounds": [
+      "biomancy:item.impaler.shoot"
+    ],
+    "subtitle": "sounds.biomancy.item.impaler.shoot"
   },
   "item.injector.fail": {
     "sounds": [

@@ -18,9 +18,9 @@
     "accessor.TextureSlotAccessor", "accessor.ZombieVillagerMixinAccessor", "compat.RichSoilFarmlandBlockMixin"
   ],
   "client": [
-    "accessor.RecipeCollectionAccessor", "client.AbstractSignEditScreenMixin", "client.AnvilScreenMixin", "client.ClientPackListenerMixin",
-    "client.ClientRecipeBookMixin", "client.EntityRenderDispatcherMixin", "client.ForgeGuiMixin", "client.GuiGraphicsMixin", "client.HeartTypeMixin",
-    "client.PlayerRendererMixin"
+    "accessor.PlayerRendererAccessor", "accessor.RecipeCollectionAccessor", "client.AbstractSignEditScreenMixin", "client.AnvilScreenMixin",
+    "client.ClientPackListenerMixin", "client.ClientRecipeBookMixin", "client.EntityRenderDispatcherMixin", "client.ForgeGuiMixin", "client.GuiGraphicsMixin",
+    "client.HeartTypeMixin", "client.PlayerRendererMixin"
   ],
   "server": [ ]
 }

@@ -29,6 +29,7 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleRedirect(ModSoundEvents.INJECTOR_FAIL, SoundEvents.DISPENSER_FAIL);
 		addSimpleRedirect(ModSoundEvents.MARROW_DRINK, SoundEvents.HONEY_DRINK, 0.9f, 1.25f);
 		addSimpleRedirect(ModSoundEvents.GRENADE_THROW, SoundEvents.SNOWBALL_THROW, 1f, 0.5f);
+		addSimpleSound(ModSoundEvents.IMPALER_SHOOT);
 
 		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_HIT, 4);
 		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_PLACE, 2);
@@ -47,6 +48,7 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 
 		addSimpleRedirect(ModSoundEvents.FLESHKIN_NO, SoundEvents.VILLAGER_NO, 0.75f, 0.3f);
 		addSimpleRedirect(ModSoundEvents.FLESHKIN_EAT, SoundEvents.GENERIC_EAT, 0.9f, 0.9f);
+		addSimpleRedirect(ModSoundEvents.FLESHKIN_BURP, SoundEvents.PLAYER_BURP, 0.9f, 0.5f);
 		addSimpleRedirect(ModSoundEvents.FLESHKIN_BREAK, ModSoundEvents.FLESH_BLOCK_BREAK, 1.2f, 1.25f);
 		addSimpleRedirect(ModSoundEvents.FLESHKIN_BECOME_DORMANT, ModSoundEvents.FLESH_BLOCK_HIT, 1.2f, 1.25f);
 		addSimpleRedirect(ModSoundEvents.FLESHKIN_BECOME_AWAKENED, ModSoundEvents.FLESH_BLOCK_PLACE, 1.2f, 1.25f);

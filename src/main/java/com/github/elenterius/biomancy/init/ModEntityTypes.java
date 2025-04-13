@@ -48,6 +48,7 @@ public final class ModEntityTypes {
 
 	//Projectiles
 	public static final RegistryObject<EntityType<ToothProjectile>> TOOTH_PROJECTILE = registerProjectile("tooth_projectile", ToothProjectile::new, builder -> builder.sized(0.25f, 0.25f));
+	public static final RegistryObject<EntityType<ImpalerProjectile>> IMPALER_PROJECTILE = registerFastProjectile("impaler_projectile", ImpalerProjectile::new, builder -> builder.sized(3f / 16f, 3f / 16f));
 	public static final RegistryObject<EntityType<BloomberryProjectile>> BLOOMBERRY_PROJECTILE = registerProjectile("bloomberry_projectile", BloomberryProjectile::new, builder -> builder.sized(8f / 16f, 8f / 16f));
 	public static final RegistryObject<EntityType<AcidSpitProjectile>> ACID_SPIT_PROJECTILE = registerProjectile("acid_spit_projectile", AcidSpitProjectile::new, builder -> builder.sized(0.25f, 0.25f));
 	public static final RegistryObject<EntityType<AcidBlobProjectile>> ACID_BLOB_PROJECTILE = registerProjectile("acid_blob_projectile", AcidBlobProjectile::new, builder -> builder.sized(6f / 16f, 6f / 16f));
@@ -64,6 +65,10 @@ public final class ModEntityTypes {
 
 	private static <T extends BaseProjectile> RegistryObject<EntityType<T>> registerProjectile(String name, EntityType.EntityFactory<T> factory, UnaryOperator<EntityType.Builder<T>> builder) {
 		return ENTITIES.register(name, () -> builder.apply(EntityType.Builder.of(factory, MobCategory.MISC)).updateInterval(10).build(BiomancyMod.MOD_ID + ":" + name));
+	}
+
+	private static <T extends BaseProjectile> RegistryObject<EntityType<T>> registerFastProjectile(String name, EntityType.EntityFactory<T> factory, UnaryOperator<EntityType.Builder<T>> builder) {
+		return ENTITIES.register(name, () -> builder.apply(EntityType.Builder.of(factory, MobCategory.MISC)).setShouldReceiveVelocityUpdates(true).updateInterval(5).build(BiomancyMod.MOD_ID + ":" + name));
 	}
 
 	private static <T extends ThrowableProjectile> RegistryObject<EntityType<T>> registerGrenade(String name, EntityType.EntityFactory<T> factory, UnaryOperator<EntityType.Builder<T>> builder) {

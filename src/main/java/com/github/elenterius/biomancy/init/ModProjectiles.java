@@ -17,23 +17,24 @@ import java.util.List;
 public final class ModProjectiles {
 
 	public static final List<ConfiguredProjectile<? extends BaseProjectile>> PRECONFIGURED_PROJECTILES = new ArrayList<>();
-	public static final ConfiguredProjectile<ToothProjectile> TOOTH = build("Sharp Tooth", 1.75f, 5f, 0, convertToInaccuracy(0.92f), ToothProjectile::new);
-	public static final ConfiguredProjectile<AcidBlobProjectile> ACID_BLOB = build("Acid Blob", 1.2f, 2, 0, convertToInaccuracy(0.9f), SoundEvents.SLIME_JUMP_SMALL, (level, x, y, z) -> new AcidBlobProjectile(level, x, y, z, false));
-	public static final ConfiguredProjectile<AcidBlobProjectile> FALLING_ACID_BLOB = build("Falling Acid Blob", 0.1f, 2, 0, convertToInaccuracy(0.9f), SoundEvents.SLIME_SQUISH_SMALL, AcidBlobProjectile::new);
-	public static final ConfiguredProjectile<AcidSpitProjectile> GASTRIC_SPIT = build("Gastric Acid Spit", 1.5f, 1, 0, 0.25f, SoundEvents.LLAMA_SPIT, AcidSpitProjectile::new);
-	public static final ConfiguredProjectile<BloomberryProjectile> BLOOMBERRY = build("Bloomberry", 1.25f, 2, 0, convertToInaccuracy(0.9f), BloomberryProjectile::new);
+	public static final ConfiguredProjectile<ToothProjectile> TOOTH = create("Sharp Tooth", 1.75f, 5f, 0, convertToInaccuracy(0.92f), ToothProjectile::new);
+	public static final ConfiguredProjectile<ImpalerProjectile> IMPALER_PROJECTILE = create("Impaler Projectile", 2f, 2.5f, 2, convertToInaccuracy(0.95f), ModSoundEvents.IMPALER_SHOOT.get(), ImpalerProjectile::new);
+	public static final ConfiguredProjectile<AcidBlobProjectile> ACID_BLOB = create("Acid Blob", 1.2f, 2, 0, convertToInaccuracy(0.9f), SoundEvents.SLIME_JUMP_SMALL, (level, x, y, z) -> new AcidBlobProjectile(level, x, y, z, false));
+	public static final ConfiguredProjectile<AcidBlobProjectile> FALLING_ACID_BLOB = create("Falling Acid Blob", 0.1f, 2, 0, convertToInaccuracy(0.9f), SoundEvents.SLIME_SQUISH_SMALL, AcidBlobProjectile::new);
+	public static final ConfiguredProjectile<AcidSpitProjectile> GASTRIC_SPIT = create("Gastric Acid Spit", 1.5f, 1, 0, 0.25f, SoundEvents.LLAMA_SPIT, AcidSpitProjectile::new);
+	public static final ConfiguredProjectile<BloomberryProjectile> BLOOMBERRY = create("Bloomberry", 1.25f, 2, 0, convertToInaccuracy(0.9f), BloomberryProjectile::new);
 
 	private static float convertToInaccuracy(float accuracy) {
 		return -Gun.MAX_INACCURACY * accuracy + Gun.MAX_INACCURACY;
 	}
 
-	private static <T extends BaseProjectile> ConfiguredProjectile<T> build(String name, float velocity, float damage, int knockback, float accuracy, ProjectileFactory<T> factory) {
+	private static <T extends BaseProjectile> ConfiguredProjectile<T> create(String name, float velocity, float damage, int knockback, float accuracy, ProjectileFactory<T> factory) {
 		ConfiguredProjectile<T> configuredProjectile = new ConfiguredProjectile<>(name, velocity, damage, knockback, convertToInaccuracy(accuracy), SoundEvents.CROSSBOW_SHOOT, factory);
 		PRECONFIGURED_PROJECTILES.add(configuredProjectile);
 		return configuredProjectile;
 	}
 
-	private static <T extends BaseProjectile> ConfiguredProjectile<T> build(String name, float velocity, float damage, int knockback, float accuracy, SoundEvent shootSound, ProjectileFactory<T> factory) {
+	private static <T extends BaseProjectile> ConfiguredProjectile<T> create(String name, float velocity, float damage, int knockback, float accuracy, SoundEvent shootSound, ProjectileFactory<T> factory) {
 		ConfiguredProjectile<T> configuredProjectile = new ConfiguredProjectile<>(name, velocity, damage, knockback, convertToInaccuracy(accuracy), shootSound, factory);
 		PRECONFIGURED_PROJECTILES.add(configuredProjectile);
 		return configuredProjectile;

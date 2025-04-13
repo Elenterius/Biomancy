@@ -118,10 +118,10 @@ public interface Gun {
 
 	float getAccuracy(ItemStack stack);
 
-	int getShootDelayTicks(ItemStack stack);
+	int getDelayBetweenShots(ItemStack stack);
 
 	default float getFireRate(ItemStack stack) {
-		return ONE_SECOND_IN_TICKS / (float) getShootDelayTicks(stack);
+		return ONE_SECOND_IN_TICKS / (float) getDelayBetweenShots(stack);
 	}
 
 	int getReloadDurationTicks(ItemStack stack);
@@ -129,6 +129,8 @@ public interface Gun {
 	float modifyProjectileDamage(float baseDamage, ItemStack stack);
 
 	int modifyProjectileKnockBack(int baseKnockBack, ItemStack stack);
+
+	GunProperties.ShootBehavior getShootBehavior();
 
 	int getMaxAmmo(ItemStack stack);
 

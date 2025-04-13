@@ -143,9 +143,11 @@ public abstract class BaseProjectile extends Projectile implements IEntityAdditi
 			}
 
 			setDeltaMovement(motion.scale(drag));
+
 			if (!isNoGravity()) {
 				setDeltaMovement(getDeltaMovement().add(0, -getGravity(), 0));
 			}
+
 			spawnParticle(posX, posY, posZ);
 			setPos(posX, posY, posZ);
 		}
@@ -160,7 +162,7 @@ public abstract class BaseProjectile extends Projectile implements IEntityAdditi
 		if (!level().isClientSide) discard();
 	}
 
-	public void spawnParticle(double x, double y, double z) {
+	protected void spawnParticle(double x, double y, double z) {
 		level().addParticle(getParticle(), x, y + 0.5d, z, 0, 0, 0);
 	}
 

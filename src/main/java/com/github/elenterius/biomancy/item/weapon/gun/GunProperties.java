@@ -1,27 +1,45 @@
 package com.github.elenterius.biomancy.item.weapon.gun;
 
-public record GunProperties(float projectileDamageModifier, float accuracy, int shootDelayTicks, int maxAmmo, int reloadDurationTicks, boolean isAutoReload) {
+public record GunProperties(float projectileDamageModifier, float accuracy, int delayBetweenShots, ShootBehavior shootBehavior, int maxAmmo, int reloadDurationTicks, boolean isAutoReload) {
 
 	public static Builder builder() {
 		return new Builder();
 	}
 
+	public enum ShootBehavior {
+		INSTANT,
+		ON_FULL_CHARGE,
+		ON_RELEASE_INSTANT,
+		ON_RELEASE_WITH_FULL_CHARGE;
+
+		public boolean isOnRelease() {
+			return this == ON_RELEASE_WITH_FULL_CHARGE || this == ON_RELEASE_INSTANT;
+		}
+	}
+
 	public static class Builder {
 
-		private int shootDelayTicks = 20;
+		private int timeBetweenShots = 20;
+		private ShootBehavior shootBehavior = ShootBehavior.INSTANT;
+
 		private float projectileDamageModifier = 0;
 		private int maxAmmo = 6;
 		private float accuracy = 1f;
 		private int reloadDurationTicks = 20;
 		private boolean isAutoReload = false;
 
-		public Builder shootDelay(int ticks) {
-			shootDelayTicks = ticks;
+		public Builder timeBetweenShots(int ticks) {
+			timeBetweenShots = ticks;
+			return this;
+		}
+
+		public Builder shootBehavior(ShootBehavior behavior) {
+			shootBehavior = behavior;
 			return this;
 		}
 
 		public Builder fireRate(float fireRate) {
-			shootDelayTicks = Math.max(1, Math.round(Gun.ONE_SECOND_IN_TICKS / fireRate));
+			timeBetweenShots = Math.max(1, Math.round(Gun.ONE_SECOND_IN_TICKS / fireRate));
 			return this;
 		}
 
@@ -46,13 +64,18 @@ public record GunProperties(float projectileDamageModifier, float accuracy, int 
 			return this;
 		}
 
+		public Builder autoReload() {
+			isAutoReload = true;
+			return this;
+		}
+
 		public Builder autoReload(boolean bool) {
 			isAutoReload = bool;
 			return this;
 		}
 
 		public GunProperties build() {
-			return new GunProperties(projectileDamageModifier, accuracy, shootDelayTicks, maxAmmo, reloadDurationTicks, isAutoReload);
+			return new GunProperties(projectileDamageModifier, accuracy, timeBetweenShots, shootBehavior, maxAmmo, reloadDurationTicks, isAutoReload);
 		}
 	}
 

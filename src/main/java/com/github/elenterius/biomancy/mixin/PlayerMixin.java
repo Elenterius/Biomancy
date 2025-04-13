@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.mixin;
 
+import com.github.elenterius.biomancy.entity.projectile.ImpalerProjectile;
 import com.github.elenterius.biomancy.init.ModDamageTypes;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.ItemAttackDamageSourceProvider;
@@ -114,6 +115,14 @@ public abstract class PlayerMixin extends LivingEntity {
 				if (getItemBySlot(EquipmentSlot.LEGS).is(ModItems.ACOLYTE_ARMOR_LEGGINGS.get())) cir.setReturnValue(false);
 			}
 			case CAPE -> {}
+		}
+	}
+
+	@Inject(method = "rideTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;stopRiding()V"), cancellable = true)
+	private void onRidingTick(CallbackInfo ci) {
+		if (getVehicle() instanceof ImpalerProjectile impalerProjectile && impalerProjectile.hasPassenger(this) && random.nextFloat() < 0.7f) {
+			ci.cancel();
+			setShiftKeyDown(false);
 		}
 	}
 
