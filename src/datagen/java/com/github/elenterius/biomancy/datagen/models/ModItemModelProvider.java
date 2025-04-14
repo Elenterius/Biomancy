@@ -2,7 +2,6 @@ package com.github.elenterius.biomancy.datagen.models;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.item.weapon.DespoilingSwordItem;
 import com.google.gson.JsonObject;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -85,7 +84,6 @@ public class ModItemModelProvider extends ItemModelProvider {
 		serumItem(ModItems.DECAYING_ADDITIVE);
 
 		emissiveItem(ModItems.PRIMORDIAL_CORE);
-		fleshPlunderer(ModItems.DESPOIL_SICKLE);
 		basicItem(ModItems.CREATOR_MIX);
 		basicItem(ModItems.NUTRIENT_PASTE);
 		basicItem(ModItems.NUTRIENT_BAR);
@@ -138,13 +136,16 @@ public class ModItemModelProvider extends ItemModelProvider {
 				.texture(LAYER_1_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/" + registryKey.getPath() + "_emissive"));
 	}
 
-	public <T extends DespoilingSwordItem> void fleshPlunderer(RegistryObject<T> registryObject) {
-		ResourceLocation registryKey = registryObject.getId();
+	public <T extends Item> void emissiveItem(RegistryObject<T> registryObject, String subFolder) {
+		emissiveItem(registryObject.getId(), subFolder);
+	}
+
+	public <T extends Item> void emissiveItem(ResourceLocation registryKey, String subFolder) {
 		getBuilder(registryKey.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
 				.customLoader(ItemLayerModelBuilder::begin).emissive(0xf, 0xf, 1).end()
-				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/weapon/" + registryKey.getPath()))
-				.texture(LAYER_1_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/weapon/" + registryKey.getPath() + "_emissive"));
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/" + subFolder + "/" + registryKey.getPath()))
+				.texture(LAYER_1_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/" + subFolder + "/" + registryKey.getPath() + "_emissive"));
 	}
 
 	public <T extends Item> ItemModelBuilder basicItem(RegistryObject<T> registryObject) {

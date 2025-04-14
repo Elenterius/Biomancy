@@ -16,7 +16,6 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Consumer;
@@ -62,17 +61,6 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.define('F', Items.ROTTEN_FLESH)
 				.define('E', Items.SPIDER_EYE)
 				.define('#', Items.ENDER_PEARL)
-				.unlockedBy(ModItems.PRIMORDIAL_CORE.get()).save(consumer);
-
-		WorkbenchRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.DESPOIL_SICKLE.get())
-				.define('B', Tags.Items.BONES)
-				.define('M', ModItemTags.FRESH_RAW_MEATS)
-				.define('F', ModItemTags.C_FANGS)
-				.define('C', ModItemTags.C_CLAWS)
-				.define('P', ModItems.PRIMORDIAL_CORE.get())
-				.pattern("CB ")
-				.pattern(" FM")
-				.pattern("MP ")
 				.unlockedBy(ModItems.PRIMORDIAL_CORE.get()).save(consumer);
 
 		//		WorkbenchRecipeBuilder.shapeless(ModItems.GUIDE_BOOK.get())

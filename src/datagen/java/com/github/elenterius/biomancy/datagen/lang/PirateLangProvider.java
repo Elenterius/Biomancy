@@ -423,7 +423,6 @@ public class PirateLangProvider extends AbstractLangProvider {
 		addItem(ModItems.VOLATILE_FLUID, "Cannon Fluid", "Seawater that gets a little too excited. It needs further processin' to be truly deadly.");
 		addItem(ModItems.BILE, "Vitriol", "Base material which is often used by witches ta' make their brews.");
 
-		addItem(ModItems.DESPOIL_SICKLE, "Cutlass o' Flesh", "A fragile weapon forged fer the sole purpose o' pillaging special loot from yer enemies.\n\nWhen in either hook, the tool guarantees Fresh loot drops. When it triggers, it be damaged a little extra.");
 		addItem(ModItems.VIAL, "Organic Vial", "A small container, it be very resistant to the witches' brews and be perfect for holding 'em.\nThe vial melts after it be used.");
 		addItem(ModItems.LIVING_FLESH, "Livin' Flesh", "It be alive!\nExcept, it be lookin' a little too dull ta' be the brain of somethin'. Ya could turn it inta a construct instead.");
 		addItem(ModItems.PRIMORDIAL_CORE, "Ol'-Magic Core", "An ominous bit o' plunder made o' flesh. Lookin' at it makes you feel like ya' lost yer sea-legs...");
