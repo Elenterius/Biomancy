@@ -11,7 +11,7 @@
         "id": "biomancy:essence",
         "tag": "{colors:[I;10051392,16380836],essence_data:{entity_type:\"minecraft:piglin\",name:\"entity.minecraft.piglin\"},essence_tier:1}"
       },
-      "predicate_tag": "{essence_data:{entity_type:\"minecraft:piglin\"},essence_tier:1}"
+      "predicate_tag": "{essence_data:{entity_type:\"minecraft:piglin\"}}"
     },
     {
       "count": 42,

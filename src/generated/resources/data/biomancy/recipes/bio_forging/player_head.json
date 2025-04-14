@@ -11,7 +11,7 @@
         "id": "biomancy:essence",
         "tag": "{colors:[I;44975,4602533],essence_data:{entity_type:\"minecraft:player\",name:\"entity.minecraft.player\"},essence_tier:1}"
       },
-      "predicate_tag": "{essence_data:{entity_type:\"minecraft:player\"},essence_tier:1}"
+      "predicate_tag": "{essence_data:{entity_type:\"minecraft:player\"}}"
     },
     {
       "count": 38,
