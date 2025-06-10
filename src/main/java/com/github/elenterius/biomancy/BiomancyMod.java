@@ -55,6 +55,7 @@ public final class BiomancyMod {
 		ModMobEffects.EFFECTS.register(modEventBus);
 		ModSerums.SERUMS.register(modEventBus);
 		ModPotions.POTIONS.register(modEventBus);
+		ModPaintings.PAINTINGS.register(modEventBus);
 
 		ModMenuTypes.MENUS.register(modEventBus);
 

@@ -277,6 +277,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 		addSoundTranslations();
 		addBannerPatternTranslations();
+		addPainting(ModPaintings.JERRY_PROVIDES, "Jerry Provides", "Shroomie");
 	}
 
 	private void addSoundTranslations() {

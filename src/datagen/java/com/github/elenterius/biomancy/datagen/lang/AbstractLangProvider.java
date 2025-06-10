@@ -17,6 +17,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -193,6 +194,13 @@ public abstract class AbstractLangProvider implements DataProvider, LangProvider
 		}
 
 		add(translatableContents.getKey(), translation);
+	}
+
+	public void addPainting(RegistryObject<PaintingVariant> supplier, String title, String author) {
+		ResourceLocation id = supplier.getId();
+		assert id != null;
+		add(id.toLanguageKey("painting", "title"), title);
+		add(id.toLanguageKey("painting", "author"), author);
 	}
 
 	@SuppressWarnings("deprecation")

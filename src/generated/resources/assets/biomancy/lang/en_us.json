@@ -571,6 +571,8 @@
   "block.minecraft.banner.biomancy.mascot_accent.green": "Green Mascot Accent",
   "block.minecraft.banner.biomancy.mascot_accent.red": "Red Mascot Accent",
   "block.minecraft.banner.biomancy.mascot_accent.black": "Black Mascot Accent",
+  "painting.biomancy.jerry_provides.title": "Jerry Provides",
+  "painting.biomancy.jerry_provides.author": "Shroomie",
   "advancements.biomancy.root.title": "Whispers in the Meat",
   "advancements.biomancy.root.description": "You feel a presence in the flesh, faint whispers reach your ears:\n\n  \"Raw Meat is useful...\"\n",
   "advancements.biomancy.raw_meat_collection.title": "Collector of Raw Meats",
