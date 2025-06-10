@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
+import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.ShowKnowledgeOverlay;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
@@ -40,6 +41,45 @@ public final class IngameOverlays {
 	public static final ResourceLocation ORNATE_CORNER_BOTTOM_RIGHT = BiomancyMod.createRL("textures/gui/ornate_corner_br.png");
 	public static final ResourceLocation CHARGE_BAR = BiomancyMod.createRL("textures/gui/charge_bar.png");
 	public static final ResourceLocation ATTACK_REACH = BiomancyMod.createRL("textures/gui/indicator_attack_reach.png");
+	public static final ResourceLocation VEINS = BiomancyMod.createRL("textures/gui/overlay/veins.png");
+	public static final ResourceLocation VIGNETTE = BiomancyMod.createRL("textures/gui/overlay/vignette.png");
+
+	public static final IGuiOverlay FRENZY_OVERLAY = (gui, guiGraphics, partialTicks, screenWidth, screenHeight) -> {
+		Minecraft minecraft = Minecraft.getInstance();
+
+		if (minecraft.player == null || minecraft.level == null) return;
+		if (!minecraft.player.hasEffect(ModMobEffects.FRENZY.get())) return;
+		if (minecraft.options.hideGui) return;
+
+		guiGraphics.pose().pushPose();
+
+		RenderSystem.disableDepthTest();
+		RenderSystem.depthMask(false);
+		RenderSystem.enableBlend();
+
+		float intensityPct = Mth.clamp(minecraft.player.getEffect(ModMobEffects.FRENZY.get()).getAmplifier() / 2f, 0f, 1f);
+		float colorOffset = Mth.lerp(intensityPct, 0.3f, 0f);
+
+		float scale = Mth.lerp(intensityPct, 1.6f, 1f);
+		guiGraphics.pose().translate(screenWidth / 2f, screenHeight / 2f, 0);
+		guiGraphics.pose().scale(scale, scale, scale);
+		guiGraphics.pose().translate(-screenWidth / 2f, -screenHeight / 2f, 0);
+
+		guiGraphics.setColor(1f, 1f, 1f, 1f);
+		RenderSystem.defaultBlendFunc();
+		guiGraphics.blit(VEINS, 0, 0, -90, 0f, 0f, screenWidth, screenHeight, screenWidth, screenHeight);
+
+		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+		guiGraphics.setColor(colorOffset, 1f, 1f, 1f);
+
+		guiGraphics.blit(VIGNETTE, 0, 0, -90, 0f, 0f, screenWidth, screenHeight, screenWidth, screenHeight);
+
+		RenderSystem.disableBlend();
+		RenderSystem.depthMask(true);
+		RenderSystem.enableDepthTest();
+
+		guiGraphics.pose().popPose();
+	};
 
 	public static final IGuiOverlay GUN_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
 		Minecraft minecraft = Minecraft.getInstance();
