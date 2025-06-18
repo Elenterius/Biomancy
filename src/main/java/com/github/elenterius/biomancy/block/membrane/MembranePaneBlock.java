@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.block.membrane;
 
 import com.github.elenterius.biomancy.block.PaneBlock;
+import com.github.elenterius.biomancy.block.property.Orientation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
@@ -68,8 +69,11 @@ public class MembranePaneBlock extends PaneBlock implements Membrane {
 	}
 
 	@Override
-	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-		return (adjacentBlockState.is(this) && getOrientation(state) == getOrientation(adjacentBlockState)) || super.skipRendering(state, adjacentBlockState, side);
+	public boolean skipRendering(BlockState state, BlockState adjacentState, Direction side) {
+		if (!adjacentState.is(this)) return false;
+
+		Orientation orientation = getOrientation(state);
+		return orientation == getOrientation(adjacentState) && orientation.axis != side.getAxis();
 	}
 
 }
