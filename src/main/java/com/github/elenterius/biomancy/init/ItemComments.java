@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.IdentityHashMap;
@@ -14,8 +15,6 @@ import java.util.Map;
 public final class ItemComments {
 
 	private static final Map<Item, List<Component>> COMMENTS = new IdentityHashMap<>();
-
-	private ItemComments() {}
 
 	static {
 		createItemComment(ModItems.PRIMORDIAL_CRADLE.get(), "Basically, at the very bottom of life, which seduces us all, there is only absurdity, and more absurdity. And maybe that's what gives us our joy for living, because the only thing that can defeat absurdity is lucidity.\n- Albert Camus");
@@ -29,6 +28,8 @@ public final class ItemComments {
 		createItemComment(ModItems.SHRINKING_SERUM.get(), "Normalize the idea of living inside of Someone.\n- Tarael Blackwing");
 	}
 
+	private ItemComments() {}
+
 	private static void createItemComment(Item item, String text) {
 		COMMENTS.put(item, toFleshTongue(text + "\n\n"));
 	}
@@ -39,6 +40,10 @@ public final class ItemComments {
 
 	public static @Nullable List<Component> getComment(Item item) {
 		return COMMENTS.get(item);
+	}
+
+	public static @Nullable List<Component> getComment(ItemStack stack) {
+		return COMMENTS.get(stack.getItem());
 	}
 
 }

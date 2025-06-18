@@ -52,7 +52,7 @@ public final class TooltipHandler {
 	public static void onGetTooltipLines(ItemTooltipEvent event) {
 		if (event.getEntity() == null) return;
 
-		List<Component> specialComment = ItemComments.getComment(event.getItemStack().getItem());
+		List<Component> specialComment = ItemComments.getComment(event.getItemStack());
 		if (specialComment != null) {
 			event.getToolTip().addAll(1, specialComment);
 		}
