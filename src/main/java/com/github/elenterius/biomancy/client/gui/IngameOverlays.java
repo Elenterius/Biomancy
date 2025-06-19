@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
+import com.github.elenterius.biomancy.entity.misc.BiomancyPlayer;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.ShowKnowledgeOverlay;
@@ -16,10 +17,13 @@ import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -34,15 +38,37 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 
 public final class IngameOverlays {
 
+	//hud overlays
 	public static final ResourceLocation INJECTOR_COOL_DOWN = BiomancyMod.createRL("textures/gui/indicator_injector_cooldown.png");
 	public static final ResourceLocation ORNATE_CORNER_BOTTOM_RIGHT = BiomancyMod.createRL("textures/gui/ornate_corner_br.png");
 	public static final ResourceLocation CHARGE_BAR = BiomancyMod.createRL("textures/gui/charge_bar.png");
 	public static final ResourceLocation ATTACK_REACH = BiomancyMod.createRL("textures/gui/indicator_attack_reach.png");
+
+	//fullscreen overlays
 	public static final ResourceLocation VEINS = BiomancyMod.createRL("textures/gui/overlay/veins.png");
 	public static final ResourceLocation VIGNETTE = BiomancyMod.createRL("textures/gui/overlay/vignette.png");
+	public static final ResourceLocation MEMBRANE = BiomancyMod.createRL("textures/gui/overlay/membrane.png");
+	public static final ResourceLocation WATER_GEL = new ResourceLocation("minecraft", "textures/misc/underwater.png");
+
+	public static final IGuiOverlay MEMBRANE_OVERLAY = (gui, guiGraphics, partialTicks, screenWidth, screenHeight) -> {
+		Minecraft minecraft = Minecraft.getInstance();
+
+		if (minecraft.player == null || minecraft.level == null) return;
+		if (minecraft.player.isSpectator()) return;
+		if (minecraft.options.hideGui) return;
+		if (!GuiUtil.isFirstPersonView()) return;
+
+		if (minecraft.player instanceof BiomancyPlayer bioPlayer && bioPlayer.biomancy$isEyeInsideMembrane()) {
+			BlockPos pos = BlockPos.containing(minecraft.player.getX(), minecraft.player.getEyeY(), minecraft.player.getZ());
+			float brightness = LightTexture.getBrightness(minecraft.player.level().dimensionType(), minecraft.player.level().getMaxLocalRawBrightness(pos));
+
+			renderInsideBlockOverlay(guiGraphics, -90, screenWidth, screenHeight, brightness, MEMBRANE);
+		}
+	};
 
 	public static final IGuiOverlay FRENZY_OVERLAY = (gui, guiGraphics, partialTicks, screenWidth, screenHeight) -> {
 		Minecraft minecraft = Minecraft.getInstance();
@@ -138,6 +164,32 @@ public final class IngameOverlays {
 	};
 
 	private IngameOverlays() {}
+
+	static void renderInsideBlockOverlay(GuiGraphics guiGraphics, int blitOffset, int screenWidth, int screenHeight, float brightness, ResourceLocation texture) {
+		int x1 = 0, y1 = 0;
+		int x2 = screenWidth, y2 = screenHeight;
+		float minU = 0f, maxU = 1f;
+		float minV = 0f, maxV = 1f;
+
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		guiGraphics.setColor(brightness, brightness, brightness, 0.5f);
+
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderTexture(0, texture);
+
+		Matrix4f matrix4f = guiGraphics.pose().last().pose();
+		BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+		bufferbuilder.vertex(matrix4f, x1, y1, blitOffset).uv(minU, minV).endVertex();
+		bufferbuilder.vertex(matrix4f, x1, y2, blitOffset).uv(minU, maxV).endVertex();
+		bufferbuilder.vertex(matrix4f, x2, y2, blitOffset).uv(maxU, maxV).endVertex();
+		bufferbuilder.vertex(matrix4f, x2, y1, blitOffset).uv(maxU, minV).endVertex();
+		BufferUploader.drawWithShader(bufferbuilder.end());
+
+		RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+		RenderSystem.disableBlend();
+	}
 
 	static void renderKnowledgeOverlay(ForgeGui gui, GuiGraphics guiGraphics, int screenWidth, int screenHeight, PrimordialCradleBlockEntity cradle) {
 		Font font = gui.getFont();

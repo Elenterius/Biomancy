@@ -61,6 +61,11 @@ public class MembranePaneBlock extends PaneBlock implements Membrane {
 	}
 
 	@Override
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		Membrane.setPlayerIsInsideMembrane(pos, entity);
+	}
+
+	@Override
 	public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
 		return switch (type) {
 			case LAND, AIR -> true;

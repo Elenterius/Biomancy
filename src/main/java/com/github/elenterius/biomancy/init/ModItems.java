@@ -165,6 +165,7 @@ public final class ModItems {
 
 	//## Membranes
 	public static final RegistryObject<SimpleBlockItem> BIOMETRIC_MEMBRANE = registerBlockItem(ModBlocks.BIOMETRIC_MEMBRANE, BiometricMembraneBlockItem::new, ModRarities.VERY_RARE);
+	public static final RegistryObject<SimpleBlockItem> ONEWAY_MEMBRANE = registerSimpleBlockItem(ModBlocks.ONEWAY_MEMBRANE);
 	public static final RegistryObject<SimpleBlockItem> IMPERMEABLE_MEMBRANE = registerSimpleBlockItem(ModBlocks.IMPERMEABLE_MEMBRANE);
 	public static final RegistryObject<SimpleBlockItem> IMPERMEABLE_MEMBRANE_PANE = registerSimpleBlockItem(ModBlocks.IMPERMEABLE_MEMBRANE_PANE);
 	public static final RegistryObject<SimpleBlockItem> BABY_PERMEABLE_MEMBRANE = registerSimpleBlockItem(ModBlocks.BABY_PERMEABLE_MEMBRANE);

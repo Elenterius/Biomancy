@@ -517,6 +517,15 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
+		BioForgingRecipeBuilder.create(ModItems.ONEWAY_MEMBRANE.get())
+				.addIngredient(ModItems.FLESH_BITS.get(), slabCost)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 2)
+				.addIngredient(ModItems.BILE.get(), 4)
+				.addIngredient(ModItems.GELLING_AGENT.get(), 1)
+				.addIngredient(ModItems.GEM_FRAGMENTS.get(), 2)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(ModItems.GELLING_AGENT.get()).save(consumer);
+
 		BioForgingRecipeBuilder.create(ModItems.FLESH_FENCE.get(), 4)
 				.addIngredient(ModItems.FLESH_BITS.get(), blockCost * 4)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 2)

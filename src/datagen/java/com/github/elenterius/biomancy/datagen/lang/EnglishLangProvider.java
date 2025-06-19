@@ -656,6 +656,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		add(ModBlocks.BIOMETRIC_MEMBRANE.get().getDescriptionId() + ".inverted", "Inverted Biometric Membrane");
 		add(ModBlocks.BIOMETRIC_MEMBRANE.get().getDescriptionId() + ".inverted.unique", "Inverted Unique Biometric Membrane");
 		add(ModBlocks.BIOMETRIC_MEMBRANE.get().getDescriptionId() + ".unique", "Unique Biometric Membrane");
+		addBlock(ModBlocks.ONEWAY_MEMBRANE, "Oneway Membrane", "A special membrane that acts like a platform that is only solid on one side while allowing movement through it. Use crouch to move through the solid side.");
 
 		addBlock(ModBlocks.MODULAR_LARYNX, "Modular Larynx", """
 				Similar to a Jukebox but made of an adaptive larynx. Capable of reproducing the sounds of a mob via the insertion of essence and redstone power.

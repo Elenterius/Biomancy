@@ -123,6 +123,7 @@ public final class ModBlocks {
 	public static final RegistryObject<MembraneBlock> UNDEAD_PERMEABLE_MEMBRANE = registerMembrane("undead_permeable_membrane", IgnoreEntityCollisionPredicate.IS_UNDEAD_MOB);
 	public static final RegistryObject<MembranePaneBlock> UNDEAD_PERMEABLE_MEMBRANE_PANE = registerMembranePane("undead_permeable_membrane_pane", IgnoreEntityCollisionPredicate.IS_UNDEAD_MOB);
 	public static final RegistryObject<BiometricMembraneBlock> BIOMETRIC_MEMBRANE = registerMembrane("biometric_membrane", BiometricMembraneBlock::new);
+	public static final RegistryObject<OnewayMembraneBlock> ONEWAY_MEMBRANE = registerMembrane("oneway_membrane", OnewayMembraneBlock::new);
 
 	//## Light Sources
 	public static final RegistryObject<FleshLanternBlock> PRIMORDIAL_BIO_LANTERN = register("primordial_bio_lantern", properties -> new FleshLanternBlock(properties.sound(SoundType.SHROOMLIGHT).lightLevel(x -> 15).noOcclusion()));
@@ -189,7 +190,7 @@ public final class ModBlocks {
 		});
 	}
 
-	private static <T extends MembraneBlock> RegistryObject<T> registerMembrane(String name, Function<BlockBehaviour.Properties, T> factory) {
+	private static <T extends Block & Membrane> RegistryObject<T> registerMembrane(String name, Function<BlockBehaviour.Properties, T> factory) {
 		return register(name, properties -> {
 			properties = properties.noOcclusion().isRedstoneConductor(ModBlocks::neverValid).isSuffocating(ModBlocks::neverValid).isViewBlocking(ModBlocks::neverValid);
 			return factory.apply(properties);

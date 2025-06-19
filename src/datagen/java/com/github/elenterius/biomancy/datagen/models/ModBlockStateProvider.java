@@ -130,6 +130,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		translucentBlockWithItem(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE);
 		membranePaneWithItem(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE_PANE, ModBlocks.UNDEAD_PERMEABLE_MEMBRANE);
 		existingBlockWithItem(ModBlocks.BIOMETRIC_MEMBRANE);
+		directionalBlockWithItem(ModBlocks.ONEWAY_MEMBRANE);
 
 		existingBlockWithItem(ModBlocks.MODULAR_LARYNX);
 		//horizontalBlockWithItem(ModBlocks.NEURAL_INTERCEPTOR);
@@ -371,6 +372,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockAsset(block));
 		horizontalBlock(block, blockState -> existingModel);
 		simpleBlockItem(block, existingModel);
+	}
+
+	public <T extends Block> void directionalBlockWithItem(RegistryObject<T> block) {
+		directionalBlockWithItem(block.get());
 	}
 
 	public void directionalBlockWithItem(Block block) {

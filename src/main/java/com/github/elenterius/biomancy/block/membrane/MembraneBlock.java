@@ -57,4 +57,9 @@ public class MembraneBlock extends HalfTransparentBlock implements Membrane {
 		return state.getShape(level, pos);
 	}
 
+	@Override
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		Membrane.setPlayerIsInsideMembrane(pos, entity);
+	}
+
 }

@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.event;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.WaterGelBlock;
+import com.github.elenterius.biomancy.entity.misc.BiomancyPlayer;
 import com.github.elenterius.biomancy.init.AcidInteractions;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModMobEffects;
@@ -49,9 +50,15 @@ public final class LivingEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onLivingTick(final TickEvent.PlayerTickEvent event) {
+	public static void onPlayerTick(final TickEvent.PlayerTickEvent event) {
+		if (event.phase == TickEvent.Phase.START) {
+			if (event.player instanceof BiomancyPlayer bioPlayer) {
+				bioPlayer.biomancy$setIsInsideMembrane(false);
+			}
+			return;
+		}
+
 		if (event.side == LogicalSide.CLIENT) return;
-		if (event.phase == TickEvent.Phase.START) return;
 
 		if (event.player.tickCount % 30 == 0) {
 			ModEnchantments.SELF_FEEDING.get().repairLivingItems(event.player);

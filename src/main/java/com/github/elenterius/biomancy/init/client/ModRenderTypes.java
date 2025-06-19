@@ -27,7 +27,7 @@ public final class ModRenderTypes {
 	private ModRenderTypes() {}
 
 	@SubscribeEvent
-	public static void onClientSetup(RegisterShadersEvent event) throws IOException {
+	public static void registerShaders(final RegisterShadersEvent event) throws IOException {
 		event.registerShader(new ShaderInstance(event.getResourceProvider(), BiomancyMod.createRL("entity_cutout_party_time"), DefaultVertexFormat.NEW_ENTITY), instance -> entityCutoutPartyTimeShader = instance);
 	}
 
@@ -43,7 +43,7 @@ public final class ModRenderTypes {
 		private static final RenderStateShard.ShaderStateShard RENDER_TYPE_ENTITY_CUTOUT_PARTY_TIME_SHADER = new RenderStateShard.ShaderStateShard(ModRenderTypes::getEntityCutoutPartyTimeShader);
 
 		private static final Function<ResourceLocation, RenderType> ENTITY_CUTOUT_PARTY_TIME = Util.memoize(tex -> {
-			RenderType.CompositeState renderState = RenderType.CompositeState.builder()
+			CompositeState renderState = CompositeState.builder()
 					.setShaderState(RENDER_TYPE_ENTITY_CUTOUT_PARTY_TIME_SHADER)
 					.setTextureState(new RenderStateShard.TextureStateShard(tex, false, false))
 					.setTransparencyState(NO_TRANSPARENCY)
