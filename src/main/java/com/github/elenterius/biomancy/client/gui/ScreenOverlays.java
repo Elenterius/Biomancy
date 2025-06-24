@@ -2,11 +2,12 @@ package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.SerumContainer;
+import com.github.elenterius.biomancy.block.WaterGelBlock;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
+import com.github.elenterius.biomancy.block.membrane.Membrane;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
-import com.github.elenterius.biomancy.entity.misc.BiomancyPlayer;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.ShowKnowledgeOverlay;
@@ -18,6 +19,7 @@ import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -32,6 +34,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -40,7 +43,7 @@ import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
-public final class IngameOverlays {
+public final class ScreenOverlays {
 
 	//hud overlays
 	public static final ResourceLocation INJECTOR_COOL_DOWN = BiomancyMod.createRL("textures/gui/indicator_injector_cooldown.png");
@@ -54,18 +57,22 @@ public final class IngameOverlays {
 	public static final ResourceLocation MEMBRANE = BiomancyMod.createRL("textures/gui/overlay/membrane.png");
 	public static final ResourceLocation WATER_GEL = new ResourceLocation("minecraft", "textures/misc/underwater.png");
 
-	public static final IGuiOverlay MEMBRANE_OVERLAY = (gui, guiGraphics, partialTicks, screenWidth, screenHeight) -> {
+	public static final IGuiOverlay INSIDE_BLOCK_OVERLAY = (gui, guiGraphics, partialTicks, screenWidth, screenHeight) -> {
 		Minecraft minecraft = Minecraft.getInstance();
 
-		if (minecraft.player == null || minecraft.level == null) return;
+		if (minecraft.player == null) return;
 		if (minecraft.player.isSpectator()) return;
 		if (minecraft.options.hideGui) return;
-		if (!GuiUtil.isFirstPersonView()) return;
 
-		if (minecraft.player instanceof BiomancyPlayer bioPlayer && bioPlayer.biomancy$isEyeInsideMembrane()) {
-			BlockPos pos = BlockPos.containing(minecraft.player.getX(), minecraft.player.getEyeY(), minecraft.player.getZ());
-			float brightness = LightTexture.getBrightness(minecraft.player.level().dimensionType(), minecraft.player.level().getMaxLocalRawBrightness(pos));
+		Camera camera = minecraft.gameRenderer.getMainCamera();
+		Block block = camera.getBlockAtCamera().getBlock();
 
+		if (block instanceof WaterGelBlock) {
+			float brightness = LightTexture.getBrightness(minecraft.player.level().dimensionType(), minecraft.player.level().getMaxLocalRawBrightness(camera.getBlockPosition()));
+			renderInsideBlockOverlay(guiGraphics, -90, screenWidth, screenHeight, brightness, WATER_GEL);
+		}
+		else if (block instanceof Membrane) {
+			float brightness = LightTexture.getBrightness(minecraft.player.level().dimensionType(), minecraft.player.level().getMaxLocalRawBrightness(camera.getBlockPosition()));
 			renderInsideBlockOverlay(guiGraphics, -90, screenWidth, screenHeight, brightness, MEMBRANE);
 		}
 	};
@@ -163,11 +170,10 @@ public final class IngameOverlays {
 		}
 	};
 
-	private IngameOverlays() {}
+	private ScreenOverlays() {}
 
 	static void renderInsideBlockOverlay(GuiGraphics guiGraphics, int blitOffset, int screenWidth, int screenHeight, float brightness, ResourceLocation texture) {
 		int x1 = 0, y1 = 0;
-		int x2 = screenWidth, y2 = screenHeight;
 		float minU = 0f, maxU = 1f;
 		float minV = 0f, maxV = 1f;
 
@@ -182,9 +188,9 @@ public final class IngameOverlays {
 		BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
 		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 		bufferbuilder.vertex(matrix4f, x1, y1, blitOffset).uv(minU, minV).endVertex();
-		bufferbuilder.vertex(matrix4f, x1, y2, blitOffset).uv(minU, maxV).endVertex();
-		bufferbuilder.vertex(matrix4f, x2, y2, blitOffset).uv(maxU, maxV).endVertex();
-		bufferbuilder.vertex(matrix4f, x2, y1, blitOffset).uv(maxU, minV).endVertex();
+		bufferbuilder.vertex(matrix4f, x1, screenHeight, blitOffset).uv(minU, maxV).endVertex();
+		bufferbuilder.vertex(matrix4f, screenWidth, screenHeight, blitOffset).uv(maxU, maxV).endVertex();
+		bufferbuilder.vertex(matrix4f, screenWidth, y1, blitOffset).uv(maxU, minV).endVertex();
 		BufferUploader.drawWithShader(bufferbuilder.end());
 
 		RenderSystem.setShaderColor(1f, 1f, 1f, 1f);

@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.mixin;
 
-import com.github.elenterius.biomancy.entity.misc.BiomancyPlayer;
 import com.github.elenterius.biomancy.entity.projectile.ImpalerProjectile;
 import com.github.elenterius.biomancy.init.ModDamageTypes;
 import com.github.elenterius.biomancy.init.ModItems;
@@ -21,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -30,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Player.class)
-public abstract class PlayerMixin extends LivingEntity implements BiomancyPlayer {
+public abstract class PlayerMixin extends LivingEntity {
 
 	@Shadow
 	public abstract ItemStack getItemBySlot(EquipmentSlot slot);
@@ -40,19 +38,6 @@ public abstract class PlayerMixin extends LivingEntity implements BiomancyPlayer
 
 	protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
 		super(entityType, level);
-	}
-
-	@Unique
-	boolean biomancy$isInsideMembrane = false;
-
-	@Override
-	public boolean biomancy$isEyeInsideMembrane() {
-		return biomancy$isInsideMembrane;
-	}
-
-	@Override
-	public void biomancy$setIsInsideMembrane(boolean isInside) {
-		biomancy$isInsideMembrane = isInside;
 	}
 
 	@ModifyVariable(method = "hurtArmor", at = @At(value = "HEAD"), argsOnly = true)

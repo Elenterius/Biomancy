@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.init.client;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.membrane.BiometricMembraneBlock;
 import com.github.elenterius.biomancy.block.vialholder.VialHolderBlock;
-import com.github.elenterius.biomancy.client.gui.IngameOverlays;
+import com.github.elenterius.biomancy.client.gui.ScreenOverlays;
 import com.github.elenterius.biomancy.client.gui.tooltip.EmptyLineClientComponent;
 import com.github.elenterius.biomancy.client.gui.tooltip.HrTooltipClientComponent;
 import com.github.elenterius.biomancy.client.gui.tooltip.StorageSacTooltipClientComponent;
@@ -196,13 +196,13 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void registerGameOverlays(RegisterGuiOverlaysEvent event) {
-		event.registerAbove(VanillaGuiOverlay.VIGNETTE.id(), "frenzy", IngameOverlays.FRENZY_OVERLAY);
-		event.registerBelow(VanillaGuiOverlay.VIGNETTE.id(), "membrane", IngameOverlays.MEMBRANE_OVERLAY);
+		event.registerAbove(VanillaGuiOverlay.VIGNETTE.id(), "frenzy", ScreenOverlays.FRENZY_OVERLAY);
+		event.registerBelow(VanillaGuiOverlay.VIGNETTE.id(), "inside_block", ScreenOverlays.INSIDE_BLOCK_OVERLAY);
 
-		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "injector", IngameOverlays.INJECTOR_OVERLAY);
-		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "charge_bar", IngameOverlays.CHARGE_BAR_OVERLAY);
-		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "gun", IngameOverlays.GUN_OVERLAY);
-		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "knowledge", IngameOverlays.KNOWLEDGE_OVERLAY);
+		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "injector", ScreenOverlays.INJECTOR_OVERLAY);
+		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "charge_bar", ScreenOverlays.CHARGE_BAR_OVERLAY);
+		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "gun", ScreenOverlays.GUN_OVERLAY);
+		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "knowledge", ScreenOverlays.KNOWLEDGE_OVERLAY);
 	}
 
 	@SubscribeEvent
