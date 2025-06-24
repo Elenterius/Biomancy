@@ -633,6 +633,13 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.BILE.get(), 4)
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.ORGANIC_MATTER.get()).save(consumer);
+
+		BioForgingRecipeBuilder.create(ModItems.JUMP_PAD.get())
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 8)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 2)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+
 	}
 
 }

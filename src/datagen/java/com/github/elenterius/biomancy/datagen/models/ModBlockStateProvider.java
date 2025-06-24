@@ -141,6 +141,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		simpleBlockWithItem(ModBlocks.BLOOMLIGHT);
 		tendonChain(ModBlocks.TENDON_CHAIN);
 		vialHolder(ModBlocks.VIAL_HOLDER);
+		multifaceBlockWithItem(ModBlocks.JUMP_PAD);
 
 		geckolibModel(ModBlocks.PRIMORDIAL_CRADLE, PRIMAL_PARTICLE_TEXTURE);
 		geoBlockItem(ModBlocks.PRIMORDIAL_CRADLE, new Vector3f(16, 16, 16));
@@ -700,7 +701,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		getVariantBuilder(block)
 				.forAllStatesExcept(
-						state -> ConfiguredModel.builder().modelFile(Boolean.TRUE.equals(state.getValue(FleshLanternBlock.HANGING)) ? hangingModel : model).build(),
+						state -> ConfiguredModel.builder().modelFile(state.getValue(FleshLanternBlock.HANGING) ? hangingModel : model).build(),
 						FleshLanternBlock.WATERLOGGED
 				);
 
@@ -730,6 +731,37 @@ public class ModBlockStateProvider extends BlockStateProvider {
 			}
 			else if (direction.getAxis().isVertical()) {
 				int rotX = direction == Direction.UP ? 270 : 90;
+
+				builder.part().modelFile(model)
+						.rotationX(rotX).uvLock(true).addModel()
+						.condition(property, true)
+						.end();
+			}
+		});
+	}
+
+	public <T extends MultifaceBlock> void multifaceBlockWithItem(RegistryObject<T> block) {
+		multifaceBlockWithItem(block.get());
+	}
+
+	public void multifaceBlockWithItem(MultifaceBlock block) {
+		ModelFile model = models().getExistingFile(blockAsset(block));
+		simpleBlockItem(block, model);
+
+		MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
+
+		PipeBlock.PROPERTY_BY_DIRECTION.forEach((direction, property) -> {
+			if (direction.getAxis().isHorizontal()) {
+				int rotY = (((int) direction.toYRot()) + 180) % 360;
+
+				builder.part().modelFile(model)
+						.rotationX(-90).rotationY(rotY)
+						.uvLock(true).addModel()
+						.condition(property, true)
+						.end();
+			}
+			else if (direction.getAxis().isVertical()) {
+				int rotX = direction == Direction.UP ? 180 : 0;
 
 				builder.part().modelFile(model)
 						.rotationX(rotX).uvLock(true).addModel()
@@ -948,4 +980,5 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	public <T extends VialHolderBlock> void vialHolder(RegistryObject<T> block) {
 		vialHolder(block.get());
 	}
+
 }

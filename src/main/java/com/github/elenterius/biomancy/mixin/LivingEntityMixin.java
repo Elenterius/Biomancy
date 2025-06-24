@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.mixin;
 
+import com.github.elenterius.biomancy.entity.misc.LivingEntityData;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.github.elenterius.biomancy.item.ShieldBlockingListener;
@@ -36,7 +37,7 @@ import java.util.Collection;
 import java.util.Map;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity {
+public abstract class LivingEntityMixin extends Entity implements LivingEntityData.TransientDataProvider {
 
 	@Shadow
 	protected ItemStack useItem;
@@ -57,6 +58,21 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Shadow
 	public abstract Collection<MobEffectInstance> getActiveEffects();
+
+	@Unique
+	DataHolder biomancy$transientData = new DataHolder();
+
+	@Override
+	public DataHolder biomancy$getData() {
+		return biomancy$transientData;
+	}
+
+	@Inject(method = "shouldDiscardFriction", at = @At("HEAD"), cancellable = true)
+	private void onShouldDiscardFriction(CallbackInfoReturnable<Boolean> cir) {
+		if (biomancy$transientData.shouldDiscardFriction()) {
+			cir.setReturnValue(true);
+		}
+	}
 
 	@Inject(method = "getAttributeValue(Lnet/minecraft/world/entity/ai/attributes/Attribute;)D", at = @At("HEAD"), cancellable = true)
 	protected void onGetAttributeValue(Attribute attribute, CallbackInfoReturnable<Double> cir) {

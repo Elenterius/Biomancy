@@ -239,6 +239,8 @@
   "block.biomancy.tendon_chain.tooltip": "A chain made of tendons.",
   "block.biomancy.vial_holder": "Vial Holder",
   "block.biomancy.vial_holder.tooltip": "Display and organize your serums.\nSneak click to bulk insert or extract vials.",
+  "block.biomancy.active_muscle": "Active Muscle Pad",
+  "block.biomancy.active_muscle.tooltip": "A jump pad that will actively launch anything towards the direction its pointing to.\n\nWhile it has no collision it will negate fall damage and friction for any entity.",
   "block.biomancy.impermeable_membrane": "Impermeable Membrane",
   "block.biomancy.impermeable_membrane.tooltip": "Gelatinous-like membrane reinforced with elastic fibers.",
   "block.biomancy.impermeable_membrane_pane": "Impermeable Membrane Pane",

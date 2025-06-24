@@ -109,6 +109,7 @@ public final class ModBlocks {
 	public static final RegistryObject<ModularLarynxBlock> MODULAR_LARYNX = register("modular_larynx", ModularLarynxBlock::new);
 	public static final RegistryObject<FleshSpikeBlock> FLESH_SPIKE = register("flesh_spike", () -> new FleshSpikeBlock(createBonyFleshProperties().noOcclusion()));
 	public static final RegistryObject<VialHolderBlock> VIAL_HOLDER = register("vial_holder", VialHolderBlock::new);
+	public static final RegistryObject<JumpPadBlock> JUMP_PAD = register("active_muscle", JumpPadBlock::new);
 	//public static final RegistryObject<NeuralInterceptorBlock> NEURAL_INTERCEPTOR = register("neural_interceptor", NeuralInterceptorBlock::new);
 
 	//## Membranes

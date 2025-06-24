@@ -10,6 +10,7 @@ import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.core.Direction;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -42,7 +44,7 @@ import static com.github.elenterius.biomancy.BiomancyMod.LOGGER;
 
 public class ModBlockLoot extends BlockLootSubProvider {
 
-	private static final Marker logMarker = ModLootTableProvider.LOG_MARKER;
+	protected static final Marker LOG_MARKER = ModLootTableProvider.LOG_MARKER;
 
 	protected static final LootItemCondition.Builder HAS_SILK_TOUCH = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))));
 	protected static final LootItemCondition.Builder HAS_SHEARS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS));
@@ -57,7 +59,7 @@ public class ModBlockLoot extends BlockLootSubProvider {
 	@Override
 	protected Iterable<Block> getKnownBlocks() {
 		List<Block> blocks = ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).toList();
-		LOGGER.info(logMarker, "generating loot tables for {} blocks...", blocks.size());
+		LOGGER.info(LOG_MARKER, "generating loot tables for {} blocks...", blocks.size());
 		return blocks;
 	}
 
@@ -153,12 +155,23 @@ public class ModBlockLoot extends BlockLootSubProvider {
 	protected LootTable.Builder drop(Item item) {
 		return LootTable.lootTable().withPool(LootPool.lootPool()
 				.setRolls(ConstantValue.exactly(1))
-				.add(applyExplosionDecay(item,LootItem.lootTableItem(item))));
+				.add(applyExplosionDecay(item, LootItem.lootTableItem(item))));
+	}
+
+	protected LootTable.Builder createMultifaceBlockDrops(MultifaceBlock block) {
+		return LootTable.lootTable().withPool(LootPool.lootPool()
+				.add(applyExplosionDecay(block, LootItem.lootTableItem(block)
+						.apply(
+								Direction.values(),
+								face -> SetItemCountFunction.setCount(ConstantValue.exactly(1), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(MultifaceBlock.getFaceProperty(face), true)))
+						)
+						.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1), true)))));
 	}
 
 	@Override
 	protected void generate() {
-		LOGGER.info(logMarker, "registering block loot...");
+		LOGGER.info(LOG_MARKER, "registering block loot...");
 
 		add(ModBlocks.PRIMORDIAL_CRADLE.get(), this::createPrimordialCradleTable);
 		dropSelf(ModBlocks.TONGUE.get());
@@ -244,6 +257,7 @@ public class ModBlockLoot extends BlockLootSubProvider {
 		dropSelf(ModBlocks.BLUE_BIO_LANTERN.get());
 		dropSelf(ModBlocks.TENDON_CHAIN.get());
 		dropSelf(ModBlocks.VIAL_HOLDER.get());
+		addCustom(ModBlocks.JUMP_PAD.get(), this::createMultifaceBlockDrops);
 
 		addCustom(ModBlocks.FLESH_DOOR.get(), this::createFleshDoorTable);
 		addCustom(ModBlocks.FULL_FLESH_DOOR.get(), this::createFleshDoorTable);

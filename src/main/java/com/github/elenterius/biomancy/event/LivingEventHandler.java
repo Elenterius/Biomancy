@@ -2,6 +2,8 @@ package com.github.elenterius.biomancy.event;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.WaterGelBlock;
+import com.github.elenterius.biomancy.entity.misc.LivingEntityData;
+import com.github.elenterius.biomancy.entity.misc.LivingEntityData;
 import com.github.elenterius.biomancy.entity.misc.BiomancyPlayer;
 import com.github.elenterius.biomancy.init.AcidInteractions;
 import com.github.elenterius.biomancy.init.ModEnchantments;
@@ -33,7 +35,13 @@ public final class LivingEventHandler {
 
 	@SubscribeEvent
 	public static void onLivingTick(final LivingEvent.LivingTickEvent event) {
-		AcidInteractions.handleEntityInsideAcidFluid(event.getEntity());
+		LivingEntity livingEntity = event.getEntity();
+
+		if (livingEntity instanceof LivingEntityData.TransientDataProvider provider) {
+			provider.biomancy$getData().tick(livingEntity);
+		}
+
+		AcidInteractions.handleEntityInsideAcidFluid(livingEntity);
 	}
 
 	@SubscribeEvent

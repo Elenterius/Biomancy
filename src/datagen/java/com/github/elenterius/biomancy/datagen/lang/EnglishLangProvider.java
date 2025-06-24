@@ -639,6 +639,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.BLOOMLIGHT, "Bloomlight", "A malignant light source. This one is magenta as well!");
 		addBlock(ModBlocks.TENDON_CHAIN, "Tendon Chain", "A chain made of tendons.");
 		addBlock(ModBlocks.VIAL_HOLDER, "Vial Holder", "Display and organize your serums.\nSneak click to bulk insert or extract vials.");
+		addBlock(ModBlocks.JUMP_PAD, "Active Muscle Pad", "A jump pad that will actively launch anything towards the direction its pointing to.\n\nWhile it has no collision it will negate fall damage and friction for any entity.");
+
 		addBlock(ModBlocks.IMPERMEABLE_MEMBRANE, "Impermeable Membrane", "Gelatinous-like membrane reinforced with elastic fibers.");
 		addBlock(ModBlocks.IMPERMEABLE_MEMBRANE_PANE, "Impermeable Membrane Pane", "Gelatinous-like membrane reinforced with elastic fibers.");
 		addBlock(ModBlocks.BABY_PERMEABLE_MEMBRANE, "Baby-Permeable Membrane", "Gelatinous-like membrane reinforced with elastic fibers.\n\nBaby mobs can diffuse through the membrane.");
