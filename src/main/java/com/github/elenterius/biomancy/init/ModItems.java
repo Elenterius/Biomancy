@@ -63,6 +63,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> WITHERING_OOZE = registerSimpleItem("withering_ooze");
 	public static final RegistryObject<SimpleItem> HORMONE_SECRETION = registerSimpleItem("hormone_secretion");
 	public static final RegistryObject<SimpleItem> TOXIN_EXTRACT = registerSimpleItem("toxin_extract");
+	public static final RegistryObject<SimpleItem> ACID_EXTRACT = registerItem("acid_extract", properties -> new SimpleItem(properties.food(ModFoods.GASTRIC_JUICE)));
 	public static final RegistryObject<SimpleItem> BILE = registerSimpleItem("bile");
 	public static final RegistryObject<SimpleItem> VOLATILE_FLUID = registerSimpleItem("volatile_fluid");
 

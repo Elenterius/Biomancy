@@ -336,6 +336,7 @@ public final class DecomposingRecipeBuilder implements RecipeBuilder<Decomposing
 			TICK_MULTIPLIERS.put(ModItems.BIO_LUMENS.get(), 1.1f);
 			TICK_MULTIPLIERS.put(ModItems.BILE.get(), 1f);
 			TICK_MULTIPLIERS.put(ModItems.TOXIN_EXTRACT.get(), 1f);
+			TICK_MULTIPLIERS.put(ModItems.ACID_EXTRACT.get(), 1f);
 			TICK_MULTIPLIERS.put(ModItems.VOLATILE_FLUID.get(), 1.25f);
 			TICK_MULTIPLIERS.put(ModItems.HORMONE_SECRETION.get(), 1f);
 			TICK_MULTIPLIERS.put(ModItems.WITHERING_OOZE.get(), 1.25f);

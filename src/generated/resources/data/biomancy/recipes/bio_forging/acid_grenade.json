@@ -9,7 +9,8 @@
       "item": "biomancy:gelling_agent"
     },
     {
-      "item": "biomancy:acid_bucket"
+      "count": 4,
+      "item": "biomancy:acid_extract"
     }
   ],
   "nutrientsCost": 1,

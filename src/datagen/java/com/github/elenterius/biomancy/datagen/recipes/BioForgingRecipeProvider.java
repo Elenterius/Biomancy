@@ -260,7 +260,7 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 		BioForgingRecipeBuilder.create(ModItems.ACID_GRENADE.get())
 				.addIngredient(ModItems.GRENADE_CASING.get(), 1)
 				.addIngredient(ModItems.GELLING_AGENT.get(), 1)
-				.addIngredient(ModItems.ACID_BUCKET.get(), 1)
+				.addIngredient(ModItems.ACID_EXTRACT.get(), 4)
 				.setCategory(ModBioForgeTabs.TOOLS)
 				.unlockedBy(ModItems.GRENADE_CASING.get()).save(consumer);
 

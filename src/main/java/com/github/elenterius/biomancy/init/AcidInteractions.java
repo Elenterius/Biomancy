@@ -26,7 +26,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -74,13 +73,9 @@ public final class AcidInteractions {
 
 		//we wrap the original potion interaction to retain its behavior while injecting our own logic
 		final CauldronInteraction originalPotionInteraction = Objects.requireNonNull(CauldronInteraction.EMPTY.get(Items.POTION));
-		CauldronInteraction.EMPTY.put(Items.POTION, (state, level, pos, player, hand, stack) -> {
-			if (PotionUtils.getPotion(stack) != ModPotions.GASTRIC_JUICE.get()) {
-				return originalPotionInteraction.interact(state, level, pos, player, hand, stack);
-			}
-
+		CauldronInteraction.EMPTY.put(ModItems.ACID_EXTRACT.get(), (state, level, pos, player, hand, stack) -> {
 			if (!level.isClientSide) {
-				player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+				player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, ModItems.VIAL.get().getDefaultInstance()));
 				player.awardStat(Stats.USE_CAULDRON);
 				player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 				level.setBlockAndUpdate(pos, ModBlocks.ACID_CAULDRON.get().defaultBlockState());
@@ -96,9 +91,9 @@ public final class AcidInteractions {
 			SoundEvent sound = Objects.requireNonNullElse(ModFluids.ACID_TYPE.get().getSound(SoundActions.BUCKET_FILL), SoundEvents.BUCKET_FILL);
 			return CauldronInteraction.fillBucket(state, level, pos, player, hand, stack, ModItems.ACID_BUCKET.get().getDefaultInstance(), AcidInteractions::isCauldronFull, sound);
 		});
-		ACID_CAULDRON.put(Items.GLASS_BOTTLE, (state, level, pos, player, hand, stack) -> {
+		ACID_CAULDRON.put(ModItems.VIAL.get(), (state, level, pos, player, hand, stack) -> {
 			if (!level.isClientSide) {
-				player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, PotionUtils.setPotion(new ItemStack(Items.POTION), ModPotions.GASTRIC_JUICE.get())));
+				player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, ModItems.ACID_EXTRACT.get().getDefaultInstance()));
 				player.awardStat(Stats.USE_CAULDRON);
 				player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 				LayeredCauldronBlock.lowerFillLevel(state, level, pos);
@@ -108,10 +103,10 @@ public final class AcidInteractions {
 
 			return InteractionResult.sidedSuccess(level.isClientSide);
 		});
-		ACID_CAULDRON.put(Items.POTION, (state, level, pos, player, hand, stack) -> {
-			if (!isCauldronFull(state) && PotionUtils.getPotion(stack) == ModPotions.GASTRIC_JUICE.get()) {
+		ACID_CAULDRON.put(ModItems.ACID_EXTRACT.get(), (state, level, pos, player, hand, stack) -> {
+			if (!isCauldronFull(state)) {
 				if (!level.isClientSide) {
-					player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+					player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, ModItems.VIAL.get().getDefaultInstance()));
 					player.awardStat(Stats.USE_CAULDRON);
 					player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 					level.setBlockAndUpdate(pos, state.cycle(LayeredCauldronBlock.LEVEL));

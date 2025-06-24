@@ -415,13 +415,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 	}
 
 	private void addPotionTranslations() {
-		String suffix = ModPotions.GASTRIC_JUICE.getId().toLanguageKey();
-		add(Items.POTION.getDescriptionId() + ".effect." + suffix, "Gastric Juice");
-		add(Items.SPLASH_POTION.getDescriptionId() + ".effect." + suffix, "Gastric Splash-Juice");
-		add(Items.LINGERING_POTION.getDescriptionId() + ".effect." + suffix, "Gastric Linger-Juice");
-		add(Items.TIPPED_ARROW.getDescriptionId() + ".effect." + suffix, "Arrow of Gastric Juice");
-
-		suffix = ModPotions.PRIMORDIAL_INFESTATION.getId().toLanguageKey();
+		String suffix = ModPotions.PRIMORDIAL_INFESTATION.getId().toLanguageKey();
 		add(Items.POTION.getDescriptionId() + ".effect." + suffix, "Potion of Primordial Infestation");
 		add(Items.SPLASH_POTION.getDescriptionId() + ".effect." + suffix, "Splash Potion of Primordial Infestation");
 		add(Items.LINGERING_POTION.getDescriptionId() + ".effect." + suffix, "Lingering Potion of Primordial Infestation");
@@ -486,7 +480,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.REGENERATIVE_FLUID, "Regenerative Fluid", "A fluid with regenerative properties, used to concoct healing additives.");
 		addItem(ModItems.WITHERING_OOZE, "Withering Ooze", "A black to steel gray liquid extracted from decaying material of wither origin.");
 		addItem(ModItems.HORMONE_SECRETION, "Hormone Secretion", "A fluid extract very rich in various hormones. A potent material for making drugs.");
-		addItem(ModItems.TOXIN_EXTRACT, "Toxin Extract", "A fluid so toxic you probably shouldn't touch it. Good for making a plethora of dubious substances.");
+		addItem(ModItems.TOXIN_EXTRACT, "Toxin Extract", "A fluid so toxic you shouldn't inhale its fumes.");
+		addItem(ModItems.ACID_EXTRACT, "Gastric Juice", "A highly acidic and viscous substance which has many dubious applications. You probably shouldn't touch it.");
 		addItem(ModItems.VOLATILE_FLUID, "Volatile Fluid", "A very combustible extract, however it needs further processing to be truly dangerous.");
 		addItem(ModItems.BILE, "Bile", "Organic base material which is often used in bio-alchemy.");
 

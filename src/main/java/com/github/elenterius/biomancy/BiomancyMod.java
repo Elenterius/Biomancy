@@ -109,9 +109,6 @@ public final class BiomancyMod {
 							}
 						});
 
-				output.accept(PotionUtils.setPotion(new ItemStack(Items.POTION), ModPotions.GASTRIC_JUICE.get()));
-				output.accept(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), ModPotions.GASTRIC_JUICE.get()));
-				output.accept(PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), ModPotions.GASTRIC_JUICE.get()));
 				output.accept(PotionUtils.setPotion(new ItemStack(Items.POTION), ModPotions.PRIMORDIAL_INFESTATION.get()));
 				output.accept(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), ModPotions.PRIMORDIAL_INFESTATION.get()));
 				output.accept(PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), ModPotions.PRIMORDIAL_INFESTATION.get()));

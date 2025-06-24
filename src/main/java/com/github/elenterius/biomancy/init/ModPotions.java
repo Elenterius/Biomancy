@@ -14,11 +14,6 @@ public class ModPotions {
 
 	public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, BiomancyMod.MOD_ID);
 
-	public static final RegistryObject<Potion> GASTRIC_JUICE = register("gastric_juice", () -> new MobEffectInstance[]{
-			new MobEffectInstance(ModMobEffects.CORROSIVE.get(), 20 * 4, 0),
-			new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), 20 * (4 + 3), 0)
-	});
-
 	public static final RegistryObject<Potion> PRIMORDIAL_INFESTATION = register("primordial_infestation", () -> new MobEffectInstance[]{
 			new MobEffectInstance(ModMobEffects.PRIMORDIAL_INFESTATION.get(), 20 * 90, 0),
 	});

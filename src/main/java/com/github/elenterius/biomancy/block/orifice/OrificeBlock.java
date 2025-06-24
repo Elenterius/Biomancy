@@ -15,8 +15,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -91,12 +89,12 @@ public class OrificeBlock extends Block implements BucketPickup {
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (!stack.is(Items.GLASS_BOTTLE)) return InteractionResult.PASS;
+		if (!stack.is(ModItems.VIAL.get())) return InteractionResult.PASS;
 
 		if (AGE.getValue(state) == AGE.getMin()) return InteractionResult.FAIL;
 
 		if (!level.isClientSide) {
-			player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, PotionUtils.setPotion(new ItemStack(Items.POTION), ModPotions.GASTRIC_JUICE.get())));
+			player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, ModItems.ACID_EXTRACT.get().getDefaultInstance()));
 			player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 
 			level.setBlock(pos, AGE.addValue(state, -1), Block.UPDATE_CLIENTS);

@@ -63,6 +63,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		componentItem(ModItems.WITHERING_OOZE);
 		componentItem(ModItems.HORMONE_SECRETION);
 		componentItem(ModItems.TOXIN_EXTRACT);
+		componentItem(ModItems.ACID_EXTRACT);
 		componentItem(ModItems.VOLATILE_FLUID);
 		componentItem(ModItems.BILE);
 

@@ -18,6 +18,11 @@ public final class ModFoods {
 			.effect(() -> new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), 20 * 5, 0), 1f)
 			.build();
 
+	public static final FoodProperties GASTRIC_JUICE = new FoodProperties.Builder().nutrition(1).saturationMod(0.2f)
+			.effect(() -> new MobEffectInstance(ModMobEffects.CORROSIVE.get(), 20 * 4, 0), 1f)
+			.effect(() -> new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), 20 * (4 + 3), 0), 1f)
+			.build();
+
 	public static final FoodProperties MARROW_FLUID = new FoodProperties.Builder().nutrition(1).saturationMod(0.2f).build();
 
 	public static final FoodProperties POOR_FLESH = new FoodProperties.Builder().nutrition(1).saturationMod(0.2f).meat().build();
