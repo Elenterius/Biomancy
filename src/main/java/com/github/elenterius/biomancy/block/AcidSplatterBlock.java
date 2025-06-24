@@ -30,7 +30,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Optional;
 import java.util.PriorityQueue;
 
 public class AcidSplatterBlock extends MultifaceBlock {
@@ -175,15 +174,12 @@ public class AcidSplatterBlock extends MultifaceBlock {
 
 	}
 
-	protected void spreadSplatterFromSource(ServerLevel level, BlockPos pos, RandomSource random) {
+	public void spreadSplatterFromSource(ServerLevel level, BlockPos pos, RandomSource random) {
 		BlockState state = level.getBlockState(pos);
-
-		boolean hasPlacedVeins = false;
 
 		for (int i = 0; i < 4; i++) {
 			if (random.nextFloat() < 0.6f) {
-				Optional<MultifaceSpreader.SpreadPos> spreadPos = getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
-				if (spreadPos.isPresent()) hasPlacedVeins = true;
+				getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
 			}
 		}
 	}

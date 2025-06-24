@@ -1,9 +1,6 @@
 package com.github.elenterius.biomancy.entity.mob;
 
-import com.github.elenterius.biomancy.init.ModEntityTypes;
-import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.init.ModProjectiles;
-import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.init.tags.ModDamageTypeTags;
 import com.github.elenterius.biomancy.util.animation.MobAnimations;
 import net.minecraft.server.level.ServerLevel;
@@ -65,7 +62,19 @@ public class FleshChicken extends Chicken implements RangedAttackMob, GeoEntity 
 	@Nullable
 	@Override
 	public ItemEntity spawnAtLocation(ItemLike item) {
-		if (item == Items.EGG) item = ModItems.BILE.get();
+		if (item == Items.EGG) {
+			if (level() instanceof ServerLevel serverLevel) {
+				if (random.nextFloat() > 0.4f) {
+					return super.spawnAtLocation(ModItems.ACID_EXTRACT.get());
+				}
+				else {
+					ModBlocks.ACID_SPLATTER.get().spreadSplatterFromSource(serverLevel, blockPosition(), random);
+					return null;
+				}
+			}
+			return null;
+		}
+
 		return super.spawnAtLocation(item);
 	}
 

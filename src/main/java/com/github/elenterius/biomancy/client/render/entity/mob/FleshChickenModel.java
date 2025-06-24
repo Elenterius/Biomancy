@@ -21,11 +21,11 @@ public class FleshChickenModel<T extends FleshChicken> extends DefaultedEntityGe
 
 		float wingRotation = getWingRotation(chicken, animationState.getPartialTick());
 
-		CoreGeoBone wing0 = getAnimationProcessor().getBone("wing0");
-		if (wing0 != null) wing0.setRotZ(wingRotation);
+		CoreGeoBone rightWing = getAnimationProcessor().getBone("right_wing");
+		if (rightWing != null) rightWing.setRotZ(wingRotation);
 
-		CoreGeoBone wing1 = getAnimationProcessor().getBone("wing1");
-		if (wing1 != null) wing1.setRotZ(-wingRotation);
+		CoreGeoBone leftWing = getAnimationProcessor().getBone("left_wing");
+		if (leftWing != null) leftWing.setRotZ(-wingRotation);
 	}
 
 	protected float getWingRotation(T chicken, float partialTicks) {
