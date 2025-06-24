@@ -69,9 +69,10 @@ public class AcidSpitProjectile extends BaseProjectile {
 			Entity victim = result.getEntity();
 			Entity owner = getOwner();
 
-			victim.hurt(ModDamageSources.acidProjectile(level(), this, owner), getDamage());
+			DamageSource acidDamageSource = ModDamageSources.acidProjectile(level(), this, owner);
+			victim.hurt(acidDamageSource, getDamage());
 
-			if (victim instanceof LivingEntity livingVictim) {
+			if (victim instanceof LivingEntity livingVictim && !livingVictim.isInvulnerableTo(acidDamageSource)) {
 				CombatUtil.applyAcidEffect(livingVictim, 4);
 			}
 
