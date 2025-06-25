@@ -151,7 +151,25 @@ public class AcidSplatterBlock extends MultifaceBlock {
 		return true;
 	}
 
-	public void spreadSplatter(ServerLevel level, BlockPos pos, Direction direction, RandomSource random) {
+	public void placeSmallSplatter(ServerLevel level, BlockPos pos, Direction face, RandomSource random) {
+		BlockState state = level.getBlockState(pos);
+
+		if (state.is(this)) {
+			if (AGE.getValue(state) > AGE.getMin()) {
+				level.setBlock(pos, AGE.addValue(state, -1), Block.UPDATE_CLIENTS);
+				level.playSound(null, pos, SoundEvents.SLIME_BLOCK_FALL, SoundSource.BLOCKS, 0.5f, 0.15f + random.nextFloat() * 0.5f);
+			}
+		}
+		else if (state.canBeReplaced(new DirectionalPlaceContext(level, pos, face.getOpposite(), ItemStack.EMPTY, face))) {
+			BlockState stateForPlacement = getStateForPlacement(state, level, pos, face.getOpposite());
+			if (stateForPlacement != null) {
+				level.setBlock(pos, AGE.setValue(stateForPlacement, random.nextFloat() <= 0.3f ? AGE.getMax() - 1 : AGE.getMax()), Block.UPDATE_CLIENTS);
+				level.playSound(null, pos, SoundEvents.SLIME_BLOCK_FALL, SoundSource.BLOCKS, 0.5f, 0.15f + random.nextFloat() * 0.5f);
+			}
+		}
+	}
+
+	public void spreadSplatter(ServerLevel level, BlockPos pos, Direction face, RandomSource random) {
 		BlockState state = level.getBlockState(pos);
 
 		if (state.is(this)) {
@@ -161,8 +179,8 @@ public class AcidSplatterBlock extends MultifaceBlock {
 
 			spreadSplatterFromSource(level, pos, random);
 		}
-		else if (state.canBeReplaced(new DirectionalPlaceContext(level, pos, direction.getOpposite(), ItemStack.EMPTY, direction))) {
-			BlockState stateForPlacement = getStateForPlacement(state, level, pos, direction.getOpposite());
+		else if (state.canBeReplaced(new DirectionalPlaceContext(level, pos, face.getOpposite(), ItemStack.EMPTY, face))) {
+			BlockState stateForPlacement = getStateForPlacement(state, level, pos, face.getOpposite());
 			if (stateForPlacement != null) {
 				level.setBlock(pos, stateForPlacement, Block.UPDATE_CLIENTS);
 				for (int i = 0; i < 4; i++) {
@@ -174,7 +192,7 @@ public class AcidSplatterBlock extends MultifaceBlock {
 
 	}
 
-	public void spreadSplatterFromSource(ServerLevel level, BlockPos pos, RandomSource random) {
+	protected void spreadSplatterFromSource(ServerLevel level, BlockPos pos, RandomSource random) {
 		BlockState state = level.getBlockState(pos);
 
 		for (int i = 0; i < 4; i++) {
