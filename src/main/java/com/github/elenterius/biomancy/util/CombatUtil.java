@@ -52,7 +52,11 @@ public final class CombatUtil {
 	public static void applyAcidEffect(LivingEntity livingEntity, int seconds) {
 		if (livingEntity.hasEffect(ModMobEffects.CORROSIVE.get())) return;
 
-		livingEntity.addEffect(new MobEffectInstance(ModMobEffects.CORROSIVE.get(), seconds * 20, 0));
+		MobEffectInstance acidEffect = new MobEffectInstance(ModMobEffects.CORROSIVE.get(), seconds * 20, 0);
+
+		if (!livingEntity.canBeAffected(acidEffect)) return;
+
+		livingEntity.addEffect(acidEffect);
 		livingEntity.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), (seconds + 3) * 20, 0));
 	}
 

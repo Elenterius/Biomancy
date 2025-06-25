@@ -18,6 +18,8 @@ public final class ModMobEffectTags {
 	public static final TagKey<MobEffect> CRADLE_HOSTILITY_SOURCE = tag("cradle/hostility_sources");
 	public static final TagKey<MobEffect> CRADLE_ANOMALY_SOURCE = tag("cradle/anomaly_sources");
 
+	public static final TagKey<MobEffect> FORGE_IS_ACID = tag("is_acid");
+
 	private ModMobEffectTags() {}
 
 	public static boolean isNotRemovableWithCleansingSerum(MobEffect mobEffect) {
@@ -42,6 +44,10 @@ public final class ModMobEffectTags {
 
 	public static boolean isCradleAnomalySource(MobEffect mobEffect) {
 		return getTag(CRADLE_ANOMALY_SOURCE).contains(mobEffect);
+	}
+
+	public static boolean forgeIsAcid(MobEffect mobEffect) {
+		return getTag(FORGE_IS_ACID).contains(mobEffect);
 	}
 
 	public static ITag<MobEffect> getTag(TagKey<MobEffect> tagKey) {

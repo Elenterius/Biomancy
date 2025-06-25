@@ -38,6 +38,10 @@ public class ModMobEffectTagsProvider extends IntrinsicHolderTagsProvider<MobEff
 		addBiomancyTags();
 
 		tag(forgeTag("is_poison")).add(ModMobEffects.TOXIN.get());
+
+		tag(ModMobEffectTags.FORGE_IS_ACID).add(
+				ModMobEffects.CORROSIVE.get()
+		);
 	}
 
 	private void addBiomancyTags() {
