@@ -8,14 +8,15 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "AnimalMixin", "AreaEffectCloudMixin", "ArrowMixin", "ChickenMixin", "CowMixin", "FarmBlockMixin", "FlowingFluidMixin",
-    "HoneyBottleItemMixin", "ItemEntityMixin", "LivingEntityMixin", "MobEffectInstanceMixin", "NodeEvaluatorMixin", "PhantomMixin", "PigMixin", "PlayerMixin",
-    "ServerGamePacketListenerImplMixin", "ServerLevelMixin", "SheepMixin", "SignBlockEntityMixin", "ThrownPotionMixin", "UnbreakingEnchantmentMixin",
-    "VillagerMakeLoveMixin", "VillagerMixin", "WallBlockMixin", "accessor.AgeableMobAccessor", "accessor.ArmorStandAccessor", "accessor.BiomeAccessor",
-    "accessor.CreeperAccessor", "accessor.DamageSourceAccessor", "accessor.EntityAccessor", "accessor.IngredientAccessor", "accessor.IntegerPropertyAccessor",
-    "accessor.LivingEntityAccessor", "accessor.MobEffectInstanceAccessor", "accessor.MobEntityAccessor", "accessor.ServerLevelAccessor",
-    "accessor.SheepAccessor", "accessor.SlimeAccessor", "accessor.SuspiciousStewItemAccessor", "accessor.SwordItemMixinAccessor", "accessor.TadpoleAccessor",
-    "accessor.TextureSlotAccessor", "accessor.ZombieVillagerMixinAccessor", "compat.RichSoilFarmlandBlockMixin"
+    "AnimalMixin", "AreaEffectCloudMixin", "ArrowMixin", "FarmBlockMixin", "FlowingFluidMixin", "HoneyBottleItemMixin",
+    "ItemEntityMixin", "LivingEntityMixin", "MobEffectInstanceMixin", "NodeEvaluatorMixin", "PhantomMixin", "PlayerMixin",
+    "ServerGamePacketListenerImplMixin", "ServerLevelMixin", "SignBlockEntityMixin", "ThrownPotionMixin", "UnbreakingEnchantmentMixin",
+    "VillagerMakeLoveMixin", "VillagerMixin", "WallBlockMixin", "accessor.AgeableMobAccessor", "accessor.AnimalAccessor", "accessor.ArmorStandAccessor",
+    "accessor.BiomeAccessor", "accessor.CreeperAccessor", "accessor.DamageSourceAccessor", "accessor.EntityAccessor", "accessor.IngredientAccessor",
+    "accessor.IntegerPropertyAccessor", "accessor.LivingEntityAccessor", "accessor.MobEffectInstanceAccessor", "accessor.MobEntityAccessor",
+    "accessor.PigAccessor", "accessor.ServerLevelAccessor", "accessor.SheepAccessor", "accessor.SlimeAccessor", "accessor.SuspiciousStewItemAccessor",
+    "accessor.SwordItemMixinAccessor", "accessor.TadpoleAccessor", "accessor.TextureSlotAccessor", "accessor.ZombieVillagerMixinAccessor",
+    "compat.RichSoilFarmlandBlockMixin"
   ],
   "client": [
     "accessor.PlayerRendererAccessor", "accessor.RecipeCollectionAccessor", "client.AbstractSignEditScreenMixin",

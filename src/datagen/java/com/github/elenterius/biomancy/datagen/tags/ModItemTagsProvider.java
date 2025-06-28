@@ -163,9 +163,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.add(COOKIE)
 				.add(FarmersDelightItems.SWEET_BERRY_COOKIE.get(), FarmersDelightItems.HONEY_COOKIE.get());
 
+		createTag(ModItemTags.C_RAW_PORK)
+				.addOptionalTag("forge:raw_pork")
+				.add(FarmersDelightItems.HAM.get());
+
 		createTag(conventionalTag("foods/raw_meat"))
 				.addOptionalTag("c:foods/raw_meats", "forge:raw_meats", "forge:raw_meat")
 				.addOptionalTag("forge:raw_bacon", "forge:raw_beef", "forge:raw_chicken", "forge:raw_pork", "forge:raw_mutton")
+				.addTag(ModItemTags.C_RAW_PORK)
 				.add(BEEF, PORKCHOP, CHICKEN, RABBIT, MUTTON)
 				.add(FarmersDelightItems.HAM.get())
 				.add(AMItemRegistry.MOOSE_RIBS.get(), AMItemRegistry.KANGAROO_MEAT.get(), AMItemRegistry.MAGGOT.get())

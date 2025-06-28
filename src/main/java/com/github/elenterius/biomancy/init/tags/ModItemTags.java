@@ -11,6 +11,7 @@ public final class ModItemTags {
 	public static final TagKey<Item> C_FANGS = conventionalTag("fangs");
 	public static final TagKey<Item> C_CLAWS = conventionalTag("claws");
 	public static final TagKey<Item> C_WITHER_BONES = conventionalTag("bones/wither");
+	public static final TagKey<Item> C_RAW_PORK = conventionalTag("foods/raw_pork");
 
 	public static final TagKey<Item> FORGE_TOOLS_KNIVES = forgeTag("tools/knives");
 

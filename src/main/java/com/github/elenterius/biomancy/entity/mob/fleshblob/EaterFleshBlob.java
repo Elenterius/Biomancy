@@ -70,14 +70,18 @@ public abstract class EaterFleshBlob extends FleshBlob implements FoodEater {
 
 	@Override
 	public boolean canPickUpLoot() {
-		//delay item pickup to 5 seconds after spawn
-		return (tickCount + 1) % (20 * 5) == 0 && super.canPickUpLoot();
+		if (tickCount < 20 * 5) return false;
+
+		ItemStack heldStack = getFoodItem();
+		return (heldStack.isEmpty() || !heldStack.getItem().isEdible()) && super.canPickUpLoot();
 	}
 
 	@Override
 	public boolean canTakeItem(ItemStack stack) {
-		if (!canPickUpLoot()) return false;
-		return getFoodItem().isEmpty();
+		if (stack.getItem().isEdible()) {
+			return getFoodItem().isEmpty() && canPickUpLoot();
+		}
+		return super.canTakeItem(stack);
 	}
 
 	@Override
