@@ -11,6 +11,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.WorldWorkerManager;
@@ -26,6 +27,21 @@ import java.util.function.Consumer;
 public final class StatusEffectHandler {
 
 	private StatusEffectHandler() {}
+
+	@SubscribeEvent
+	public static void onEffectAdded(final MobEffectEvent.Added event) {
+		if (event.getEntity().level().isClientSide) return;
+
+		if (event.getEffectInstance().getEffect() == ModMobEffects.FRENZY.get()) {
+			if (event.getEntity() instanceof Mob mob) {
+				FrenzySerum.injectAIBehavior(mob);
+			}
+
+			if (event.getEntity().hasEffect(ModMobEffects.WITHDRAWAL.get())) {
+				modifyOnNextWorldTick(event.getEntity(), livingEntity -> livingEntity.removeEffect(ModMobEffects.WITHDRAWAL.get()));
+			}
+		}
+	}
 
 	@SubscribeEvent
 	public static void onEffectRemoval(final MobEffectEvent.Remove event) {

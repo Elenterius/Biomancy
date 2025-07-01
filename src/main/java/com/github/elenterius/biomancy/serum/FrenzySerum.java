@@ -51,10 +51,6 @@ public class FrenzySerum extends BasicSerum {
 		}
 
 		addStatusEffect(target);
-
-		if (target instanceof Mob mob) {
-			injectAIBehavior(mob);
-		}
 	}
 
 	@Override
@@ -63,15 +59,7 @@ public class FrenzySerum extends BasicSerum {
 	}
 
 	private void addStatusEffect(LivingEntity target) {
-		int duration = DEFAULT_DURATION_TICKS;
-
-		MobEffectInstance withdrawalEffect = target.getEffect(ModMobEffects.WITHDRAWAL.get());
-		if (withdrawalEffect != null) {
-			duration -= Math.min(withdrawalEffect.getDuration() / 2, MIN_DURATION_TICKS);
-			target.removeEffect(ModMobEffects.WITHDRAWAL.get());
-		}
-
-		target.addEffect(new MobEffectInstance(ModMobEffects.FRENZY.get(), duration, 0));
+		target.addEffect(new MobEffectInstance(ModMobEffects.FRENZY.get(), DEFAULT_DURATION_TICKS, 0));
 	}
 
 	@Override
