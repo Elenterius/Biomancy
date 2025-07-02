@@ -3,7 +3,7 @@
   "minecraft:geometry": [
     {
       "description": {
-        "identifier": "geometry.unknown",
+        "identifier": "geometry.acolyte_armor",
         "texture_width": 64,
         "texture_height": 64,
         "visible_bounds_width": 3,
@@ -322,12 +322,12 @@
         },
         {
           "name": "bipedRightArm",
-          "pivot": [ -4, 22, 0 ]
+          "pivot": [ -5, 22, 0 ]
         },
         {
           "name": "armorRightArm",
           "parent": "bipedRightArm",
-          "pivot": [ -4, 22, 0 ],
+          "pivot": [ -5, 22, 0 ],
           "cubes": [
             {
               "origin": [ -9.10355, 20.14645, -2.5 ],
@@ -451,12 +451,12 @@
         },
         {
           "name": "bipedLeftArm",
-          "pivot": [ 4, 22, 0 ]
+          "pivot": [ 5, 22, 0 ]
         },
         {
           "name": "armorLeftArm",
           "parent": "bipedLeftArm",
-          "pivot": [ 4, 22, 0 ],
+          "pivot": [ 5, 22, 0 ],
           "cubes": [
             {
               "origin": [ 6.10355, 20.14645, -2.5 ],

@@ -9,17 +9,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class AcolyteArmorUpgrades {
+@ApiStatus.Experimental
+public final class ArmorUpgrades {
 
 	private static final List<Upgrade> UPGRADES = new ArrayList<>();
 
 	public static final Upgrade PRIMORDIAL_SIGHT = register("primordial_sight");
 
-	private AcolyteArmorUpgrades() {}
+	private ArmorUpgrades() {}
 
 	public static Upgrade register(ResourceLocation name) {
 		Upgrade upgrade = new Upgrade(name);

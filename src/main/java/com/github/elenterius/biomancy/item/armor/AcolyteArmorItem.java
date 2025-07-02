@@ -7,7 +7,6 @@ import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -55,7 +54,7 @@ public final class AcolyteArmorItem extends LivingArmorGeoItem implements ShowKn
 
 	@Override
 	public boolean canShowKnowledgeOverlay(ItemStack stack, Player player) {
-		return AcolyteArmorUpgrades.hasUpgrade(stack, AcolyteArmorUpgrades.PRIMORDIAL_SIGHT) && hasNutrients(stack);
+		return ArmorUpgrades.hasUpgrade(stack, ArmorUpgrades.PRIMORDIAL_SIGHT) && hasNutrients(stack);
 	}
 
 	@Override
@@ -68,19 +67,9 @@ public final class AcolyteArmorItem extends LivingArmorGeoItem implements ShowKn
 		return cache;
 	}
 
-	public AdaptiveDamageResistanceHandler.DamageTypeResistanceTracker getDamageTypeResistanceTracker(ItemStack stack) {
-		CompoundTag tag = stack.getOrCreateTag().getCompound("damage_resistance_tracker");
-		return AdaptiveDamageResistanceHandler.DamageTypeResistanceTracker.fromNBT(tag);
-	}
-
-	public void saveDamageTypeResistanceTracker(AdaptiveDamageResistanceHandler.DamageTypeResistanceTracker resistanceTracker, ItemStack stack) {
-		CompoundTag compoundTag = stack.getOrCreateTag();
-		compoundTag.put("damage_resistance_tracker", resistanceTracker.toNBT());
-	}
-
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		AcolyteArmorUpgrades.appendHoverText(stack, tooltip);
+		ArmorUpgrades.appendHoverText(stack, tooltip);
 
 		tooltip.add(ComponentUtil.emptyLine());
 		tooltip.add(TextComponentUtil.getAbilityText("fleshkin_affinity").withStyle(ChatFormatting.GRAY));
@@ -92,8 +81,8 @@ public final class AcolyteArmorItem extends LivingArmorGeoItem implements ShowKn
 
 		tooltip.add(ComponentUtil.emptyLine());
 
-		CompoundTag compoundTag = stack.getOrCreateTag().getCompound("damage_resistance_tracker");
-		AdaptiveDamageResistanceHandler.DamageTypeResistanceTracker.appendTooltipText(compoundTag, tooltip);
+		//		CompoundTag compoundTag = stack.getOrCreateTag().getCompound("damage_resistance_tracker");
+		//		AdaptiveDamageResistanceHandler.DamageTypeResistanceTracker.appendTooltipText(compoundTag, tooltip);
 
 		appendLivingToolTooltip(stack, tooltip);
 

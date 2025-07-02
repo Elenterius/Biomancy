@@ -8,7 +8,7 @@ import software.bernie.geckolib.renderer.GeoArmorRenderer;
 public final class AcolyteArmorRenderer extends GeoArmorRenderer<AcolyteArmorItem> {
 
 	public AcolyteArmorRenderer() {
-		super(new DefaultedItemGeoModel<>(BiomancyMod.createRL("armor/acolyte_armor")));
+		super(new DefaultedItemGeoModel<>(BiomancyMod.createRL("armor/alchemist_armor")));
 	}
 
 }

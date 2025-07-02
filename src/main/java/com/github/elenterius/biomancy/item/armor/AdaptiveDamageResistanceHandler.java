@@ -12,10 +12,12 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
 
+@Deprecated
 public final class AdaptiveDamageResistanceHandler {
 
 	private static final float[] HEALTH_GATES = {0.25f, 0.45f, 0.65f, 0.8f};
@@ -26,14 +28,24 @@ public final class AdaptiveDamageResistanceHandler {
 	private static final Set<String> VALID_NAMESPACES = Set.of("minecraft", "forge", "c");
 	private static final String TAG_PREFIX = "is_";
 
-	public static float absorbDamage(LivingEntity livingEntity, DamageSource damageSource, float damage, AcolyteArmorItem armor, ItemStack stack) {
+	public static DamageTypeResistanceTracker getResistanceTracker(ItemStack stack) {
+		CompoundTag tag = stack.getOrCreateTag().getCompound("damage_resistance_tracker");
+		return DamageTypeResistanceTracker.fromNBT(tag);
+	}
+
+	public static void saveResistanceTracker(DamageTypeResistanceTracker resistanceTracker, ItemStack stack) {
+		CompoundTag compoundTag = stack.getOrCreateTag();
+		compoundTag.put("damage_resistance_tracker", resistanceTracker.toNBT());
+	}
+
+	public static float absorbDamage(LivingEntity livingEntity, DamageSource damageSource, float damage, ArmorItem armor, ItemStack stack) {
 		List<TagKey<DamageType>> rootDamageTypes = damageSource.typeHolder().getTagKeys()
 				.filter(tagKey -> VALID_NAMESPACES.contains(tagKey.location().getNamespace()) && tagKey.location().getPath().startsWith(TAG_PREFIX))
 				.toList();
 
 		if (rootDamageTypes.isEmpty()) return damage;
 
-		DamageTypeResistanceTracker resistanceTracker = armor.getDamageTypeResistanceTracker(stack);
+		DamageTypeResistanceTracker resistanceTracker = getResistanceTracker(stack);
 
 		for (TagKey<DamageType> damageType : rootDamageTypes) {
 			resistanceTracker.count(damageType);
@@ -50,7 +62,7 @@ public final class AdaptiveDamageResistanceHandler {
 
 		float reducedDamage = reduceDamage(livingEntity, damageSource, damage, resistanceTracker);
 
-		armor.saveDamageTypeResistanceTracker(resistanceTracker, stack);
+		saveResistanceTracker(resistanceTracker, stack);
 
 		return reducedDamage;
 	}

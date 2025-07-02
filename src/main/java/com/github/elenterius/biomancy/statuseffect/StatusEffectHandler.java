@@ -113,10 +113,11 @@ public final class StatusEffectHandler {
 
 		if (category == MobEffectCategory.HARMFUL) {
 			int resistProbability = 0;
+			int resistance = ModMobEffectTags.forgeIsAcid(effect) ? 25 : 15;
 
 			for (ItemStack itemStack : target.getArmorSlots()) {
 				if (itemStack.getItem() instanceof AcolyteArmorItem armor && armor.hasNutrients(itemStack)) {
-					resistProbability += 15;
+					resistProbability += resistance;
 				}
 			}
 

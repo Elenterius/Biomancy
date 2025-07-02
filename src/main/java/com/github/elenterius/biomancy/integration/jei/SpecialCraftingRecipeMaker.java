@@ -6,7 +6,7 @@ import com.github.elenterius.biomancy.block.membrane.BiometricMembraneBlock;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.EssenceItem;
-import com.github.elenterius.biomancy.item.armor.AcolyteArmorUpgrades;
+import com.github.elenterius.biomancy.item.armor.ArmorUpgrades;
 import com.github.elenterius.biomancy.world.mound.MoundShape;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.NonNullList;
@@ -61,7 +61,7 @@ public final class SpecialCraftingRecipeMaker {
 				Ingredient.of(ModItems.PRIMORDIAL_CORE.get()),
 				Ingredient.of(ModItems.ACOLYTE_ARMOR_HELMET.get())
 		);
-		ItemStack result = AcolyteArmorUpgrades.addUpgrade(ModItems.ACOLYTE_ARMOR_HELMET.get().getDefaultInstance(), AcolyteArmorUpgrades.PRIMORDIAL_SIGHT);
+		ItemStack result = ArmorUpgrades.addUpgrade(ModItems.ACOLYTE_ARMOR_HELMET.get().getDefaultInstance(), ArmorUpgrades.PRIMORDIAL_SIGHT);
 
 		return List.of(
 				new ShapelessRecipe(BiomancyMod.createRL("special_crafting/acolyte_helmet_upgrade"), "", CraftingBookCategory.MISC, result, inputs)

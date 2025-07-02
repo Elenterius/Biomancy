@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.crafting.recipe;
 
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.item.armor.AcolyteArmorUpgrades;
+import com.github.elenterius.biomancy.item.armor.ArmorUpgrades;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -32,7 +32,7 @@ public class AcolyteHelmetUpgradeRecipe extends CustomRecipe {
 
 			if (item == ModItems.ACOLYTE_ARMOR_HELMET.get()) {
 				if (hasHelmet) return false;
-				if (AcolyteArmorUpgrades.hasUpgrade(stack, AcolyteArmorUpgrades.PRIMORDIAL_SIGHT)) return false;
+				if (ArmorUpgrades.hasUpgrade(stack, ArmorUpgrades.PRIMORDIAL_SIGHT)) return false;
 				hasHelmet = true;
 			}
 			else if (item == ModItems.PRIMORDIAL_CORE.get()) {
@@ -58,7 +58,7 @@ public class AcolyteHelmetUpgradeRecipe extends CustomRecipe {
 
 			if (item == ModItems.ACOLYTE_ARMOR_HELMET.get()) {
 				if (!helmet.isEmpty()) return ItemStack.EMPTY;
-				if (AcolyteArmorUpgrades.hasUpgrade(stack, AcolyteArmorUpgrades.PRIMORDIAL_SIGHT)) return ItemStack.EMPTY;
+				if (ArmorUpgrades.hasUpgrade(stack, ArmorUpgrades.PRIMORDIAL_SIGHT)) return ItemStack.EMPTY;
 				helmet = stack;
 			}
 			else if (item == ModItems.PRIMORDIAL_CORE.get()) {
@@ -68,7 +68,7 @@ public class AcolyteHelmetUpgradeRecipe extends CustomRecipe {
 			else return ItemStack.EMPTY;
 		}
 
-		return hasPrimordialCore && !helmet.isEmpty() ? AcolyteArmorUpgrades.addUpgrade(helmet.copy(), AcolyteArmorUpgrades.PRIMORDIAL_SIGHT) : ItemStack.EMPTY;
+		return hasPrimordialCore && !helmet.isEmpty() ? ArmorUpgrades.addUpgrade(helmet.copy(), ArmorUpgrades.PRIMORDIAL_SIGHT) : ItemStack.EMPTY;
 	}
 
 	@Override

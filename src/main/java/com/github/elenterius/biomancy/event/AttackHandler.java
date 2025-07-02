@@ -2,9 +2,14 @@ package com.github.elenterius.biomancy.event;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModCapabilities;
+import com.github.elenterius.biomancy.init.tags.ModDamageTypeTags;
 import com.github.elenterius.biomancy.item.CriticalHitListener;
+import com.github.elenterius.biomancy.item.armor.AcolyteArmorItem;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -24,6 +29,26 @@ public final class AttackHandler {
 			if (heldStack.getItem() instanceof CriticalHitListener listener) {
 				listener.onCriticalHitEntity(heldStack, event.getEntity(), target);
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onApplyDamage(final LivingHurtEvent event) {
+		DamageSource damageSource = event.getSource();
+		if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
+		if (!damageSource.is(ModDamageTypeTags.FORGE_IS_ACID)) return;
+		if (event.getAmount() <= 0f) return;
+
+		int resistProbability = 0;
+		for (ItemStack itemStack : event.getEntity().getArmorSlots()) {
+			if (itemStack.getItem() instanceof AcolyteArmorItem armor && armor.hasNutrients(itemStack)) {
+				resistProbability += 25;
+				armor.decreaseNutrients(itemStack, 1);
+			}
+		}
+
+		if (resistProbability > 0 && event.getEntity().getRandom().nextInt(100) >= resistProbability) {
+			event.setAmount(event.getAmount() * (1f - resistProbability / 100f));
 		}
 	}
 

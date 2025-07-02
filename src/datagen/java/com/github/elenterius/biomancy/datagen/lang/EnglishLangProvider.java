@@ -9,7 +9,7 @@ import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.MaykerBannerPatternItem;
 import com.github.elenterius.biomancy.item.SerumItem;
-import com.github.elenterius.biomancy.item.armor.AcolyteArmorUpgrades;
+import com.github.elenterius.biomancy.item.armor.ArmorUpgrades;
 import com.github.elenterius.biomancy.menu.BioForgeTab;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.data.CachedOutput;
@@ -230,11 +230,11 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addAbility("thorny_hide", "Thorny Hide");
 		addAbility("thorny_hide.desc", "On successful block, deals thorns damage to the attacker");
 		addAbility("fleshkin_affinity", "Fleshkin Affinity");
-		addAbility("fleshkin_affinity.desc", "-5% Primordial Cradle Hostility");
+		addAbility("fleshkin_affinity.desc", "+25% Acid Resistance");
 		addAbility("bio_alchemical_epidermis", "Bio-Alchemical Epidermis");
-		addAbility("bio_alchemical_epidermis.desc", "+15% Resistance to external application of harmful Status-Effects\n -25% Injection Resistance\n -25% Injection Damage");
-		addAbility(AcolyteArmorUpgrades.PRIMORDIAL_SIGHT.getId().getPath(), "Primordial Sight");
-		addAbility(AcolyteArmorUpgrades.PRIMORDIAL_SIGHT.getId().getPath() + ".desc", "Peer inside the Cradle");
+		addAbility("bio_alchemical_epidermis.desc", "+15% Resistance to harmful Status-Effects\n +25% Injection Success\n -25% Injection Damage");
+		addAbility(ArmorUpgrades.PRIMORDIAL_SIGHT.getId().getPath(), "Primordial Sight");
+		addAbility(ArmorUpgrades.PRIMORDIAL_SIGHT.getId().getPath() + ".desc", "Peer inside the Cradle");
 
 		addTooltip("fire_rate", "Fire Rate");
 		addTooltip("accuracy", "Accuracy");
@@ -525,10 +525,10 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.IMPALER, "Impaler", "Railgun made of flesh...");
 		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
 
-		addItem(ModItems.ACOLYTE_ARMOR_HELMET, "Acolyte Helmet");
-		addItem(ModItems.ACOLYTE_ARMOR_CHESTPLATE, "Acolyte Chestplate");
-		addItem(ModItems.ACOLYTE_ARMOR_LEGGINGS, "Acolyte Leggings");
-		addItem(ModItems.ACOLYTE_ARMOR_BOOTS, "Acolyte Boots");
+		addItem(ModItems.ACOLYTE_ARMOR_HELMET, "Bio-Alchemist Helmet");
+		addItem(ModItems.ACOLYTE_ARMOR_CHESTPLATE, "Bio-Alchemist Chestplate");
+		addItem(ModItems.ACOLYTE_ARMOR_LEGGINGS, "Bio-Alchemist Leggings");
+		addItem(ModItems.ACOLYTE_ARMOR_BOOTS, "Bio-Alchemist Boots");
 
 		addItem(ModItems.THORN_SHIELD, "The Thorn", "Cute but prickly shield.");
 
