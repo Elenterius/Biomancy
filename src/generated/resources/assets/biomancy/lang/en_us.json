@@ -412,7 +412,7 @@
   "ability.biomancy.blood_explosion": "Blood Explosion",
   "ability.biomancy.blood_explosion.desc": "On Bleed Stack, deals 10% of max health as damage",
   "ability.biomancy.acid_coat": "Acid Coat",
-  "ability.biomancy.acid_coat.desc": "On Right-Click coats the blade in Acid for 10 seconds.\nFull-Strength Attacks inflict one stack of Armor Shred for 4s and one stack of Corrosion for 2s.\nCritical Hits inflict two stacks of Armor Shred for 4s.",
+  "ability.biomancy.acid_coat.desc": "On Right-Click coats the blade in Acid for the next two attacks.\nFull-Strength Attacks inflict one stack of Armor Shred for 4s and one stack of Corrosion for 3s.\nCritical Hits inflicts level 2 effects",
   "ability.biomancy.thorny_hide": "Thorny Hide",
   "ability.biomancy.thorny_hide.desc": "On successful block, deals thorns damage to the attacker",
   "ability.biomancy.fleshkin_affinity": "Fleshkin Affinity",

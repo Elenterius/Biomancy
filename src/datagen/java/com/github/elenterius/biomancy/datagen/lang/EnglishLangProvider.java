@@ -224,9 +224,9 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addAbility("blood_explosion.desc", "On Bleed Stack, deals 10% of max health as damage");
 		addAbility("acid_coat", "Acid Coat");
 		addAbility("acid_coat.desc", """
-				On Right-Click coats the blade in Acid for 10 seconds.
-				Full-Strength Attacks inflict one stack of Armor Shred for 4s and one stack of Corrosion for 2s.
-				Critical Hits inflict two stacks of Armor Shred for 4s.""");
+				On Right-Click coats the blade in Acid for the next two attacks.
+				Full-Strength Attacks inflict one stack of Armor Shred for 4s and one stack of Corrosion for 3s.
+				Critical Hits inflicts level 2 effects""");
 		addAbility("thorny_hide", "Thorny Hide");
 		addAbility("thorny_hide.desc", "On successful block, deals thorns damage to the attacker");
 		addAbility("fleshkin_affinity", "Fleshkin Affinity");

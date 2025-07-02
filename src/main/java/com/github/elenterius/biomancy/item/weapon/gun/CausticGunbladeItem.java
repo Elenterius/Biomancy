@@ -239,6 +239,7 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 		if (GunbladeMode.from(stack) != GunbladeMode.MELEE) return;
 
 		if (Abilities.ACID_COAT.isActive(stack)) {
+			target.addEffect(new MobEffectInstance(ModMobEffects.CORROSIVE.get(), 3 * 20, 1));
 			target.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), 4 * 20, 1));
 		}
 	}
@@ -257,9 +258,11 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 			boolean isFullAttackStrength = !(attacker instanceof Player player) || player.getAttackStrengthScale(0.5f) >= 0.9f;
 			if (isFullAttackStrength) {
 				playSwipeFX(attacker);
-				target.addEffect(new MobEffectInstance(ModMobEffects.CORROSIVE.get(), 2 * 20, 0));
+				target.addEffect(new MobEffectInstance(ModMobEffects.CORROSIVE.get(), 3 * 20, 0));
 				target.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), 4 * 20, 0));
 			}
+
+			Abilities.ACID_COAT.use(attacker.level(), stack, attacker);
 		}
 
 		return true;
@@ -450,6 +453,8 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 
 		void tick(Level level, ItemStack stack, LivingEntity itemOwner);
 
+		void use(Level level, ItemStack stack, LivingEntity itemOwner);
+
 		void cancel(ServerLevel level, ItemStack stack, LivingEntity itemOwner);
 
 		default String getTranslationKey() {
@@ -467,7 +472,7 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 		public static final ItemAbility ACID_COAT = new ItemAbility() {
 			static final String NAME = "acid_coat";
 			static final String KEY = BiomancyMod.createRLString(NAME);
-			static final String TIMESTAMP_KEY = "timestamp";
+			static final String REMAINING_USES = "uses";
 
 			@Override
 			public String name() {
@@ -483,15 +488,25 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 			@Override
 			public void setActive(ServerLevel level, ItemStack stack, LivingEntity itemOwner) {
 				CompoundTag tag = stack.getOrCreateTagElement(KEY);
-				tag.putLong(TIMESTAMP_KEY, level.getGameTime());
+				tag.putByte(REMAINING_USES, (byte) 2);
 			}
 
 			@Override
 			public void tick(Level level, ItemStack stack, LivingEntity itemOwner) {
+				//do nothing
+			}
+
+			@Override
+			public void use(Level level, ItemStack stack, LivingEntity itemOwner) {
 				CompoundTag tag = stack.getTagElement(KEY);
 				if (tag == null) return;
 
-				if (level.getGameTime() - tag.getLong(TIMESTAMP_KEY) > 10 * 20) {
+				int uses = tag.getByte(REMAINING_USES) - 1;
+
+				if (uses > 0) {
+					tag.putByte(REMAINING_USES, (byte) uses);
+				}
+				else {
 					stack.removeTagKey(KEY);
 				}
 			}
