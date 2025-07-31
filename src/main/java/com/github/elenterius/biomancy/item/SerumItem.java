@@ -23,7 +23,7 @@ public class SerumItem extends Item implements SerumContainer, ItemTooltipStyleP
 	}
 
 	@Override
-	public Serum getSerum() {
+	public Serum getSerum(ItemStack stack) {
 		return serumSupplier.get();
 	}
 
@@ -34,7 +34,7 @@ public class SerumItem extends Item implements SerumContainer, ItemTooltipStyleP
 
 	@Override
 	public String getTooltipKey(ItemStack stack) {
-		return getSerum().getDescriptionTranslationKey();
+		return getSerum(stack).getDescriptionTranslationKey();
 	}
 
 }

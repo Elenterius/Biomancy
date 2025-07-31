@@ -132,7 +132,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		T item = supplier.get();
 		ItemStack stack = new ItemStack(item);
 
-		add(item.getSerum(), serumName);
+		add(item.getSerum(stack), serumName);
 
 		add(item.getDescriptionId(stack), serumName);
 		add(item.getTooltipKey(stack), tooltip);

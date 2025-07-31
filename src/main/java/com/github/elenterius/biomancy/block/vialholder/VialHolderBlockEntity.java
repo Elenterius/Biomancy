@@ -138,8 +138,9 @@ public class VialHolderBlockEntity extends SimpleSyncedBlockEntity {
 
 	public int getVialColor(int slot) {
 		if (slot < 0 || slot >= inventory.getSlots()) return 0xFFFFFFFF;
-		if (inventory.getStackInSlot(slot).getItem() instanceof SerumContainer container) {
-			return container.getSerum().getColor();
+		ItemStack serumStack = inventory.getStackInSlot(slot);
+		if (serumStack.getItem() instanceof SerumContainer container) {
+			return container.getSerum(serumStack).getColor();
 		}
 		return 0xFFFFFFFF;
 	}

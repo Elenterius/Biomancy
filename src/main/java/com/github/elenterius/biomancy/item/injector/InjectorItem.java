@@ -268,10 +268,12 @@ public class InjectorItem extends Item implements SerumInjector, ItemTooltipStyl
 
 	@Override
 	public Serum getSerum(ItemStack stack) {
-		return getItemHandler(stack).map(LargeSingleItemStackHandler::getItem)
-				.filter(SerumContainer.class::isInstance)
-				.map(SerumContainer.class::cast)
-				.map(SerumContainer::getSerum).orElse(Serum.EMPTY);
+		ItemStack serumStack = getItemHandler(stack).map(LargeSingleItemStackHandler::getStack).orElse(null);
+		if(serumStack != null && serumStack.getItem() instanceof SerumContainer container)
+		{
+			return container.getSerum(serumStack);
+		}
+		return Serum.EMPTY;
 	}
 
 	public ItemStack getSerumItemStack(ItemStack stack) {

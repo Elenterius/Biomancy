@@ -244,7 +244,7 @@ public final class ScreenOverlays {
 			}
 
 			ItemStack serumItemStack = injector.getSerumItemStack(stack);
-			if (serumItemStack.getItem() instanceof SerumContainer container && !container.getSerum().isEmpty()) {
+			if (serumItemStack.getItem() instanceof SerumContainer container && !container.getSerum(serumItemStack).isEmpty()) {
 				short maxAmmo = InjectorItem.MAX_SLOT_SIZE;
 				renderAmmoCount(guiGraphics, font, screenWidth, screenHeight, zDepth, maxAmmo, serumItemStack.getCount(), 0xFFFEFEFE, 0xFF9E9E9E);
 			}
