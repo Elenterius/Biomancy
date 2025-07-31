@@ -9,6 +9,7 @@
   "item.biomancy.mob_claw": "날카로운 발톱",
   "item.biomancy.mob_claw.tooltip": "질긴 섬유로 이루어진 미네랄이 풍부하고 단단한 발톱.",
   "item.biomancy.mob_marrow": "골수",
+  "item.biomancy.mob_marrow.tooltip": "희생양의 뼈에서 추출한 골수. 호르몬과 미네랄이 풍부합니다.",
   "item.biomancy.withered_mob_marrow": "시든 골수",
   "item.biomancy.withered_mob_marrow.tooltip": "시든 골수, 검은 액체가 흘러나오고 있습니다.\n마를때까지 빨아야 할지도 모르지...",
   "item.biomancy.mob_gland": "담즙샘",
