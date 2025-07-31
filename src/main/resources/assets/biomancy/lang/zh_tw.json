@@ -9,6 +9,7 @@
   "item.biomancy.mob_claw": "利爪",
   "item.biomancy.mob_claw.tooltip": "堅韌纖維構成的硬化鉤爪，富含礦物質",
   "item.biomancy.mob_marrow": "骨髓",
+  "item.biomancy.mob_marrow.tooltip": "從你的獵物骨骼裡提取出的精髓。富含激素與礦物質",
   "item.biomancy.withered_mob_marrow": "凋零骨髓",
   "item.biomancy.withered_mob_marrow.tooltip": "凋零骨髓，有些深色的液體正在緩緩滲出\n看起來很美味，或許你該將它吃乾抹淨……",
   "item.biomancy.mob_gland": "膽囊",
