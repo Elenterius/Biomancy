@@ -75,8 +75,6 @@
   "item.biomancy.ravenous_claws.tooltip": "移植了掠食動物鉤爪，利用禁食已久的活肉片鑄造而成的爪型武器。十分飢餓且殘暴。\n\n玩家可以用背包內的食物餵食損壞的爪刀，操作方式與填充束帶相同\n\n使用這些爪刀殺害生物將累積血祭值，消耗血祭值即可啟動覺醒模式",
   "item.biomancy.caustic_gunblade": "酸蝕槍刃",
   "item.biomancy.caustic_gunblade.tooltip": "能夠在近戰與遠程模式間來回切換的武器，使用腐蝕性的酸液作為彈藥去殺傷目標。\n靜置該武器五秒後它將自主充填消耗的酸液彈藥。",
-  "item.biomancy.dev_arm_cannon": "[Dev Tool] Arm Cannon",
-  "item.biomancy.dev_arm_cannon.tooltip": "Creative/Developer Tool for testing projectiles.",
   "item.biomancy.acolyte_armor_helmet": "輔祭頭盔",
   "item.biomancy.acolyte_armor_chestplate": "輔祭胸甲",
   "item.biomancy.acolyte_armor_leggings": "輔祭腿甲",
