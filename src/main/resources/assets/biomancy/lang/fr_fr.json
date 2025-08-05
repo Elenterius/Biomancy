@@ -1,4 +1,7 @@
 {
+  "creative_tab.biomancy.main": "Biomancy",
+  "creative_tab.biomancy.bio_alchemy": "Biomancy: Bio-Alchimie",
+  "key.categories.biomancy": "Mod Biomancy",
   "key.biomancy.item_default": "Action d'élément par défaut",
   "item.biomancy.mob_sinew": "Tendon",
   "item.biomancy.mob_sinew.tooltip": "Tissu fait de fibres élastiques.",
@@ -64,5 +67,7 @@
   "item.biomancy.vial.tooltip": "Un petit récipient organique avec une très haute résistance alchimique, parfait pour contenir des substances réactives.\nLe flacon se dissout après utilisation.",
   "item.biomancy.living_flesh": "Chair vivante",
   "item.biomancy.living_flesh.tooltip": "Elle est vivante !\nMalheureusement, elle semble trop stupide pour être le cerveau d'une créature. Vous devriez la transformer en construction à la place.",
-  "item.biomancy.primordial_core": "Noyau Primordial"
+  "item.biomancy.primordial_core": "Noyau Primordial",
+  "item.biomancy.primordial_core.tooltip": "Un sinistre artefact fait de chair. Le regarder vous fait vous sentir inconfortable...",
+  "item.biomancy.creator_mix": "Mélange de chairs exotique"
 }
