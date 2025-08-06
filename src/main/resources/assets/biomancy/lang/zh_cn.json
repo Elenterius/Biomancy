@@ -430,7 +430,6 @@
   "ability.biomancy.bio_alchemical_epidermis": "生物炼金上皮",
   "ability.biomancy.bio_alchemical_epidermis.desc": "+15%外部施加负面效果抗性\n +25%注射成功率\n -25%注射伤害                  ",
   "ability.biomancy.imposing_aura": "庄严气场",
-  "ability.biomancy.imposing_aura.desc": "所有附近的生物受到虚弱I效果",
   "ability.biomancy.primordial_sight": "原初视觉",
   "ability.biomancy.primordial_sight.desc": "窥探温床内在",
   "tooltip.biomancy.fire_rate": "射速",
