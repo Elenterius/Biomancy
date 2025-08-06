@@ -425,7 +425,6 @@
   "ability.biomancy.bio_alchemical_epidermis": "Epidermis Bio-alquímica",
   "ability.biomancy.bio_alchemical_epidermis.desc": "+15% de resistencia a efectos de estado nocivos\n+25% de éxito en inyecciones\n-25% de daño de inyección",
   "ability.biomancy.imposing_aura": "Aura Imponente",
-  "ability.biomancy.imposing_aura.desc": "Todos los seres cercanos reciben Debilidad 1",
   "ability.biomancy.primordial_sight": "Vista Primigenia",
   "ability.biomancy.primordial_sight.desc": "Asómate al interior de la Cuna",
   "tooltip.biomancy.fire_rate": "Tasa de Tiro",
