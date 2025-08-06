@@ -345,7 +345,7 @@
   "enchantment.biomancy.despoil": "抽筋剥骨",
   "enchantment.biomancy.despoil.desc": "击杀生物时会额外掉落特殊战利品。",
   "enchantment.biomancy.anesthetic": "麻醉",
-  "enchantment.biomancy.anesthetic.desc": "防止注射器的注射操作伤害到生物，避免激怒它们。生物完全不会察觉到是谁攻击了它，动物也不会因此恐慌四散。",
+  "enchantment.biomancy.anesthetic.desc": "防止注射器的注射操作伤害到生物，避免激怒它们。生物完全不会察觉到是谁攻击了它，动物也不会因此惊慌四散。",
   "enchantment.biomancy.surgical_precision": "手术精度",
   "enchantment.biomancy.surgical_precision.desc": "提高手术和提取精华的质量和成功率。",
   "enchantment.biomancy.parasitic_metabolism": "代谢寄生",
