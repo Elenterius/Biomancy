@@ -19,6 +19,8 @@
   "item.biomancy.toxin_gland.tooltip": "Un organe rempli de toxines, peut être devriez-vous le boire...",
   "item.biomancy.volatile_gland": "Glande volatile",
   "item.biomancy.volatile_gland.tooltip": "Une glande remplie avec un fluide extrêmement réactif. Il ne semble pas être empoisonné... Ça vaut peut-être le coup de le boire.",
+  "item.biomancy.acidic_egg": "Œuf Acide",
+  "item.biomancy.acidic_egg.tooltip": "Un œuf non fertile avec un jaune acide.",
   "item.biomancy.flesh_bits": "Morceaux de chair",
   "item.biomancy.flesh_bits.tooltip": "Un petit morceau de chair... Utilisé comme ingrédient de fabrication principal.",
   "item.biomancy.bone_fragments": "Fragments d'os",
@@ -69,5 +71,7 @@
   "item.biomancy.living_flesh.tooltip": "Elle est vivante !\nMalheureusement, elle semble trop stupide pour être le cerveau d'une créature. Vous devriez la transformer en construction à la place.",
   "item.biomancy.primordial_core": "Noyau Primordial",
   "item.biomancy.primordial_core.tooltip": "Un sinistre artefact fait de chair. Le regarder vous fait vous sentir inconfortable...",
-  "item.biomancy.creator_mix": "Mélange de chairs exotique"
+  "item.biomancy.creator_mix": "Mélange de chairs exotique",
+  "item.biomancy.creator_mix.tooltip": "Un tribut soigneusement construit pour le berceau. Ce repas raffiné contient de la viande crue infusée avec de l'énergie vitale.",
+  "block.biomancy.primordial_cradle": "Berceau Primordial"
 }
