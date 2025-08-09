@@ -475,6 +475,7 @@
   "sounds.biomancy.item.injector.fail": "注射失败",
   "sounds.biomancy.item.bone_marrow.drink": "嘬吸骨髓",
   "sounds.biomancy.item.armor.bullet_jump": "子弹跳",
+  "sounds.biomancy.entity.bloomberry.shoot": "蕾莓：发射",
   "sounds.biomancy.flesh_block.hit": "血肉方块：损坏中",
   "sounds.biomancy.flesh_block.place": "血肉方块：被放置",
   "sounds.biomancy.flesh_block.step": "血肉方块：脚步声",
