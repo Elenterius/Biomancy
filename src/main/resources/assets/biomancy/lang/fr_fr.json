@@ -72,6 +72,7 @@
   "item.biomancy.primordial_core": "Noyau Primordial",
   "item.biomancy.primordial_core.tooltip": "Un sinistre artefact fait de chair. Le regarder vous fait vous sentir inconfortable...",
   "item.biomancy.creator_mix": "Mélange de chairs exotique",
-  "item.biomancy.creator_mix.tooltip": "Un tribut soigneusement construit pour le berceau. Ce repas raffiné contient de la viande crue infusée avec de l'énergie vitale.",
-  "block.biomancy.primordial_cradle": "Berceau Primordial"
+  "item.biomancy.creator_mix.tooltip": "Une offrande soigneusement préparée pour le berceau. Ce repas raffiné contient de la viande crue infusée avec de l'énergie vitale.",
+  "block.biomancy.primordial_cradle": "Berceau Primordial",
+  "block.biomancy.primordial_cradle.tooltip": "Présentez une offrande adéquate au berceau et invoquez les messagers primordiaux de la chair raffinée."
 }
