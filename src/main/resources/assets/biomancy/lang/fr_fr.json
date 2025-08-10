@@ -74,6 +74,7 @@
   "item.biomancy.creator_mix": "Mélange de chairs exotique",
   "item.biomancy.creator_mix.tooltip": "Une offrande soigneusement préparée pour le berceau. Ce repas raffiné contient de la viande crue infusée avec de l'énergie vitale.",
   "item.biomancy.injector": "Bio-Injecteur",
+  "item.biomancy.injector.tooltip": "Un appareil simple qui utilise une aiguille plutôt pointue pour rapidement injecter de force des sérums dans les créatures et les joueurs.\n\nPeut être enchanté avec :\n- Perforation : Augmente les chances de percer l'armure\n- Touché Anesthésiant : Nullifie les dommages de l'aiguille",
   "block.biomancy.primordial_cradle": "Berceau Primordial",
   "block.biomancy.primordial_cradle.tooltip": "Présentez une offrande adéquate au berceau et invoquez les messagers primordiaux de la chair raffinée."
 }
