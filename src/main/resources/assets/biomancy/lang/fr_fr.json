@@ -76,6 +76,8 @@
   "item.biomancy.injector": "Bio-Injecteur",
   "item.biomancy.injector.tooltip": "Un appareil simple qui utilise une aiguille plutôt pointue pour rapidement injecter de force des sérums dans les créatures et les joueurs.\n\nPeut être enchanté avec :\n- Perforation : Augmente les chances de percer l'armure\n- Touché Anesthésiant : Nullifie les dommages de l'aiguille",
   "item.biomancy.fertilizer.tooltip": "L'Engrais induit une super-pousse des plantes, les faisant pousser à leur maturité finale. Il affecte même les plantes résistantes à la poudre d'os, tel que:\n- La canne à sucre\n- Le cactus\n- Les verrues du Nether\n- Le chorus\n\nDe plus, il à l'abilité de faire pousser de l'herbe sur de la terre et de forcer la force du mycélium.\n",
+  "item.biomancy.gelling_agent.tooltip": "Une substance gélatineuse",
+  "item.biomancy.caustic_gunblade": "Fusil-Lame Caustique",
   "block.biomancy.primordial_cradle": "Berceau Primordial",
   "block.biomancy.primordial_cradle.tooltip": "Présentez une offrande adéquate au berceau et invoquez les messagers primordiaux de la chair raffinée."
 }
