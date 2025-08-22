@@ -1,0 +1,16 @@
+{
+  "item.biomancy.mob_sinew": "Sehne",
+  "item.biomancy.mob_sinew.tooltip": "Gewebe aus elastischen Fasern.",
+  "item.biomancy.mob_fang": "Reißzahn",
+  "item.biomancy.mob_fang.tooltip": "Eckzahn aus mineralreichem Gewebe.",
+  "item.biomancy.mob_claw": "Scharfe Klaue",
+  "item.biomancy.mob_marrow": "Knochenmark",
+  "item.biomancy.withered_mob_marrow": "Verdorbener Knochenmark",
+  "item.biomancy.flesh_bits": "Fleischstückchen",
+  "item.biomancy.flesh_bits.tooltip": "Ein winziges Stück Fleisch...",
+  "item.biomancy.bone_fragments": "Knochenfragmente",
+  "item.biomancy.tough_fibers": "Widerstandsfähige Fasern",
+  "item.biomancy.elastic_fibers": "Elastische Fasern",
+  "item.biomancy.mineral_fragment": "Mineralfragment",
+  "item.biomancy.gem_fragments": "Juwelenfragmente"
+}
