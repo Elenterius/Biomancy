@@ -1,4 +1,6 @@
 {
+  "creative_tab.biomancy.main": "Biomancia",
+  "creative_tab.biomancy.bio_alchemy": "Biomancia: Alquimia de Biología",
   "key.categories.biomancy": "Biomancia Mod",
   "key.biomancy.item_default": "Acción predeterminada",
   "item.biomancy.mob_sinew": "Tendón",
@@ -463,6 +465,11 @@
   "jei.biomancy.recipe.decomposer": "Recetas del Decompositor",
   "jei.biomancy.recipe.digester": "Recetas del Digeridor",
   "jei.biomancy.recipe.bio_forge": "Recetas de Bio-forja",
+  "key.tooltipoverhaul.biomancy.rarity.biomancy_common": "Común",
+  "key.tooltipoverhaul.biomancy.rarity.biomancy_uncommon": "Poco Común",
+  "key.tooltipoverhaul.biomancy.rarity.biomancy_rare": "Raro",
+  "key.tooltipoverhaul.biomancy.rarity.biomancy_very_rare": "Muy Raro",
+  "key.tooltipoverhaul.biomancy.rarity.biomancy_ultra_rare": "Extremadamente Raro",
   "sounds.biomancy.ui.button.click": "Clic en el botón carnoso",
   "sounds.biomancy.ui.menu.open": "Abrir menú carnoso",
   "sounds.biomancy.ui.radial_menu.open": "Abrir menú radial",
