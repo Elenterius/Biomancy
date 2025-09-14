@@ -1,8 +1,6 @@
 {
   "creative_tab.biomancy.main": "Біомантія",
   "creative_tab.biomancy.bio_alchemy": "Біо-Алхімія",
-  "key.categories.biomancy": "Мод Біомантія",
-  "key.biomancy.item_default": "Звичайна дія предмету",
   "item.biomancy.mob_sinew": "Сухожилля",
   "item.biomancy.mob_sinew.tooltip": "Тканина з еластичних волокон.",
   "item.biomancy.mob_fang": "Гостре Ікло",
