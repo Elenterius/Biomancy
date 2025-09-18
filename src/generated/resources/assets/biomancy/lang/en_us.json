@@ -1,6 +1,8 @@
 {
   "creative_tab.biomancy.main": "Biomancy",
   "creative_tab.biomancy.bio_alchemy": "Biomancy: Bio-Alchemy",
+  "creative_tab.biomancy.dev": "Biomancy: Dev Tools",
+  "creative_tab.biomancy.dev_structures": "Biomancy: Dev Structures",
   "key.biomancy.categories.main": "Biomancy Mod",
   "key.biomancy.main_hand_item_action": "Main-Hand Item Action",
   "key.biomancy.off_hand_item_action": "Off-Hand Item Action",
