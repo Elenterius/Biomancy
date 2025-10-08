@@ -106,6 +106,5 @@
   "item.biomancy.organic_compound.tooltip": "Substance gélatineuse faite de bile et infusée de nutriments.",
   "item.biomancy.unstable_compound": "Composé Instable",
   "item.biomancy.unstable_compound.tooltip": "Substance très instable et réactive. Il semble qu'elle brûlera si elle entre en contact avec quoi que ce soit d'autre.\nL'explosion est hautement incendiaire et est connue pour liquéfier les blocs de magma.",
-  "block.biomancy.primordial_cradle": "Berceau Primordial",
-  "block.biomancy.primordial_cradle.tooltip": "Présentez une offrande adéquate au berceau et invoquez les messagers primordiaux de la chair raffinée."
+  "block.biomancy.primordial_cradle": "Berceau Primordial"
 }
