@@ -121,7 +121,6 @@
   "item.biomancy.primordial_flesh_blob_spawn_egg": "Ol' Magic Cube o' Flesh Cackle Fruit",
   "item.biomancy.primordial_hungry_flesh_blob_spawn_egg": "Ol' Magic Hungry Cube o' Flesh Cackle Fruit",
   "block.biomancy.primordial_cradle": "Summonin' Cauldron",
-  "block.biomancy.primordial_cradle.tooltip": "If ye offer adequate loot ta' the cauldron, it will summon forth messengers o' beautiful flesh.",
   "block.biomancy.decomposer": "Muncher",
   "block.biomancy.decomposer.tooltip": "A livin' contraption that munches yer loot into its base bits.\nTha' Muncher consumes sustenance to work.",
   "block.biomancy.digester": "Stomach Rumbler",
