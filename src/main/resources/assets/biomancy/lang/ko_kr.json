@@ -132,7 +132,6 @@
   "item.biomancy.primordial_flesh_blob_spawn_egg": "원시의 플레시 블롭 생성 알",
   "item.biomancy.primordial_hungry_flesh_blob_spawn_egg": "원시의 배고픈 플레시 블롭 생성 알",
   "block.biomancy.primordial_cradle": "원시 요람",
-  "block.biomancy.primordial_cradle.tooltip": "요람에 충분한 공물을 바치고 정교한 육체를 가진 원시 생명체를 소환하세요.",
   "block.biomancy.decomposer": "분해기",
   "block.biomancy.decomposer.tooltip": "아이템을 기본 컴포넌트로 분해하는 바이오 기계입니다.\n분해기는 작동을 위해 영양분을 소비합니다.",
   "block.biomancy.digester": "소화기",
