@@ -163,7 +163,6 @@
   "item.biomancy.chroma_sheep_spawn_egg": "Huevo de Oveja Cromática Carnosa",
   "item.biomancy.thick_fur_sheep_spawn_egg": "Huevo de Oveja de lana gruesa",
   "block.biomancy.primordial_cradle": "Cuna Primordial",
-  "block.biomancy.primordial_cradle.tooltip": "Ofrezca Tributos adecuados a la cuna y convoque mensajeros primordiales de carne exquisita.",
   "block.biomancy.decomposer": "Descompositor",
   "block.biomancy.decomposer.tooltip": "Una bio-máquina que deconstruye elementos en sus componentes básicos.\nLa bio-máquina consume nutrientes para funcionar.",
   "block.biomancy.digester": "Digeridor",
