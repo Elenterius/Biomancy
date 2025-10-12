@@ -176,7 +176,7 @@
   "item.biomancy.chroma_sheep_spawn_egg": "缤纷绵羊刷怪蛋",
   "item.biomancy.thick_fur_sheep_spawn_egg": "厚毛绵羊刷怪蛋",
   "block.biomancy.primordial_cradle": "原初摇篮",
-  "block.biomancy.primordial_cradle.tooltip": "提供生肉与富含生命能量的物品。根据你投喂的不同，摇篮会生成不同的血肉生物。",
+  "block.biomancy.primordial_cradle.tooltip": "献上生肉与富含生命能量的物品。根据投喂物品的不同，摇篮会生成不同的血肉生物。",
   "block.biomancy.decomposer": "分解体",
   "block.biomancy.decomposer.tooltip": "一台将有机物分解成各种基础材料的生物机械\n分解体需要充足的营养素才能工作。",
   "block.biomancy.digester": "消化体",
