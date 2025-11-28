@@ -142,7 +142,6 @@
   "serum.biomancy.breeding_stimulant.tooltip": "Estimulante potente que induce temporalmente en los animales un estado de hiperfertilidad, permitiéndoles reproducirse repetidamente por poco tiempo.\nÚsalo con precaución, pues este estímulo puede causar mutaciones indeseables en la descendencia.",
   "serum.biomancy.absorption_boost": "Estimulante de absorción",
   "item.biomancy.absorption_boost": "Estimulante de absorción",
-  "serum.biomancy.absorption_boost.tooltip": "Otorga puntos de salud de absorción acumulables para mobs y jugadores.",
   "serum.biomancy.insomnia_cure": "Cura del insomnio",
   "item.biomancy.insomnia_cure": "Cura del insomnio",
   "serum.biomancy.insomnia_cure.tooltip": "Restablece la última hora de sueño, no es necesario dormir durante bastante tiempo.",
