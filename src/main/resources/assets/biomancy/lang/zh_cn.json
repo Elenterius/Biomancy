@@ -152,6 +152,7 @@
   "serum.biomancy.breeding_stimulant.tooltip": "一种强效药物，可使动物极度亢奋，在短时间内繁殖多次。\n请谨慎使用，滥用此药物将会使后代产生不良突变。",
   "serum.biomancy.absorption_boost": "伤痛反应剂",
   "item.biomancy.absorption_boost": "伤痛反应剂",
+  "serum.biomancy.absorption_boost.tooltip": "给予%1$s颗可叠加的伤害吸收黄心，最大可叠加至%2$s颗黄心",
   "serum.biomancy.insomnia_cure": "睡眠抑制剂",
   "item.biomancy.insomnia_cure": "睡眠抑制剂",
   "serum.biomancy.insomnia_cure.tooltip": "重置未睡眠时长，相当长一段时间内不用再睡觉了。\n有了它谁还喝咖啡？",
