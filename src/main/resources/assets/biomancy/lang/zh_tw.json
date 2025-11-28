@@ -116,7 +116,6 @@
   "serum.biomancy.breeding_stimulant.tooltip": "能夠迫使動物暫時進入高生育力狀態的強效藥物，受影響個體將在一段時間內不斷重複繁殖行為\n使用上請小心，本藥劑可能導致後代產生非預期的突變",
   "serum.biomancy.absorption_boost": "生命增強劑",
   "item.biomancy.absorption_boost": "生命增強劑",
-  "serum.biomancy.absorption_boost.tooltip": "給予生物與玩家可疊加額外生命值",
   "serum.biomancy.insomnia_cure": "失眠症解藥",
   "item.biomancy.insomnia_cure": "失眠症解藥",
   "serum.biomancy.insomnia_cure.tooltip": "重設最後一次的睡眠時間，你將有一段時間不再需要睡眠\n誰還要咖啡？",
