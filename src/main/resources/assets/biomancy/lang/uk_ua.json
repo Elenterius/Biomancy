@@ -39,5 +39,7 @@
   "item.biomancy.stone_powder.tooltip": "Надзвичайно простий компонент для крафту, зазвичай отримується як побічний продукт під час розкладання предметів.",
   "item.biomancy.nutrients": "Поживні речовини",
   "item.biomancy.nutrients.tooltip": ".",
-  "item.biomancy.bloomberry.tooltip": "Рідкісний делікатес, який володіє біолюмінесцентним сяйвом, який при вживанні надає випадковий ефект зілля."
+  "item.biomancy.bloomberry.tooltip": "Рідкісний делікатес, який володіє біолюмінесцентним сяйвом, який при вживанні надає випадковий ефект зілля.",
+  "item.biomancy.acid_grenade.tooltip": "Покриває поверхні шлунковою кислотою.",
+  "item.biomancy.decay_grenade": "Руйнівна Граната"
 }
