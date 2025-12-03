@@ -41,5 +41,7 @@
   "item.biomancy.nutrients.tooltip": ".",
   "item.biomancy.bloomberry.tooltip": "Рідкісний делікатес, який володіє біолюмінесцентним сяйвом, який при вживанні надає випадковий ефект зілля.",
   "item.biomancy.acid_grenade.tooltip": "Покриває поверхні шлунковою кислотою.",
-  "item.biomancy.decay_grenade": "Руйнівна Граната"
+  "item.biomancy.decay_grenade": "Руйнівна Граната",
+  "item.biomancy.essence.unique_mob": "Унікальна %1$s Есенція",
+  "block.biomancy.fleshkin_pressure_plate.tooltip": "Плотяний млинець. Смачно... \nВін має дві моделі поведінки: або активується лише для свого власника, або працює лише для всіх інших. Клацніть з Shift, щоб змінити його поведінку.\n Ви можете додати нових Користувачів, застосувавши до блоку Есенцію Рівня 3."
 }
