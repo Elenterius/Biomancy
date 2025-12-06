@@ -345,6 +345,7 @@
   "block.biomancy.acid_fluid_block": "Gastric Acid",
   "block.biomancy.acid_cauldron": "Gastric Acid Cauldron",
   "block.biomancy.acid_splatter": "Gastric Acid Splatter",
+  "block.biomancy.volatile_splatter": "Volatile Splatter",
   "block.biomancy.water_gel_block": "Water Gel",
   "block.biomancy.water_gel_block.tooltip": "A hydrating water gel that supplies moisture to mobs and farmland without spilling liquids everywhere.",
   "fluid_type.biomancy.acid": "Acid",
