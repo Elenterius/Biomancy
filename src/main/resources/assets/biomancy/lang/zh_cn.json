@@ -345,6 +345,7 @@
   "block.biomancy.acid_fluid_block": "胃酸",
   "block.biomancy.acid_cauldron": "装有胃酸的炼药锅",
   "block.biomancy.acid_splatter": "胃酸渍",
+  "block.biomancy.volatile_splatter": "易爆渍",
   "block.biomancy.water_gel_block": "水凝胶",
   "block.biomancy.water_gel_block.tooltip": "一种保湿水凝胶，可为生物和耕地提供水分，而不会四处流淌。",
   "fluid_type.biomancy.acid": "酸液",
