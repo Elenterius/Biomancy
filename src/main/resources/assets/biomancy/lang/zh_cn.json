@@ -149,6 +149,7 @@
   "serum.biomancy.cleansing_serum.tooltip": "祛除生物体内一切外来物质。\n对于那些牛奶无法解除的效果非常有效。",
   "serum.biomancy.breeding_stimulant": "配种兴奋剂",
   "item.biomancy.breeding_stimulant": "配种兴奋剂",
+  "serum.biomancy.breeding_stimulant.tooltip": "一种强效药物，可使动物极度亢奋，在短时间内繁殖多次。\n请谨慎使用，滥用此药物将会使后代产生不良突变。",
   "serum.biomancy.absorption_boost": "伤痛反应剂",
   "item.biomancy.absorption_boost": "伤痛反应剂",
   "serum.biomancy.absorption_boost.tooltip": "给予%1$s颗可叠加的伤害吸收黄心，最大可叠加至%2$s颗黄心",
