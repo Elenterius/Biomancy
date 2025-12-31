@@ -84,6 +84,8 @@
   "item.biomancy.acid_bucket": "Balde com Ácido Gástrico",
   "item.biomancy.gelling_agent": "Espessante",
   "item.biomancy.gelling_agent.tooltip": "Uma substância gelatinosa que transforme líquidos em um gel sem alterar seus gostos e outras propriedades importantes. Útil para aumentar a estabilidade de coisas voláteis.",
+  "item.biomancy.grenade_casing": "Casca de Granada\n",
+  "item.biomancy.grenade_casing.tooltip": "Casca externa da granada feita de material orgânico resistente projetada para se romper e detonar no impacto.",
   "item.biomancy.toxin_grenade": "Granada de Toxinas",
   "item.biomancy.toxin_grenade.tooltip": "Espalha gás tóxico letal.",
   "item.biomancy.acid_grenade": "Granada Ácida ",
@@ -96,5 +98,17 @@
   "item.biomancy.ravenous_claws.tooltip": "Garras extremamente famintas e ferozes forjadas ao deixar carne viva morrendo de fome e fazendo garras sobre ela.\n\nRepare as garras esfomeadas ao alimentá-las com comida do inventário do jogador, da mesma forma que encher um conjunto.\n\nCargas de sangue são obtidas ao matar monstros com essa arma, as cargas permitem que você use o modo Despertado.",
   "item.biomancy.caustic_gunblade": "Canivete Cáustico",
   "item.biomancy.caustic_gunblade.tooltip": "Um canivete cáustico que pode ser alternado entre modos corpo a corpo e arqueiro e utiliza munição ácida para causar dano em seus alvos.\nA munição ácida regenera automaticamente após 5s sem usá-la.",
-  "item.biomancy.impaler": "Empalador"
+  "item.biomancy.impaler": "Empalador",
+  "item.biomancy.impaler.tooltip": "Uma artilharia montada que dispara lanças de osso reforçadas em alta velocidade. Consumindo abundantes quantidades de pacotes de nutrientes de fibras musculares compactadas e um balão pressurizado selado enche de propulsores voateis.\nPressão insuportável que não pode ser contida aumenta e uma vez que atinja o limite o projétil estoura violentamente.",
+  "item.biomancy.acolyte_armor_helmet": "Elmo do Bio-Alquimista",
+  "item.biomancy.acolyte_armor_chestplate": "Peitoral de placa do Bio-Alquimista",
+  "item.biomancy.acolyte_armor_leggings": "Pernas do Bio-Alquimista",
+  "item.biomancy.acolyte_armor_boots": "Botas do Bio-Alquimista",
+  "item.biomancy.warrior_armor_helmet": "Elmo do Guerreiro",
+  "item.biomancy.warrior_armor_chestplate": "Peitoral de placa do Guerreiro",
+  "item.biomancy.warrior_armor_leggings": "Pernas do Guerreiro",
+  "item.biomancy.warrior_armor_boots": "Botas do Guerreiro",
+  "item.biomancy.thorn_shield": "O Espinho",
+  "item.biomancy.thorn_shield.tooltip": "Escudo fofo, mas espinhoso.",
+  "item.biomancy.extractor": "Extrator de Essência"
 }
