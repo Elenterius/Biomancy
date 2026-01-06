@@ -1,10 +1,12 @@
 package com.github.elenterius.biomancy.item.extractor;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.render.item.extractor.ExtractorRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.item.CrosshairProvider;
 import com.github.elenterius.biomancy.item.EssenceItem;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.KeyPressListener;
@@ -18,6 +20,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -50,7 +53,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ExtractorItem extends Item implements KeyPressListener, ItemTooltipStyleProvider, GeoItem {
+public class ExtractorItem extends Item implements KeyPressListener, ItemTooltipStyleProvider, CrosshairProvider, GeoItem {
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -216,6 +219,13 @@ public class ExtractorItem extends Item implements KeyPressListener, ItemTooltip
 	@Override
 	public AnimatableInstanceCache getAnimatableInstanceCache() {
 		return cache;
+	}
+
+	protected static final ResourceLocation CROSSHAIR = BiomancyMod.rl("textures/gui/extractor_crosshair.png");
+
+	@Override
+	public ResourceLocation getCrosshairTexture(ItemStack stack, Player player) {
+		return CROSSHAIR;
 	}
 
 	protected static class Animations {

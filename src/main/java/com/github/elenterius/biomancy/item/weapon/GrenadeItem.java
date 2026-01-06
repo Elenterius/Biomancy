@@ -1,9 +1,12 @@
 package com.github.elenterius.biomancy.item.weapon;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.projectile.GrenadeProjectile;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.item.CrosshairProvider;
 import com.github.elenterius.biomancy.item.SimpleItem;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -12,7 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class GrenadeItem extends SimpleItem {
+public class GrenadeItem extends SimpleItem implements CrosshairProvider {
 
 	public static final int COOL_DOWN_TICKS = 20;
 
@@ -46,6 +49,13 @@ public class GrenadeItem extends SimpleItem {
 		}
 
 		return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+	}
+
+	protected static final ResourceLocation CROSSHAIR = BiomancyMod.rl("textures/gui/grenade_crosshair.png");
+
+	@Override
+	public ResourceLocation getCrosshairTexture(ItemStack stack, Player player) {
+		return CROSSHAIR;
 	}
 
 }

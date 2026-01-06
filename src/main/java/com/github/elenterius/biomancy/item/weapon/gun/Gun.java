@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.item.weapon.gun;
 
+import com.github.elenterius.biomancy.item.CrosshairProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -12,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public interface Gun {
+public interface Gun extends CrosshairProvider {
 
 	int ONE_SECOND_IN_TICKS = 20;
 	int ONE_HOUR_IN_TICKS = 60 * 60 * 20;

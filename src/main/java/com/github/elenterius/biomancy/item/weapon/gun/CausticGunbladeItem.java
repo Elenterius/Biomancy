@@ -20,6 +20,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -453,6 +454,13 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 		Animations.registerControllers(this, controllers);
+	}
+
+	protected static final ResourceLocation CROSSHAIR = BiomancyMod.rl("textures/gui/gunblade_crosshair.png");
+
+	@Override
+	public ResourceLocation getCrosshairTexture(ItemStack stack, Player player) {
+		return CROSSHAIR;
 	}
 
 	public interface ItemAbility {

@@ -31,7 +31,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -46,9 +45,8 @@ public final class ScreenOverlays {
 
 	//hud overlays
 	public static final ResourceLocation INJECTOR_COOL_DOWN = BiomancyMod.rl("textures/gui/indicator_injector_cooldown.png");
-	public static final ResourceLocation ORNATE_CORNER_BOTTOM_RIGHT = BiomancyMod.rl("textures/gui/ornate_corner_br.png");
 	public static final ResourceLocation CHARGE_BAR = BiomancyMod.rl("textures/gui/charge_bar.png");
-	public static final ResourceLocation ATTACK_REACH = BiomancyMod.rl("textures/gui/indicator_attack_reach.png");
+	//	public static final ResourceLocation ATTACK_REACH = BiomancyMod.rl("textures/gui/indicator_attack_reach.png");
 
 	//fullscreen overlays
 	public static final ResourceLocation VEINS = BiomancyMod.rl("textures/gui/overlay/veins.png");
@@ -225,6 +223,8 @@ public final class ScreenOverlays {
 		renderAmmoOverlay(guiGraphics, gui.getFont(), screenWidth, screenHeight, zDepth, stack, gun);
 
 		if (GuiUtil.isFirstPersonView()) {
+			//			ResourceLocation crosshairTexture = gun.getCrosshairTexture(stack, player);
+
 			renderReloadIndicator(guiGraphics, screenWidth, screenHeight, zDepth, player, stack, gun);
 		}
 	}
@@ -249,10 +249,6 @@ public final class ScreenOverlays {
 		}
 	}
 
-	static void renderOrnateCorner(GuiGraphics guiGraphics, int x, int y) {
-		guiGraphics.blit(ORNATE_CORNER_BOTTOM_RIGHT, x, y, 0, 0, 44, 28, 44, 28);
-	}
-
 	static void renderChargeBar(GuiGraphics guiGraphics, Font font, int screenWidth, int screenHeight, int zDepth, int charge, float chargePct) {
 		int x = screenWidth / 2 - 26 + screenWidth % 2; // 51 / 2 + 51 % 2 = 26
 		int y = screenHeight / 2 + 16;
@@ -260,11 +256,11 @@ public final class ScreenOverlays {
 		guiGraphics.blit(CHARGE_BAR, x, y, zDepth, 6, 6, 51, 5, 64, 16); //background
 		guiGraphics.blit(CHARGE_BAR, x, y, zDepth, 6, 11, (int) (chargePct * 51), 5, 64, 16); //foreground
 
-		if (Minecraft.getInstance().crosshairPickEntity instanceof LivingEntity crosshairTarget && crosshairTarget.isAlive()) {
-			x = screenWidth / 2 - 24;
-			y = screenHeight / 2 - 4;
-			guiGraphics.blit(ATTACK_REACH, x, y, zDepth, 0, 0, 48, 16, 48, 16); //ornament
-		}
+		//		if (Minecraft.getInstance().crosshairPickEntity instanceof LivingEntity crosshairTarget && crosshairTarget.isAlive()) {
+		//			x = screenWidth / 2 - 24;
+		//			y = screenHeight / 2 - 4;
+		//			guiGraphics.blit(ATTACK_REACH, x, y, zDepth, 0, 0, 48, 16, 48, 16); //ornament
+		//		}
 
 		//		if (charge <= 0) return;
 		//

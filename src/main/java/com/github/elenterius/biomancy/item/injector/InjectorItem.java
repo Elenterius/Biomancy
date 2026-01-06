@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.item.injector;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.api.serum.SerumContainer;
 import com.github.elenterius.biomancy.api.serum.SerumInjector;
@@ -11,6 +12,7 @@ import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.inventory.InjectorItemInventory;
 import com.github.elenterius.biomancy.inventory.LargeSingleItemStackHandler;
+import com.github.elenterius.biomancy.item.CrosshairProvider;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.item.armor.AcolyteArmorItem;
@@ -28,6 +30,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -72,7 +75,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class InjectorItem extends Item implements SerumInjector, ItemTooltipStyleProvider, KeyPressListener, GeoItem {
+public class InjectorItem extends Item implements SerumInjector, ItemTooltipStyleProvider, CrosshairProvider, KeyPressListener, GeoItem {
 
 	public static final short MAX_SLOT_SIZE = 16;
 	public static final String INVENTORY_TAG = "inventory";
@@ -485,6 +488,13 @@ public class InjectorItem extends Item implements SerumInjector, ItemTooltipStyl
 	public Component getHighlightTip(ItemStack stack, Component displayName) {
 		Serum serum = getSerum(stack);
 		return serum.isEmpty() ? displayName : ComponentUtil.mutable().append(displayName).append(" (").append(serum.getDisplayName(getSerumData(stack))).append(")");
+	}
+
+	protected static final ResourceLocation CROSSHAIR = BiomancyMod.rl("textures/gui/injector_crosshair.png");
+
+	@Override
+	public ResourceLocation getCrosshairTexture(ItemStack stack, Player player) {
+		return CROSSHAIR;
 	}
 
 	protected static final String NEEDLE_CONTROLLER = "needle";
