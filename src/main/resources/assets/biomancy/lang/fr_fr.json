@@ -115,5 +115,6 @@
   "item.biomancy.genetic_compound.tooltip": "Un cocktail de différentes hormones, nutriments et éléments organiques. Il semble être utile pour produire de puissants stimulants.",
   "block.biomancy.primordial_cradle": "Berceau Primordial",
   "block.biomancy.flesh_spike.tooltip": "Un piège mortel confectionné à partir d'une agglutination d'os renforcé et de tendons. À manipuler avec prudence, le moindre contact provoque d'intenses douleurs.\n\nPlusieurs pics peuvent être soigneusement placés au même endroit, augmentant la létalité.",
-  "block.biomancy.bio_lantern_yellow": "Bio-Lanterne jaune"
+  "block.biomancy.bio_lantern_yellow": "Bio-Lanterne jaune",
+  "block.biomancy.primal_permeable_membrane": "Membrane Primordiale"
 }
