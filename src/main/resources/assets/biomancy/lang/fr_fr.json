@@ -1,6 +1,7 @@
 {
   "creative_tab.biomancy.main": "Biomancy",
   "creative_tab.biomancy.bio_alchemy": "Biomancy: Bio-Alchimie",
+  "creative_tab.biomancy.dev": "Biomancy: Outils de dev",
   "item.biomancy.mob_sinew": "Tendon",
   "item.biomancy.mob_sinew.tooltip": "Tissu fait de fibres élastiques.",
   "item.biomancy.mob_fang": "Croc pointu",
