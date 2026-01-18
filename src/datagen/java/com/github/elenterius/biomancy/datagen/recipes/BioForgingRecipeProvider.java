@@ -321,7 +321,7 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.TOOLS)
 				.unlockedBy(ModItems.GRENADE_CASING.get()).save(consumer);
 
-		BioForgingRecipeBuilder.create(ModItems.INCENDIARY_GRENADE.get())
+		BioForgingRecipeBuilder.create(ModItems.VOLATILE_GRENADE.get())
 				.addIngredient(ModItems.GRENADE_CASING.get(), 1)
 				.addIngredient(ModItems.GELLING_AGENT.get(), 1)
 				.addIngredient(ModItems.UNSTABLE_COMPOUND.get(), 2)

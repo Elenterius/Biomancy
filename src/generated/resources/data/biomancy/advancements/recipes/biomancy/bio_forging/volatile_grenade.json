@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomancy:bio_forging/incendiary_grenade"
+        "recipe": "biomancy:bio_forging/volatile_grenade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "biomancy:bio_forging/incendiary_grenade"
+      "biomancy:bio_forging/volatile_grenade"
     ]
   },
   "sends_telemetry_event": false

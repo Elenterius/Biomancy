@@ -567,7 +567,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.TOXIN_GRENADE, "Toxin Grenade", "Spreads lethal toxin gas.");
 		addItem(ModItems.ACID_GRENADE, "Acid Grenade", "Covers surfaces in gastric acid.");
 		addItem(ModItems.DECAY_GRENADE, "Decay Grenade", "Decays all soft organic matter such as plants and flesh.");
-		addItem(ModItems.INCENDIARY_GRENADE, "Incendiary Grenade", "Spreads fire and is more effective against flammable blocks.");
+		addItem(ModItems.VOLATILE_GRENADE, "Volatile Grenade", "Explodes and spreads patches of volatile goo.");
 
 		addItem(ModItems.RAVENOUS_CLAWS, "Ravenous Claws", """
 				Extremely hungry and vicious Claws forged by starving living flesh and grafting claws onto it.

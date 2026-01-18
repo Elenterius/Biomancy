@@ -99,7 +99,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		Set<Item> advancedTypes = Set.of(
 				ModItems.ACID_GRENADE.get(),
 				ModItems.DECAY_GRENADE.get(),
-				ModItems.INCENDIARY_GRENADE.get(),
+				ModItems.VOLATILE_GRENADE.get(),
 				ModItems.TOXIN_GRENADE.get(),
 
 				ModItems.FERTILIZER.get(),

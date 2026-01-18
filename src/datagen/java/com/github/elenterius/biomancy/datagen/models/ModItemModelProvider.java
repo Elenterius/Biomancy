@@ -121,7 +121,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		weaponItem(ModItems.TOXIN_GRENADE);
 		weaponItem(ModItems.ACID_GRENADE);
 		weaponItem(ModItems.DECAY_GRENADE);
-		weaponItem(ModItems.INCENDIARY_GRENADE);
+		weaponItem(ModItems.VOLATILE_GRENADE);
 
 		//generate models for all eggs
 		ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(SpawnEggItem.class::isInstance).forEach(this::spawnEggItem);

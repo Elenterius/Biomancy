@@ -106,7 +106,7 @@ public final class ModItems {
 	public static final RegistryObject<GrenadeItem> TOXIN_GRENADE = registerItem("toxin_grenade", GrenadeItem::new);
 	public static final RegistryObject<GrenadeItem> ACID_GRENADE = registerItem("acid_grenade", GrenadeItem::new);
 	public static final RegistryObject<GrenadeItem> DECAY_GRENADE = registerItem("decay_grenade", GrenadeItem::new);
-	public static final RegistryObject<GrenadeItem> INCENDIARY_GRENADE = registerItem("incendiary_grenade", GrenadeItem::new);
+	public static final RegistryObject<GrenadeItem> VOLATILE_GRENADE = registerItem("volatile_grenade", GrenadeItem::new);
 
 	//# Shield
 	public static final RegistryObject<ThornShieldItem> THORN_SHIELD = registerItem("thorn_shield", props -> new ThornShieldItem(250, props.stacksTo(1).rarity(ModRarities.VERY_RARE)));

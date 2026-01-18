@@ -94,7 +94,7 @@ public class GrenadeProjectile extends ThrowableItemProjectile {
 			else if (item == ModItems.DECAY_GRENADE.get()) {
 				ExplosionUtil.explodeDecay(serverLevel, this, getX(), getY(), getZ(), 4.5f, Level.ExplosionInteraction.TNT);
 			}
-			else if (item == ModItems.INCENDIARY_GRENADE.get()) {
+			else if (item == ModItems.VOLATILE_GRENADE.get()) {
 				ExplosionUtil.explodeIncendiary(serverLevel, this, getX(), getY(), getZ(), 3.5f, Level.ExplosionInteraction.TNT);
 			}
 

@@ -31,12 +31,10 @@
     "biomancy:extractor",
     "biomancy:fertilizer",
     "biomancy:frenzy_serum",
-    "biomancy:incendiary_grenade",
     "biomancy:injector",
     "biomancy:insomnia_cure",
     "biomancy:potion_serum",
     "biomancy:rejuvenation_serum",
-    "biomancy:shrinking_serum",
-    "biomancy:toxin_grenade"
+    "biomancy:shrinking_serum", "biomancy:toxin_grenade", "biomancy:volatile_grenade"
   ]
 }

@@ -128,7 +128,7 @@ public final class CommonSetupHandler {
 		DispenserBlock.registerBehavior(ModItems.TOXIN_GRENADE.get(), grenadeDispenseBehavior);
 		DispenserBlock.registerBehavior(ModItems.ACID_GRENADE.get(), grenadeDispenseBehavior);
 		DispenserBlock.registerBehavior(ModItems.DECAY_GRENADE.get(), grenadeDispenseBehavior);
-		DispenserBlock.registerBehavior(ModItems.INCENDIARY_GRENADE.get(), grenadeDispenseBehavior);
+		DispenserBlock.registerBehavior(ModItems.VOLATILE_GRENADE.get(), grenadeDispenseBehavior);
 	}
 
 }
