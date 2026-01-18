@@ -74,6 +74,16 @@ legacyForge {
 			programArguments = ['--username', 'Dev2']
 		}
 
+		//copy code in console and open link to authorize link with microsoft minecraft account
+		clientAuth {
+			client()
+			gameDirectory = project.file('runs/client')
+			devLogin = true
+
+			// Hot-Swapping via JBR, includes schema changes
+			jvmArguments = ["-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition"]
+		}
+
 		server {
 			server()
 			gameDirectory = project.file('runs/server')
