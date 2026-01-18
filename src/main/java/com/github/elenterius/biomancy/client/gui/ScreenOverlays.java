@@ -45,8 +45,8 @@ public final class ScreenOverlays {
 
 	//hud overlays
 	public static final ResourceLocation INJECTOR_COOL_DOWN = BiomancyMod.rl("textures/gui/indicator_injector_cooldown.png");
-	public static final ResourceLocation CHARGE_BAR = BiomancyMod.rl("textures/gui/charge_bar.png");
-	//	public static final ResourceLocation ATTACK_REACH = BiomancyMod.rl("textures/gui/indicator_attack_reach.png");
+	public static final ResourceLocation BLOOD_CHARGE_METER = BiomancyMod.rl("textures/gui/blood_charge_meter.png");
+	public static final int BLOOD_CHARGE_METER_FRAMES = 5;
 
 	//fullscreen overlays
 	public static final ResourceLocation VEINS = BiomancyMod.rl("textures/gui/overlay/veins.png");
@@ -141,7 +141,7 @@ public final class ScreenOverlays {
 
 			if (GuiUtil.isFirstPersonView()) {
 				gui.setupOverlayRenderState(true, false);
-				renderChargeBar(guiGraphics, gui.getFont(), screenWidth, screenHeight, -90, abilityCharge.getCharge(stack), abilityCharge.getChargePct(stack));
+				renderBloodChargeMeter(guiGraphics, gui.getFont(), screenWidth, screenHeight, -90, abilityCharge.getCharge(stack), abilityCharge.getChargePct(stack));
 			}
 		}
 	};
@@ -249,12 +249,11 @@ public final class ScreenOverlays {
 		}
 	}
 
-	static void renderChargeBar(GuiGraphics guiGraphics, Font font, int screenWidth, int screenHeight, int zDepth, int charge, float chargePct) {
-		int x = screenWidth / 2 - 26 + screenWidth % 2; // 51 / 2 + 51 % 2 = 26
-		int y = screenHeight / 2 + 16;
+	static void renderBloodChargeMeter(GuiGraphics guiGraphics, Font font, int screenWidth, int screenHeight, int zDepth, int charge, float chargePct) {
+		int x = (screenWidth - 31) / 2 + screenWidth % 2;
+		int y = (screenHeight - 31) / 2;
 
-		guiGraphics.blit(CHARGE_BAR, x, y, zDepth, 6, 6, 51, 5, 64, 16); //background
-		guiGraphics.blit(CHARGE_BAR, x, y, zDepth, 6, 11, (int) (chargePct * 51), 5, 64, 16); //foreground
+		guiGraphics.blit(BLOOD_CHARGE_METER, x, y, zDepth, 0, (int) (chargePct * (BLOOD_CHARGE_METER_FRAMES - 1)) * 31, 31, 31, 31, 31 * 5);
 
 		//		if (Minecraft.getInstance().crosshairPickEntity instanceof LivingEntity crosshairTarget && crosshairTarget.isAlive()) {
 		//			x = screenWidth / 2 - 24;
@@ -263,16 +262,6 @@ public final class ScreenOverlays {
 		//		}
 
 		//		if (charge <= 0) return;
-		//
-		//		String number = String.valueOf(charge);
-		//		int pX = x + 26 - font.width(number) / 2;
-		//		int pY = y - 5 - 4;
-		//
-		//		guiGraphics.drawString(font, number, pX + 1, pY, 0);
-		//		guiGraphics.drawString(font, number, pX - 1, pY, 0);
-		//		guiGraphics.drawString(font, number, pX, pY + 1, 0);
-		//		guiGraphics.drawString(font, number, pX, pY - 1, 0);
-		//		guiGraphics.drawString(font, number, pX, pY, 0xac0404);
 	}
 
 	static void renderReloadIndicator(GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun gun) {
