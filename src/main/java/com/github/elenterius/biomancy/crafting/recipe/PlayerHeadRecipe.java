@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.crafting.recipe;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.item.EssenceItem;
@@ -63,6 +64,8 @@ public class PlayerHeadRecipe extends CustomRecipe {
 	@Override
 	public ItemStack assemble(CraftingContainer inventory, RegistryAccess registryAccess) {
 		UUID uuid = null;
+		String playerName = null;
+
 		boolean hasPlayerHead = false;
 		boolean hasExoticDust = false;
 
@@ -86,20 +89,22 @@ public class PlayerHeadRecipe extends CustomRecipe {
 				}
 				if (essenceItem.getEntityType(stack).filter(entityType -> entityType == EntityType.PLAYER).isPresent()) {
 					uuid = essenceItem.getEntityUUID(stack).orElse(null);
+					playerName = stack.getOrCreateTag().getString(EssenceItem.PLAYER_NAME_KEY);
 				}
 			}
 			else return ItemStack.EMPTY;
 		}
 
-		return hasPlayerHead && uuid != null && hasExoticDust ? createPlayerHeadFrom(uuid) : ItemStack.EMPTY;
+		return hasPlayerHead && uuid != null && hasExoticDust ? createPlayerHeadFrom(uuid, playerName) : ItemStack.EMPTY;
 	}
 
-	private ItemStack createPlayerHeadFrom(UUID uuid) {
-		GameProfile gameProfile = new GameProfile(uuid, null);
-
+	private ItemStack createPlayerHeadFrom(UUID uuid, String playerName) {
 		ItemStack stack = Items.PLAYER_HEAD.getDefaultInstance();
+
 		CompoundTag tag = stack.getOrCreateTag();
-		tag.put(PlayerHeadItem.TAG_SKULL_OWNER, NbtUtils.writeGameProfile(new CompoundTag(), gameProfile));
+		tag.put(PlayerHeadItem.TAG_SKULL_OWNER, NbtUtils.writeGameProfile(new CompoundTag(), new GameProfile(uuid, playerName)));
+		tag.putBoolean(BiomancyMod.MOD_ID, true);
+		stack.getItem().verifyTagAfterLoad(tag);
 
 		return stack;
 	}

@@ -9,8 +9,8 @@
   },
   "mixins": [
     "AnimalMixin", "AreaEffectCloudMixin", "ArrowMixin", "ExplosionMixin", "FlowingFluidMixin", "HoneyBottleItemMixin", "ItemEntityMixin", "LivingEntityMixin",
-    "MobEffectInstanceMixin", "NodeEvaluatorMixin", "PhantomMixin", "PlayerMixin", "ServerGamePacketListenerImplMixin", "ServerLevelMixin",
-    "SignBlockEntityMixin", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "VillagerMakeLoveMixin", "VillagerMixin", "WallBlockMixin",
+    "MobEffectInstanceMixin", "NodeEvaluatorMixin", "PhantomMixin", "PlayerHeadItemMixin", "PlayerMixin", "ServerGamePacketListenerImplMixin",
+    "ServerLevelMixin", "SignBlockEntityMixin", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "VillagerMakeLoveMixin", "VillagerMixin", "WallBlockMixin",
     "accessor.AgeableMobAccessor", "accessor.AnimalAccessor", "accessor.ArmorItemAccessor", "accessor.ArmorStandAccessor", "accessor.BiomeAccessor",
     "accessor.CreeperAccessor", "accessor.DamageSourceAccessor", "accessor.DimensionDataStorageAccessor", "accessor.DisplayAccessor", "accessor.EntityAccessor",
     "accessor.ExplosionAccessor", "accessor.IngredientAccessor", "accessor.IntegerPropertyAccessor", "accessor.LivingEntityAccessor",
