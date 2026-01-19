@@ -65,6 +65,16 @@ public class DecayExplosion extends GenericExplosion {
 	}
 
 	@Override
+	protected void hurtEntity(Entity entity, float amount) {
+		entity.hurt(getDamageSource(), amount * 0.25f);
+	}
+
+	@Override
+	protected double getKnockbackStrength(Entity entity, double nearExplosionPercent) {
+		return super.getKnockbackStrength(entity, nearExplosionPercent) * 0.25d;
+	}
+
+	@Override
 	public void finalizeExplosion(boolean spawnParticles) {
 		if (level.isClientSide) {
 			level.playLocalSound(x, y, z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4f, (1f + (level.random.nextFloat() - level.random.nextFloat()) * 0.2f) * 0.7f, false);
