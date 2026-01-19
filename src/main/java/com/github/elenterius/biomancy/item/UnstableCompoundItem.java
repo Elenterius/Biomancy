@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.mixin.accessor.CreeperAccessor;
-import com.github.elenterius.biomancy.util.ExplosionUtil;
+import com.github.elenterius.biomancy.util.explosion.ExplosionUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -35,7 +35,7 @@ public class UnstableCompoundItem extends SimpleItem {
 		float explosionRadius = 0.5f + (itemEntity.getItem().getCount() / 64f) * 1.5f;
 		float multiplier = isBurning ? 2f : 1f;
 
-		ExplosionUtil.explodeIncendiary(itemEntity.level(), itemEntity, explosionRadius * multiplier, Level.ExplosionInteraction.TNT);
+		ExplosionUtil.explodeVolatile(itemEntity.level(), itemEntity, explosionRadius * multiplier, Level.ExplosionInteraction.TNT);
 
 		itemEntity.discard();
 	}

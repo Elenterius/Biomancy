@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.network;
 
 import com.github.elenterius.biomancy.mixin.accessor.ExplosionAccessor;
-import com.github.elenterius.biomancy.util.ExplosionUtil;
+import com.github.elenterius.biomancy.util.explosion.ExplosionType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 //client bound message
 public class CustomExplosionMessage {
 
-	private final ExplosionUtil.ExplosionType type;
+	private final ExplosionType type;
 	private final @Nullable Integer sourceId;
 
 	private final double x;
@@ -35,7 +35,7 @@ public class CustomExplosionMessage {
 	private final float knockbackY;
 	private final float knockbackZ;
 
-	public CustomExplosionMessage(ExplosionUtil.ExplosionType type, Explosion explosion, ServerPlayer serverPlayer) {
+	public CustomExplosionMessage(ExplosionType type, Explosion explosion, ServerPlayer serverPlayer) {
 		this.type = type;
 
 		Entity source = explosion.getDirectSourceEntity();
@@ -63,7 +63,7 @@ public class CustomExplosionMessage {
 		}
 	}
 
-	public CustomExplosionMessage(ExplosionUtil.ExplosionType type, @Nullable Integer sourceId, double x, double y, double z, float radius, List<BlockPos> toBlow, float knockbackX, float knockbackY, float knockbackZ) {
+	public CustomExplosionMessage(ExplosionType type, @Nullable Integer sourceId, double x, double y, double z, float radius, List<BlockPos> toBlow, float knockbackX, float knockbackY, float knockbackZ) {
 		this.type = type;
 		this.sourceId = sourceId;
 		this.x = x;
@@ -87,7 +87,7 @@ public class CustomExplosionMessage {
 	}
 
 	public void encode(final FriendlyByteBuf buffer) {
-		buffer.writeByte(type.id());
+		buffer.writeEnum(type);
 
 		if (sourceId != null) {
 			buffer.writeBoolean(true);
@@ -117,7 +117,7 @@ public class CustomExplosionMessage {
 	}
 
 	public static CustomExplosionMessage decode(final FriendlyByteBuf buffer) {
-		ExplosionUtil.ExplosionType type = ExplosionUtil.ExplosionType.fromId(buffer.readByte());
+		ExplosionType type = buffer.readEnum(ExplosionType.class);
 
 		Integer sourceId = null;
 		if (buffer.readBoolean()) {

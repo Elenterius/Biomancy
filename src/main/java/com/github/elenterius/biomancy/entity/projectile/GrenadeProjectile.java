@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.entity.projectile;
 
 import com.github.elenterius.biomancy.entity.misc.GasCloud;
 import com.github.elenterius.biomancy.init.*;
-import com.github.elenterius.biomancy.util.ExplosionUtil;
+import com.github.elenterius.biomancy.util.explosion.ExplosionUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -95,7 +95,7 @@ public class GrenadeProjectile extends ThrowableItemProjectile {
 				ExplosionUtil.explodeDecay(serverLevel, this, getX(), getY(), getZ(), 4.5f, Level.ExplosionInteraction.TNT);
 			}
 			else if (item == ModItems.VOLATILE_GRENADE.get()) {
-				ExplosionUtil.explodeIncendiary(serverLevel, this, getX(), getY(), getZ(), 3.5f, Level.ExplosionInteraction.TNT);
+				ExplosionUtil.explodeVolatile(serverLevel, this, getX(), getY(), getZ(), 3.5f, Level.ExplosionInteraction.TNT);
 			}
 
 			serverLevel.broadcastEntityEvent(this, ITEM_BREAK_EVENT);

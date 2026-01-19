@@ -6,8 +6,8 @@ import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.tags.ModDamageTypeTags;
 import com.github.elenterius.biomancy.item.CriticalHitListener;
 import com.github.elenterius.biomancy.item.armor.LivingArmorItem;
-import com.github.elenterius.biomancy.util.ExplosionUtil;
 import com.github.elenterius.biomancy.util.OneShotTaskWorker;
+import com.github.elenterius.biomancy.util.explosion.ExplosionUtil;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,7 +44,7 @@ public final class AttackHandler {
 			OneShotTaskWorker.onNextTick(livingEntity, living -> {
 				living.removeEffect(ModMobEffects.VOLATILE.get());
 				float radius = 3f - living.getArmorCoverPercentage() * 1.5f;
-				ExplosionUtil.explodeIncendiary(living.level(), living, radius, Level.ExplosionInteraction.MOB);
+				ExplosionUtil.explodeVolatile(living.level(), living, radius, Level.ExplosionInteraction.MOB);
 			});
 		}
 

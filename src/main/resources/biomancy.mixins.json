@@ -8,7 +8,7 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "AnimalMixin", "AreaEffectCloudMixin", "ArrowMixin", "ExplosionMixin", "FlowingFluidMixin", "HoneyBottleItemMixin", "ItemEntityMixin", "LivingEntityMixin",
+    "AnimalMixin", "AreaEffectCloudMixin", "ArrowMixin", "FlowingFluidMixin", "HoneyBottleItemMixin", "ItemEntityMixin", "LivingEntityMixin",
     "MobEffectInstanceMixin", "NodeEvaluatorMixin", "PhantomMixin", "PlayerHeadItemMixin", "PlayerMixin", "ServerGamePacketListenerImplMixin",
     "ServerLevelMixin", "SignBlockEntityMixin", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "VillagerMakeLoveMixin", "VillagerMixin", "WallBlockMixin",
     "accessor.AgeableMobAccessor", "accessor.AnimalAccessor", "accessor.ArmorItemAccessor", "accessor.ArmorStandAccessor", "accessor.BiomeAccessor",

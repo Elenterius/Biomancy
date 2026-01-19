@@ -3,8 +3,8 @@ package com.github.elenterius.biomancy.network;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.crafting.recipe.BioForgingRecipe;
 import com.github.elenterius.biomancy.mixin.accessor.ExplosionAccessor;
-import com.github.elenterius.biomancy.util.ExplosionUtil;
 import com.github.elenterius.biomancy.util.ItemStackFilterList;
+import com.github.elenterius.biomancy.util.explosion.ExplosionType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -45,7 +45,7 @@ public final class ModNetworkHandler {
 		SIMPLE_NETWORK_CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new BioLabFilterMessage(containerId, filters));
 	}
 
-	public static void sendCustomExplosionToClients(ServerLevel level, ExplosionUtil.ExplosionType explosionType, Explosion explosion) {
+	public static void sendCustomExplosionToClients(ServerLevel level, ExplosionType explosionType, Explosion explosion) {
 		if (!explosion.interactsWithBlocks()) {
 			explosion.clearToBlow();
 		}
