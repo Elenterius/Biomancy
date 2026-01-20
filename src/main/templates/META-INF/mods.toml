@@ -42,3 +42,10 @@ mandatory = false
 versionRange = "${jei_version_range}"
 ordering = "BEFORE"
 side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "nerb"
+mandatory = false
+versionRange = "[9999+INCOMPATIBLE_WITH_BIOMANCY,)"
+ordering = "NONE"
+side = "BOTH"
