@@ -88,8 +88,6 @@
   "item.biomancy.acid_grenade.tooltip": "Cubre las superficies con ácido gástrico.",
   "item.biomancy.decay_grenade": "Granada de Decadencia",
   "item.biomancy.decay_grenade.tooltip": "Decae toda materia orgánica blanda como plantas y carne.",
-  "item.biomancy.incendiary_grenade": "Granada Incendiaria",
-  "item.biomancy.incendiary_grenade.tooltip": "Propaga fuego y es más eficaz contra bloques inflamables.",
   "item.biomancy.ravenous_claws": "Garras Voraces",
   "item.biomancy.ravenous_claws.tooltip": "Garras extremadamente hambrientas y feroces forjadas matando carne viva e injertando garras en ella.\n\nRepara las garras hambrientas alimentándolas con comida a través del inventario del jugador como un saco.\n\nMatar creaturas otorga cargas de sangre que te permiten usar el modo despierto.",
   "item.biomancy.caustic_gunblade": "Sable-Pistola Cáustica",
