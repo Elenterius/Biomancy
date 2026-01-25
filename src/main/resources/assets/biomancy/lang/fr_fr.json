@@ -92,8 +92,6 @@
   "item.biomancy.acid_grenade.tooltip": "Couvre les surfaces d'acide gastrique.",
   "item.biomancy.decay_grenade": "Grenade décomposante",
   "item.biomancy.decay_grenade.tooltip": "Décompose les matières organiques telles que les plantes et la chair.",
-  "item.biomancy.incendiary_grenade": "Grenade incendiaire",
-  "item.biomancy.incendiary_grenade.tooltip": "Répand des flammes et est plus efficace contre les blocs inflammables.",
   "item.biomancy.ravenous_claws": "Griffe Vorace",
   "item.biomancy.ravenous_claws.tooltip": "Griffe extrêmement vicieuse et affamée forgée en affamant de la chair vivante et greffant des griffes dessus.\n\nRépare la griffe affamée en la nourrissant de nourriture via votre inventaire, comme vous rempliriez un sac.\n\nTuer des créatures avec ces griffes vous accorde des charges de sang qui vous permettent d'utiliser le mode d'éveil.",
   "item.biomancy.caustic_gunblade": "Fusil-Lame Caustique",
