@@ -92,8 +92,6 @@
   "item.biomancy.acid_grenade.tooltip": "Cobre superfícies de ácido gástrico.",
   "item.biomancy.decay_grenade": "Granada de Decomposição",
   "item.biomancy.decay_grenade.tooltip": "Decompõe toda a matéria orgânica macia como plantas e carnes.",
-  "item.biomancy.incendiary_grenade": "Granada Incendiária",
-  "item.biomancy.incendiary_grenade.tooltip": "Espalha fogo e é mais efetiva contra blocos inflamáveis.",
   "item.biomancy.ravenous_claws": "Garras Vorazes",
   "item.biomancy.ravenous_claws.tooltip": "Garras extremamente famintas e ferozes forjadas ao deixar carne viva morrendo de fome e fazendo garras sobre ela.\n\nRepare as garras esfomeadas ao alimentá-las com comida do inventário do jogador, da mesma forma que encher um conjunto.\n\nCargas de sangue são obtidas ao matar monstros com essa arma, as cargas permitem que você use o modo Despertado.",
   "item.biomancy.caustic_gunblade": "Canivete Cáustico",
