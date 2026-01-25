@@ -14,6 +14,7 @@ public final class ModEntityTags {
 
 	public static final TagKey<EntityType<?>> NOT_CLONEABLE = tag("not_cloneable");
 	public static final TagKey<EntityType<?>> CAPTURING_BY_CHRYSALIS_NOT_ALLOWED = tag("capturing_by_chrysalis_not_allowed");
+	public static final TagKey<EntityType<?>> RESIZING_NOT_ALLOWED = tag("resizing_not_allowed");
 
 	public static final TagKey<EntityType<?>> FLESHKIN = tag("fleshkin");
 	public static final TagKey<EntityType<?>> FLESHKIN_IGNORES = tag("fleshkin_ignores");

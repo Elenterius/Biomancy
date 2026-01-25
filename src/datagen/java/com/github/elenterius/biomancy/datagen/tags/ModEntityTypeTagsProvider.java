@@ -60,6 +60,8 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 				.addOptional(ACEntityRegistry.GUM_WORM, ACEntityRegistry.TREMORZILLA, ACEntityRegistry.HULLBREAKER, ACEntityRegistry.FORSAKEN)
 				.addOptional(AMEntityRegistry.VOID_WORM);
 
+		createTag(ModEntityTags.RESIZING_NOT_ALLOWED);
+
 		createTag(ModEntityTags.FLESHKIN).add(
 				ModEntityTypes.FLESH_BLOB.get(), ModEntityTypes.HUNGRY_FLESH_BLOB.get(), ModEntityTypes.LEGACY_FLESH_BLOB.get(),
 				ModEntityTypes.PRIMORDIAL_FLESH_BLOB.get(), ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get(),

@@ -4,11 +4,10 @@ The mod registers new [Tags](https://minecraft.wiki/w/Tag) which can be added to
 
 ## Item Tags
 
-- `biomancy:raw_meats`
-  Food Items that are made of raw meat. This tag is primarily used by the Primordial Cradle to determine if the food is valid biomass.
-
-- `biomancy:cooked_meats`
-  Food Items that are made of cooked meat. This tag is primarily used by the Primordial Cradle to determine if the food is invalid biomass.
+| tag                     | description                                                                                                                               |
+|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| `biomancy:raw_meats`    | Food Items that are made of raw meat. This tag is primarily used by the Primordial Cradle to determine if the food is valid biomass.      |
+| `biomancy:cooked_meats` | Food Items that are made of cooked meat. This tag is primarily used by the Primordial Cradle to determine if the food is invalid biomass. |
 
 ### For Crafting
 
@@ -17,24 +16,24 @@ The mod registers new [Tags](https://minecraft.wiki/w/Tag) which can be added to
 
 ### Primordial Cradle
 
-- `biomancy:cannot_be_eaten_by_cradle` (since v2.2.8.0)
-  Prevents the item from being consumed & destroyed by the Primordial Cradle.
+| tag                                  | available since | description                                                                 |
+|--------------------------------------|-----------------|-----------------------------------------------------------------------------|
+| `biomancy:cannot_be_eaten_by_cradle` | v2.2.8.0        | Prevents the item from being consumed & destroyed by the Primordial Cradle. |
 
 ## Block Tags
 
-- `biomancy:primordial_ecosystem_replaceable` (**removed** in v2.3.0.0)
-  Blocks that can be replaced with malignant or primal flesh by the spread of malignant flesh veins.
-
-- `biomancy:flesh_replaceable` (since v2.3.0.0)
-  Blocks that can be destroyed by the flesh mound growth and potentially be replaced with malignant or primal flesh by the spread of malignant flesh veins.
-
-- `biomancy:acid_destructible` (since v2.3.0.0)
-  Blocks that can be destroy by acid fluid on random tick.
-
-- `biomancy:allow_veins_to_attach` (since v2.3.0.0)
-  Force allows flesh veins to attach to these blocks. (this is especially useful for blocks with non-sturdy faces or odd collision box shapes, e.g. farmland)
-
-- `biomancy:disallow_veins_to_attach` (since v2.3.0.0)
-  Blocks that should never be covered with flesh veins.
+| tag                                         | available since         | description                                                                                                                                                 |
+|---------------------------------------------|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `biomancy:primordial_ecosystem_replaceable` | **removed** in v2.3.0.0 | ~~Blocks that can be replaced with malignant or primal flesh by the spread of malignant flesh veins.~~                                                      |
+| `biomancy:flesh_replaceable`                | v2.3.0.0                | Blocks that can be destroyed by the flesh mound growth and potentially be replaced with malignant or primal flesh by the spread of malignant flesh veins.   |
+| `biomancy:acid_destructible`                | v2.3.0.0                | Blocks that can be destroy by acid fluid on random tick.                                                                                                    |
+| `biomancy:allow_veins_to_attach`            | v2.3.0.0                | Force allows flesh veins to attach to these blocks. (this is especially useful for blocks with non-sturdy faces or odd collision box shapes, e.g. farmland) |
+| `biomancy:disallow_veins_to_attach`         | v2.3.0.0                | Blocks that should never be covered with flesh veins.                                                                                                       |
 
 ## Entity Type Tags (Mobs)
+
+| tag                                           | available since | description                                                                                                    |
+|-----------------------------------------------|-----------------|----------------------------------------------------------------------------------------------------------------|
+| `biomancy:fleshkin_ignores`                   |                 | Which mobs are not attack by hostile fleshkin mobs (Flesh Blob, Flesh Pig, etc.)                               |
+| `biomancy:capturing_by_chrysalis_not_allowed` | v2.8.29.0       | Which mobs are not capturable with the [](@biomancy:chrysalis)                                                 |
+| `biomancy:resizing_not_allowed`	              | v2.9.9.0        | Which mobs are not allowed to be resized with [](@biomancy:enlargement_serum) or [](@biomancy:shrinking_serum) |

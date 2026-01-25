@@ -6,6 +6,8 @@ import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.integration.pehkui.PehkuiHelper;
 import com.github.elenterius.biomancy.mixin.accessor.ArmorStandAccessor;
 import com.github.elenterius.biomancy.mixin.accessor.SlimeAccessor;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.util.MobUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -55,6 +57,13 @@ public class ShrinkingSerum extends BasicSerum {
 
 	@Override
 	public boolean canAffectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+		if (!MobUtil.isResizable(target)) {
+			if (source instanceof Player player && !player.level().isClientSide) {
+				player.displayClientMessage(TextComponentUtil.getFailureMsgText("mob_too_powerful"), true);
+			}
+			return false;
+		}
+
 		return target instanceof Mob || target instanceof Player;
 	}
 
@@ -76,6 +85,11 @@ public class ShrinkingSerum extends BasicSerum {
 
 	@Override
 	public boolean canAffectPlayerSelf(CompoundTag tag, Player targetSelf) {
+		if (!MobUtil.isResizable(targetSelf)) {
+			targetSelf.displayClientMessage(TextComponentUtil.getFailureMsgText("mob_too_powerful"), true);
+			return false;
+		}
+
 		return true;
 	}
 

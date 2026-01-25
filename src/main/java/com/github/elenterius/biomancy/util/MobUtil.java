@@ -37,6 +37,10 @@ public final class MobUtil {
 
 	private MobUtil() {}
 
+	public static boolean isResizable(LivingEntity entity) {
+		return !entity.getType().is(ModEntityTags.RESIZING_NOT_ALLOWED);
+	}
+
 	public static boolean isCreativePlayer(LivingEntity entity) {
 		return entity instanceof Player player && player.getAbilities().instabuild;
 	}
