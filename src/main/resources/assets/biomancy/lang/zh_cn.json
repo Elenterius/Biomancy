@@ -94,8 +94,6 @@
   "item.biomancy.acid_grenade.tooltip": "以胃酸覆盖方块表面。",
   "item.biomancy.decay_grenade": "腐烂手雷",
   "item.biomancy.decay_grenade.tooltip": "使所有柔软的有机物（例如植物和肉）腐烂。",
-  "item.biomancy.incendiary_grenade": "燃烧手雷",
-  "item.biomancy.incendiary_grenade.tooltip": "散布火焰，可燃方块更容易被引燃。",
   "item.biomancy.ravenous_claws": "饥馑利爪",
   "item.biomancy.ravenous_claws.tooltip": "极度饥饿而邪恶的利爪，由鲜活血肉锻造而成，移植有许多尖锐的利爪。\n\n在物品栏内给其喂食即可修复，操作方法与收纳袋类似。\n\n击杀生物可获得血能，积累足够的血能即可将其唤醒。",
   "item.biomancy.caustic_gunblade": "腐蚀枪刃",
