@@ -1,9 +1,11 @@
 {
+  "key.biomancy.off_hand_item_action": "Nebenhand Item Aktion",
   "item.biomancy.mob_sinew": "Sehne",
   "item.biomancy.mob_sinew.tooltip": "Gewebe aus elastischen Fasern.",
   "item.biomancy.mob_fang": "Reißzahn",
   "item.biomancy.mob_fang.tooltip": "Eckzahn aus mineralreichem Gewebe.",
   "item.biomancy.mob_claw": "Scharfe Klaue",
+  "item.biomancy.mob_claw.tooltip": "..",
   "item.biomancy.mob_marrow": "Knochenmark",
   "item.biomancy.withered_mob_marrow": "Verdorbener Knochenmark",
   "item.biomancy.flesh_bits": "Fleischstückchen",
