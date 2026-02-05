@@ -42,19 +42,44 @@ public class WikiDespoilLootProvider implements DataProvider {
 
 		Set<String> fileNames = despoilLootProvider.despoilDropSources.entrySet().stream()
 				.map(entry -> {
-					String baseName = baseFileName(entry.getKey());
-					mobTokens.put(baseName, entry.getValue().stream().map(this::contentLink).sorted().collect(Collectors.joining(" • ")));
-					return baseName;
+					String fileName = baseFileName(entry.getKey());
+
+					Map<String, Set<ResourceLocation>> namespacedMobs = new HashMap<>();
+					for (EntityType<?> entityType : entry.getValue()) {
+						ResourceLocation key = key(entityType);
+						namespacedMobs.computeIfAbsent(key.getNamespace(), k -> new HashSet<>()).add(key);
+					}
+
+					StringBuilder builder = new StringBuilder();
+
+					if (namespacedMobs.containsKey("minecraft")) {
+						builder.append("### minecraft\n\n");
+						String content = namespacedMobs.get("minecraft").stream().map(this::contentLink).sorted().collect(Collectors.joining(" • "));
+						builder.append(content).append("\n\n");
+
+						namespacedMobs.remove("minecraft");
+					}
+
+					namespacedMobs.entrySet().stream()
+							.sorted(Map.Entry.comparingByKey())
+							.forEachOrdered(mapEntry -> {
+								builder.append("### ").append(mapEntry.getKey()).append("\n\n");
+								String content = mapEntry.getValue().stream().map(this::contentLink).sorted().collect(Collectors.joining(" • "));
+								builder.append(content).append("\n\n");
+							});
+
+					mobTokens.put(fileName, builder.toString());
+					return fileName;
 				})
 				.collect(Collectors.toSet());
 
-		List<CompletableFuture<?>> futures = saveTemplate(
+		List<CompletableFuture<?>> futures = renderTemplate(
 				fileNames,
 				baseInputPath,
 				baseOutputPath,
-				baseName -> {
+				fileName -> {
 					Map<String, String> tokens = new HashMap<>();
-					tokens.put("{{MOBS}}", mobTokens.get(baseName));
+					tokens.put("{{MOBS}}", mobTokens.get(fileName));
 					return tokens;
 				}
 		);
@@ -68,11 +93,15 @@ public class WikiDespoilLootProvider implements DataProvider {
 		throw new RuntimeException("Item key is missing for: " + itemLike);
 	}
 
-	protected String contentLink(EntityType<?> entityType) {
-		return "[](@" + Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(entityType)) + ")";
+	protected String contentLink(ResourceLocation identifier) {
+		return "[](@" + identifier + ")";
 	}
 
-	protected List<CompletableFuture<?>> saveTemplate(Set<String> baseNames, Path sourceRoot, Path targetRoot, Function<String, Map<String, String>> tokenResolver) {
+	protected ResourceLocation key(EntityType<?> entityType) {
+		return Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(entityType));
+	}
+
+	protected List<CompletableFuture<?>> renderTemplate(Set<String> baseNames, Path sourceRoot, Path targetRoot, Function<String, Map<String, String>> tokenResolver) {
 		final String templateSuffix = ".template.md";
 
 		try (Stream<Path> paths = Files.walk(sourceRoot)) {
