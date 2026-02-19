@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModParticleTypes;
 import com.github.elenterius.biomancy.mixin.accessor.EntityAccessor;
+import com.github.elenterius.biomancy.util.debug.DebugInfo;
 import com.github.elenterius.biomancy.world.DynamicGasVolume;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.StringReader;
@@ -46,7 +47,7 @@ import java.util.UUID;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-public class GasCloud extends Entity implements TraceableEntity, HitboxDebugInfo {
+public class GasCloud extends Entity implements TraceableEntity, DebugInfo.EntityContext {
 
 	public static final Predicate<Entity> NO_SPECTATOR_BUT_ALIVE_AND_AFFECTED_BY_POTIONS = entity -> entity.isAlive() && !entity.isSpectator() && entity instanceof LivingEntity livingEntity && livingEntity.isAffectedByPotions();
 	public static final float DEFAULT_RADIUS = 3f;
@@ -464,7 +465,7 @@ public class GasCloud extends Entity implements TraceableEntity, HitboxDebugInfo
 	}
 
 	@Override
-	public void renderHitboxInfo(EntityRenderDispatcher renderDispatcher, PoseStack poseStack, MultiBufferSource multiBuffer, int packedLight, float partialTicks) {
+	public void renderDebugInfo(EntityRenderDispatcher renderDispatcher, PoseStack poseStack, MultiBufferSource multiBuffer, int packedLight, float partialTicks) {
 		if (dynamicGasVolume == null || dynamicGasVolume.getPackedPositions().isEmpty()) return;
 
 		//		LongSet volume = new LongOpenHashSet(dynamicGasVolume.getPackedPositions());
