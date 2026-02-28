@@ -55,6 +55,7 @@ public final class ModEntityTypes {
 	public static final RegistryObject<EntityType<AcidBlobProjectile>> ACID_BLOB_PROJECTILE = registerProjectile("acid_blob_projectile", AcidBlobProjectile::new, builder -> builder.sized(6f / 16f, 6f / 16f));
 	public static final RegistryObject<EntityType<GrenadeProjectile>> GRENADE_PROJECTILE = registerGrenade("grenade_projectile", GrenadeProjectile::new, builder -> builder.sized(0.6f, 0.6f));
 	public static final RegistryObject<EntityType<ThrownAcidicEgg>> ACIDIC_EGG_PROJECTILE = registerThrowableItem("acidic_egg_projectile", ThrownAcidicEgg::new, builder -> builder.sized(0.25f, 0.25f));
+	public static final RegistryObject<EntityType<AcidSprayProjectile>> ACID_SPRAY_PROJECTILE = registerProjectile("acid_spray_projectile", AcidSprayProjectile::new, builder -> builder.sized(4f / 16f, 4f / 16f));
 
 	//Misc
 	public static final RegistryObject<EntityType<GasCloud>> GAS_CLOUD = register("gas_cloud", EntityType.Builder.<GasCloud>of(GasCloud::new, MobCategory.MISC).fireImmune().sized(GasCloud.DEFAULT_RADIUS * 2f, GasCloud.DEFAULT_RADIUS * 2f).clientTrackingRange(10).updateInterval(Integer.MAX_VALUE));

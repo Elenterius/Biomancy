@@ -144,7 +144,7 @@ public abstract class BaseProjectile extends Projectile implements IEntityAdditi
 	}
 
 	@Override
-	protected void onHit(HitResult result) {
+	public void onHit(HitResult result) {
 		super.onHit(result); //call onEntityHit and onBlockHit before removing the projectile
 		if (!level().isClientSide) discard();
 	}

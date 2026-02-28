@@ -142,7 +142,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		);
 		Set<Item> specialTypes = Set.of(
 				ModItems.TAB_ICON.get(),
-				ModItems.DEV_ARM_CANNON.get(),
 				ModItems.DEV_GUIDE_BOOK.get(),
 
 				ModItems.BIO_FORGE.get(),

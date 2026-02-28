@@ -583,8 +583,6 @@ public class EnglishLangProvider extends AbstractLangProvider {
 				Consuming large amount of nutrients bundles of muscle-fibers compress and a sealed pressure bladder floods with volatile propellants.
 				Unbearable pressure builds up that cannot be contained and once the limit is reached the projectile bursts forth violently.""");
 
-		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
-
 		addItem(ModItems.ACOLYTE_ARMOR_HELMET, "Bio-Alchemist Helmet");
 		addItem(ModItems.ACOLYTE_ARMOR_CHESTPLATE, "Bio-Alchemist Chestplate");
 		addItem(ModItems.ACOLYTE_ARMOR_LEGGINGS, "Bio-Alchemist Leggings");

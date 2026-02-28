@@ -4,12 +4,15 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.render.item.impaler.ImpalerRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.projectile.ImpalerProjectile;
-import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.init.client.ModArmPoses;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.animation.TriggerableAnimation;
+import com.github.elenterius.biomancy.util.shooting.GunProperties;
+import com.github.elenterius.biomancy.util.shooting.GunState;
+import com.github.elenterius.biomancy.util.shooting.ProjectileUtil;
+import com.github.elenterius.biomancy.util.shooting.SpreadBias;
 import com.github.elenterius.biomancy.util.sounds.SoundUtil;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -57,7 +60,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class ImpalerItem extends LivingGunItem implements ItemTooltipStyleProvider, GeoItem {
+public class ImpalerItem extends LivingGunItem<ImpalerProjectile> implements ItemTooltipStyleProvider, GeoItem {
 
 	public static final float CHARGE_DURATION = 1.79f + 0.17f; //based on animation length of "charging_shot" + "holding_shot"
 
@@ -69,12 +72,15 @@ public class ImpalerItem extends LivingGunItem implements ItemTooltipStyleProvid
 
 	public ImpalerItem(int maxNutrients, Properties properties) {
 		super(maxNutrients, properties,
-				GunProperties.builder()
+				GunProperties.<ImpalerProjectile>builder()
 						.shootBehavior(GunProperties.ShootBehavior.ON_RELEASE_INSTANT)
 						.timeBetweenShots(Mth.ceil(CHARGE_DURATION * 20f))
+						.damage(24f).accuracy(0.95f).spreadBias(SpreadBias.CENTER_HEAVY)
 						.maxAmmo(1).reloadDuration(3 * 20).autoReload()
-						.build(),
-				ModProjectiles.IMPALER_PROJECTILE);
+						.projectile(ImpalerProjectile::new).velocity(2.85f)
+						.shootSound(ModSoundEvents.IMPALER_SHOOT.get())
+						.build()
+		);
 
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", -3.5f, AttributeModifier.Operation.ADDITION));
@@ -119,13 +125,14 @@ public class ImpalerItem extends LivingGunItem implements ItemTooltipStyleProvid
 		}
 	}
 
-	public float modifyProjectileVelocity(float baseVelocity, ItemStack stack) {
-		return baseVelocity + 0.12f * stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
+	@Override
+	public float getProjectileVelocity(ItemStack stack) {
+		return gunProperties.velocity() + 0.12f * stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
 	}
 
 	@Override
-	public float modifyProjectileDamage(float baseDamage, ItemStack stack) {
-		return baseDamage + gunProperties.projectileDamageModifier() + stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
+	public float getProjectileDamage(ItemStack stack) {
+		return gunProperties.damage() + stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
 	}
 
 	@Override
@@ -133,22 +140,25 @@ public class ImpalerItem extends LivingGunItem implements ItemTooltipStyleProvid
 		float elapsedDuration = (float) projectileWeapon.getUseDuration() - ((float) shooter.getUseItemRemainingTicks());
 		float maxChargeDuration = getDelayBetweenShots(projectileWeapon);
 		float chargePercentage = Mth.clamp(elapsedDuration / maxChargeDuration, 0.1f, 1f);
+		float velocity = getProjectileVelocity(projectileWeapon) * chargePercentage;
 
-		boolean success = configuredProjectile.shoot(level, shooter,
-				baseVelocity -> modifyProjectileVelocity(baseVelocity * chargePercentage, projectileWeapon),
-				baseDamage -> modifyProjectileDamage(baseDamage, projectileWeapon),
-				baseKnockBack -> modifyProjectileKnockBack(baseKnockBack, projectileWeapon),
-				baseInaccuracy -> modifyProjectileInaccuracy(baseInaccuracy, projectileWeapon),
+		boolean success = ProjectileUtil.shoot(level, shooter,
+				velocity,
+				getProjectileDamage(projectileWeapon),
+				getProjectileKnockBack(projectileWeapon),
+				getAccuracy(projectileWeapon),
+				gunProperties.localOffset(),
+				gunProperties.factory(),
 				projectile -> {
-					if (projectile instanceof ImpalerProjectile impalerProjectile) {
-						impalerProjectile.setPierceLevel(projectileWeapon.getEnchantmentLevel(Enchantments.PIERCING));
-					}
+					projectile.setPierceLevel(projectileWeapon.getEnchantmentLevel(Enchantments.PIERCING));
 				});
 
 		if (!success) return;
 
 		broadcastAnimation(level, shooter, projectileWeapon, Animations.SHOOT);
-		configuredProjectile.playShootSound(level, shooter, 1.5f, 0.8f + shooter.getRandom().nextFloat() * 0.3f);
+		if (gunProperties.shootSound() != null) {
+			playSFX(level, shooter, gunProperties.shootSound(), 1.5f, 0.8f + shooter.getRandom().nextFloat() * 0.3f);
+		}
 
 		projectileWeapon.hurtAndBreak(1, shooter, entity -> entity.broadcastBreakEvent(usedHand));
 		consumeAmmo(shooter, projectileWeapon, getAmmoCost(projectileWeapon));
@@ -156,8 +166,6 @@ public class ImpalerItem extends LivingGunItem implements ItemTooltipStyleProvid
 
 		boolean isAnchored = shooter.onGround() && shooter.isCrouching();
 		double reduction = isAnchored ? 0.25d : 0.5d;
-
-		float velocity = modifyProjectileVelocity(configuredProjectile.velocity() * chargePercentage, projectileWeapon);
 
 		Vec3 recoil = shooter.getLookAngle().normalize().scale(-1d).scale(velocity * reduction);
 		shooter.push(recoil.x, recoil.y, recoil.z); //sets hasImpulse to true

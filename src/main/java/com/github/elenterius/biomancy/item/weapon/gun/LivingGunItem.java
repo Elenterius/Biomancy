@@ -3,12 +3,14 @@ package com.github.elenterius.biomancy.item.weapon.gun;
 import com.github.elenterius.biomancy.api.livingtool.SimpleLivingTool;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.projectile.BaseProjectile;
-import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
+import com.github.elenterius.biomancy.util.shooting.GunProperties;
+import com.github.elenterius.biomancy.util.shooting.GunState;
+import com.github.elenterius.biomancy.util.shooting.ProjectileUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,14 +31,14 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
-public abstract class LivingGunItem extends GunItem implements SimpleLivingTool {
+public abstract class LivingGunItem<T extends BaseProjectile> extends GunItem<T> implements SimpleLivingTool {
 
 	private static final Predicate<ItemStack> AMMO_PREDICATE = itemStack -> false;
 
 	private final int maxNutrients;
 
-	protected LivingGunItem(int maxNutrients, Properties properties, GunProperties gunProperties, ModProjectiles.ConfiguredProjectile<? extends BaseProjectile> configuredProjectile) {
-		super(properties, gunProperties, configuredProjectile);
+	protected LivingGunItem(int maxNutrients, Properties properties, GunProperties<T> gunProperties) {
+		super(properties, gunProperties);
 		this.maxNutrients = maxNutrients;
 	}
 
@@ -73,14 +75,12 @@ public abstract class LivingGunItem extends GunItem implements SimpleLivingTool 
 
 	@Override
 	public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon) {
-		boolean success = configuredProjectile.shoot(level, shooter,
-				baseVelocity -> modifyProjectileVelocity(baseVelocity, projectileWeapon),
-				baseDamage -> modifyProjectileDamage(baseDamage, projectileWeapon),
-				baseKnockBack -> modifyProjectileKnockBack(baseKnockBack, projectileWeapon),
-				baseInaccuracy -> modifyProjectileInaccuracy(baseInaccuracy, projectileWeapon));
+		boolean success = ProjectileUtil.shoot(level, shooter, projectileWeapon, this);
 
 		if (success) {
-			configuredProjectile.playShootSound(level, shooter);
+			if (gunProperties.shootSound() != null) {
+				playSFX(level, shooter, gunProperties.shootSound());
+			}
 			consumeAmmo(shooter, projectileWeapon, getAmmoCost(projectileWeapon));
 			consumeNutrients(projectileWeapon, getDurabilityCost(projectileWeapon));
 		}

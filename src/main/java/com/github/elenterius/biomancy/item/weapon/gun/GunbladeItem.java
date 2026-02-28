@@ -1,7 +1,9 @@
 package com.github.elenterius.biomancy.item.weapon.gun;
 
-import com.github.elenterius.biomancy.init.ModProjectiles;
+import com.github.elenterius.biomancy.entity.projectile.BaseProjectile;
 import com.github.elenterius.biomancy.item.weapon.BladeProperties;
+import com.github.elenterius.biomancy.util.shooting.GunProperties;
+import com.github.elenterius.biomancy.util.shooting.GunState;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
@@ -24,13 +26,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 
-public abstract class GunbladeItem extends GunItem implements Vanishable {
+public abstract class GunbladeItem<T extends BaseProjectile> extends GunItem<T> implements Vanishable {
 
 	protected final Multimap<Attribute, AttributeModifier> defaultBladeModifiers;
 	protected final Multimap<Attribute, AttributeModifier> defaultGunModifiers;
 
-	protected GunbladeItem(Properties itemProperties, BladeProperties bladeProperties, GunProperties gunProperties, ModProjectiles.ConfiguredProjectile<?> projectile) {
-		super(itemProperties, gunProperties, projectile);
+	protected GunbladeItem(Properties itemProperties, BladeProperties bladeProperties, GunProperties<T> gunProperties) {
+		super(itemProperties, gunProperties);
 
 		defaultBladeModifiers = createDefaultBladeModifiers(bladeProperties);
 		defaultGunModifiers = createDefaultGunModifiers(bladeProperties);

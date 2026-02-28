@@ -1,11 +1,14 @@
 package com.github.elenterius.biomancy.block.bloom;
 
 import com.github.elenterius.biomancy.block.base.WaterloggedFacingBlock;
+import com.github.elenterius.biomancy.entity.projectile.BloomberryProjectile;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModPlantTypes;
-import com.github.elenterius.biomancy.init.ModProjectiles;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.EnhancedIntegerProperty;
 import com.github.elenterius.biomancy.util.VectorUtil;
+import com.github.elenterius.biomancy.util.shooting.ConfiguredProjectile;
+import com.github.elenterius.biomancy.util.shooting.ProjectileUtil;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,6 +44,8 @@ import net.minecraftforge.common.PlantType;
 public class BloomBlock extends WaterloggedFacingBlock implements IPlantable {
 
 	public static final EnhancedIntegerProperty AGE = EnhancedIntegerProperty.wrap(BlockStateProperties.AGE_7);
+	public static final ConfiguredProjectile<BloomberryProjectile> BLOOM_BERRY = new ConfiguredProjectile<>(1.25f, 2, 0, 0.9f, ModSoundEvents.BLOOMBERRY_SHOOT.get(), BloomberryProjectile::new);
+
 	protected static final int AIM_DISTANCE = 8;
 
 	public BloomBlock(Properties properties) {
@@ -130,9 +135,8 @@ public class BloomBlock extends WaterloggedFacingBlock implements IPlantable {
 			int offsetZ = plane.getZ() * random.nextIntBetweenInclusive(-range, range);
 			BlockPos target = pos.relative(direction, AIM_DISTANCE).offset(offsetX, offsetY, offsetZ);
 
-			Vec3 origin = Vec3.atCenterOf(pos);
-			if (ModProjectiles.BLOOMBERRY.shoot(level, origin, Vec3.atCenterOf(target))) {
-				ModProjectiles.BLOOMBERRY.playShootSound(level, origin, SoundSource.BLOCKS);
+			if (ProjectileUtil.shoot(level, BLOOM_BERRY, Vec3.atCenterOf(pos), Vec3.atCenterOf(target))) {
+				level.playSound(null, pos, BLOOM_BERRY.shootSound(), SoundSource.BLOCKS, 0.8f, 0.4f);
 			}
 		}
 	}

@@ -1,13 +1,19 @@
 package com.github.elenterius.biomancy.entity.mob;
 
-import com.github.elenterius.biomancy.init.*;
+import com.github.elenterius.biomancy.entity.projectile.AcidSpitProjectile;
+import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
+import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.init.tags.ModDamageTypeTags;
 import com.github.elenterius.biomancy.init.tags.ModMobEffectTags;
 import com.github.elenterius.biomancy.util.animation.MobAnimations;
+import com.github.elenterius.biomancy.util.shooting.ConfiguredProjectile;
+import com.github.elenterius.biomancy.util.shooting.ProjectileUtil;
+import com.github.elenterius.biomancy.util.sounds.SoundUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -34,6 +40,7 @@ import java.util.function.Predicate;
 public class FleshChicken extends Chicken implements RangedAttackMob, GeoEntity {
 
 	public static final Predicate<LivingEntity> TARGET_SELECTOR = livingEntity -> livingEntity.getMobType() == MobType.UNDEAD;
+	public static final ConfiguredProjectile<AcidSpitProjectile> GASTRIC_SPIT = new ConfiguredProjectile<>(1.5f, 1, 0, 0.8f, ModSoundEvents.ACID_SPIT.get(), AcidSpitProjectile::new);
 
 	protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -65,13 +72,14 @@ public class FleshChicken extends Chicken implements RangedAttackMob, GeoEntity 
 	@Override
 	public void performRangedAttack(LivingEntity target, float velocity) {
 
+		//TODO: add local offset handling for ProjectileUtil#shoot method variant with origin and target pos
 		double x = getX() - getBbWidth() * Mth.sin(yBodyRot * Mth.DEG_TO_RAD);
 		double y = getEyeY() + 0.25d;
 		double z = getZ() + getBbWidth() * Mth.cos(yBodyRot * Mth.DEG_TO_RAD);
 
 		Vec3 origin = new Vec3(x, y, z);
-		if (ModProjectiles.GASTRIC_SPIT.shoot(level(), origin, target.getEyePosition())) {
-			ModProjectiles.GASTRIC_SPIT.playShootSound(level(), origin, SoundSource.NEUTRAL);
+		if (ProjectileUtil.shoot(level(), this, GASTRIC_SPIT, origin, target.getEyePosition())) {
+			level().playSound(null, origin.x, origin.y, origin.z, GASTRIC_SPIT.shootSound(), SoundUtil.soundSourceFor(this), 0.8f, 0.4f);
 		}
 
 		hasAttacked = true;

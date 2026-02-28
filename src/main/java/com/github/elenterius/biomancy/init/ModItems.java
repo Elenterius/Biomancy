@@ -12,7 +12,6 @@ import com.github.elenterius.biomancy.item.weapon.DespoilingSwordItem;
 import com.github.elenterius.biomancy.item.weapon.GrenadeItem;
 import com.github.elenterius.biomancy.item.weapon.RavenousClawsItem;
 import com.github.elenterius.biomancy.item.weapon.gun.CausticGunbladeItem;
-import com.github.elenterius.biomancy.item.weapon.gun.DevArmCannonItem;
 import com.github.elenterius.biomancy.item.weapon.gun.ImpalerItem;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -136,7 +135,6 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> TAB_ICON = registerSimpleItem("tab_icon");
 
 	//## Dev
-	public static final RegistryObject<DevArmCannonItem> DEV_ARM_CANNON = registerDevItem("dev_arm_cannon", props -> new DevArmCannonItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
 	public static final RegistryObject<GuideBookItem> DEV_GUIDE_BOOK = registerDevItem("guide_book", props -> new GuideBookItem(props.stacksTo(1).rarity(ModRarities.RARE)));
 
 	//# Block Items

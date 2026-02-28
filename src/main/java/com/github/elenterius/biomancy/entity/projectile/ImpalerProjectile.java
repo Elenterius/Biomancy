@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.entity.projectile;
 
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
-import com.github.elenterius.biomancy.init.ModProjectiles;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.MobUtil;
 import com.github.elenterius.biomancy.util.sounds.SoundUtil;
@@ -170,7 +170,7 @@ public class ImpalerProjectile extends BaseProjectile implements GeoEntity {
 
 	@Override
 	public float getDamage() {
-		return Mth.clamp(super.getDamage() * (float) (getDeltaMovement().length() / ModProjectiles.IMPALER_PROJECTILE.velocity()), 0f, Integer.MAX_VALUE);
+		return Mth.clamp(super.getDamage() * (float) (getDeltaMovement().length() / ModItems.IMPALER.get().getGunProperties().velocity()), 0f, Integer.MAX_VALUE);
 	}
 
 	public void setPierceLevel(int level) {
@@ -204,7 +204,7 @@ public class ImpalerProjectile extends BaseProjectile implements GeoEntity {
 	}
 
 	@Override
-	protected void onHit(HitResult result) {
+	public void onHit(HitResult result) {
 		HitResult.Type type = result.getType();
 
 		if (type == HitResult.Type.ENTITY) {

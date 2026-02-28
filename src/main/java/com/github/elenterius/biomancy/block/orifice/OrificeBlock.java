@@ -1,7 +1,10 @@
 package com.github.elenterius.biomancy.block.orifice;
 
+import com.github.elenterius.biomancy.entity.projectile.AcidBlobProjectile;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.util.EnhancedIntegerProperty;
+import com.github.elenterius.biomancy.util.shooting.ConfiguredProjectile;
+import com.github.elenterius.biomancy.util.shooting.ProjectileUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -36,6 +39,7 @@ import java.util.function.ToIntFunction;
 public class OrificeBlock extends Block implements BucketPickup {
 
 	public static final EnhancedIntegerProperty AGE = EnhancedIntegerProperty.wrap(BlockStateProperties.AGE_2);
+	public static final ConfiguredProjectile<AcidBlobProjectile> FALLING_ACID_BLOB = new ConfiguredProjectile<>(0.1f, 2, 0, 0.9f, ModSoundEvents.ACID_BLOB_FALL.get(), AcidBlobProjectile::new);
 
 	public OrificeBlock(Properties properties) {
 		super(properties);
@@ -77,8 +81,8 @@ public class OrificeBlock extends Block implements BucketPickup {
 
 						Vec3 origin = Vec3.atBottomCenterOf(pos).add(x, 0, z);
 						Vec3 target = Vec3.atBottomCenterOf(posBelow).add(x, 0, z);
-						if (ModProjectiles.FALLING_ACID_BLOB.shoot(level, origin, target)) {
-							ModProjectiles.FALLING_ACID_BLOB.playShootSound(level, origin, SoundSource.BLOCKS);
+						if (ProjectileUtil.shoot(level, FALLING_ACID_BLOB, origin, target)) {
+							level.playSound(null, origin.x, origin.y, origin.z, FALLING_ACID_BLOB.shootSound(), SoundSource.BLOCKS, 0.8f, 0.4f);
 						}
 					}
 				}

@@ -12,9 +12,10 @@ import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.KnowledgeReader;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
-import com.github.elenterius.biomancy.item.weapon.gun.Gun;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
+import com.github.elenterius.biomancy.util.shooting.Gun;
+import com.github.elenterius.biomancy.util.shooting.GunState;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -265,8 +266,8 @@ public final class ScreenOverlays {
 	}
 
 	static void renderReloadIndicator(GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun gun) {
-		Gun.GunState gunState = gun.getGunState(stack);
-		if (gunState == Gun.GunState.RELOADING) {
+		GunState gunState = gun.getGunState(stack);
+		if (gunState == GunState.RELOADING) {
 			long elapsedTime = player.clientLevel.getGameTime() - gun.getReloadStartTime(stack);
 			float reloadProgress = gun.getReloadProgress(elapsedTime, gun.getReloadDurationTicks(stack));
 			GuiRenderUtil.drawSquareProgressBar(guiGraphics, screenWidth / 2, screenHeight / 2, zDepth, 10, reloadProgress);

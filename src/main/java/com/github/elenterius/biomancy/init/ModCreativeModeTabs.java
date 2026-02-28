@@ -38,7 +38,7 @@ public final class ModCreativeModeTabs {
 	public static final RegistryObject<CreativeModeTab> MAIN = register("main", () -> ModItems.TAB_ICON.get().getDefaultInstance(), ModCreativeModeTabs::mainTab);
 	public static final RegistryObject<CreativeModeTab> BIO_ALCHEMY = register("bio_alchemy", () -> ModItems.INJECTOR.get().getDefaultInstance(), ModCreativeModeTabs::alchemyTab);
 
-	public static final RegistryObject<CreativeModeTab> DEV = registerDev("dev", () -> ModItems.DEV_ARM_CANNON.get().getDefaultInstance(), ModCreativeModeTabs::devTab);
+	public static final RegistryObject<CreativeModeTab> DEV = registerDev("dev", () -> ModItems.DEV_GUIDE_BOOK.get().getDefaultInstance(), ModCreativeModeTabs::devTab);
 	public static final RegistryObject<CreativeModeTab> DEV_STRUCTURES = registerDev("dev_structures", Items.STRUCTURE_BLOCK::getDefaultInstance, ModCreativeModeTabs::devStructuresTab);
 
 	private ModCreativeModeTabs() {}
@@ -50,7 +50,6 @@ public final class ModCreativeModeTabs {
 							ModItems.TAB_ICON,
 							ModItems.ESSENCE,
 							ModItems.DEV_GUIDE_BOOK,
-							ModItems.DEV_ARM_CANNON,
 
 							ModItems.BIO_LAB,
 							ModItems.INJECTOR,
@@ -124,7 +123,6 @@ public final class ModCreativeModeTabs {
 				.withTabsBefore(BIO_ALCHEMY.getId())
 				.displayItems((params, output) -> {
 					output.accept(ModItems.DEV_GUIDE_BOOK.get());
-					output.accept(ModItems.DEV_ARM_CANNON.get());
 					output.accept(ModBlocks.FLESHKIN_CHEST.get().createItemStackForCreativeTab());
 					output.accept(Items.DEBUG_STICK);
 					output.accept(Items.STRUCTURE_BLOCK);
