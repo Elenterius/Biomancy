@@ -66,12 +66,12 @@ public class DecayExplosion extends GenericExplosion {
 
 	@Override
 	protected void hurtEntity(Entity entity, float amount) {
-		entity.hurt(getDamageSource(), amount * 0.25f);
+		entity.hurt(getDamageSource(), amount * 0.125f);
 	}
 
 	@Override
 	protected double getKnockbackStrength(Entity entity, double nearExplosionPercent) {
-		return super.getKnockbackStrength(entity, nearExplosionPercent) * 0.25d;
+		return super.getKnockbackStrength(entity, nearExplosionPercent) * 0.125d;
 	}
 
 	@Override
