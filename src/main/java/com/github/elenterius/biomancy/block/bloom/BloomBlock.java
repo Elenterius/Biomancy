@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.block.bloom;
 
 import com.github.elenterius.biomancy.block.base.WaterloggedFacingBlock;
 import com.github.elenterius.biomancy.entity.projectile.BloomberryProjectile;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModPlantTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
@@ -44,7 +45,7 @@ import net.minecraftforge.common.PlantType;
 public class BloomBlock extends WaterloggedFacingBlock implements IPlantable {
 
 	public static final EnhancedIntegerProperty AGE = EnhancedIntegerProperty.wrap(BlockStateProperties.AGE_7);
-	public static final ConfiguredProjectile<BloomberryProjectile> BLOOM_BERRY = new ConfiguredProjectile<>(1.25f, 2, 0, 0.9f, ModSoundEvents.BLOOMBERRY_SHOOT.get(), BloomberryProjectile::new);
+	public static final ConfiguredProjectile<BloomberryProjectile> BLOOM_BERRY = new ConfiguredProjectile<>(1.25f, 2, 0, 0.9f, ModSoundEvents.BLOOMBERRY_SHOOT.get(), ModEntityTypes.BLOOMBERRY_PROJECTILE);
 
 	protected static final int AIM_DISTANCE = 8;
 

@@ -13,11 +13,11 @@ public interface ShootContext {
 
 	float spreadBias();
 
-	/// Number of "projectiles" to shoot per shot:
+	/// Number of projectiles to shoot per shot:
 	/// - default: 1
 	/// - pistol burst: ~3
 	/// - shotgun: ~5-10
-	int shotCount();
+	int projectileCount();
 
 	//		float multishot();
 

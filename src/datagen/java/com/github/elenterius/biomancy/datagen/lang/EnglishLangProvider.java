@@ -260,7 +260,9 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("ammo", "Ammo");
 		addTooltip("reload_time", "Reload Time");
 		addTooltip("projectile_speed", "Speed");
+		addTooltip("projectile_range", "Range");
 		addTooltip("projectile_damage", "Damage");
+		addTooltip("projectile_count", "Multishot");
 		addTooltip("projectile_knock_back", "Knockback");
 
 		add(LivingToolState.getTooltipTranslationKey(), "The Tool is %1$s");

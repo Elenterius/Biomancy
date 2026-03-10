@@ -14,6 +14,10 @@ import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.animation.TriggerableAnimation;
+import com.github.elenterius.biomancy.util.shooting.GunProperties;
+import com.github.elenterius.biomancy.util.shooting.GunState;
+import com.github.elenterius.biomancy.util.shooting.ProjectileUtil;
+import com.github.elenterius.biomancy.util.shooting.SpreadBias;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.model.HumanoidModel;
@@ -42,11 +46,11 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ToolAction;
+import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -120,11 +124,6 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 		return itemStack -> false;
 	}
 
-	@Override
-	public int getDefaultProjectileRange() {
-		return 16;
-	}
-
 	protected long getLastUseTimestamp(ItemStack stack) {
 		return stack.getOrCreateTag().getLong(LAST_USE_TIMESTAMP_KEY);
 	}
@@ -137,14 +136,10 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 	public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon) {
 		broadcastAnimation(level, shooter, projectileWeapon, Animations.SHOOT);
 
-		boolean success = configuredProjectile.shoot(level, shooter,
-				baseVelocity -> modifyProjectileVelocity(baseVelocity, projectileWeapon),
-				baseDamage -> modifyProjectileDamage(baseDamage, projectileWeapon),
-				baseKnockBack -> modifyProjectileKnockBack(baseKnockBack, projectileWeapon),
-				baseInaccuracy -> modifyProjectileInaccuracy(baseInaccuracy, projectileWeapon));
+		boolean success = ProjectileUtil.shoot(level, shooter, projectileWeapon, this);
 
 		if (success) {
-			configuredProjectile.playShootSound(level, shooter);
+			//configuredProjectile.playShootSound(level, shooter);
 			consumeAmmo(shooter, projectileWeapon, getAmmoCost(projectileWeapon));
 			consumeNutrients(projectileWeapon, getDurabilityCost(projectileWeapon));
 		}
@@ -413,11 +408,6 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 
 	protected void playSound(Player player, SoundEvent soundEvent) {
 		player.playSound(soundEvent, 0.8f, 0.8f + player.level().getRandom().nextFloat() * 0.4f);
-	}
-
-	@Override
-	public UseAnim getUseAnimation(ItemStack stack) {
-		return UseAnim.NONE;
 	}
 
 	@Override

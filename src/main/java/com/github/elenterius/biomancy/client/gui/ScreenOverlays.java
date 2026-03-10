@@ -19,6 +19,7 @@ import com.github.elenterius.biomancy.util.shooting.GunState;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -116,7 +117,7 @@ public final class ScreenOverlays {
 		Minecraft minecraft = Minecraft.getInstance();
 		if (!minecraft.options.hideGui && minecraft.player != null) {
 			ItemStack itemStack = minecraft.player.getMainHandItem();
-			if (itemStack.isEmpty() || !(itemStack.getItem() instanceof Gun gun)) return;
+			if (itemStack.isEmpty() || !(itemStack.getItem() instanceof Gun<?> gun)) return;
 
 			gui.setupOverlayRenderState(true, false);
 			renderGunOverlay(gui, poseStack, screenWidth, screenHeight, -90, minecraft.player, itemStack, gun);
@@ -220,7 +221,7 @@ public final class ScreenOverlays {
 		drawValueWithLabel(guiGraphics, font, Math.round(value * 100f) + "%", label, x, y, TextStyles.LIGHT_GRAY, TextStyles.GRAY);
 	}
 
-	static void renderGunOverlay(ForgeGui gui, GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun gun) {
+	static void renderGunOverlay(ForgeGui gui, GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun<?> gun) {
 		renderAmmoOverlay(guiGraphics, gui.getFont(), screenWidth, screenHeight, zDepth, stack, gun);
 
 		if (GuiUtil.isFirstPersonView()) {
@@ -265,7 +266,7 @@ public final class ScreenOverlays {
 		//		if (charge <= 0) return;
 	}
 
-	static void renderReloadIndicator(GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun gun) {
+	static void renderReloadIndicator(GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun<?> gun) {
 		GunState gunState = gun.getGunState(stack);
 		if (gunState == GunState.RELOADING) {
 			long elapsedTime = player.clientLevel.getGameTime() - gun.getReloadStartTime(stack);
@@ -300,7 +301,7 @@ public final class ScreenOverlays {
 		}
 	}
 
-	static void renderAmmoOverlay(GuiGraphics guiGraphics, Font font, int screenWidth, int screenHeight, int zDepth, ItemStack stack, Gun gun) {
+	static void renderAmmoOverlay(GuiGraphics guiGraphics, Font font, int screenWidth, int screenHeight, int zDepth, ItemStack stack, Gun<?> gun) {
 		int maxAmmo = gun.getMaxAmmo(stack);
 		int ammo = gun.getAmmo(stack);
 		renderAmmoCount(guiGraphics, font, screenWidth, screenHeight, zDepth, maxAmmo, ammo, 0xFFFEFEFE, 0xFF9E9E9E);
@@ -321,7 +322,7 @@ public final class ScreenOverlays {
 	}
 
 	public static void renderAttackIndicator(GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, long elapsedTime, int shootDelay) {
-		if (elapsedTime < shootDelay && GuiUtil.canDrawAttackIndicator(player)) {
+		if (shootDelay >= SharedConstants.TICKS_PER_SECOND / 2 && elapsedTime < shootDelay && GuiUtil.canDrawAttackIndicator(player)) {
 			float progress = (float) elapsedTime / shootDelay;
 			if (progress < 1f) {
 				int x = screenWidth / 2 - 8;

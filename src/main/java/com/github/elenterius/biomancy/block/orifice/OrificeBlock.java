@@ -39,7 +39,7 @@ import java.util.function.ToIntFunction;
 public class OrificeBlock extends Block implements BucketPickup {
 
 	public static final EnhancedIntegerProperty AGE = EnhancedIntegerProperty.wrap(BlockStateProperties.AGE_2);
-	public static final ConfiguredProjectile<AcidBlobProjectile> FALLING_ACID_BLOB = new ConfiguredProjectile<>(0.1f, 2, 0, 0.9f, ModSoundEvents.ACID_BLOB_FALL.get(), AcidBlobProjectile::new);
+	public static final ConfiguredProjectile<AcidBlobProjectile> FALLING_ACID_BLOB = new ConfiguredProjectile<>(0.1f, 2, 0, 0.9f, ModSoundEvents.ACID_BLOB_FALL.get(), ModEntityTypes.ACID_BLOB_PROJECTILE);
 
 	public OrificeBlock(Properties properties) {
 		super(properties);

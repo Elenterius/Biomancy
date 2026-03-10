@@ -12,7 +12,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -28,11 +27,6 @@ public final class SoundUtil {
 
 	private static float randomPitchForBlock(RandomSource rand) {
 		return rand.nextFloat() * 0.1f + 0.9f;
-	}
-
-	public static SoundSource soundSourceFor(LivingEntity livingEntity) {
-		if (livingEntity instanceof Player) return SoundSource.PLAYERS;
-		return livingEntity instanceof Enemy ? SoundSource.HOSTILE : SoundSource.NEUTRAL;
 	}
 
 	public static void playItemSound(Level level, LivingEntity itemHolder, Supplier<SoundEvent> soundEventSupplier) {
@@ -108,6 +102,7 @@ public final class SoundUtil {
 
 		private Server() {}
 
+		/// send sound to the given player
 		public static void sendSoundToClient(ServerPlayer player, SoundEvent soundEvent, SoundSource source, float volume, float pitch) {
 			player.connection.send(new ClientboundSoundPacket(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(soundEvent), source, player.getX(), player.getEyeY(), player.getZ(), volume, pitch, player.getRandom().nextLong()));
 		}
@@ -125,9 +120,12 @@ public final class SoundUtil {
 		}
 
 		public static void playItemSound(ServerLevel level, LivingEntity itemHolder, SoundEvent soundEvent) {
-			SoundSource soundSource = itemHolder instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
 			float pitch = randomPitchForItem(level.random);
-			level.playSound(null, itemHolder.getX(), itemHolder.getY(0.5f), itemHolder.getZ(), soundEvent, soundSource, 0.8f, pitch);
+			level.playSound(null, itemHolder.getX(), itemHolder.getY(0.5f), itemHolder.getZ(), soundEvent, itemHolder.getSoundSource(), 0.8f, pitch);
+		}
+
+		public static void playSound(ServerLevel level, LivingEntity source, SoundEvent soundEvent, float volume, float pitch) {
+			level.playSound(null, source.getX(), source.getY(0.5f), source.getZ(), soundEvent, source.getSoundSource(), volume, pitch);
 		}
 
 	}

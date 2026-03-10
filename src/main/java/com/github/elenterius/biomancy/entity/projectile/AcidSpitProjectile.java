@@ -1,14 +1,13 @@
 package com.github.elenterius.biomancy.entity.projectile;
 
 import com.github.elenterius.biomancy.init.ModDamageSources;
-import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.statuseffect.StatusEffectHandler;
+import com.github.elenterius.biomancy.util.shooting.ProjectileEntityType;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -16,21 +15,8 @@ import net.minecraft.world.phys.EntityHitResult;
 
 public class AcidSpitProjectile extends BaseProjectile {
 
-	public AcidSpitProjectile(EntityType<? extends BaseProjectile> entityType, Level level) {
+	public AcidSpitProjectile(ProjectileEntityType<? extends AcidSpitProjectile> entityType, Level level) {
 		super(entityType, level);
-	}
-
-	public AcidSpitProjectile(Level level, double x, double y, double z) {
-		super(ModEntityTypes.ACID_SPIT_PROJECTILE.get(), level, x, y, z);
-	}
-
-	public AcidSpitProjectile(EntityType<? extends AcidSpitProjectile> entityType, Level level, double x, double y, double z) {
-		super(entityType, level, x, y, z);
-	}
-
-	@Override
-	public float getGravity() {
-		return 0.025f;
 	}
 
 	@Override

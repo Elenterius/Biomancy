@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.entity.projectile;
 
 import com.github.elenterius.biomancy.init.ModDamageSources;
-import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.MobUtil;
+import com.github.elenterius.biomancy.util.shooting.ProjectileEntityType;
 import com.github.elenterius.biomancy.util.sounds.SoundUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -20,7 +20,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -53,12 +52,8 @@ public class ImpalerProjectile extends BaseProjectile implements GeoEntity {
 	private Vec3 impaledPosition = null;
 	private Vec3 impaledDirection = Vec3.ZERO;
 
-	public ImpalerProjectile(EntityType<? extends ImpalerProjectile> entityType, Level level) {
+	public ImpalerProjectile(ProjectileEntityType<? extends ImpalerProjectile> entityType, Level level) {
 		super(entityType, level);
-	}
-
-	public ImpalerProjectile(Level level, double x, double y, double z) {
-		super(ModEntityTypes.IMPALER_PROJECTILE.get(), level, x, y, z);
 	}
 
 	protected void defineSynchedData() {
@@ -160,12 +155,7 @@ public class ImpalerProjectile extends BaseProjectile implements GeoEntity {
 	@Override
 	public float getGravity() {
 		double speed = getDeltaMovement().length();
-		return Math.max(speed < 1d ? 0.05f : 0.001f, getPassengers().size() * 0.02f);
-	}
-
-	@Override
-	public float getDrag() {
-		return 0.999f;
+		return Math.max(speed < 1d ? 0.05f : baseGravity, getPassengers().size() * 0.02f);
 	}
 
 	@Override

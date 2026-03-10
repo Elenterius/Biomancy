@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.entity.projectile;
 
-import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModMobEffects;
+import com.github.elenterius.biomancy.util.shooting.ProjectileEntityType;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -25,17 +24,8 @@ public class BloomberryProjectile extends BaseProjectile implements GeoEntity {
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-	public BloomberryProjectile(EntityType<? extends BloomberryProjectile> entityType, Level level) {
+	public BloomberryProjectile(ProjectileEntityType<? extends BloomberryProjectile> entityType, Level level) {
 		super(entityType, level);
-	}
-
-	public BloomberryProjectile(Level level, double x, double y, double z) {
-		super(ModEntityTypes.BLOOMBERRY_PROJECTILE.get(), level, x, y, z);
-	}
-
-	@Override
-	public float getGravity() {
-		return 0.025f;
 	}
 
 	@Override
@@ -88,4 +78,5 @@ public class BloomberryProjectile extends BaseProjectile implements GeoEntity {
 	public AnimatableInstanceCache getAnimatableInstanceCache() {
 		return cache;
 	}
+
 }

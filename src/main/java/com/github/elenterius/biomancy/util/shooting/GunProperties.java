@@ -1,29 +1,51 @@
 package com.github.elenterius.biomancy.util.shooting;
 
 import com.github.elenterius.biomancy.entity.projectile.BaseProjectile;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.SharedConstants;
+import net.minecraft.Util;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
 
-public record GunProperties<T extends BaseProjectile>(float damage, int knockback, float velocity, float accuracy, float spreadBias, int shotCount,
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+public record GunProperties<T extends BaseProjectile>(float damage, int knockback, float velocity, float accuracy, float spreadBias, int projectileCount,
                                                       Vector3fc localOffset, int delayBetweenShots, ShootBehavior shootBehavior,
                                                       int maxAmmo, int reloadDurationTicks, boolean isAutoReload,
-                                                      ProjectileFactory<T> factory, @Nullable SoundEvent shootSound) {
+                                                      Supplier<ProjectileEntityType<T>> projectileType, GunSounds sounds) {
+
+	private static final Function<GunProperties<? extends BaseProjectile>, ProjectileRange> DEFAULT_RANGE_CALCULATION = Util.memoize(gunProperties -> computeRange(gunProperties, gunProperties.velocity, gunProperties.accuracy));
+
+	public static <T extends BaseProjectile> ProjectileRange computeRange(GunProperties<T> properties, float velocity, float accuracy) {
+		ProjectileEntityType<? extends BaseProjectile> type = properties.projectileType().get();
+
+		float upOffset = properties.localOffset.y();
+		float forwardOffset = properties.localOffset.z();
+
+		float height = Player.DEFAULT_EYE_HEIGHT + upOffset;
+		float aimAngle = 2f * Mth.DEG_TO_RAD; //slightly up to simulate "natural player aim"
+
+		float spreadAngle = (float) Math.pow(1f - Mth.abs(accuracy), properties.spreadBias) * Mth.PI;
+
+		float minRange = (float) ProjectileUtil.computeRange(height, aimAngle - spreadAngle * 0.5f, velocity, type.getAirDrag(), type.getGravity());
+		float maxRange = (float) ProjectileUtil.computeRange(height, aimAngle + spreadAngle * 0.5f, velocity, type.getAirDrag(), type.getGravity());
+
+		return new ProjectileRange(minRange + forwardOffset, maxRange + forwardOffset);
+	}
 
 	public static <T extends BaseProjectile> Builder<T> builder() {
 		return new Builder<>();
 	}
 
-	public enum ShootBehavior {
-		INSTANT,
-		ON_FULL_CHARGE,
-		ON_RELEASE_INSTANT,
-		ON_RELEASE_WITH_FULL_CHARGE;
+	public float horizontalDefaultRange() {
+		return DEFAULT_RANGE_CALCULATION.apply(this).mean();
+	}
 
-		public boolean isOnRelease() {
-			return this == ON_RELEASE_WITH_FULL_CHARGE || this == ON_RELEASE_INSTANT;
-		}
+	public ProjectileRange defaultRange() {
+		return DEFAULT_RANGE_CALCULATION.apply(this);
 	}
 
 	public static class Builder<T extends BaseProjectile> {
@@ -33,7 +55,7 @@ public record GunProperties<T extends BaseProjectile>(float damage, int knockbac
 		private float velocity = 1f;
 		private float accuracy = 1f;
 		private float spreadBias = SpreadBias.UNIFORM;
-		private int shotCount = 1;
+		private int projectileCount = 1;
 		private Vector3fc localOffset = new Vector3f(0f, -0.1f, 0f);
 
 		private int timeBetweenShots = 20;
@@ -43,10 +65,9 @@ public record GunProperties<T extends BaseProjectile>(float damage, int knockbac
 		private int reloadDurationTicks = 20;
 		private boolean isAutoReload = false;
 
-		@SuppressWarnings("DataFlowIssue")
-		private ProjectileFactory<T> factory = null;
+		private @Nullable Supplier<ProjectileEntityType<T>> projectileType = null;
 
-		private @Nullable SoundEvent shootSound = null;
+		private GunSounds sounds = GunSounds.DEFAULT;
 
 		public Builder<T> damage(float damage) {
 			this.damage = damage;
@@ -74,8 +95,8 @@ public record GunProperties<T extends BaseProjectile>(float damage, int knockbac
 			return this;
 		}
 
-		public Builder<T> shotCount(int shotCount) {
-			this.shotCount = shotCount;
+		public Builder<T> projectileCount(int projectileCount) {
+			this.projectileCount = projectileCount;
 			return this;
 		}
 
@@ -102,7 +123,7 @@ public record GunProperties<T extends BaseProjectile>(float damage, int knockbac
 
 		public Builder<T> fireRate(float fireRate) {
 			if (fireRate > 20f) throw new IllegalArgumentException("Fire rate above 20.0f is not supported. Fire rate is: " + fireRate);
-			timeBetweenShots = Math.max(1, Math.round(Gun.ONE_SECOND_IN_TICKS / fireRate));
+			timeBetweenShots = Math.max(1, Math.round(SharedConstants.TICKS_PER_SECOND / fireRate));
 			return this;
 		}
 
@@ -126,27 +147,27 @@ public record GunProperties<T extends BaseProjectile>(float damage, int knockbac
 			return this;
 		}
 
-		public Builder<T> shootSound(@Nullable SoundEvent shootSound) {
-			this.shootSound = shootSound;
+		public Builder<T> sounds(GunSounds sounds) {
+			this.sounds = sounds;
 			return this;
 		}
 
-		public Builder<T> projectile(ProjectileFactory<T> factory) {
-			this.factory = factory;
+		public Builder<T> projectile(Supplier<ProjectileEntityType<T>> projectileType) {
+			this.projectileType = projectileType;
 			return this;
 		}
 
 		public GunProperties<T> build() {
-			if (factory == null) throw new IllegalArgumentException("Projectile factory is null");
+			if (projectileType == null) throw new IllegalArgumentException("Projectile EntityType Supplier is null");
 
 			return new GunProperties<>(
-					damage, knockback, velocity, accuracy, spreadBias, shotCount, localOffset,
+					damage, knockback, velocity, accuracy, spreadBias, projectileCount, localOffset,
 					timeBetweenShots, shootBehavior,
 					maxAmmo, reloadDurationTicks, isAutoReload,
-					factory, shootSound
+					projectileType,
+					sounds
 			);
 		}
-
 	}
 
 }

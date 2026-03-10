@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.entity.projectile;
 
 import com.github.elenterius.biomancy.init.ModDamageSources;
-import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.util.shooting.ProjectileEntityType;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
@@ -10,7 +10,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ItemSupplier;
@@ -23,17 +22,8 @@ import net.minecraftforge.common.util.Lazy;
 
 public class ToothProjectile extends BaseProjectile implements ItemSupplier {
 
-	public ToothProjectile(EntityType<? extends BaseProjectile> entityType, Level world) {
+	public ToothProjectile(ProjectileEntityType<? extends ToothProjectile> entityType, Level world) {
 		super(entityType, world);
-	}
-
-	public ToothProjectile(Level world, double x, double y, double z) {
-		super(ModEntityTypes.TOOTH_PROJECTILE.get(), world, x, y, z);
-	}
-
-	@Override
-	public float getGravity() {
-		return 0.01f;
 	}
 
 	@Override

@@ -6,15 +6,13 @@ import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.FormatUtil;
-import com.github.elenterius.biomancy.util.sounds.SoundUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.SharedConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +20,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Level;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -31,15 +28,14 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public interface Gun<T extends BaseProjectile> extends CrosshairProvider {
 
-	Set<Enchantment> VALID_ENCHANTMENTS = Set.of(Enchantments.PUNCH_ARROWS, Enchantments.POWER_ARROWS, Enchantments.QUICK_CHARGE);
-
-	int ONE_SECOND_IN_TICKS = 20;
-	int ONE_HOUR_IN_TICKS = 60 * 60 * 20;
+	Set<Enchantment> VALID_ENCHANTMENTS = Set.of(Enchantments.PUNCH_ARROWS, Enchantments.POWER_ARROWS, Enchantments.QUICK_CHARGE, Enchantments.MULTISHOT);
 
 	String AMMO_KEY = "ammo";
 	String RELOAD_TIMESTAMP_KEY = "reload_timestamp";
 	String WEAPON_STATE_KEY = "projectile_weapon_state";
 	String SHOOT_TIMESTAMP_KEY = "shoot_timestamp";
+
+	GunProperties<T> getGunProperties();
 
 	default long getShootTimestamp(ItemStack stack) {
 		return stack.getOrCreateTag().getLong(SHOOT_TIMESTAMP_KEY);
@@ -66,9 +62,7 @@ public interface Gun<T extends BaseProjectile> extends CrosshairProvider {
 		boolean success = ProjectileUtil.shoot(level, shooter, projectileWeapon, this);
 
 		if (success) {
-			if (getGunProperties().shootSound() != null) {
-				playSFX(level, shooter, getGunProperties().shootSound());
-			}
+			getGunProperties().sounds().playShoot(level, shooter);
 			projectileWeapon.hurtAndBreak(getDurabilityCost(projectileWeapon), shooter, entity -> entity.broadcastBreakEvent(usedHand));
 			consumeAmmo(shooter, projectileWeapon, getAmmoCost(projectileWeapon));
 		}
@@ -93,7 +87,7 @@ public interface Gun<T extends BaseProjectile> extends CrosshairProvider {
 			onReloadStarted(stack, level, shooter);
 		}
 		else {
-			playSFX(level, shooter, SoundEvents.DISPENSER_FAIL);
+			getGunProperties().sounds().playFail(level, shooter);
 		}
 	}
 
@@ -106,14 +100,16 @@ public interface Gun<T extends BaseProjectile> extends CrosshairProvider {
 			return;
 		}
 
-		ItemStack ammoStack = findAmmoInInv(stack, shooter);
-		if (!ammoStack.isEmpty() && ammoStack.getCount() >= getReloadCost(stack)) {
-			ammoStack.shrink(getReloadCost(stack));
+		AmmoSupplier ammoSupplier = getAmmoForReload(stack, shooter);
+		int reloadCost = getReloadCost(stack);
+
+		if (ammoSupplier.getAmount() >= reloadCost) {
+			ammoSupplier.consume(reloadCost);
 			setAmmo(stack, getMaxAmmo(stack));
 			onReloadFinished(stack, level, shooter);
 		}
 		else {
-			playSFX(level, shooter, SoundEvents.DISPENSER_FAIL);
+			getGunProperties().sounds().playFail(level, shooter);
 		}
 	}
 
@@ -128,21 +124,25 @@ public interface Gun<T extends BaseProjectile> extends CrosshairProvider {
 	}
 
 	default void onReloadStarted(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		playSFX(level, shooter, SoundEvents.CROSSBOW_LOADING_START);
+		getGunProperties().sounds().playReloadStart(level, shooter);
 	}
 
-	default void onReloadTick(ItemStack stack, ServerLevel level, LivingEntity shooter, long elapsedTime) {}
+	default void onReloadTick(ItemStack stack, ServerLevel level, LivingEntity shooter, long elapsedTime) {
+		if (elapsedTime % 20L == 0L) {
+			getGunProperties().sounds().playReloadTick(level, shooter);
+		}
+	}
 
 	default void onReloadStopped(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		playSFX(level, shooter, SoundEvents.CROSSBOW_LOADING_END);
+		getGunProperties().sounds().playReloadStop(level, shooter);
 	}
 
 	default void onReloadCanceled(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		playSFX(level, shooter, SoundEvents.CROSSBOW_LOADING_END);
+		getGunProperties().sounds().playReloadCancel(level, shooter);
 	}
 
 	default void onReloadFinished(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		playSFX(level, shooter, SoundEvents.CROSSBOW_LOADING_END);
+		getGunProperties().sounds().playReloadFinish(level, shooter);
 	}
 
 	default float getReloadProgress(long elapsedTime, long reloadTime) {
@@ -151,8 +151,8 @@ public interface Gun<T extends BaseProjectile> extends CrosshairProvider {
 
 	default boolean canReload(ItemStack stack, LivingEntity shooter) {
 		if (getAmmo(stack) >= getMaxAmmo(stack)) return false;
-		ItemStack ammo = findAmmoInInv(stack, shooter);
-		return !ammo.isEmpty() && ammo.getCount() >= getReloadCost(stack);
+		AmmoSupplier ammoSupplier = getAmmoForReload(stack, shooter);
+		return ammoSupplier.getAmount() >= getReloadCost(stack);
 	}
 
 	default float getProjectileVelocity(ItemStack stack) {
@@ -171,31 +171,33 @@ public interface Gun<T extends BaseProjectile> extends CrosshairProvider {
 		return getGunProperties().accuracy();
 	}
 
+	default int getProjectileCount(ItemStack stack) {
+		return getGunProperties().projectileCount() + stack.getEnchantmentLevel(Enchantments.MULTISHOT);
+	}
+
 	default int getDelayBetweenShots(ItemStack stack) {
 		//return getGunProperties().delayBetweenShots() - 2 * stack.getEnchantmentLevel(ModEnchantments.QUICK_SHOT.get());
 		return getGunProperties().delayBetweenShots();
 	}
 
-	GunProperties<T> getGunProperties();
-
 	default float getFireRate(ItemStack stack) {
-		return ONE_SECOND_IN_TICKS / (float) getDelayBetweenShots(stack);
+		return SharedConstants.TICKS_PER_SECOND / (float) getDelayBetweenShots(stack);
 	}
 
 	default int getReloadDurationTicks(ItemStack stack) {
 		return getGunProperties().reloadDurationTicks() - 5 * stack.getEnchantmentLevel(Enchantments.QUICK_CHARGE);
 	}
 
-	default GunProperties.ShootBehavior getShootBehavior() {
+	default ShootBehavior getShootBehavior() {
 		return getGunProperties().shootBehavior();
 	}
 
 	default int getMaxAmmo(ItemStack stack) {
-		//		return Mth.floor(getGunProperties().maxAmmo() + getGunProperties().maxAmmo() * 0.5f * stack.getEnchantmentLevel(ModEnchantments.MAX_AMMO.get()));
+		//return Mth.floor(getGunProperties().maxAmmo() + getGunProperties().maxAmmo() * 0.5f * stack.getEnchantmentLevel(ModEnchantments.MAX_AMMO.get()));
 		return getGunProperties().maxAmmo();
 	}
 
-	ItemStack findAmmoInInv(ItemStack stack, LivingEntity shooter);
+	AmmoSupplier getAmmoForReload(ItemStack stack, LivingEntity shooter);
 
 	default boolean hasAmmo(ItemStack stack) {
 		return getAmmo(stack) > 0;
@@ -224,55 +226,54 @@ public interface Gun<T extends BaseProjectile> extends CrosshairProvider {
 		if (!(shooter instanceof Player player) || !player.getAbilities().instabuild) addAmmo(stack, -amount);
 	}
 
-	default void playSFX(Level level, LivingEntity shooter, SoundEvent soundEvent) {
-		float volume = Mth.lerp(shooter.getRandom().nextFloat(), 0.75f, 0.85f);
-		float pitch = Mth.lerp(shooter.getRandom().nextFloat(), 1.2f, 0.86f);
-		playSFX(level, shooter, soundEvent, volume, pitch);
-	}
-
-	default void playSFX(Level level, LivingEntity shooter, SoundEvent soundEvent, float volume, float pitch) {
-		level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), soundEvent, SoundUtil.soundSourceFor(shooter), volume, pitch);
-	}
-
 	default void appendGunStats(ItemStack stack, List<Component> tooltip) {
 		DecimalFormat df = FormatUtil.getDoubleFormatter();
 		GunProperties<T> gunProperties = getGunProperties();
 
 		float velocity = getProjectileVelocity(stack);
 		float bonusVelocity = velocity - gunProperties.velocity();
-		tooltip.add(TextComponentUtil.getTooltipText("projectile_speed").append(String.format(": %s m/s ", df.format(velocity * 20))).append(formatBonusValue(df, bonusVelocity * 20)).withStyle(ChatFormatting.GRAY));
-
+		float accuracy = getAccuracy(stack);
+		float bonusAccuracy = accuracy - gunProperties.accuracy();
 		float damage = getProjectileDamage(stack);
 		float bonusDamage = damage - gunProperties.damage();
+		int knockBack = getProjectileKnockBack(stack);
+		int projectileCount = getProjectileCount(stack);
+		int bonusProjectileCount = projectileCount - gunProperties.projectileCount();
+		float fireRate = getFireRate(stack);
+		float bonusFireRate = fireRate - (SharedConstants.TICKS_PER_SECOND / (float) gunProperties.delayBetweenShots());
+		float reloadDurationSeconds = getReloadDurationTicks(stack) / (float) SharedConstants.TICKS_PER_SECOND;
+		float bonusReloadReduction = reloadDurationSeconds - (gunProperties.reloadDurationTicks() / (float) SharedConstants.TICKS_PER_SECOND);
+
+		tooltip.add(TextComponentUtil.getTooltipText("projectile_speed").append(String.format(": %s m/s ", df.format(velocity * 20))).append(formatBonusValue(df, bonusVelocity * 20)).withStyle(ChatFormatting.GRAY));
+
+		ProjectileRange range = GunProperties.computeRange(gunProperties, velocity, accuracy);
+		float bonusRange = range.mean() - gunProperties.defaultRange().mean();
+		tooltip.add(TextComponentUtil.getTooltipText("projectile_range").append(String.format(": %s m", range.format(df))).append(formatBonusValue(df, bonusRange)).withStyle(ChatFormatting.GRAY));
+
 		tooltip.add(TextComponentUtil.getTooltipText("projectile_damage").append(String.format(": %s ", df.format(damage))).append(formatBonusValue(df, bonusDamage)).withStyle(ChatFormatting.GRAY));
 
-		int knockBack = getProjectileKnockBack(stack);
 		if (knockBack != 0) {
 			int bonusValue = knockBack - gunProperties.knockback();
 			tooltip.add(TextComponentUtil.getTooltipText("projectile_knock_back").append(String.format(": %s ", df.format(knockBack))).append(formatBonusValue(df, bonusValue)).withStyle(ChatFormatting.GRAY));
 		}
 
-		float accuracy = getAccuracy(stack);
-		float bonusAccuracy = accuracy - gunProperties.accuracy();
 		tooltip.add(TextComponentUtil.getTooltipText("accuracy").append(String.format(": %s ", df.format(accuracy))).append(formatBonusValue(df, bonusAccuracy)).withStyle(ChatFormatting.GRAY));
-
-		float fireRate = getFireRate(stack);
-		float bonusFireRate = fireRate - (ONE_SECOND_IN_TICKS / (float) gunProperties.delayBetweenShots());
 		tooltip.add(TextComponentUtil.getTooltipText("fire_rate").append(String.format(": %s rps ", df.format(fireRate))).append(formatBonusValue(df, bonusFireRate)).withStyle(ChatFormatting.GRAY));
 
-		float reloadDurationSeconds = getReloadDurationTicks(stack) / (float) ONE_SECOND_IN_TICKS;
-		float bonusReloadReduction = reloadDurationSeconds - (gunProperties.reloadDurationTicks() / (float) ONE_SECOND_IN_TICKS);
-		tooltip.add(TextComponentUtil.getTooltipText("reload_time").append(String.format(": %ss ", df.format(reloadDurationSeconds))).append(formatBonusValue(df, bonusReloadReduction, true)).withStyle(ChatFormatting.GRAY));
+		if (projectileCount > 1) {
+			tooltip.add(TextComponentUtil.getTooltipText("projectile_count").append(String.format(": %s ", df.format(projectileCount))).append(formatBonusValue(df, bonusProjectileCount)).withStyle(ChatFormatting.GRAY));
+		}
 
+		tooltip.add(TextComponentUtil.getTooltipText("reload_time").append(String.format(": %ss ", df.format(reloadDurationSeconds))).append(formatBonusValue(df, bonusReloadReduction, true)).withStyle(ChatFormatting.GRAY));
 		tooltip.add(ComponentUtil.EMPTY_LINE);
 		tooltip.add(TextComponentUtil.getTooltipText("ammo").append(String.format(": %d/%d ", getAmmo(stack), getMaxAmmo(stack))).withStyle(ChatFormatting.GRAY));
 	}
 
-	private Component formatBonusValue(DecimalFormat df, float value) {
+	static Component formatBonusValue(DecimalFormat df, float value) {
 		return formatBonusValue(df, value, false);
 	}
 
-	private Component formatBonusValue(DecimalFormat df, float value, boolean inverted) {
+	static Component formatBonusValue(DecimalFormat df, float value, boolean inverted) {
 		if (value == 0f) return ComponentUtil.EMPTY;
 
 		boolean isBeneficial = (inverted && value < 0f) || (!inverted && value > 0f);

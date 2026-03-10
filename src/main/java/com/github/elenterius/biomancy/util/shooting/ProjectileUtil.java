@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.util.function.FloatOperator;
 import com.github.elenterius.biomancy.util.function.IntOperator;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -25,7 +26,7 @@ public class ProjectileUtil {
 	private ProjectileUtil() {}
 
 	/// @param localSpawnOffset spawn offset in local space (x=RIGHT, y=UP, z=FORWARD)
-	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, float velocity, float damage, int knockback, float accuracy, float spreadBias, Vector3fc localSpawnOffset, ProjectileFactory<T> factory, Consumer<T> modifier) {
+	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, float velocity, float damage, int knockback, float accuracy, float spreadBias, Vector3fc localSpawnOffset, ProjectileEntityType<T> entityType, int projectileCount, Consumer<T> modifier) {
 		Vec3 eyePosition = shooter.getEyePosition();
 		Quaternionfc viewRotation = new Quaternionf().rotationYXZ(
 				-shooter.getViewYRot(1f) * Mth.DEG_TO_RAD,
@@ -33,80 +34,96 @@ public class ProjectileUtil {
 				0f
 		);
 
-		Vector3f offset = viewRotation.transform(localSpawnOffset.mul(-1f, 0f, 0f, new Vector3f()));
+		Vector3f offset = viewRotation.transform(localSpawnOffset.mul(-1f, 1f, 1f, new Vector3f()));
 		Vec3 spawnPos = eyePosition.add(offset.x, offset.y, offset.z);
 
 		RandomSource rand = shooter.getRandom();
 
-		//accuracy logic
-		float u = (float) Math.pow(rand.nextFloat(), spreadBias);
-		float v = rand.nextFloat();
+		float coneAngle = (1f - Mth.abs(accuracy)) * Mth.PI;
+		float distance = 1024f; //arbitrary far away aim distance
 
 		Vector3f localDirection = new Vector3f();
-		uniformSphericalCap((1f - Mth.abs(accuracy)) * Mth.PI, u, v, localDirection);
+		Vector3f aimDirection = new Vector3f();
 
-		if (accuracy < 0f) localDirection.z *= -1f;
+		for (int i = 0; i < projectileCount; i++) {
 
-		Vector3f aimDirection = viewRotation.transform(localDirection, new Vector3f()).normalize();
+			float u = (float) Math.pow((i + rand.nextFloat()) / projectileCount, spreadBias); //stratified sample
+			float v = projectileCount < 5 ? rand.nextFloat() : (i * 0.61803398875f) % 1f; // golden ratio
+			uniformSphericalCap(coneAngle, u, v, localDirection);
 
-		//compensate for offset spawn position to prevent projectile aiming parallel to "players aim"
-		float distance = 1024f; //arbitrary far away aim distance
-		Vec3 targetPos = eyePosition.add(aimDirection.x * distance, aimDirection.y * distance, aimDirection.z * distance); // "player aim"
-		Vec3 shootDirection = targetPos.subtract(spawnPos).normalize(); //aim projectile towards "player aim"
+			if (accuracy < 0f) localDirection.z *= -1f;
 
-		T projectile = factory.create(level, spawnPos.x, spawnPos.y, spawnPos.z);
-		setMovementAndRotation(projectile, shootDirection, velocity);
+			viewRotation.transform(localDirection, aimDirection).normalize();
 
-		projectile.setOwner(shooter);
-		projectile.setDamage(damage);
-		if (knockback > 0) {
-			projectile.setKnockback((byte) knockback);
-		}
-		modifier.accept(projectile);
+			//compensate for offset spawn position to prevent projectile aiming parallel to "players aim"
+			Vec3 targetPos = eyePosition.add(aimDirection.x * distance, aimDirection.y * distance, aimDirection.z * distance); // "player aim"
+			Vec3 shootDirection = targetPos.subtract(spawnPos).normalize(); //aim projectile towards "player aim"
 
-		if (eyePosition.distanceTo(spawnPos) > 0.2d) {
-			//prevent shooting through walls due to any offset
-			BlockHitResult hitResult = level.clip(new ClipContext(eyePosition, spawnPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, projectile));
-			if (hitResult.getType() != HitResult.Type.MISS) {
-				projectile.onHit(hitResult);
+			T projectile = entityType.create(level);
+			if (projectile == null) return false;
+
+			projectile.setPos(spawnPos);
+			setMovementAndRotation(projectile, shootDirection, velocity);
+
+			projectile.setOwner(shooter);
+			projectile.setDamage(damage);
+			projectile.setKnockback(knockback);
+			modifier.accept(projectile);
+
+			if (eyePosition.distanceTo(spawnPos) > 0.2d) {
+				//prevent shooting through walls due to any offset
+				BlockHitResult hitResult = level.clip(new ClipContext(eyePosition, spawnPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, projectile));
+				if (hitResult.getType() != HitResult.Type.MISS) {
+					projectile.onHit(hitResult);
+				}
 			}
-		}
 
-		if (projectile.isAlive()) {
-			level.addFreshEntity(projectile);
+			if (projectile.isAlive()) {
+				level.addFreshEntity(projectile);
+			}
 		}
 
 		return true;
 	}
 
-	public static <T extends BaseProjectile> boolean shoot(Level level, @Nullable LivingEntity shooter, Vec3 origin, Vec3 target, float velocity, float damage, int knockback, float accuracy, float spreadBias, ProjectileFactory<T> factory, Consumer<T> modify) {
-		Vec3 viewDirection = target.subtract(origin).normalize();
-		Quaternionfc viewRotation = new Quaternionf().lookAlong((float) viewDirection.x, (float) viewDirection.y, (float) viewDirection.z, 0f, 1f, 0f);
+	public static <T extends BaseProjectile> boolean shoot(Level level, @Nullable Entity owner, Vec3 origin, Vec3 direction, float velocity, float damage, int knockback, float accuracy, float spreadBias, ProjectileEntityType<T> entityType, int projectileCount, Consumer<T> modify) {
+		Quaternionfc aimRotation = new Quaternionf().lookAlong((float) direction.x, (float) direction.y, (float) direction.z, 0f, 1f, 0f);
+		return shoot(level, owner, origin, aimRotation, velocity, damage, knockback, accuracy, spreadBias, entityType, projectileCount, modify);
+	}
 
+	public static <T extends BaseProjectile> boolean shoot(Level level, @Nullable Entity owner, Vec3 origin, Quaternionfc aimRotation, float velocity, float damage, int knockback, float accuracy, float spreadBias, ProjectileEntityType<T> entityType, int projectileCount, Consumer<T> modify) {
 		RandomSource rand = level.getRandom();
 
-		//accuracy logic
-		float u = (float) Math.pow(rand.nextFloat(), spreadBias);
-		float v = rand.nextFloat();
+		float coneAngle = (1f - Mth.abs(accuracy)) * Mth.PI;
 
 		Vector3f localDirection = new Vector3f();
-		uniformSphericalCap((1f - Mth.abs(accuracy)) * Mth.PI, u, v, localDirection);
+		Vector3f shootDirection = new Vector3f();
 
-		if (accuracy < 0f) localDirection.z *= -1f;
+		for (int i = 0; i < projectileCount; i++) {
 
-		Vector3f shootDirection = viewRotation.transform(localDirection, new Vector3f()).normalize();
+			float u = (float) Math.pow((i + rand.nextFloat()) / projectileCount, spreadBias); //stratified sample
+			float v = projectileCount < 5 ? rand.nextFloat() : (i * 0.61803398875f) % 1f; // golden ratio
+			uniformSphericalCap(coneAngle, u, v, localDirection);
 
-		T projectile = factory.create(level, origin.x, origin.y, origin.z);
-		setMovementAndRotation(projectile, shootDirection, velocity);
+			if (accuracy < 0f) localDirection.z *= -1f;
 
-		projectile.setOwner(shooter);
-		projectile.setDamage(damage);
-		if (knockback > 0) {
-			projectile.setKnockback((byte) knockback);
+			aimRotation.transform(localDirection, shootDirection).normalize();
+
+			T projectile = entityType.create(level);
+			if (projectile == null) return false;
+
+			projectile.setPos(origin);
+			setMovementAndRotation(projectile, shootDirection, velocity);
+
+			projectile.setOwner(owner);
+			projectile.setDamage(damage);
+			projectile.setKnockback(knockback);
+			modify.accept(projectile);
+
+			level.addFreshEntity(projectile);
 		}
-		modify.accept(projectile);
 
-		return level.addFreshEntity(projectile);
+		return true;
 	}
 
 	private static void uniformSphericalCap(float angle, float u, float v, Vector3f dest) {
@@ -134,6 +151,7 @@ public class ProjectileUtil {
 		setMovementAndRotation(projectile, deltaMovement);
 	}
 
+	@SuppressWarnings("SuspiciousNameCombination")
 	private static <T extends BaseProjectile> void setMovementAndRotation(T projectile, Vec3 deltaMovement) {
 		projectile.setDeltaMovement(deltaMovement);
 
@@ -158,18 +176,30 @@ public class ProjectileUtil {
 	//	}
 
 	public static <T extends BaseProjectile> boolean shoot(Level level, ProjectileShootContext<T> context, Vec3 origin, Vec3 target) {
-		return shoot(level, null, context, origin, target);
+		return shoot(level, null, context, origin, target, false);
 	}
 
-	public static <T extends BaseProjectile> boolean shoot(Level level, @Nullable LivingEntity shooter, ProjectileShootContext<T> context, Vec3 origin, Vec3 target) {
+	public static <T extends BaseProjectile> boolean shoot(Level level, @Nullable Entity owner, ProjectileShootContext<T> context, Vec3 origin, Vec3 target, boolean aimAssist) {
+		Quaternionfc aimRotation;
+
+		if (aimAssist) {
+			float airDrag = context.entityType().getAirDrag();
+			float gravity = context.entityType().getGravity();
+			aimRotation = computeLaunchDirection(origin, target, context.velocity(), airDrag, gravity, false);
+		}
+		else {
+			Vec3 direction = target.subtract(origin).normalize();
+			aimRotation = new Quaternionf().lookAlong((float) direction.x, (float) direction.y, (float) direction.z, 0f, 1f, 0f);
+		}
+
 		return shoot(
-				level, shooter, origin, target,
+				level, owner, origin, aimRotation,
 				context.velocity(),
 				context.damage(),
 				context.knockback(),
 				context.accuracy(),
 				context.spreadBias(),
-				context.factory(), projectile -> {}
+				context.entityType(), context.projectileCount(), projectile -> {}
 		);
 	}
 
@@ -177,15 +207,17 @@ public class ProjectileUtil {
 		return shoot(level, null, context, origin, target, velocityModifier, damageModifier, knockbackModifier, accuracyModifier);
 	}
 
-	public static <T extends BaseProjectile> boolean shoot(Level level, @Nullable LivingEntity shooter, ProjectileShootContext<T> context, Vec3 origin, Vec3 target, FloatOperator velocityModifier, FloatOperator damageModifier, IntOperator knockbackModifier, FloatOperator accuracyModifier) {
+	public static <T extends BaseProjectile> boolean shoot(Level level, @Nullable Entity owner, ProjectileShootContext<T> context, Vec3 origin, Vec3 target, FloatOperator velocityModifier, FloatOperator damageModifier, IntOperator knockbackModifier, FloatOperator accuracyModifier) {
+		Vec3 direction = target.subtract(origin).normalize();
 		return shoot(
-				level, shooter, origin, target,
+				level, owner, origin, direction,
 				velocityModifier.apply(context.velocity()),
 				damageModifier.apply(context.damage()),
 				knockbackModifier.apply(context.knockback()),
 				accuracyModifier.apply(context.accuracy()),
 				context.spreadBias(),
-				context.factory(),
+				context.entityType(),
+				context.projectileCount(),
 				projectile -> {}
 		);
 	}
@@ -195,7 +227,7 @@ public class ProjectileUtil {
 	}
 
 	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, ProjectileShootContext<T> context, Consumer<T> modify) {
-		return shoot(level, shooter, context.velocity(), context.damage(), context.knockback(), context.accuracy(), context.spreadBias(), context.localOffset(), context.factory(), modify);
+		return shoot(level, shooter, context.velocity(), context.damage(), context.knockback(), context.accuracy(), context.spreadBias(), context.localOffset(), context.entityType(), context.projectileCount(), modify);
 	}
 
 	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, ProjectileShootContext<T> context, FloatOperator velocityModifier, FloatOperator damageModifier, IntOperator knockbackModifier, FloatOperator accuracyModifier) {
@@ -215,7 +247,7 @@ public class ProjectileUtil {
 				accuracyModifier.apply(context.accuracy()),
 				context.spreadBias(),
 				localSpawnOffset,
-				context.factory(), modify
+				context.entityType(), context.projectileCount(), modify
 		);
 	}
 
@@ -233,8 +265,128 @@ public class ProjectileUtil {
 				gun.getAccuracy(stack),
 				properties.spreadBias(),
 				properties.localOffset(),
-				properties.factory(),
+				properties.projectileType().get(),
+				gun.getProjectileCount(stack),
 				projectileModifier
+		);
+	}
+
+	/// @param launchAngle Launch angle in radians from -90deg to 90deg
+	/// @return Horizontal range
+	public static double simulateRange(double initialHeight, double launchAngle, double initialVelocity, double drag, double gravity) {
+		double maxAngle = Math.PI / 2d;
+		if (launchAngle > maxAngle || launchAngle < -maxAngle) throw new IllegalArgumentException("launch angle is outside of valid range");
+
+		double vx = initialVelocity * Math.cos(launchAngle);
+		double vy = initialVelocity * Math.sin(launchAngle);
+
+		if (vy >= 0d && drag == 0d && gravity == 0d) return Double.POSITIVE_INFINITY;
+
+		double x = 0, y = initialHeight;
+		double prevX = x, prevY = y;
+
+		while (y > 0d) {
+			vx = vx + -drag * vx;
+			vy = vy + -drag * vy - gravity;
+
+			prevX = x;
+			prevY = y;
+
+			x += vx;
+			y += vy;
+		}
+
+		double slope = (y - prevY) / (x - prevX);
+		double xIntercept = prevX - (prevY / slope);
+
+		if (xIntercept < 1e-3) {
+			return 0d;
+		}
+
+		return xIntercept;
+	}
+
+	public static double computeRange(double initialHeight, float launchAngle, double initialVelocity, double drag, double gravity) {
+		double vx = initialVelocity * Mth.cos(launchAngle);
+		double vy = initialVelocity * Mth.sin(launchAngle);
+		double t = computeFlightTime(vy, initialHeight, drag, gravity);
+		return (vx / drag) * (1d - Math.exp(-drag * t));
+	}
+
+	public static double computeFlightTime(double vy, double initialHeight, double drag, double gravity) {
+		double gd = gravity / drag;
+		double vg = vy + gd;
+		double vgd = vg / drag;
+
+		double t = (vy + Math.sqrt(vy * vy + 2d * gravity * initialHeight)) / gravity;
+
+		for (int i = 0; i < 4; i++) {
+			double e = Math.exp(-drag * t);
+			double y = initialHeight + vgd * (1d - e) - gd * t;
+			double dy = vg * e - gd;
+			t -= y / dy;
+		}
+
+		return t;
+	}
+
+	public static double computeDerivativeRange(double initialHeight, float launchAngle, double initialVelocity, double drag, double gravity) {
+		float thetaCos = Mth.cos(launchAngle);
+		float thetaSin = Mth.sin(launchAngle);
+
+		double vx_0 = initialVelocity * thetaCos;
+		double vy_0 = initialVelocity * thetaSin;
+		double t = computeFlightTime(vy_0, initialHeight, drag, gravity);
+		double e = Math.exp(-drag * t);
+
+		double dt_dvy_0 = (1d - e) / ((vy_0 + gravity / drag) * e - gravity / drag);
+		double dvx_0_dAngle = initialVelocity * -thetaSin;
+		double dvy_0_dAngle = initialVelocity * thetaCos;
+
+		// dR/dAngle = dR/dvx_0 * dvx_0/dAngle + dR/dt * dt/dvy_0 * dvy_0/dAngle
+		double dR_dvx_0 = (1d - e) / drag;
+		double dR_dt = vx_0 * e;
+		return dR_dvx_0 * dvx_0_dAngle + dR_dt * dt_dvy_0 * dvy_0_dAngle;
+	}
+
+	public static double computeLaunchAngle(double initialHeight, double initialVelocity, double drag, double gravity, double targetX, double targetY, boolean highArc) {
+		double angle = (highArc ? 60 : 30) * Mth.DEG_TO_RAD;
+		double dTheta = 1e-6d;
+
+		for (int i = 0; i < 6; i++) {
+			double vx_0 = initialVelocity * Mth.cos((float) angle);
+			double t = -Math.log(1d - drag * targetX / vx_0) / drag;
+
+			double y = computeY(initialHeight, initialVelocity, angle, drag, gravity, t);
+			double error = y - targetY;
+
+			double y_next = computeY(initialHeight, initialVelocity, angle + dTheta, drag, gravity, t);
+			double dy_dTheta = (y_next - y) / dTheta;
+
+			angle -= error / dy_dTheta;
+		}
+
+		return angle;
+	}
+
+	private static double computeY(double initialHeight, double initialVelocity, double angle, double drag, double gravity, double t) {
+		double vy_0 = initialVelocity * Mth.sin((float) angle);
+		return initialHeight + (vy_0 + gravity / drag) * (1d - Math.exp(-drag * t)) / drag - gravity * t / drag;
+	}
+
+	public static Quaternionfc computeLaunchDirection(Vec3 launchPos, Vec3 targetPos, double initialVelocity, double drag, double gravity, boolean highArc) {
+		double dx = targetPos.x - launchPos.x;
+		double dz = targetPos.z - launchPos.z;
+		double horizontalDistance = Math.sqrt(dx * dx + dz * dz);
+		double verticalDistance = targetPos.y - launchPos.y;
+
+		double yaw = Mth.atan2(dz, dx);
+		double pitch = computeLaunchAngle(0, initialVelocity, drag, gravity, horizontalDistance, verticalDistance, highArc);
+
+		return new Quaternionf().rotationYXZ(
+				(float) -yaw,
+				(float) pitch,
+				0f
 		);
 	}
 

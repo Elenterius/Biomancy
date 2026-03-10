@@ -4,16 +4,13 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.render.item.impaler.ImpalerRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.projectile.ImpalerProjectile;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.init.client.ModArmPoses;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.animation.TriggerableAnimation;
-import com.github.elenterius.biomancy.util.shooting.GunProperties;
-import com.github.elenterius.biomancy.util.shooting.GunState;
-import com.github.elenterius.biomancy.util.shooting.ProjectileUtil;
-import com.github.elenterius.biomancy.util.shooting.SpreadBias;
-import com.github.elenterius.biomancy.util.sounds.SoundUtil;
+import com.github.elenterius.biomancy.util.shooting.*;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -45,6 +42,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.constant.DataTickets;
@@ -66,6 +64,7 @@ public class ImpalerItem extends LivingGunItem<ImpalerProjectile> implements Ite
 
 	protected static final UUID BASE_MOVEMENT_SPEED_UUID = UUID.fromString("efc325ad-c747-4c0e-80c2-f3f0f4261e91");
 
+	protected static final ResourceLocation CROSSHAIR = BiomancyMod.rl("textures/gui/impaler_crosshair.png");
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
@@ -73,12 +72,13 @@ public class ImpalerItem extends LivingGunItem<ImpalerProjectile> implements Ite
 	public ImpalerItem(int maxNutrients, Properties properties) {
 		super(maxNutrients, properties,
 				GunProperties.<ImpalerProjectile>builder()
-						.shootBehavior(GunProperties.ShootBehavior.ON_RELEASE_INSTANT)
+						.shootBehavior(ShootBehavior.ON_RELEASE_INSTANT)
 						.timeBetweenShots(Mth.ceil(CHARGE_DURATION * 20f))
-						.damage(24f).accuracy(0.95f).spreadBias(SpreadBias.CENTER_HEAVY)
+						.damage(24f).accuracy(0.98f).spreadBias(SpreadBias.CENTER_HEAVY)
 						.maxAmmo(1).reloadDuration(3 * 20).autoReload()
-						.projectile(ImpalerProjectile::new).velocity(2.85f)
-						.shootSound(ModSoundEvents.IMPALER_SHOOT.get())
+						.projectile(ModEntityTypes.IMPALER_PROJECTILE).velocity(2.85f)
+						.localOffset(new Vector3f(0.25f, -0.2f, 0.5f))
+						.sounds(GUN_SOUNDS.withShoot(ModSoundEvents.IMPALER_SHOOT.get()))
 						.build()
 		);
 
@@ -93,11 +93,6 @@ public class ImpalerItem extends LivingGunItem<ImpalerProjectile> implements Ite
 	@Override
 	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
 		return slot.getType() == EquipmentSlot.Type.HAND ? defaultModifiers : ImmutableMultimap.of();
-	}
-
-	@Override
-	public int getDefaultProjectileRange() {
-		return 64;
 	}
 
 	@Override
@@ -121,7 +116,7 @@ public class ImpalerItem extends LivingGunItem<ImpalerProjectile> implements Ite
 		int delayBetweenShots = getDelayBetweenShots(stack);
 
 		if (elapsedTime % delayBetweenShots == 0) {
-			level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), ModSoundEvents.IMPALER_CHARGE.get(), SoundUtil.soundSourceFor(shooter), 1f, 0.8f + shooter.getRandom().nextFloat() * 0.3f);
+			GunSounds.play(level, shooter, ModSoundEvents.IMPALER_CHARGE.get());
 		}
 	}
 
@@ -147,18 +142,16 @@ public class ImpalerItem extends LivingGunItem<ImpalerProjectile> implements Ite
 				getProjectileDamage(projectileWeapon),
 				getProjectileKnockBack(projectileWeapon),
 				getAccuracy(projectileWeapon),
+				gunProperties.spreadBias(),
 				gunProperties.localOffset(),
-				gunProperties.factory(),
-				projectile -> {
-					projectile.setPierceLevel(projectileWeapon.getEnchantmentLevel(Enchantments.PIERCING));
-				});
+				gunProperties.projectileType().get(),
+				getProjectileCount(projectileWeapon),
+				projectile -> projectile.setPierceLevel(projectileWeapon.getEnchantmentLevel(Enchantments.PIERCING)));
 
 		if (!success) return;
 
 		broadcastAnimation(level, shooter, projectileWeapon, Animations.SHOOT);
-		if (gunProperties.shootSound() != null) {
-			playSFX(level, shooter, gunProperties.shootSound(), 1.5f, 0.8f + shooter.getRandom().nextFloat() * 0.3f);
-		}
+		gunProperties.sounds().playShoot(level, shooter, 1.5f, 0.8f + shooter.getRandom().nextFloat() * 0.5f);
 
 		projectileWeapon.hurtAndBreak(1, shooter, entity -> entity.broadcastBreakEvent(usedHand));
 		consumeAmmo(shooter, projectileWeapon, getAmmoCost(projectileWeapon));
@@ -291,8 +284,6 @@ public class ImpalerItem extends LivingGunItem<ImpalerProjectile> implements Ite
 	public AnimatableInstanceCache getAnimatableInstanceCache() {
 		return cache;
 	}
-
-	protected static final ResourceLocation CROSSHAIR = BiomancyMod.rl("textures/gui/impaler_crosshair.png");
 
 	@Override
 	public ResourceLocation getCrosshairTexture(ItemStack stack, Player player) {

@@ -3,14 +3,13 @@ package com.github.elenterius.biomancy.entity.projectile;
 import com.github.elenterius.biomancy.block.cauldron.AcidCauldron;
 import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
-import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModFluids;
 import com.github.elenterius.biomancy.init.ModParticleTypes;
+import com.github.elenterius.biomancy.util.shooting.ProjectileEntityType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -27,17 +26,8 @@ public class AcidBlobProjectile extends AcidSpitProjectile implements GeoEntity 
 	protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	protected boolean canPlaceAcidFluid = true;
 
-	public AcidBlobProjectile(EntityType<? extends BaseProjectile> entityType, Level level) {
+	public AcidBlobProjectile(ProjectileEntityType<? extends AcidBlobProjectile> entityType, Level level) {
 		super(entityType, level);
-	}
-
-	public AcidBlobProjectile(Level level, double x, double y, double z) {
-		super(ModEntityTypes.ACID_BLOB_PROJECTILE.get(), level, x, y, z);
-	}
-
-	public AcidBlobProjectile(Level level, double x, double y, double z, boolean canPlaceAcidFluid) {
-		super(ModEntityTypes.ACID_BLOB_PROJECTILE.get(), level, x, y, z);
-		this.canPlaceAcidFluid = canPlaceAcidFluid;
 	}
 
 	public void setCanPlaceAcidFluid(boolean flag) {

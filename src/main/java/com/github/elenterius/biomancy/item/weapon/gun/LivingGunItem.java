@@ -8,13 +8,11 @@ import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
-import com.github.elenterius.biomancy.util.shooting.GunProperties;
-import com.github.elenterius.biomancy.util.shooting.GunState;
-import com.github.elenterius.biomancy.util.shooting.ProjectileUtil;
+import com.github.elenterius.biomancy.util.shooting.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,6 +33,12 @@ public abstract class LivingGunItem<T extends BaseProjectile> extends GunItem<T>
 
 	private static final Predicate<ItemStack> AMMO_PREDICATE = itemStack -> false;
 
+	public static final GunSounds GUN_SOUNDS = new GunSounds(
+			SoundEvents.LLAMA_SPIT, ModSoundEvents.FLESHKIN_NO.get(),
+			ModSoundEvents.FLESHKIN_BECOME_AWAKENED.get(), ModSoundEvents.FLESHKIN_EAT.get(),
+			ModSoundEvents.FLESHKIN_NO.get(), ModSoundEvents.FLESHKIN_BREAK.get(), ModSoundEvents.FLESHKIN_BURP.get()
+	);
+
 	private final int maxNutrients;
 
 	protected LivingGunItem(int maxNutrients, Properties properties, GunProperties<T> gunProperties) {
@@ -48,7 +52,7 @@ public abstract class LivingGunItem<T extends BaseProjectile> extends GunItem<T>
 
 		if (getNutrients(stack) < getDurabilityCost(stack)) {
 			player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_nutrients"), true);
-			playLocalSound(player, ModSoundEvents.FLESHKIN_NO.get());
+			gunProperties.sounds().playFail(level, player, true);
 			return InteractionResultHolder.fail(stack);
 		}
 
@@ -78,9 +82,7 @@ public abstract class LivingGunItem<T extends BaseProjectile> extends GunItem<T>
 		boolean success = ProjectileUtil.shoot(level, shooter, projectileWeapon, this);
 
 		if (success) {
-			if (gunProperties.shootSound() != null) {
-				playSFX(level, shooter, gunProperties.shootSound());
-			}
+			gunProperties.sounds().playShoot(level, shooter);
 			consumeAmmo(shooter, projectileWeapon, getAmmoCost(projectileWeapon));
 			consumeNutrients(projectileWeapon, getDurabilityCost(projectileWeapon));
 		}
@@ -92,60 +94,13 @@ public abstract class LivingGunItem<T extends BaseProjectile> extends GunItem<T>
 	}
 
 	@Override
-	public ItemStack findAmmoInInv(ItemStack stack, LivingEntity shooter) {
-		return ItemStack.EMPTY;
+	public AmmoSupplier getAmmoForReload(ItemStack stack, LivingEntity shooter) {
+		return AmmoSupplier.fromNutrientsContainer(this, stack);
 	}
 
 	@Override
 	public boolean canReload(ItemStack stack, LivingEntity shooter) {
 		return getAmmo(stack) < getMaxAmmo(stack) && getNutrients(stack) >= getReloadCost(stack);
-	}
-
-	@Override
-	public void finishReload(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		setGunState(stack, GunState.NONE);
-
-		if (shooter instanceof Player player && player.getAbilities().instabuild) {
-			setAmmo(stack, getMaxAmmo(stack));
-			onReloadFinished(stack, level, shooter);
-			return;
-		}
-
-		int reloadCost = getReloadCost(stack);
-
-		if (getNutrients(stack) >= reloadCost) {
-			setAmmo(stack, getMaxAmmo(stack));
-			consumeNutrients(stack, reloadCost);
-			onReloadFinished(stack, level, shooter);
-		}
-		else {
-			playSFX(level, shooter, ModSoundEvents.FLESHKIN_NO.get());
-		}
-	}
-
-	@Override
-	public void onReloadTick(ItemStack stack, ServerLevel level, LivingEntity shooter, long elapsedTime) {
-		if (elapsedTime % 20L == 0L) playSFX(level, shooter, ModSoundEvents.FLESHKIN_EAT.get());
-	}
-
-	@Override
-	public void onReloadStarted(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		playSFX(level, shooter, ModSoundEvents.FLESHKIN_BECOME_AWAKENED.get());
-	}
-
-	@Override
-	public void onReloadCanceled(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		playSFX(level, shooter, ModSoundEvents.FLESHKIN_BREAK.get());
-	}
-
-	@Override
-	public void onReloadStopped(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		playSFX(level, shooter, ModSoundEvents.FLESHKIN_NO.get());
-	}
-
-	@Override
-	public void onReloadFinished(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		playSFX(level, shooter, ModSoundEvents.FLESHKIN_BURP.get());
 	}
 
 	@Override
@@ -176,7 +131,7 @@ public abstract class LivingGunItem<T extends BaseProjectile> extends GunItem<T>
 	@Override
 	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
 		if (handleOverrideStackedOnOther(stack, slot, action, player)) {
-			playLocalSound(player, ModSoundEvents.FLESHKIN_EAT.get());
+			GunSounds.playLocal(player, ModSoundEvents.FLESHKIN_EAT.get());
 			return true;
 		}
 		return false;
@@ -185,7 +140,7 @@ public abstract class LivingGunItem<T extends BaseProjectile> extends GunItem<T>
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
 		if (handleOverrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
-			playLocalSound(player, ModSoundEvents.FLESHKIN_EAT.get());
+			GunSounds.playLocal(player, ModSoundEvents.FLESHKIN_EAT.get());
 			return true;
 		}
 		return false;
@@ -229,11 +184,6 @@ public abstract class LivingGunItem<T extends BaseProjectile> extends GunItem<T>
 	@Override
 	public boolean canBeDepleted() {
 		return false;
-	}
-
-	protected void playLocalSound(Player player, SoundEvent soundEvent) {
-		if (!player.level().isClientSide) return;
-		player.playSound(soundEvent, 0.8f, 0.8f + player.level().getRandom().nextFloat() * 0.4f);
 	}
 
 }

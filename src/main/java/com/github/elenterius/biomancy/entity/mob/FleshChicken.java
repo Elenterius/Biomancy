@@ -10,7 +10,6 @@ import com.github.elenterius.biomancy.init.tags.ModMobEffectTags;
 import com.github.elenterius.biomancy.util.animation.MobAnimations;
 import com.github.elenterius.biomancy.util.shooting.ConfiguredProjectile;
 import com.github.elenterius.biomancy.util.shooting.ProjectileUtil;
-import com.github.elenterius.biomancy.util.sounds.SoundUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -40,7 +39,7 @@ import java.util.function.Predicate;
 public class FleshChicken extends Chicken implements RangedAttackMob, GeoEntity {
 
 	public static final Predicate<LivingEntity> TARGET_SELECTOR = livingEntity -> livingEntity.getMobType() == MobType.UNDEAD;
-	public static final ConfiguredProjectile<AcidSpitProjectile> GASTRIC_SPIT = new ConfiguredProjectile<>(1.5f, 1, 0, 0.8f, ModSoundEvents.ACID_SPIT.get(), AcidSpitProjectile::new);
+	public static final ConfiguredProjectile<AcidSpitProjectile> GASTRIC_SPIT = new ConfiguredProjectile<>(1.5f, 1, 0, 0.8f, ModSoundEvents.ACID_SPIT.get(), ModEntityTypes.ACID_SPIT_PROJECTILE);
 
 	protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -78,8 +77,8 @@ public class FleshChicken extends Chicken implements RangedAttackMob, GeoEntity 
 		double z = getZ() + getBbWidth() * Mth.cos(yBodyRot * Mth.DEG_TO_RAD);
 
 		Vec3 origin = new Vec3(x, y, z);
-		if (ProjectileUtil.shoot(level(), this, GASTRIC_SPIT, origin, target.getEyePosition())) {
-			level().playSound(null, origin.x, origin.y, origin.z, GASTRIC_SPIT.shootSound(), SoundUtil.soundSourceFor(this), 0.8f, 0.4f);
+		if (ProjectileUtil.shoot(level(), this, GASTRIC_SPIT, origin, target.getEyePosition(), true)) {
+			level().playSound(null, origin.x, origin.y, origin.z, GASTRIC_SPIT.shootSound(), getSoundSource(), 0.8f, 0.4f);
 		}
 
 		hasAttacked = true;

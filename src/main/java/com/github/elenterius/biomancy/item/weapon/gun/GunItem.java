@@ -6,12 +6,13 @@ import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
+import com.github.elenterius.biomancy.util.shooting.AmmoSupplier;
 import com.github.elenterius.biomancy.util.shooting.Gun;
 import com.github.elenterius.biomancy.util.shooting.GunProperties;
 import com.github.elenterius.biomancy.util.shooting.GunState;
+import net.minecraft.SharedConstants;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -19,7 +20,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
@@ -44,7 +48,7 @@ public abstract class GunItem<T extends BaseProjectile> extends ProjectileWeapon
 	public KeyPressResult onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		GunState state = getGunState(stack);
 		if (state == GunState.NONE && !canReload(stack, player)) {
-			playSFX(level, player, SoundEvents.DISPENSER_FAIL);
+			gunProperties.sounds().playFail(level, player);
 			return KeyPressResult.fail(); //don't send button press to server
 		}
 
@@ -180,19 +184,13 @@ public abstract class GunItem<T extends BaseProjectile> extends ProjectileWeapon
 	}
 
 	@Override
-	public ItemStack findAmmoInInv(ItemStack stack, LivingEntity shooter) {
-		ItemStack ammo = shooter.getProjectile(stack); //vanilla mobs only look for held ammo (i.e. in off-hand)
-		if (ammo.getItem() == Items.ARROW) { //if mobs/creative players can't find any ammo they will return arrows
-			if (shooter instanceof Player player && player.getAbilities().instabuild) {
-				ammo = ammo.copy();
-				ammo.setCount(getReloadCost(stack));
-				return ammo;
-			}
+	public AmmoSupplier getAmmoForReload(ItemStack stack, LivingEntity shooter) {
+		return AmmoSupplier.fromInventory(shooter, this, stack);
+	}
 
-			if (getSupportedHeldProjectiles().test(ammo) || getAllSupportedProjectiles().test(ammo)) return ammo;
-			return ItemStack.EMPTY;
-		}
-		return ammo;
+	@Override
+	public int getDefaultProjectileRange() {
+		return Math.round(gunProperties.horizontalDefaultRange());
 	}
 
 	@Override
@@ -204,7 +202,7 @@ public abstract class GunItem<T extends BaseProjectile> extends ProjectileWeapon
 
 	@Override
 	public int getUseDuration(ItemStack stack) {
-		return ONE_HOUR_IN_TICKS;
+		return SharedConstants.TICKS_PER_MINUTE * 60;
 	}
 
 	@Override
