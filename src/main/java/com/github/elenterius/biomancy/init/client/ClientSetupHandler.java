@@ -27,12 +27,12 @@ import com.github.elenterius.biomancy.client.render.entity.mob.fleshblob.Primord
 import com.github.elenterius.biomancy.client.render.entity.mob.sheep.ChromaSheepRenderer;
 import com.github.elenterius.biomancy.client.render.entity.mob.sheep.ThickFurSheepRenderer;
 import com.github.elenterius.biomancy.client.render.entity.projectile.AcidSpitProjectileRenderer;
+import com.github.elenterius.biomancy.client.render.entity.projectile.AcidSprayRenderer;
 import com.github.elenterius.biomancy.client.render.entity.projectile.ImpalerProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.projectile.acidblob.AcidBlobProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.projectile.bloomberry.BloomberryProjectileRenderer;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
-import com.github.elenterius.biomancy.item.weapon.gun.GunbladeItem;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
@@ -119,6 +119,7 @@ public final class ClientSetupHandler {
 		event.registerEntityRenderer(ModEntityTypes.ACID_BLOB_PROJECTILE.get(), AcidBlobProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.GRENADE_PROJECTILE.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.ACIDIC_EGG_PROJECTILE.get(), ThrownItemRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.ACID_SPRAY_PROJECTILE.get(), AcidSprayRenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.GAS_CLOUD.get(), NoopRenderer::new);
 	}
@@ -170,10 +171,9 @@ public final class ClientSetupHandler {
 	}
 
 	private static void registerItemModelProperties() {
-		ItemPropertyFunction shieldPropertyFunc = (stack, level, livingEntity, seed) -> livingEntity != null && livingEntity.isUsingItem() && livingEntity.getUseItem() == stack ? 1f : 0f;
-		ItemProperties.register(ModItems.THORN_SHIELD.get(), new ResourceLocation("blocking"), shieldPropertyFunc);
-
-		ItemProperties.register(ModItems.CAUSTIC_GUNBLADE.get(), new ResourceLocation("melee"), (stack, level, livingEntity, seed) -> GunbladeItem.GunbladeMode.from(stack) == GunbladeItem.GunbladeMode.MELEE ? 1f : 0f);
+		ItemPropertyFunction isUsingItem = (stack, level, livingEntity, seed) -> livingEntity != null && livingEntity.isUsingItem() && livingEntity.getUseItem() == stack ? 1f : 0f;
+		ItemProperties.register(ModItems.THORN_SHIELD.get(), new ResourceLocation("blocking"), isUsingItem);
+		ItemProperties.register(ModItems.CAUSTIC_GUNBLADE.get(), new ResourceLocation("shooting"), isUsingItem);
 	}
 
 	@SubscribeEvent

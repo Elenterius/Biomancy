@@ -48,12 +48,6 @@ public final class ModEntityTypes {
 	public static final RegistryObject<EntityType<ChromaSheep>> CHROMA_SHEEP = register("chroma_sheep", EntityType.Builder.of(ChromaSheep::new, MobCategory.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
 	public static final RegistryObject<EntityType<ThickFurSheep>> THICK_FUR_SHEEP = register("thick_fur_sheep", EntityType.Builder.of(ThickFurSheep::new, MobCategory.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
 
-	//Projectiles
-	public static final RegistryObject<EntityType<ToothProjectile>> TOOTH_PROJECTILE = registerProjectile("tooth_projectile", ToothProjectile::new, builder -> builder.sized(0.25f, 0.25f));
-	public static final RegistryObject<EntityType<ImpalerProjectile>> IMPALER_PROJECTILE = registerFastProjectile("impaler_projectile", ImpalerProjectile::new, builder -> builder.sized(3f / 16f, 3f / 16f));
-	public static final RegistryObject<EntityType<BloomberryProjectile>> BLOOMBERRY_PROJECTILE = registerProjectile("bloomberry_projectile", BloomberryProjectile::new, builder -> builder.sized(8f / 16f, 8f / 16f));
-	public static final RegistryObject<EntityType<AcidSpitProjectile>> ACID_SPIT_PROJECTILE = registerProjectile("acid_spit_projectile", AcidSpitProjectile::new, builder -> builder.sized(0.25f, 0.25f));
-	public static final RegistryObject<EntityType<AcidBlobProjectile>> ACID_BLOB_PROJECTILE = registerProjectile("acid_blob_projectile", AcidBlobProjectile::new, builder -> builder.sized(6f / 16f, 6f / 16f));
 	//Base Projectiles
 	public static final RegistryObject<ProjectileEntityType<ToothProjectile>> TOOTH_PROJECTILE = registerProjectile("tooth_projectile", ToothProjectile::new, builder -> builder.gravity(0.01f).sized(0.25f, 0.25f));
 	public static final RegistryObject<ProjectileEntityType<ImpalerProjectile>> IMPALER_PROJECTILE = registerFastProjectile("impaler_projectile", ImpalerProjectile::new, builder -> builder.airDrag(0.001f).gravity(0.001f).sized(3f / 16f, 3f / 16f));

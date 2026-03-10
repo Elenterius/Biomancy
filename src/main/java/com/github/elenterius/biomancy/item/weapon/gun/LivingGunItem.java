@@ -52,7 +52,7 @@ public abstract class LivingGunItem<T extends BaseProjectile> extends GunItem<T>
 
 		if (getNutrients(stack) < getDurabilityCost(stack)) {
 			player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_nutrients"), true);
-			gunProperties.sounds().playFail(level, player, true);
+			gunProperties.sounds().playLocalFail(level, player);
 			return InteractionResultHolder.fail(stack);
 		}
 

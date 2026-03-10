@@ -48,7 +48,8 @@ public abstract class GunItem<T extends BaseProjectile> extends ProjectileWeapon
 	public KeyPressResult onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		GunState state = getGunState(stack);
 		if (state == GunState.NONE && !canReload(stack, player)) {
-			gunProperties.sounds().playFail(level, player);
+			gunProperties.sounds().playLocalFail(level, player);
+			player.displayClientMessage(TextComponentUtil.getFailureMsgText("reload_not_possible"), true);
 			return KeyPressResult.fail(); //don't send button press to server
 		}
 
@@ -159,22 +160,22 @@ public abstract class GunItem<T extends BaseProjectile> extends ProjectileWeapon
 
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-		if (!level.isClientSide && level instanceof ServerLevel serverLevel && entity instanceof LivingEntity livingEntity) {
+		if (!level.isClientSide && level instanceof ServerLevel serverLevel && entity instanceof LivingEntity shooter) {
 			if (getGunState(stack) != GunState.RELOADING) return;
 
-			if (isSelected && canReload(stack, livingEntity)) {
+			if (isSelected && canReload(stack, shooter)) {
 				long elapsedTime = serverLevel.getGameTime() - getReloadStartTime(stack);
 				if (elapsedTime < 0) return;
 
-				onReloadTick(stack, serverLevel, livingEntity, elapsedTime);
+				onReloadTick(stack, serverLevel, shooter, elapsedTime);
 
 				if (elapsedTime >= getReloadDurationTicks(stack)) {
-					finishReload(stack, serverLevel, livingEntity);
+					finishReload(stack, serverLevel, shooter);
 				}
 				return;
 			}
 
-			stopReload(stack, serverLevel, livingEntity);
+			stopReload(stack, serverLevel, shooter);
 		}
 	}
 

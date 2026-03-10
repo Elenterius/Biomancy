@@ -55,9 +55,9 @@ public record GunSounds(@Nullable SoundEvent shoot,
 		play(level, shooter, fail);
 	}
 
-	public void playFail(Level level, Player player, boolean clientSideOnly) {
-		if (clientSideOnly && !level.isClientSide) return;
-		playFail(level, player);
+	public void playLocalFail(Level level, Player player) {
+		if (!level.isClientSide) return;
+		playLocal(player, fail);
 	}
 
 	public void playReloadStart(Level level, LivingEntity shooter) {

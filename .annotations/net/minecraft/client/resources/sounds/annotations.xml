@@ -1,0 +1,5 @@
+<root>
+	<item name='net.minecraft.client.resources.sounds.AbstractSoundInstance net.minecraft.client.sounds.WeighedSoundEvents resolve(net.minecraft.client.sounds.SoundManager)'>
+		<annotation name='org.jspecify.annotations.Nullable'/>
+	</item>
+</root>

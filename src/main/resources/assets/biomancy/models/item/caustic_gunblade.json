@@ -2,15 +2,14 @@
   "overrides": [
     {
       "predicate": {
-        "melee": 0
-      },
-      "model": "biomancy:item/caustic_gunblade_ranged"
-    },
-    {
-      "predicate": {
-        "melee": 1
+        "shooting": 0
       },
       "model": "biomancy:item/caustic_gunblade_melee"
+    }, {
+      "predicate": {
+        "shooting": 1
+      },
+      "model": "biomancy:item/caustic_gunblade_ranged"
     }
   ]
 }
