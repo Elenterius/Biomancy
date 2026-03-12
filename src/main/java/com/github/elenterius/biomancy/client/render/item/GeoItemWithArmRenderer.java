@@ -12,8 +12,12 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -22,10 +26,25 @@ import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.RenderUtils;
 
+import java.util.Map;
+
 public class GeoItemWithArmRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer<T> {
 
 	public GeoItemWithArmRenderer(GeoModel<T> model) {
 		super(model);
+	}
+
+	private static PlayerRenderer getPlayerRenderer(LocalPlayer player) {
+		EntityRenderDispatcher renderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+
+		if (renderDispatcher.getRenderer(player) instanceof PlayerRenderer playerRenderer) return playerRenderer;
+
+		Map<String, EntityRenderer<? extends Player>> playerRenderers = renderDispatcher.getSkinMap();
+
+		String skinModel = DefaultPlayerSkin.getSkinModelName(player.getUUID());
+		if (playerRenderers.get(skinModel) instanceof PlayerRenderer playerRenderer) return playerRenderer;
+
+		return (PlayerRenderer) playerRenderers.get("default");
 	}
 
 	protected static void renderPlayerArm(PoseStack poseStack, MultiBufferSource buffer, int packedLight, LocalPlayer player, boolean isRightArm) {
@@ -40,7 +59,7 @@ public class GeoItemWithArmRenderer<T extends Item & GeoAnimatable> extends GeoI
 	}
 
 	protected static void renderHandWithEmptyPose(PoseStack poseStack, MultiBufferSource buffer, int packedLight, LocalPlayer player, boolean isRightArm) {
-		PlayerRenderer playerRenderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+		PlayerRenderer playerRenderer = getPlayerRenderer(player);
 		PlayerModel<AbstractClientPlayer> playerModel = playerRenderer.getModel();
 		ModelPart armModel = isRightArm ? playerModel.rightArm : playerModel.leftArm;
 		ModelPart armSleeveModel = isRightArm ? playerModel.rightSleeve : playerModel.leftSleeve;
