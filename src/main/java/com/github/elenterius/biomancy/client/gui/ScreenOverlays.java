@@ -267,11 +267,14 @@ public final class ScreenOverlays {
 	}
 
 	static void renderReloadIndicator(GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun<?> gun) {
+		int x = screenWidth / 2 + screenWidth % 2;
+		int y = screenHeight / 2;
+
 		GunState gunState = gun.getGunState(stack);
 		if (gunState == GunState.RELOADING) {
 			long elapsedTime = player.clientLevel.getGameTime() - gun.getReloadStartTime(stack);
 			float reloadProgress = gun.getReloadProgress(elapsedTime, gun.getReloadDurationTicks(stack));
-			GuiRenderUtil.drawSquareProgressBar(guiGraphics, screenWidth / 2, screenHeight / 2, zDepth, 10, reloadProgress);
+			GuiRenderUtil.drawSquareProgressBar(guiGraphics, x, y, zDepth, 10, reloadProgress);
 		}
 		else {
 			long elapsedTimeFromShot = player.clientLevel.getGameTime() - gun.getShootTimestamp(stack);
@@ -283,7 +286,7 @@ public final class ScreenOverlays {
 					if (ticksUsingItem >= 0) {
 						float pct = ticksUsingItem / (float) delayBetweenShots;
 						float chargeProgress = Mth.clamp(pct - Mth.floor(pct), 0f, 1f);
-						GuiRenderUtil.drawSquareProgressBar(guiGraphics, screenWidth / 2, screenHeight / 2, zDepth, 10, chargeProgress);
+						GuiRenderUtil.drawSquareProgressBar(guiGraphics, x, y, zDepth, 10, chargeProgress);
 					}
 				}
 				case ON_RELEASE_INSTANT, ON_RELEASE_WITH_FULL_CHARGE -> {
@@ -291,7 +294,7 @@ public final class ScreenOverlays {
 						int delayBetweenShots = Math.max(gun.getDelayBetweenShots(stack), 1);
 						float elapsedDuration = (float) stack.getUseDuration() - ((float) player.getUseItemRemainingTicks());
 						float chargePercentage = Mth.clamp(elapsedDuration / delayBetweenShots, 0f, 1f);
-						GuiRenderUtil.drawSquareProgressBar(guiGraphics, screenWidth / 2, screenHeight / 2, zDepth, 10, chargePercentage);
+						GuiRenderUtil.drawSquareProgressBar(guiGraphics, x, y, zDepth, 10, chargePercentage);
 					}
 				}
 				default -> {}

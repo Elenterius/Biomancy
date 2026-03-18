@@ -63,7 +63,7 @@ public final class GuiRenderUtil {
 		int dist = Math.min(currentLength, halfLength);
 		if (dist > 0) {
 			int y = centerY - halfLength;
-			drawQuad(matrix4f, centerX, y - size, centerX + halfLength, y + size, blitOffset, argbColor);
+			drawQuad(matrix4f, centerX, y - size, centerX + halfLength + 1, y + size, blitOffset, argbColor);
 		}
 
 		// right line
@@ -71,7 +71,7 @@ public final class GuiRenderUtil {
 		if (dist > 0) {
 			int x = centerX + halfLength;
 			int y = centerY - halfLength;
-			drawQuad(matrix4f, x - size, y, x + size, y + dist, blitOffset, argbColor);
+			drawQuad(matrix4f, x - size + 1, y, x + size + 1, y + dist, blitOffset, argbColor);
 		}
 
 		// bottom line
