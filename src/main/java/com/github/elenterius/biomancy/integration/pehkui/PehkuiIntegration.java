@@ -21,9 +21,24 @@ public final class PehkuiIntegration {
 	private PehkuiIntegration() {}
 
 	public static void init(Consumer<PehkuiHelper> helperSetter) {
-		ScaleTypes.BASE.getDefaultBaseValueModifiers().add(SCALE_MODIFIER);
+		//ScaleTypes.BASE.getDefaultBaseValueModifiers().add(SCALE_MODIFIER);
+		//we don't use the BASE type because its affects drops, explosions and projectiles
 
-		//		ScaleTypes.HEALTH.getDefaultBaseValueModifiers().add(SCALE_MODIFIER); //we don't use this because the player hearts aren't rendered correctly
+		//base values
+		ScaleTypes.WIDTH.getDefaultBaseValueModifiers().add(SCALE_MODIFIER);
+		ScaleTypes.HEIGHT.getDefaultBaseValueModifiers().add(SCALE_MODIFIER);
+		ScaleTypes.MOTION.getDefaultBaseValueModifiers().add(SCALE_MODIFIER);
+		ScaleTypes.VISIBILITY.getDefaultBaseValueModifiers().add(SCALE_MODIFIER);
+		ScaleTypes.REACH.getDefaultBaseValueModifiers().add(SCALE_MODIFIER);
+		ScaleTypes.EXPLOSIONS.getDefaultBaseValueModifiers().add(SCALE_MODIFIER);
+
+		// additional values
+		ScaleTypes.ATTACK.getDefaultBaseValueModifiers().add(SCALE_MODIFIER);
+		ScaleTypes.DEFENSE.getDefaultBaseValueModifiers().add(SCALE_MODIFIER);
+		ScaleTypes.KNOCKBACK.getDefaultBaseValueModifiers().add(SCALE_MODIFIER);
+
+		//ScaleTypes.HEALTH.getDefaultBaseValueModifiers().add(SCALE_MODIFIER);
+		//we don't use health because the hearts don't render correctly, instead we do it manually via vanilla attribute modifiers
 
 		PehkuiIntegration.SCALE_TYPE.getScaleChangedEvent().add(scaleData -> {
 			if (scaleData.getEntity() instanceof LivingEntity livingEntity && !livingEntity.level().isClientSide()) {
