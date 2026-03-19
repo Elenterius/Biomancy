@@ -79,7 +79,7 @@ public abstract class LivingGunItem<T extends BaseProjectile> extends GunItem<T>
 
 	@Override
 	public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon) {
-		boolean success = ProjectileUtil.shoot(level, shooter, projectileWeapon, this);
+		boolean success = ProjectileUtil.shoot(level, shooter, usedHand, projectileWeapon, this);
 
 		if (success) {
 			gunProperties.sounds().playShoot(level, shooter);

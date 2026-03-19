@@ -59,7 +59,7 @@ public interface Gun<T extends BaseProjectile> extends CrosshairProvider {
 	}
 
 	default void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon) {
-		boolean success = ProjectileUtil.shoot(level, shooter, projectileWeapon, this);
+		boolean success = ProjectileUtil.shoot(level, shooter, usedHand, projectileWeapon, this);
 
 		if (success) {
 			getGunProperties().sounds().playShoot(level, shooter);

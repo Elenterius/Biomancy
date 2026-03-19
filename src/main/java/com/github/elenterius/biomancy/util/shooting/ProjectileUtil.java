@@ -5,7 +5,9 @@ import com.github.elenterius.biomancy.util.function.FloatOperator;
 import com.github.elenterius.biomancy.util.function.IntOperator;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -26,7 +28,7 @@ public class ProjectileUtil {
 	private ProjectileUtil() {}
 
 	/// @param localSpawnOffset spawn offset in local space (x=RIGHT, y=UP, z=FORWARD)
-	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, float velocity, float damage, int knockback, float accuracy, float spreadBias, Vector3fc localSpawnOffset, ProjectileEntityType<T> entityType, int projectileCount, Consumer<T> modifier) {
+	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, float velocity, float damage, int knockback, float accuracy, float spreadBias, InteractionHand usedHand, Vector3fc localSpawnOffset, ProjectileEntityType<T> entityType, int projectileCount, Consumer<T> modifier) {
 		Vec3 eyePosition = shooter.getEyePosition();
 		Quaternionfc viewRotation = new Quaternionf().rotationYXZ(
 				-shooter.getViewYRot(1f) * Mth.DEG_TO_RAD,
@@ -34,7 +36,9 @@ public class ProjectileUtil {
 				0f
 		);
 
-		Vector3f offset = viewRotation.transform(localSpawnOffset.mul(-1f, 1f, 1f, new Vector3f()));
+		HumanoidArm usedArm = usedHand == InteractionHand.MAIN_HAND ? shooter.getMainArm() : shooter.getMainArm().getOpposite();
+
+		Vector3f offset = viewRotation.transform(localSpawnOffset.mul(usedArm == HumanoidArm.RIGHT ? -1f : 1f, 1f, 1f, new Vector3f()));
 		Vec3 spawnPos = eyePosition.add(offset.x, offset.y, offset.z);
 
 		RandomSource rand = shooter.getRandom();
@@ -222,23 +226,23 @@ public class ProjectileUtil {
 		);
 	}
 
-	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, ProjectileShootContext<T> context) {
-		return shoot(level, shooter, context, projectile -> {});
+	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, InteractionHand usedHand, ProjectileShootContext<T> context) {
+		return shoot(level, shooter, usedHand, context, projectile -> {});
 	}
 
-	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, ProjectileShootContext<T> context, Consumer<T> modify) {
-		return shoot(level, shooter, context.velocity(), context.damage(), context.knockback(), context.accuracy(), context.spreadBias(), context.localOffset(), context.entityType(), context.projectileCount(), modify);
+	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, InteractionHand usedHand, ProjectileShootContext<T> context, Consumer<T> modify) {
+		return shoot(level, shooter, context.velocity(), context.damage(), context.knockback(), context.accuracy(), context.spreadBias(), usedHand, context.localOffset(), context.entityType(), context.projectileCount(), modify);
 	}
 
-	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, ProjectileShootContext<T> context, FloatOperator velocityModifier, FloatOperator damageModifier, IntOperator knockbackModifier, FloatOperator accuracyModifier) {
-		return shoot(level, shooter, context, velocityModifier, damageModifier, knockbackModifier, accuracyModifier, context.localOffset(), projectile -> {});
+	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, InteractionHand usedHand, ProjectileShootContext<T> context, FloatOperator velocityModifier, FloatOperator damageModifier, IntOperator knockbackModifier, FloatOperator accuracyModifier) {
+		return shoot(level, shooter, context, velocityModifier, damageModifier, knockbackModifier, accuracyModifier, usedHand, context.localOffset(), projectile -> {});
 	}
 
-	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, ProjectileShootContext<T> context, FloatOperator velocityModifier, FloatOperator damageModifier, IntOperator knockbackModifier, FloatOperator accuracyModifier, Vector3fc localSpawnOffset) {
-		return shoot(level, shooter, context, velocityModifier, damageModifier, knockbackModifier, accuracyModifier, localSpawnOffset, projectile -> {});
+	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, ProjectileShootContext<T> context, FloatOperator velocityModifier, FloatOperator damageModifier, IntOperator knockbackModifier, FloatOperator accuracyModifier, InteractionHand usedHand, Vector3fc localSpawnOffset) {
+		return shoot(level, shooter, context, velocityModifier, damageModifier, knockbackModifier, accuracyModifier, usedHand, localSpawnOffset, projectile -> {});
 	}
 
-	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, ProjectileShootContext<T> context, FloatOperator velocityModifier, FloatOperator damageModifier, IntOperator knockbackModifier, FloatOperator accuracyModifier, Vector3fc localSpawnOffset, Consumer<T> modify) {
+	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, ProjectileShootContext<T> context, FloatOperator velocityModifier, FloatOperator damageModifier, IntOperator knockbackModifier, FloatOperator accuracyModifier, InteractionHand usedHand, Vector3fc localSpawnOffset, Consumer<T> modify) {
 		return shoot(
 				level, shooter,
 				velocityModifier.apply(context.velocity()),
@@ -246,16 +250,17 @@ public class ProjectileUtil {
 				knockbackModifier.apply(context.knockback()),
 				accuracyModifier.apply(context.accuracy()),
 				context.spreadBias(),
+				usedHand,
 				localSpawnOffset,
 				context.entityType(), context.projectileCount(), modify
 		);
 	}
 
-	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, ItemStack stack, Gun<T> gun) {
-		return shoot(level, shooter, stack, gun, projectile -> {});
+	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, InteractionHand usedHand, ItemStack stack, Gun<T> gun) {
+		return shoot(level, shooter, usedHand, stack, gun, projectile -> {});
 	}
 
-	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, ItemStack stack, Gun<T> gun, Consumer<T> projectileModifier) {
+	public static <T extends BaseProjectile> boolean shoot(Level level, LivingEntity shooter, InteractionHand usedHand, ItemStack stack, Gun<T> gun, Consumer<T> projectileModifier) {
 		GunProperties<T> properties = gun.getGunProperties();
 		return shoot(
 				level, shooter,
@@ -264,6 +269,7 @@ public class ProjectileUtil {
 				gun.getProjectileKnockBack(stack),
 				gun.getAccuracy(stack),
 				properties.spreadBias(),
+				usedHand,
 				properties.localOffset(),
 				properties.projectileType().get(),
 				gun.getProjectileCount(stack),

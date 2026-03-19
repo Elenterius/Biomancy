@@ -143,6 +143,7 @@ public class ImpalerItem extends LivingGunItem<ImpalerProjectile> implements Ite
 				getProjectileKnockBack(projectileWeapon),
 				getAccuracy(projectileWeapon),
 				gunProperties.spreadBias(),
+				usedHand,
 				gunProperties.localOffset(),
 				gunProperties.projectileType().get(),
 				getProjectileCount(projectileWeapon),
