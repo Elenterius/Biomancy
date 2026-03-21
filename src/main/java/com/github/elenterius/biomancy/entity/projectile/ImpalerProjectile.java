@@ -3,9 +3,9 @@ package com.github.elenterius.biomancy.entity.projectile;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.sounds.ServerSoundHandler;
 import com.github.elenterius.biomancy.util.MobUtil;
 import com.github.elenterius.biomancy.util.shooting.ProjectileEntityType;
-import com.github.elenterius.biomancy.util.sounds.SoundUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -15,7 +15,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -300,7 +299,7 @@ public class ImpalerProjectile extends BaseProjectile implements GeoEntity {
 			}
 
 			if (!isSilent() && victim != shooter && victim instanceof Player && shooter instanceof ServerPlayer serverPlayer) {
-				SoundUtil.Server.sendSoundToClient(serverPlayer, SoundEvents.ARROW_HIT_PLAYER, SoundSource.PLAYERS, 0.18F, 0.45F);
+				ServerSoundHandler.triggerSoundForClientPlayer(serverPlayer, SoundEvents.ARROW_HIT_PLAYER, serverPlayer.getSoundSource(), 0.18F, 0.45F);
 			}
 		}
 

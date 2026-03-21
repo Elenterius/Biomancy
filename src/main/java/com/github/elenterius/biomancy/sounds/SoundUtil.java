@@ -1,13 +1,10 @@
-package com.github.elenterius.biomancy.util.sounds;
+package com.github.elenterius.biomancy.sounds;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -101,11 +98,6 @@ public final class SoundUtil {
 	public static final class Server {
 
 		private Server() {}
-
-		/// send sound to the given player
-		public static void sendSoundToClient(ServerPlayer player, SoundEvent soundEvent, SoundSource source, float volume, float pitch) {
-			player.connection.send(new ClientboundSoundPacket(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(soundEvent), source, player.getX(), player.getEyeY(), player.getZ(), volume, pitch, player.getRandom().nextLong()));
-		}
 
 		public static void playBlockSound(ServerLevel level, BlockPos pos, Supplier<SoundEvent> soundEventSupplier) {
 			playBlockSound(level, pos, soundEventSupplier.get());

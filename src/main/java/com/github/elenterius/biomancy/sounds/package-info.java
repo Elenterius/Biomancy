@@ -1,4 +1,4 @@
 @NullMarked
-package com.github.elenterius.biomancy.util.sounds;
+package com.github.elenterius.biomancy.sounds;
 
 import org.jspecify.annotations.NullMarked;

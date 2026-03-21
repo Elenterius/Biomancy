@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.util.sounds;
+package com.github.elenterius.biomancy.sounds;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;

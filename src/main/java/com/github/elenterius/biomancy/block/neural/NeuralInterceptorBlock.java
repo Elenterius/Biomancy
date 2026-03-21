@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.block.neural;
 
-import com.github.elenterius.biomancy.util.sounds.SoundUtil;
+import com.github.elenterius.biomancy.sounds.SoundUtil;
 import com.github.elenterius.biomancy.world.MobSpawnFilterShape;
 import com.github.elenterius.spatialdb.SpatialDBManager;
 import com.github.elenterius.spatialdb.geometry.SphereShape;

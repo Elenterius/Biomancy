@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.util.sounds;
+package com.github.elenterius.biomancy.sounds;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.entity.BlockEntity;

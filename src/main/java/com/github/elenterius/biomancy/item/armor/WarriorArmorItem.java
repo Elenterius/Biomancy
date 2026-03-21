@@ -9,11 +9,11 @@ import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.item.KnowledgeReader;
 import com.github.elenterius.biomancy.mixin.accessor.ArmorItemAccessor;
+import com.github.elenterius.biomancy.sounds.ServerSoundHandler;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.CombatUtil;
 import com.github.elenterius.biomancy.util.ComponentUtil;
-import com.github.elenterius.biomancy.util.sounds.SoundUtil;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
@@ -169,7 +169,7 @@ public class WarriorArmorItem extends LivingArmorGeoItem implements KnowledgeRea
 				}
 				else {
 					player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_nutrients"), true);
-					SoundUtil.Server.sendSoundToClient(player, ModSoundEvents.FLESHKIN_NO.get(), player.getSoundSource(), 1f, 1f + player.level().getRandom().nextFloat() * 0.4f);
+					ServerSoundHandler.triggerSoundForClientPlayer(player, ModSoundEvents.FLESHKIN_NO.get(), player.getSoundSource(), 1f, 1f + player.level().getRandom().nextFloat() * 0.4f);
 				}
 			}
 			return false;
@@ -253,7 +253,7 @@ public class WarriorArmorItem extends LivingArmorGeoItem implements KnowledgeRea
 		if (verticalSimilarity < -(22.5d / 90d)) {
 			ClipContext context = new ClipContext(player.position(), lookTarget, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player);
 			if (player.level().clip(context).getType() == HitResult.Type.BLOCK) {
-				SoundUtil.Server.sendSoundToClient(player, ModSoundEvents.FLESHKIN_NO.get(), player.getSoundSource(), 0.5f, 0.5f + player.level().getRandom().nextFloat() * 0.5f);
+				ServerSoundHandler.triggerSoundForClientPlayer(player, ModSoundEvents.FLESHKIN_NO.get(), player.getSoundSource(), 0.5f, 0.5f + player.level().getRandom().nextFloat() * 0.5f);
 				return false;
 			}
 		}

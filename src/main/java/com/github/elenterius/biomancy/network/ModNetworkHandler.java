@@ -7,7 +7,9 @@ import com.github.elenterius.biomancy.util.ItemStackFilterList;
 import com.github.elenterius.biomancy.util.explosion.ExplosionType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.level.Explosion;
 import net.minecraftforge.network.NetworkDirection;
@@ -60,12 +62,25 @@ public final class ModNetworkHandler {
 		}
 	}
 
+	public static void sendSoundLayerUpdateToClient(ServerPlayer player, Entity entity, String soundLayerId, SoundEvent soundEvent, long startTime, float volume) {
+		SIMPLE_NETWORK_CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new EntitySoundLayerMessages.UpdateMessage(entity, soundLayerId, soundEvent, startTime, volume));
+	}
+
+	public static void sendSoundLayerUpdateToClients(Entity entity, String soundLayerId, SoundEvent soundEvent, long startTime, float volume) {
+		SIMPLE_NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new EntitySoundLayerMessages.UpdateMessage(entity, soundLayerId, soundEvent, startTime, volume));
+	}
+
+	public static void sendSoundLayerRemovalToClients(Entity entity, String soundLayerId, boolean fadeOut) {
+		SIMPLE_NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new EntitySoundLayerMessages.RemovalMessage(entity, soundLayerId, fadeOut));
+	}
+
 	public static void register() {
 		int id = -1;
 		SIMPLE_NETWORK_CHANNEL.registerMessage(++id, KeyPressMessage.class, KeyPressMessage::encode, KeyPressMessage::decode, KeyPressMessage::handle);
 		SIMPLE_NETWORK_CHANNEL.registerMessage(++id, BioForgeRecipeMessage.class, BioForgeRecipeMessage::encode, BioForgeRecipeMessage::decode, BioForgeRecipeMessage::handle);
 		SIMPLE_NETWORK_CHANNEL.registerMessage(++id, BioLabFilterMessage.class, BioLabFilterMessage::encode, BioLabFilterMessage::decode, BioLabFilterMessage::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		SIMPLE_NETWORK_CHANNEL.registerMessage(++id, CustomExplosionMessage.class, CustomExplosionMessage::encode, CustomExplosionMessage::decode, CustomExplosionMessage::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+		SIMPLE_NETWORK_CHANNEL.registerMessage(++id, EntitySoundLayerMessages.UpdateMessage.class, EntitySoundLayerMessages.UpdateMessage::encode, EntitySoundLayerMessages.UpdateMessage::decode, EntitySoundLayerMessages.UpdateMessage::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 	}
 
 }

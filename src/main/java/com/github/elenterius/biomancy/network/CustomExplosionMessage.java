@@ -1,16 +1,16 @@
 package com.github.elenterius.biomancy.network;
 
 import com.github.elenterius.biomancy.mixin.accessor.ExplosionAccessor;
+import com.github.elenterius.biomancy.util.ClientUtil;
 import com.github.elenterius.biomancy.util.explosion.ExplosionType;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import org.jspecify.annotations.Nullable;
@@ -148,16 +148,11 @@ public class CustomExplosionMessage {
 	private static class ClientHandler {
 
 		private static void handle(CustomExplosionMessage packet) {
-			Minecraft minecraft = Minecraft.getInstance();
-			ClientLevel level = minecraft.level;
-			LocalPlayer player = minecraft.player;
+			Level level = ClientUtil.getLevel();
+			Player player = ClientUtil.getPlayer();
 			if (level == null || player == null) return;
 
-			Entity source = null;
-			if (packet.sourceId != null) {
-				source = level.getEntity(packet.sourceId);
-			}
-
+			Entity source = ClientUtil.getEntity(packet.sourceId);
 			Explosion explosion = packet.type.clientFactory.create(level, source, packet.x, packet.y, packet.z, packet.radius, packet.toBlow);
 			explosion.finalizeExplosion(true);
 			player.setDeltaMovement(player.getDeltaMovement().add(packet.knockbackX, packet.knockbackY, packet.knockbackZ));

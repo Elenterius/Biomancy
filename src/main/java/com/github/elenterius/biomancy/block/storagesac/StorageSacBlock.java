@@ -2,8 +2,8 @@ package com.github.elenterius.biomancy.block.storagesac;
 
 import com.github.elenterius.biomancy.block.base.WaterloggedFacingEntityBlock;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.sounds.SoundUtil;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
-import com.github.elenterius.biomancy.util.sounds.SoundUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;

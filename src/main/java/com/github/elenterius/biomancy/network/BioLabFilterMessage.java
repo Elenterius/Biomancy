@@ -1,11 +1,11 @@
 package com.github.elenterius.biomancy.network;
 
 import com.github.elenterius.biomancy.menu.BioLabMenu;
+import com.github.elenterius.biomancy.util.ClientUtil;
 import com.github.elenterius.biomancy.util.ItemStackFilter;
 import com.github.elenterius.biomancy.util.ItemStackFilterList;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import org.jspecify.annotations.Nullable;
@@ -51,7 +51,7 @@ public class BioLabFilterMessage {
 
 		if (context.getDirection().getReceptionSide().isClient()) {
 			context.enqueueWork(() -> {
-				LocalPlayer player = Minecraft.getInstance().player;
+				Player player = ClientUtil.getPlayer();
 				if (player != null && player.containerMenu instanceof BioLabMenu menu && menu.containerId == packet.containerId) {
 					menu.setFilters(packet.filters);
 				}

@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.api.livingtool;
 
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.sounds.SoundUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
-import com.github.elenterius.biomancy.util.sounds.SoundUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
