@@ -38,6 +38,7 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleRedirect(ModSoundEvents.ARMOR_EQUIP_WARRIOR, SoundEvents.ARMOR_EQUIP_TURTLE);
 		addSimpleRedirect(ModSoundEvents.CHRYSALIS_INSERT, SoundEvents.FROG_EAT);
 		addSimpleRedirect(ModSoundEvents.CHRYSALIS_REMOVE, SoundEvents.FROG_LAY_SPAWN);
+		addSimpleSound(ModSoundEvents.CAUSTIC_GUNBLADE_SHOOT_LOOP);
 
 		addSimpleRedirect(ModSoundEvents.GRENADE_THROW, SoundEvents.SNOWBALL_THROW, 1f, 0.5f);
 		addSimpleRedirect(ModSoundEvents.ACID_SPIT, SoundEvents.LLAMA_SPIT);

@@ -723,6 +723,12 @@
     ],
     "subtitle": "sounds.biomancy.item.bone_marrow.drink"
   },
+  "item.caustic_gunblade.shoot_loop": {
+    "sounds": [
+      "biomancy:item.caustic_gunblade.shoot_loop"
+    ],
+    "subtitle": "sounds.biomancy.item.caustic_gunblade.shoot_loop"
+  },
   "item.chrysalis.insert": {
     "sounds": [
       {

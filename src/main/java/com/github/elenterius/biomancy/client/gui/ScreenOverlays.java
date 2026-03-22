@@ -12,6 +12,7 @@ import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.KnowledgeReader;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
+import com.github.elenterius.biomancy.item.weapon.gun.CausticGunbladeItem;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.shooting.Gun;
@@ -139,11 +140,20 @@ public final class ScreenOverlays {
 		Minecraft minecraft = Minecraft.getInstance();
 		if (!minecraft.options.hideGui && minecraft.player != null) {
 			ItemStack stack = minecraft.player.getMainHandItem();
-			if (stack.isEmpty() || !(stack.getItem() instanceof ItemCharge abilityCharge)) return;
+			if (stack.isEmpty()) return;
 
-			if (GuiUtil.isFirstPersonView()) {
-				gui.setupOverlayRenderState(true, false);
-				renderBloodChargeMeter(guiGraphics, gui.getFont(), screenWidth, screenHeight, -90, abilityCharge.getCharge(stack), abilityCharge.getChargePct(stack));
+			if (stack.getItem() instanceof ItemCharge abilityCharge) {
+				if (GuiUtil.isFirstPersonView()) {
+					gui.setupOverlayRenderState(true, false);
+					renderBloodChargeMeter(guiGraphics, gui.getFont(), screenWidth, screenHeight, -90, abilityCharge.getCharge(stack), abilityCharge.getChargePct(stack));
+				}
+			}
+
+			if (stack.getItem() instanceof CausticGunbladeItem) {
+				if (GuiUtil.isFirstPersonView()) {
+					gui.setupOverlayRenderState(true, false);
+					CausticGunbladeItem.Abilities.ACID_REFLUX.render(gui, guiGraphics, partialTicks, screenWidth, screenHeight, stack);
+				}
 			}
 		}
 	};
@@ -251,7 +261,7 @@ public final class ScreenOverlays {
 		}
 	}
 
-	static void renderBloodChargeMeter(GuiGraphics guiGraphics, Font font, int screenWidth, int screenHeight, int zDepth, int charge, float chargePct) {
+	public static void renderBloodChargeMeter(GuiGraphics guiGraphics, Font font, int screenWidth, int screenHeight, int zDepth, int charge, float chargePct) {
 		int x = (screenWidth - 31) / 2 + screenWidth % 2;
 		int y = (screenHeight - 31) / 2;
 

@@ -22,9 +22,9 @@
       "item": "biomancy:primal_orifice"
     }
   ],
-  "nutrientsCost": 250,
+  "nutrientsCost": 300,
   "result": {
     "item": "biomancy:caustic_gunblade",
-    "nbt": "{\"biomancy:nutrients\":200}"
+    "nbt": "{\"biomancy:nutrients\":250}"
   }
 }

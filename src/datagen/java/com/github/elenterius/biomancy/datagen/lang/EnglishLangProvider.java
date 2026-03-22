@@ -333,6 +333,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addSound(ModSoundEvents.ARMOR_EQUIP_WARRIOR, "Bio-Armor plate thunks");
 		addSound(ModSoundEvents.CHRYSALIS_INSERT, "Mob packed");
 		addSound(ModSoundEvents.CHRYSALIS_REMOVE, "Mob unpacked");
+		addSound(ModSoundEvents.CAUSTIC_GUNBLADE_SHOOT_LOOP, "Caustic Gunblade shoots");
 
 		addSound(ModSoundEvents.GRENADE_THROW, "Grenade thrown");
 		addSound(ModSoundEvents.ACID_SPIT, "Acid spits");

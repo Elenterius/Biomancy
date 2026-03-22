@@ -28,6 +28,7 @@ public final class ModSoundEvents {
 	public static final RegistryObject<SoundEvent> ARMOR_EQUIP_WARRIOR = register("item.armor.equip_warrior");
 	public static final RegistryObject<SoundEvent> CHRYSALIS_INSERT = register("item.chrysalis.insert");
 	public static final RegistryObject<SoundEvent> CHRYSALIS_REMOVE = register("item.chrysalis.remove");
+	public static final RegistryObject<SoundEvent> CAUSTIC_GUNBLADE_SHOOT_LOOP = register("item.caustic_gunblade.shoot_loop");
 
 	//# Projectiles
 	public static final RegistryObject<SoundEvent> GRENADE_THROW = register("entity.grenade.throw");

@@ -250,13 +250,14 @@ public class BioForgingRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.TOOLS)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
-		BioForgingRecipeBuilder.create(withMaxNutrients(ModItems.CAUSTIC_GUNBLADE.get()))
+		ItemStack stack = withMaxNutrients(ModItems.CAUSTIC_GUNBLADE.get());
+		BioForgingRecipeBuilder.create(stack)
 				.addIngredient(ModItems.LIVING_FLESH.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 16)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 8)
 				.addIngredient(ModItems.GENERIC_MOB_GLAND.get(), 2)
 				.addIngredient(ModItems.PRIMAL_ORIFICE.get(), 4)
-				.setCraftingCost(250)
+				.setCraftingCost(ModItems.CAUSTIC_GUNBLADE.get().getMaxNutrients(stack) + 50)
 				.setCategory(ModBioForgeTabs.TOOLS)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 

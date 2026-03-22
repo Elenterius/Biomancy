@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.item.weapon.gun;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.livingtool.SimpleLivingTool;
+import com.github.elenterius.biomancy.client.gui.ScreenOverlays;
 import com.github.elenterius.biomancy.client.render.item.caustic_gunblade.CausticGunbladeRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.projectile.AcidSprayProjectile;
@@ -10,6 +11,7 @@ import com.github.elenterius.biomancy.item.CriticalHitListener;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.MeleeDamageSourceProviderItem;
 import com.github.elenterius.biomancy.item.weapon.BladeProperties;
+import com.github.elenterius.biomancy.sounds.ClientSoundHandler;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
@@ -20,6 +22,8 @@ import com.github.elenterius.geckolibextras.GLibExtras;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.SharedConstants;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -49,6 +53,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import org.joml.Vector3f;
@@ -137,7 +142,19 @@ public class CausticGunbladeItem extends LivingGunItem<AcidSprayProjectile> impl
 
 	@Override
 	public void onUseTick(Level level, LivingEntity shooter, ItemStack stack, int remainingUseDuration) {
-		if (level.isClientSide) return;
+		if (level.isClientSide) {
+			if (getGunState(stack) == GunState.SHOOTING_OR_CHARGING) {
+				int useTime = shooter.getTicksUsingItem();
+				long startTime = level.getGameTime() - useTime;
+				ClientSoundHandler.updateSoundLayer(shooter, "use_item", ModSoundEvents.CAUSTIC_GUNBLADE_SHOOT_LOOP.get(), startTime, 1f);
+			}
+			else {
+				ClientSoundHandler.removeSoundLayer(shooter, "use_item", true);
+			}
+
+			return;
+		}
+
 		if (!(level instanceof ServerLevel serverLevel)) return;
 		if (getGunState(stack) != GunState.SHOOTING_OR_CHARGING) return;
 
@@ -151,6 +168,13 @@ public class CausticGunbladeItem extends LivingGunItem<AcidSprayProjectile> impl
 		}
 
 		super.onUseTick(level, shooter, stack, remainingUseDuration);
+	}
+
+	@Override
+	public void onStopUsing(ItemStack stack, LivingEntity entity, int count) {
+		if (entity.level().isClientSide) {
+			ClientSoundHandler.removeSoundLayer(entity, "use_item", true);
+		}
 	}
 
 	@Override
@@ -272,17 +296,19 @@ public class CausticGunbladeItem extends LivingGunItem<AcidSprayProjectile> impl
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 
-		tooltip.add(ComponentUtil.EMPTY_LINE);
-		appendGunStats(stack, tooltip);
+		if (!Screen.hasControlDown()) {
+			tooltip.add(ComponentUtil.EMPTY_LINE);
+			appendGunStats(stack, tooltip);
+		}
 
-		tooltip.add(ComponentUtil.EMPTY_LINE);
-		Abilities.ACID_REFLUX.appendAbilityDescription(stack, tooltip);
+		//		tooltip.add(ComponentUtil.EMPTY_LINE);
+		//		Abilities.ACID_REFLUX.appendAbilityDescription(stack, tooltip);
 
 		tooltip.add(ComponentUtil.EMPTY_LINE);
 		appendLivingToolTooltip(stack, tooltip);
 
 		tooltip.add(ComponentUtil.EMPTY_LINE);
-		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getActionText("switch_mode")).withStyle(TextStyles.DARK_GRAY));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getActionText("reload")).withStyle(TextStyles.DARK_GRAY));
 
 		if (stack.isEnchanted()) {
 			tooltip.add(ComponentUtil.EMPTY_LINE);
@@ -349,23 +375,34 @@ public class CausticGunbladeItem extends LivingGunItem<AcidSprayProjectile> impl
 			components.add(ComponentUtil.translatable(translationKey).withStyle(TextStyles.GRAY));
 			components.addAll(ClientTextUtil.splitLinesByNewLine(ComponentUtil.translatable(translationKey + ".desc").withStyle(TextStyles.DARK_GRAY)));
 		}
+
+		void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight, ItemStack stack);
+
 	}
 
-	protected static final class Abilities {
+	public static final class Abilities {
 
 		public static final ItemAbility ACID_REFLUX = new ItemAbility() {
 			static final String NAME = "acid_reflux";
 			static final String KEY = BiomancyMod.rlStr(NAME);
 			static final String ACID_LEVEL = "acid_level";
 			static final String HAS_REFLUX = "has_reflux";
-			static final String REFLUX_START_TIME = "reflux_start_time";
+			static final String DELAY_START_TIME = "delay_start_time";
 
-			static final byte MAX_ACID_LEVEL = 100;
-			static final int RECOVERY_DELAY = SharedConstants.TICKS_PER_SECOND * 10;
+			static final byte MAX_ACID_LEVEL = 120;
+			static final int MAX_DELAY = SharedConstants.TICKS_PER_SECOND * 10;
+			static final int MIN_DELAY = SharedConstants.TICKS_PER_SECOND / 2;
 
 			@Override
 			public String name() {
 				return NAME;
+			}
+
+			@Override
+			public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight, ItemStack stack) {
+				int acidLevel = stack.getOrCreateTagElement(KEY).getByte(ACID_LEVEL);
+				float acidLevelPct = acidLevel / (float) MAX_ACID_LEVEL;
+				ScreenOverlays.renderBloodChargeMeter(guiGraphics, gui.getFont(), screenWidth, screenHeight, -90, acidLevel, acidLevelPct);
 			}
 
 			@Override
@@ -377,11 +414,16 @@ public class CausticGunbladeItem extends LivingGunItem<AcidSprayProjectile> impl
 			public void setActive(ServerLevel level, ItemStack stack, LivingEntity itemOwner) {
 				CompoundTag tag = stack.getOrCreateTagElement(KEY);
 
-				byte acidLevel = (byte) Math.min(tag.getByte(ACID_LEVEL) + 2, MAX_ACID_LEVEL);
+				byte currAcidLevel = tag.getByte(ACID_LEVEL);
+				if (currAcidLevel >= MAX_ACID_LEVEL) return;
+
+				int fx = Math.round((currAcidLevel * 0.0165f) * (currAcidLevel * 0.0165f) + 1f);
+				byte acidLevel = (byte) Math.min(currAcidLevel + fx, MAX_ACID_LEVEL);
 				tag.putByte(ACID_LEVEL, acidLevel);
 
+				tag.putLong(DELAY_START_TIME, level.getGameTime());
+
 				if (acidLevel >= MAX_ACID_LEVEL) {
-					tag.putLong(REFLUX_START_TIME, level.getGameTime());
 					tag.putBoolean(HAS_REFLUX, true);
 				}
 			}
@@ -389,18 +431,18 @@ public class CausticGunbladeItem extends LivingGunItem<AcidSprayProjectile> impl
 			@Override
 			public void tick(Level level, ItemStack stack, LivingEntity itemOwner) {
 				CompoundTag tag = stack.getOrCreateTagElement(KEY);
+				byte currAcidLevel = tag.getByte(ACID_LEVEL);
 
-				if (tag.getBoolean(HAS_REFLUX)) {
-					long elapsedTime = level.getGameTime() - tag.getLong(REFLUX_START_TIME);
-					if (elapsedTime < RECOVERY_DELAY) return;
+				long elapsedTime = level.getGameTime() - tag.getLong(DELAY_START_TIME);
+				int delay = Mth.lerpInt((float) currAcidLevel / MAX_ACID_LEVEL, MIN_DELAY, MAX_DELAY);
+				if (elapsedTime < delay) return;
 
-					int acidLevel = tag.getByte(ACID_LEVEL) - 1;
-					tag.putByte(ACID_LEVEL, (byte) acidLevel);
+				int acidLevel = Math.max(0, currAcidLevel - 2);
+				tag.putByte(ACID_LEVEL, (byte) acidLevel);
 
-					if (acidLevel <= 0) {
-						tag.putBoolean(HAS_REFLUX, false);
-						GunSounds.play(level, itemOwner, ModSoundEvents.FLESHKIN_BECOME_AWAKENED.get());
-					}
+				if (acidLevel == 0 && tag.getBoolean(HAS_REFLUX)) {
+					tag.putBoolean(HAS_REFLUX, false);
+					GunSounds.play(level, itemOwner, ModSoundEvents.FLESHKIN_BECOME_AWAKENED.get());
 				}
 			}
 
@@ -408,13 +450,12 @@ public class CausticGunbladeItem extends LivingGunItem<AcidSprayProjectile> impl
 			public void use(Level level, ItemStack stack, LivingEntity itemOwner) {
 				CompoundTag tag = stack.getOrCreateTagElement(KEY);
 
-				int uses = tag.getByte(ACID_LEVEL) - 1;
+				int acidLevel = Math.max(0, tag.getByte(ACID_LEVEL) - 10);
+				tag.putByte(ACID_LEVEL, (byte) acidLevel);
 
-				if (uses > 0) {
-					tag.putByte(ACID_LEVEL, (byte) uses);
-				}
-				else {
-					stack.removeTagKey(KEY);
+				if (acidLevel == 0 && tag.getBoolean(HAS_REFLUX)) {
+					tag.putBoolean(HAS_REFLUX, false);
+					GunSounds.play(level, itemOwner, ModSoundEvents.FLESHKIN_BECOME_AWAKENED.get());
 				}
 			}
 
@@ -422,7 +463,7 @@ public class CausticGunbladeItem extends LivingGunItem<AcidSprayProjectile> impl
 			public void cancel(ServerLevel level, ItemStack stack, LivingEntity itemOwner) {
 				CompoundTag tag = stack.getOrCreateTagElement(KEY);
 				tag.putBoolean(HAS_REFLUX, false);
-				tag.putByte(REFLUX_START_TIME, (byte) 0);
+				tag.putByte(DELAY_START_TIME, (byte) 0);
 				tag.putByte(ACID_LEVEL, (byte) 0);
 			}
 		};
