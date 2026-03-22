@@ -114,6 +114,11 @@ public class LivingShieldItem extends SimpleShieldItem implements SimpleLivingTo
 	}
 
 	@Override
+	public boolean isFoil(ItemStack stack) {
+		return false;
+	}
+
+	@Override
 	public boolean isBarVisible(ItemStack stack) {
 		return getNutrients(stack) < getMaxNutrients(stack);
 	}

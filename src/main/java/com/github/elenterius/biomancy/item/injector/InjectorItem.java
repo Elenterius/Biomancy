@@ -323,6 +323,11 @@ public class InjectorItem extends Item implements SerumInjector, ItemTooltipStyl
 		return 15;
 	}
 
+	@Override
+	public boolean isFoil(ItemStack stack) {
+		return false;
+	}
+
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {

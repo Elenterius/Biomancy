@@ -147,6 +147,11 @@ public abstract class LivingGunItem<T extends BaseProjectile> extends GunItem<T>
 	}
 
 	@Override
+	public boolean isFoil(ItemStack stack) {
+		return false;
+	}
+
+	@Override
 	public boolean isBarVisible(ItemStack stack) {
 		return getNutrients(stack) < getMaxNutrients(stack);
 	}

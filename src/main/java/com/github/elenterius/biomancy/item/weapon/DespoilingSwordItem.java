@@ -87,4 +87,9 @@ public class DespoilingSwordItem extends SimpleSwordItem {
 		return super.getAttributeModifiers(slot, stack);
 	}
 
+	@Override
+	public boolean isFoil(ItemStack stack) {
+		return false;
+	}
+
 }

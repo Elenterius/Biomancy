@@ -175,6 +175,11 @@ public class LivingArmorItem extends ArmorItem implements SimpleLivingTool {
 	}
 
 	@Override
+	public boolean isFoil(ItemStack stack) {
+		return false;
+	}
+
+	@Override
 	public boolean isBarVisible(ItemStack stack) {
 		return getNutrients(stack) < getMaxNutrients(stack);
 	}
