@@ -18,7 +18,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-//client bound message
+/// client bound message
 public class CustomExplosionMessage {
 
 	private final ExplosionType type;

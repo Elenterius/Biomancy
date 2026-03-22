@@ -90,7 +90,7 @@ public class BioLabMenu extends PlayerContainerMenu {
 		}
 	}
 
-	public void setFilters(List<ItemStack> filters) {
+	public void setFilters(List<@Nullable ItemStack> filters) {
 		bioLab.getInputInventory().get().setFilters(filters);
 	}
 

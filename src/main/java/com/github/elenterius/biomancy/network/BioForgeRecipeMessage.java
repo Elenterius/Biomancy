@@ -12,7 +12,7 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.Map;
 import java.util.function.Supplier;
 
-//server bound message
+/// server bound message
 public class BioForgeRecipeMessage {
 
 	public final ResourceLocation id;

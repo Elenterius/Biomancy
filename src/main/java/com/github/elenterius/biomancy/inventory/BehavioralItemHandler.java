@@ -190,7 +190,7 @@ public interface BehavioralItemHandler extends IItemHandler {
 			return filters.get(slot).getItemStack();
 		}
 
-		public void setFilters(List<ItemStack> filters) {
+		public void setFilters(List<@Nullable ItemStack> filters) {
 			for (int i = 0; i < itemHandler.getSlots(); i++) {
 				this.filters.set(i, ItemStackFilter.of(filters.get(i)));
 			}

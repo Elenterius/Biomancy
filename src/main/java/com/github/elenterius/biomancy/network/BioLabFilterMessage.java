@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-//client bound message
+/// client bound message
 public class BioLabFilterMessage {
 
 	public final int containerId;
-	private final List<ItemStack> filters;
+	private final List<@Nullable ItemStack> filters;
 
 	public BioLabFilterMessage(int containerId, ItemStackFilterList filters) {
 		this.containerId = containerId;
@@ -33,7 +33,7 @@ public class BioLabFilterMessage {
 
 	public static BioLabFilterMessage decode(final FriendlyByteBuf buffer) {
 		int containerId = buffer.readVarInt();
-		List<ItemStack> filterItems = buffer.readCollection(ArrayList::new, BioLabFilterMessage::decodeNullableItemStack);
+		List<@Nullable ItemStack> filterItems = buffer.readCollection(ArrayList::new, BioLabFilterMessage::decodeNullableItemStack);
 		return new BioLabFilterMessage(containerId, filterItems);
 	}
 
