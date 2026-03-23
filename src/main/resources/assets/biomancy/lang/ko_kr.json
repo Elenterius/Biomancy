@@ -76,8 +76,6 @@
   "item.biomancy.ravenous_claws.tooltip": "굶주려 있는 살아있는 살점에 발톱을 붙여 만든 불쾌한 발톱입니다.\n\n굶주린 발톱은 플레이어 인벤토리를 통해 음식을 먹여 회복할 수 있습니다.\n\n이 발톱으로 몹을 처치하면 각성 모드를 사용할 수 있는 피를 충전할 수 있습니다.",
   "item.biomancy.caustic_gunblade": "부식성 건블레이드",
   "item.biomancy.caustic_gunblade.tooltip": "근거리와 원거리 모드를 바꿔가며 사용할 수 있는 부식성 총검으로, 산성 탄약을 사용해 표적에게 피해를 입힙니다.\n산성 탄약은 5초 동안 사용하지 않으면 자동으로 재생됩니다.",
-  "item.biomancy.dev_arm_cannon": "[Dev Tool] 팔 케논",
-  "item.biomancy.dev_arm_cannon.tooltip": "발사체 테스트를 위한 크리에이티브/개발자 툴입니다.",
   "item.biomancy.acolyte_armor_helmet": "에콜라이트 투구",
   "item.biomancy.acolyte_armor_chestplate": "에콜라이트 흉갑",
   "item.biomancy.acolyte_armor_leggings": "에콜라이트 레깅스",
