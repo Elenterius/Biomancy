@@ -94,8 +94,6 @@
   "item.biomancy.caustic_gunblade.tooltip": "Un arma cáustica que puede alternar entre modo de ataque a distancia y cuerpo a cuerpo, utilizando munición acídica para lastimar a sus objetivos.\nLa munición acídica se regenera por su cuenta tras 5 segundos de no usarse.",
   "item.biomancy.impaler": "Impalador",
   "item.biomancy.impaler.tooltip": "Cañón de Riel hecho de carne...",
-  "item.biomancy.dev_arm_cannon": "[Dev Tool] Cañón de brazo",
-  "item.biomancy.dev_arm_cannon.tooltip": "Herramienta creativa/de desarrollo para probar proyectiles.",
   "item.biomancy.acolyte_armor_helmet": "Casco de Bio-Alquimista",
   "item.biomancy.acolyte_armor_chestplate": "Pechera de Bio-Alquimista",
   "item.biomancy.acolyte_armor_leggings": "Grebas de Bio-Alquimista",
