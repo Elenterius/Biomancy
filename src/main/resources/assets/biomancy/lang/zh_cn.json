@@ -102,8 +102,6 @@
   "item.biomancy.caustic_gunblade.tooltip": "一把极具腐蚀性的枪刃，可以在近战与远程模式间切换，使用酸性弹药腐蚀目标\n酸性弹药会在闲置5s后自动重新装填。",
   "item.biomancy.impaler": "穿刺炮",
   "item.biomancy.impaler.tooltip": "能够以极高初速发射硬化尖锐骨刺的臂装大炮。\n消耗大量营养，肌纤维束剧烈收缩，密封的压力囊腔被易爆推进剂灌满。\n\n当无法抑制的压强突破临界点时，弹射物便以撕裂空气的狂暴姿态贯出。",
-  "item.biomancy.dev_arm_cannon": "[开发者工具] 手炮",
-  "item.biomancy.dev_arm_cannon.tooltip": "创造模式专属，用于测试弹射物的工具。",
   "item.biomancy.acolyte_armor_helmet": "生物炼金术师头盔",
   "item.biomancy.acolyte_armor_chestplate": "生物炼金术师胸甲",
   "item.biomancy.acolyte_armor_leggings": "生物炼金术师护腿",
