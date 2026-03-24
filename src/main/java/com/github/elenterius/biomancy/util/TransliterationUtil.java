@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.util;
 
+import com.github.elenterius.biomancy.BiomancyConfig;
 import com.ibm.icu.text.Transliterator;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,11 +35,14 @@ public final class TransliterationUtil {
 	}
 
 	public static String transliterate(String text) {
+		if (!BiomancyConfig.SERVER.doTransliteration.get()) return text;
 		if (text.isBlank()) return text;
 		return ASCII_TRANSLITERATOR.transliterate(text);
 	}
 
 	public static Component transliterate(Component component, UnaryOperator<String> resultModifier) {
+		if (!BiomancyConfig.SERVER.doTransliteration.get()) return component;
+
 		String original = component.getString();
 		String transliterated = transliterate(original);
 

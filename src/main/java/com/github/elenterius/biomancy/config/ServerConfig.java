@@ -5,6 +5,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 public class ServerConfig {
 
 	public final ForgeConfigSpec.BooleanValue doBioForgeRecipeProgression;
+	public final ForgeConfigSpec.BooleanValue doTransliteration;
 	public final ForgeConfigSpec.BooleanValue addTradesToVillagers;
 	public final ForgeConfigSpec.BooleanValue addTradesToWanderingTrader;
 	public final ForgeConfigSpec.EnumValue<PrimalEnergySettings.SupplyAmount> primalEnergySupplyOfCradle;
@@ -22,6 +23,15 @@ public class ServerConfig {
 		doBioForgeRecipeProgression = builder
 				.comment("Determines if the BioForge recipes need to be unlocked to be able to craft them")
 				.define("doBioForgeRecipeProgression", true);
+		builder.pop();
+
+		builder.push("transliteration");
+		doTransliteration = builder
+				.comment(
+						"Determines if clients (afflicted by primordial infestation) transliterate non-latin characters before sending text (chat messages, sign editing, item renaming) to the server.",
+						"Disabling this feature makes only sense if you use a resource pack that expands the 'Caro Invitica' font with the missing non-latin characters from your language."
+				)
+				.define("doTransliteration", true);
 		builder.pop();
 
 		builder.push("trades");

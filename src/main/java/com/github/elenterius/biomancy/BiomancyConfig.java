@@ -8,7 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public final class BiomancyConfig {
 
-	public static final ForgeConfigSpec SERVER_SPECIFICATION;
+	private static final ForgeConfigSpec SERVER_SPECIFICATION;
 	public static final ServerConfig SERVER;
 
 	private BiomancyConfig() {}
