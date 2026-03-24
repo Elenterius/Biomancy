@@ -47,10 +47,10 @@ public class ShrinkingSerum extends BasicSerum {
 		PehkuiHelper pehkuiHelper = ModsCompatHandler.getPehkuiHelper();
 		float currentScale = pehkuiHelper.getScale(target);
 
-		float minScale = BiomancyConfig.SERVER.pehkuiMinScale.get().floatValue();
+		float minScale = BiomancyConfig.SERVER_SYNCED.pehkuiMinScale.get().floatValue();
 		if (currentScale > minScale) {
-			float maxScale = BiomancyConfig.SERVER.pehkuiMaxScale.get().floatValue();
-			float scaleStep = BiomancyConfig.SERVER.pehkuiScaleDecrement.get().floatValue();
+			float maxScale = BiomancyConfig.SERVER_SYNCED.pehkuiMaxScale.get().floatValue();
+			float scaleStep = BiomancyConfig.SERVER_SYNCED.pehkuiScaleDecrement.get().floatValue();
 			pehkuiHelper.setScale(target, Mth.clamp(currentScale - scaleStep, minScale, maxScale));
 		}
 	}

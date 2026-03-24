@@ -44,11 +44,11 @@ public class AbsorptionSerum extends BasicSerum {
 	}
 
 	protected float getHearts() {
-		return BiomancyConfig.SERVER.absorptionHearts.get().floatValue();
+		return BiomancyConfig.SERVER_SYNCED.absorptionHearts.get().floatValue();
 	}
 
 	protected float getMaxHearts() {
-		return BiomancyConfig.SERVER.absorptionMaxHearts.get().floatValue();
+		return BiomancyConfig.SERVER_SYNCED.absorptionMaxHearts.get().floatValue();
 	}
 
 }

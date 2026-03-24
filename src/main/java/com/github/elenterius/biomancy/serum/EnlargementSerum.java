@@ -55,10 +55,10 @@ public class EnlargementSerum extends BasicSerum {
 	private void resizeWithPehkui(LivingEntity target) {
 		PehkuiHelper pehkuiHelper = ModsCompatHandler.getPehkuiHelper();
 		float currentScale = pehkuiHelper.getScale(target);
-		float maxScale = BiomancyConfig.SERVER.pehkuiMaxScale.get().floatValue();
+		float maxScale = BiomancyConfig.SERVER_SYNCED.pehkuiMaxScale.get().floatValue();
 		if (currentScale < maxScale) {
-			float minScale = BiomancyConfig.SERVER.pehkuiMinScale.get().floatValue();
-			float scaleStep = BiomancyConfig.SERVER.pehkuiScaleIncrement.get().floatValue();
+			float minScale = BiomancyConfig.SERVER_SYNCED.pehkuiMinScale.get().floatValue();
+			float scaleStep = BiomancyConfig.SERVER_SYNCED.pehkuiScaleIncrement.get().floatValue();
 			pehkuiHelper.setScale(target, Mth.clamp(currentScale + scaleStep, minScale, maxScale));
 		}
 	}

@@ -9,13 +9,13 @@ import org.apache.commons.lang3.tuple.Pair;
 public final class BiomancyConfig {
 
 	private static final ForgeConfigSpec SERVER_SPECIFICATION;
-	public static final ServerConfig SERVER;
+	public static final ServerConfig SERVER_SYNCED;
 
 	private BiomancyConfig() {}
 
 	static {
 		Pair<ServerConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ServerConfig::new);
-		SERVER = specPair.getLeft();
+		SERVER_SYNCED = specPair.getLeft();
 		SERVER_SPECIFICATION = specPair.getRight();
 	}
 

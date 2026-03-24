@@ -35,13 +35,13 @@ public final class TransliterationUtil {
 	}
 
 	public static String transliterate(String text) {
-		if (!BiomancyConfig.SERVER.doTransliteration.get()) return text;
+		if (!BiomancyConfig.SERVER_SYNCED.doTransliteration.get()) return text;
 		if (text.isBlank()) return text;
 		return ASCII_TRANSLITERATOR.transliterate(text);
 	}
 
 	public static Component transliterate(Component component, UnaryOperator<String> resultModifier) {
-		if (!BiomancyConfig.SERVER.doTransliteration.get()) return component;
+		if (!BiomancyConfig.SERVER_SYNCED.doTransliteration.get()) return component;
 
 		String original = component.getString();
 		String transliterated = transliterate(original);

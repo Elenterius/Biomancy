@@ -310,7 +310,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 	@Override
 	public int getPrimalEnergy() {
-		PrimalEnergySettings.SupplyAmount supplyAmount = BiomancyConfig.SERVER.primalEnergySupplyOfCradle.get();
+		PrimalEnergySettings.SupplyAmount supplyAmount = BiomancyConfig.SERVER_SYNCED.primalEnergySupplyOfCradle.get();
 		if (supplyAmount == PrimalEnergySettings.SupplyAmount.UNLIMITED) return Integer.MAX_VALUE;
 		if (supplyAmount == PrimalEnergySettings.SupplyAmount.NONE) return 0;
 
@@ -338,7 +338,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	public int drainPrimalEnergy(int amount) {
 		if (amount <= 0) return 0;
 
-		PrimalEnergySettings.SupplyAmount supplyAmount = BiomancyConfig.SERVER.primalEnergySupplyOfCradle.get();
+		PrimalEnergySettings.SupplyAmount supplyAmount = BiomancyConfig.SERVER_SYNCED.primalEnergySupplyOfCradle.get();
 		if (supplyAmount == PrimalEnergySettings.SupplyAmount.UNLIMITED) return amount;
 		if (supplyAmount == PrimalEnergySettings.SupplyAmount.NONE) return 0;
 

@@ -277,7 +277,7 @@ class BioForgeScreenController {
 
 	private void updateAndSearchRecipes() {
 		LocalPlayer player = getPlayer();
-		boolean isCreativePlayer = player.isCreative() || !BiomancyConfig.SERVER.doBioForgeRecipeProgression.get();
+		boolean isCreativePlayer = player.isCreative() || !BiomancyConfig.SERVER_SYNCED.doBioForgeRecipeProgression.get();
 
 		ClientRecipeBook recipeBook = player.getRecipeBook();
 		List<RecipeCollection> recipesForCategory = recipeBook.getCollection(ModRecipeBookCategories.getRecipeBookCategories(tabs.get(activeTab)));
