@@ -35,6 +35,9 @@ import java.util.Optional;
 
 public class VolatileExplosion extends GenericExplosion {
 
+	public static final float ATTACK_DAMAGE_MULTIPLIER = 0.125f;
+	public static final float KNOCKBACK_MULTIPLIER = 0.125f;
+
 	public static ExplosionDamageCalculator BLOCK_DAMAGE_CALCULATOR = new ExplosionDamageCalculator() {
 
 		@Override
@@ -65,11 +68,16 @@ public class VolatileExplosion extends GenericExplosion {
 
 	@Override
 	protected void hurtEntity(Entity entity, float amount) {
-		super.hurtEntity(entity, amount);
+		super.hurtEntity(entity, amount * ATTACK_DAMAGE_MULTIPLIER);
 
 		if (amount > 0f && entity.isAlive() && entity instanceof LivingEntity living) {
 			living.addEffect(new MobEffectInstance(ModMobEffects.VOLATILE.get(), 60 * 20));
 		}
+	}
+
+	@Override
+	protected double getKnockbackStrength(Entity entity, double nearExplosionPercent) {
+		return super.getKnockbackStrength(entity, nearExplosionPercent) * KNOCKBACK_MULTIPLIER;
 	}
 
 	@Override

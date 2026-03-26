@@ -30,6 +30,9 @@ import java.util.Optional;
 
 public class DecayExplosion extends GenericExplosion {
 
+	public static final float ATTACK_DAMAGE_MULTIPLIER = 0.0625f;
+	public static final float KNOCKBACK_MULTIPLIER = 0.0625f;
+
 	public static ExplosionDamageCalculator BLOCK_DAMAGE_CALCULATOR = new ExplosionDamageCalculator() {
 		@Override
 		public Optional<Float> getBlockExplosionResistance(Explosion explosion, BlockGetter level, BlockPos pos, BlockState state, FluidState fluidState) {
@@ -66,12 +69,12 @@ public class DecayExplosion extends GenericExplosion {
 
 	@Override
 	protected void hurtEntity(Entity entity, float amount) {
-		entity.hurt(getDamageSource(), amount * 0.125f);
+		entity.hurt(getDamageSource(), amount * ATTACK_DAMAGE_MULTIPLIER);
 	}
 
 	@Override
 	protected double getKnockbackStrength(Entity entity, double nearExplosionPercent) {
-		return super.getKnockbackStrength(entity, nearExplosionPercent) * 0.125d;
+		return super.getKnockbackStrength(entity, nearExplosionPercent) * KNOCKBACK_MULTIPLIER;
 	}
 
 	@Override
