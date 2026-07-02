@@ -285,6 +285,43 @@ var minifyJsonResources = tasks.register("minifyJsonResources") {
 	}
 }
 
+tasks.register('serverJar', Jar) {
+	dependsOn(minifyJsonResources)
+	archiveClassifier.set('server')
+
+	// Extract from the reobfuscated jar and exclude client-only resources
+	// Keeps language files as they are needed for server-side translation of messages
+	from(zipTree(tasks.named('reobfJar').flatMap { it.archiveFile })) {
+		exclude 'assets/biomancy/sounds/**'
+		exclude 'assets/biomancy/models/**'
+		exclude 'assets/biomancy/animations/**'
+		exclude 'assets/biomancy/font/**'
+		exclude 'assets/biomancy/textures/**'
+		exclude 'assets/biomancy/blockstates/**'
+		exclude 'assets/biomancy/geo/**'
+		exclude 'assets/biomancy/shaders/**'
+		exclude 'assets/biomancy/tooltipoverhaul/**'
+	}
+
+
+	duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+
+	manifest.attributes([
+			'Specification-Title'     : mod_name,
+			'Specification-Vendor'    : mod_vendor,
+			'Specification-Version'   : mod_major_version,
+			'Implementation-Title'    : project.name,
+			'Implementation-Version'  : project.jar.archiveVersion,
+			'Implementation-Vendor'   : mod_vendor,
+			'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+
+			"MixinConfigs"            : "${mod_id}.mixins.json"
+	])
+
+	from { ["CREDITS.md", "LICENSE.txt", "3RD_PARTY_LICENSE.txt"] } //copy files from the repository root into the jar
+
+}
+
 jar {
 	dependsOn(minifyJsonResources)
 
@@ -301,6 +338,10 @@ jar {
 	])
 
 	from { ["CREDITS.md", "LICENSE.txt", "3RD_PARTY_LICENSE.txt"] } //copy files from the repository root into the jar
+}
+// Make the build task depend on serverJar
+tasks.named('build').configure {
+	dependsOn 'serverJar'
 }
 
 // Include the output of "generateModMetadata" as an input directory for the build
