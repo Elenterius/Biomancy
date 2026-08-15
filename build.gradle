@@ -182,13 +182,14 @@ dependencies {
 	api('org.jetbrains:annotations:26.0.2-1')
 
 	//https://h2database.com/html/mvstore.html
-	implementation(jarJar("com.h2database:h2-mvstore") {
+	//we use the full h2 dependency because of module resolution conflicts between h2-mvstore and h2 (provided by other mods)
+	implementation(jarJar("com.h2database:h2") {
 		version {
 			strictly '[2.3.230,3.0.0)'
-			prefer '2.3.232'
+			prefer '2.4.240'
 		}
 	})
-	additionalRuntimeClasspath "com.h2database:h2-mvstore:2.3.232"
+	additionalRuntimeClasspath "com.h2database:h2:2.4.240"
 
 	// Geckolib
 	modImplementation("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
