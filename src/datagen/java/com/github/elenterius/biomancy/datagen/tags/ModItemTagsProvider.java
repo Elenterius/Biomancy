@@ -14,6 +14,7 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -247,6 +248,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.addTag(clawsTag)
 				.addTag(swordsTag)
 				.add(ModItems.INJECTOR.get(), ModItems.ESSENCE_EXTRACTOR.get());
+
+		createTag(Tags.Items.ARMORS_HELMETS).add(ModItems.stream().filter(item -> item instanceof ArmorItem armor && armor.getType() == ArmorItem.Type.HELMET));
+		createTag(Tags.Items.ARMORS_CHESTPLATES).add(ModItems.stream().filter(item -> item instanceof ArmorItem armor && armor.getType() == ArmorItem.Type.CHESTPLATE));
+		createTag(Tags.Items.ARMORS_LEGGINGS).add(ModItems.stream().filter(item -> item instanceof ArmorItem armor && armor.getType() == ArmorItem.Type.LEGGINGS));
+		createTag(Tags.Items.ARMORS_BOOTS).add(ModItems.stream().filter(item -> item instanceof ArmorItem armor && armor.getType() == ArmorItem.Type.BOOTS));
 
 		createTag(Tags.Items.CHESTS).add(ModItems.FLESHKIN_CHEST.get());
 
