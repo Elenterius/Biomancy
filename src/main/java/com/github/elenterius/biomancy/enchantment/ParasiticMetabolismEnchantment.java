@@ -30,7 +30,7 @@ public class ParasiticMetabolismEnchantment extends Enchantment {
 		if (player.getHealth() <= 10f) return;
 
 		FoodData foodData = player.getFoodData();
-		if (foodData.getFoodLevel() <= 2) return;
+		if (foodData.getFoodLevel() <= 2 && foodData.getSaturationLevel() < 1f) return;
 
 		List<Map.Entry<EquipmentSlot, ItemStack>> enchantedItems = EnchantmentUtil.getItemsWithEnchantment(this, player, LivingTool.NEED_NUTRIENTS_PREDICATE);
 
@@ -43,7 +43,12 @@ public class ParasiticMetabolismEnchantment extends Enchantment {
 			item.increaseNutrients(stack, Nutrients.getRepairValue(ModItems.NUTRIENT_PASTE.get().getDefaultInstance()) + bonusRepairValue);
 
 			if (!player.getAbilities().invulnerable) {
-				foodData.setFoodLevel(foodData.getFoodLevel() - 1);
+				if (foodData.getSaturationLevel() >= 1f) {
+					foodData.setSaturation(foodData.getSaturationLevel() - 1f);
+				}
+				else {
+					foodData.setFoodLevel(foodData.getFoodLevel() - 1);
+				}
 			}
 		}
 	}
