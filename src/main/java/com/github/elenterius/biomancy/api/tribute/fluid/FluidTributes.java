@@ -23,7 +23,8 @@ public final class FluidTributes {
 	private static final FluidTribute MILK_MILLI_TRIBUTE = FluidTribute.of(Tributes.getTribute(Items.MILK_BUCKET.getDefaultInstance()), 1000);
 
 	static {
-		register(ForgeMod.MILK.get(), resource -> MILK_MILLI_TRIBUTE);
+		//milk fluid is only present if it's explicitly enabled by a mod
+		ForgeMod.MILK.ifPresent(fluid -> register(fluid, resource -> MILK_MILLI_TRIBUTE));
 	}
 
 	private FluidTributes() {}
