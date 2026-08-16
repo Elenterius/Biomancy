@@ -21,11 +21,6 @@ public class ParasiticMetabolismEnchantment extends Enchantment {
 		super(rarity, ModEnchantments.LIVING_CATEGORY, applicableSlots);
 	}
 
-	@Override
-	public boolean isCurse() {
-		return true;
-	}
-
 	public void repairLivingItems(Player player) {
 		if (player.getHealth() <= 10f) return;
 
