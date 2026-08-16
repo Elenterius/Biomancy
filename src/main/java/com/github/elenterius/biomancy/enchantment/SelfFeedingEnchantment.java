@@ -49,10 +49,14 @@ public class SelfFeedingEnchantment extends Enchantment {
 	}
 
 	protected ItemStack getBestRepairItem(Player player, int neededRepairValue) {
+		return getBestRepairItem(player, neededRepairValue, 0);
+	}
+
+	protected ItemStack getBestRepairItem(Player player, int neededRepairValue, int maxError) {
 		NonNullList<ItemStack> items = player.getInventory().items;
 
 		ItemStack repairItemStack = ItemStack.EMPTY;
-		int minError = Integer.MAX_VALUE;
+		int minError = Math.max(maxError, 0) + 1;
 
 		//loop through hot-bar slots
 		for (int i = 0; i < 9; i++) {
@@ -63,15 +67,13 @@ public class SelfFeedingEnchantment extends Enchantment {
 
 			int error;
 			Item item = itemStack.getItem();
-			if (item == ModItems.NUTRIENT_PASTE.get() || item == ModItems.NUTRIENT_BAR.get()) {
-				error = repairValue > neededRepairValue ? (repairValue - neededRepairValue) / 2 : -repairValue * 2;
-			}
-			else {
-				error = repairValue > neededRepairValue ? (repairValue - neededRepairValue) * 2 : -repairValue / 2;
-			}
+			error = repairValue > neededRepairValue ? repairValue - neededRepairValue : -repairValue;
 
 			if (error < minError) {
 				minError = error;
+				repairItemStack = itemStack;
+			}
+			else if (error == minError && (item == ModItems.NUTRIENT_PASTE.get() || item == ModItems.NUTRIENT_BAR.get())) {
 				repairItemStack = itemStack;
 			}
 		}
